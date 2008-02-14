@@ -1,0 +1,12 @@
+#!/bin/sh
+# cherche un navigateur web ...
+for browser in x-www-browser konqueror epiphany MozillaFirebird firefox galeon mozilla netscape
+do
+  TESTB=`which ${browser}`
+  if [ -x "${TESTB}" ]; then
+    ${TESTB} ${1}
+    exit
+  fi
+done
+
+echo "Sorry, no browser found"

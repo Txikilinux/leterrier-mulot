@@ -1,0 +1,4 @@
+?package(abuledu-mulot):command="mulot" needs="X11" \
+  icon="/usr/share/pixmaps/abuledu-mulot.xpm" \
+  hints="Prise en main de la souris" \
+  section="Apps/Education" title="Mulot (AbulEdu)"

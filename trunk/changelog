@@ -1,0 +1,216 @@
+v 8.2
+=====
+- suppression de la superposition des fenetres (fermeture de l'appli appelante)
+- correction du bilan (can't read "table(...)")
+- correction des messages de gestion des dossiers images
+- gestion des images dans une seule fenetre
+- mot de passe inutile si l'utilisateur est prof
+v 8.1
+=====
+- correction d'un bug de fermeture pour glisser_mulot et parcourir_mulot
+- effacement du dossier images/ch_vases
+v 7.1
+=====
+- ajout de l'italien.Merci francesca (francescacampora@yahoo.it)
+v 6.10
+======
+- ajout du roumain (merci mihaela marinca)
+v 6.3b
+======
+- boutons et icones en PNG (fin du GIF)
+- Modifications des scripts associés aux PNG
+v 6.3a
+======
+- tetes neutres grises
+- corrige bug pour version tcl < 8.4 (compound)
+v 6.3
+=====
+- revision cosmetique (tetes, icones, suppression du superflu...)
+- revision de la traduction anglaise (merci s.mcsherry)
+v 6.1d
+======
+- remplacement des boutons par les boutons de François
+v 6.1
+=====
+- ajout de la sauvegarde des traces-élèves au format csv
+- ajout du menu Fichier > Bilans
+- choix de l'aide dans l'une des langues disponibles
+- suppression du menu activités (devenu inutile grace aux boutons)
+- boutons internationalisés (demande T.Stauder et skolelinux-fr)
+- images souriantes internationalées (cf. ci-dessus)
+- corrections diverses mineures
+v 5.12
+======
+Le numero de version est la date YY.MM (d'apres Eric)
+- ajout de l'activite double_cliquer (suggestion de ???)
+- modif de l'activite glisser/deposer : (d'apres Francois Audirac)
+  pour 4 vignettes (constante), le nombre de caches croit 
+- suppression de l'activite chronologie
+- têtes souriantes pour montrer la progression dans l'activité
+  5 têtes dont 5 images minimum par thème
+- on peut recommencer l'activité
+- la liste des images ne présente pas de doublons
+- le thème est rappelé par une vignette à droite de la sortie
+- plein écran non redimensionnalisable
+- remplacement du module msg.tcl : la prise en compte des accents (merci David)
+v 1.10-10
+=========
+- ajout de l'occitan (merci Monia)
+v 1.10-9a
+=========
+- correction erreur de répertoire sous windows dans effacer_dossier.tcl
+v 1.10-9
+========
+- vocabulaire : Dossier remplacé par Catégorie (cf. associations)
+v 1.10-8
+========
+- dans 4 fichiers (ajouter_images, chrono_*.tcl) remplacement de la ligne
+  -command "cd $dir_origine par - command "cd \"$dir_origine\" ... pour
+  satisfaire windows
+- fichier aide.fr.html de JP
+- toilettage avant stable
+v 1.10-7
+========
+- correction bug dans l'activité chronologie lié à l'effacement d'une image
+- correction bug autorisation des menus (un prof peut ere responsable d'un
+groupe d'élèves)
+v 1.10-6
+========
+- menu "autorisation" : vérifier que la classe existe
+- activité chronologie : position finale des vignettes
+- ajout de l'éditeur chronologie
+v 1.10-5
+========
+- gestion différenciée des menus sous AbulEdu
+- modification de l'appellation des dossiers et images pour l'activité chronologie
+v 1.10-4
+========
+- modification de messages, d'images et de la présentation des zones de l'activité chronologie
+v 1.10-3
+========
+- amelioration de la gestion du mot de passe
+- support indifférencié des images jpg, png, gif (et autres ?)
+v 1.10-2
+========
+- ajout de l'activité chronologie
+v 1.10-1
+========
+- menus ajouter/effacer DOSSIER/IMAGES
+v 1.10-0
+========
+- suppression des memus ajouter/effacer UNE image
+- ajout des dossiers à thèmes (animaux, paysages, etc.)
+- support de la langue
+v 1.8-2
+=======
+- suppression du module path.tcl
+v 1.8-1
+=======
+- version stable
+- A faire : gestion de traces d'un élève, de tous les élèves
+v 1.7-2
+=======
+- suppression proc forcer_nom sous windows
+v 1.6
+=====
+- eval.tcl devient indépendant du projet par passage des paramètres
+- gestion améliorée des noms utilisateurs sous windows
+v 1.4-4
+=======
+- source aider.tcl pour la procédure aider
+v 1.4-3
+=======
+- adaptation de la procédure aider pour windows
+v 1.4
+=====
+- ajout de la procédure aider (avec la montre pour patienter et la prise en compte de la langue)
+v 1.2
+=====
+- le répertoire des traces devient sous windows : <dir_mulot>\mulot\log
+v 1.0.15
+========
+- intégration des normes d'avril 2004 (après réunion CVS) 
+v 1.0.14
+========
+- délai d'attente entre deux niveaux (voir mulot.conf) pour passer
+automatiquement de l'un à l'autre
+- donc suppression des boutons "droite" et "encore"
+v 1.0.13
+========
+- prise en charge des images jpeg
+v 1.0.12
+========
+- prise en charge de l'aide par le module path.tcl
+- le répertoire source des images à copier est le répertoire utilisateur
+- enregistrement des traces sécurisé par eval.tcl
+- A FAIRE (?) option/choix de la langue + du thème 
+v 1.0.11
+========
+- positionnement du bouton de sortie à droite de la fenêtre 
+v 1.0.10
+========
+-aide modifiée (mot de passe)
+- glisser/déposer : les parties d'images restent dessus
+- message parcourir : rouge=on clique, vert=on passe dessus
+v 1.0.9
+=======
+- correction bug parcourir_mulot.tcl : clic sur case fin sans passer par les cases intermédiaires
+v 1.0.8
+=======
+- ajout des pistes (cliquer/survoler/cliquer)
+v 1.0.7
+=======
+- tableau glob de variable globales : défini en grande partie dans mulot.conf
+- remplacement de crop (unix) par nom_vignette copy nom_image -from ... pour compatibilité unix/windows/mac 
+- prise en compte du nom de l'élève sous windows (lecture forcée)
+v 1.0.6
+=======
+- glisser/déposer : changement gamma de la vignette lorsqu'elle est (presque) bien placée (type chaud/froid)
+v 1.0.5
+=======
+- utiliser $Home/leterrier/mulot pour les vignettes
+- vérifier que le nombre d'images est suffisant
+v 1.0.4
+=======
+- glisser/déposer pour GNU/Linux avec convert -crop
+v 1.0.3
+=======
+- ajouter et effacer pour win
+v 1.0.2
+=======
+- bouton (porte) de sortie sur le jeu
+
+v 1.0.1
+=======
+- menu ajouter une image
+- menu effacer une image
+v 1.0.0
+=======
+- modifications de messages
+- ajout de boutons images : survoler ou cliquer
+- ajout du répertoire Reglages dans l'installation sous windows
+v 0.0.5
+=======
+- ajout du menu conforme AbulEdu
+- ajout de l'aide
+v 0.0.4
+=======
+- choix du mode d'effacement des rectangles : clic ou survol
+- lecture de la liste de images directement dans le répertoire ./images
+  ce qui permet d'ajouter (et effacer) facilement de nouvelles images
+  de préférence au format max 600x400.
+v 0.0.3
+=======
+- les cases sont affichees sans frontiere donc
+- seules les 7 cases rouges a cliquer sont visibles
+v 0.0.2
+=======
+- Au début du jeu, l'image est entièrement cachée.
+Dès que l'élève a découvert 7 cases, l'image jaillit ! 
+- sous GNU/Linux le logiciel est dans /usr/share/abuledu/applications/abuledu-mulot
+- ajout du changelog
+V 0.0.1
+=======
+andre.connes@toulouse.iufm.fr
+
+

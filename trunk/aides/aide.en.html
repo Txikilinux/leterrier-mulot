@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Mulot help</title>
+</head>
+<body>
+<h1>Advice for use<br>
+</h1>
+<p>This software, used for preparatory lessons at pre-school level, is
+not only intended to present images that are discovered using the
+mouse. &nbsp;<br>
+<br>
+It was devised to encourage the use of speech.&nbsp; Thus the children can :</p>
+<ul>
+  <li><span style="font-weight: bold;">Call to mind</span> a more or less recent class activity </li>
+  <li><span style="font-weight: bold;">Call to mind</span> a particular event (a visit, a party, an anniversary etc.)</li>
+  <li><span style="font-weight: bold;">Anticipate</span> the contents of the image while only a small part of it is visible</li>
+  <li>Etc.</li>
+</ul>
+<h1>Five possible modes of use<br>
+</h1>
+<ul>
+  <li><span style="font-weight: bold;">Hover</span> : the hidden section within each cell becomes visible as soon as the cursor enters the cell</li>
+  <li><span style="font-weight: bold;">Click</span> : the hidden image only appears under the cursor if you click with the left mouse button within the cell</li>
+  <li><span style="font-weight: bold;">Double-click</span> :&nbsp; as before, with a double click</li>
+  <li><span style="font-weight: bold;">Click-hover-click</span> : click on one end of the trail with the left mouse button, hover over the trail, then click on the other end of the trail</li>
+  <li><span style="font-weight: bold;">Drag-and-drop</span> : sections
+have been extracted from the original image and placed at the right of
+the screen.&nbsp; Drag and drop them into place (relation of
+parts/whole)</li>
+</ul>
+<h1>With or without menu for the pupils?</h1>
+<p>With Abul&Eacute;du, the teacher can choose to hide the menus from
+pupils of certain classes.&nbsp; This may prove necessary when the
+users are young, non-readers, clumsy, etc.</p>
+<h1>Adding/Deleting folders/image(s)</h1>
+<p style="text-align: center;">After adding or deleting it is extremely important to <span style="font-style: italic; font-weight: bold;">close the application and restart</span>.&nbsp;&nbsp;</p>
+<p style="text-align: center;">If not the application may appear to behave strangely.</p>
+<p style="text-align: center;">See below.</p>
+<h2>To add a folder</h2>
+<p>RAS</p>
+<h2>To add image(s)</h2>
+<p>Use images suitably modified with image editing&nbsp;software, for example <span style="font-weight: bold;">the GIMP</span></p>
+<p>Choose for preference the image format&nbsp;<span style="font-weight: bold;">jpg</span>,
+but you can use .png or .gif (and others?).&nbsp; The height/width
+ratios 3/2 and 4/3 work well, for example images in the format 600x400.</p>
+<p style="font-weight: bold;">N.B.</p>
+<ul>
+  <li>In GNU/Linux and Abul&Eacute;du, images are automatically resized</li>
+  <li>In Abul&Eacute;du, only teachers may add/delete folders/images</li>
+  <li>Outside Abul&Eacute;du, a password is necessary to add/delete folders/images</li>
+  <li>By default, the password is defined in the folder <span style="font-style: italic;">mulot.conf</span> and set to <span style="font-weight: bold;">terrieradmin</span></li>
+</ul>
+<p><br>
+You have two possibilities :</p>
+<div style="margin-left: 40px;">1.Add images to an existing folder (no particular problem)</div>
+<p style="margin-left: 40px;">2.Create a new theme that you place in a new folder.&nbsp; To do this use the following procedure ;</p>
+<p style="margin-left: 80px;">Create the new folder</p>
+<p style="margin-left: 80px;">Copy the images into the folder</p>
+<h2>To Delete a folder</h2>
+<p>RAS</p>
+<h2>To Delete image(s)</h2>
+<p>RAS</p>
+<h1>Pupil Profiles</h1>
+<p><br>
+Pupil profiles are stored in the files <span style="font-weight: bold; font-style: italic;">pupil's_name.log</span> and <span style="font-weight: bold; font-style: italic;">pupil's_name.csv</span> in the folder <span style="font-style: italic; font-weight: bold;">leterrier/mulot/</span>.</p>
+<p><br>
+The latter, in csv format, may be read and dealt with in a table.</p>
+<p>Score reports are possible</p>
+<ul>
+  <li>For the user (menu File &gt; Scores &gt; My Score)</li>
+</ul>
+<p style="margin-left: 40px;">N.B. in the case of class use, the pupil can copy/paste or email the files <span style="font-weight: bold; font-style: italic;">pupil's_name.csv </span><span style="font-weight: bold;"></span>and<span style="font-weight: bold; font-style: italic;"> pupil's_name.html</span> to the teacher</p>
+<ul>
+  <li>For all users (menu File &gt; Scores &gt; All</li>
+</ul>
+<p>A file <span style="font-style: italic; font-weight: bold;">n_eleves.log</span> and <span style="font-style: italic; font-weight: bold;">n_eleves.html</span> are produced with <span style="font-weight: bold;">n=number of users.</span></p>
+<p style="text-align: center;"><big><big>What processes have you done?</big></big></p>
+<p style="text-align: center;"><big><big>Let us know at </big></big></p>
+<p style="text-align: center; font-weight: bold;"><a href="mailto:utilisations@abuledu.org"><big><big>utilisations@abuledu.org</big></big></a></p>
+<h1>Notes for developers </h1>
+<h2>Adding &ldquo;sourire&rdquo; images from the end of the sequence</h2>
+<p>These images are found according to the language used in the file</p>
+<p>sysdata/fin_sequence/&lt;user'sLanguage&gt;, for example sysdata/fin_sequence/en.</p>
+<p>Their size is 350x350 maximum and their extension is png.</p>
+<p>The name of an image is composed </p>
+<ul>
+  <li>of the prefix <span style="font-weight: bold;">sourire</span></li>
+  <li>followed by a qualifier</li>
+  <li>of the extension division . (<span style="font-weight: bold;">dot</span>)</li>
+  <li>of the extension <span style="font-weight: bold;">png</span></li>
+</ul>
+<p>Proceeding in this manner allows the software to present the various
+images at the end of the sequence in the language of the user.&nbsp; By
+default the language is set to French.</p>
+<h2>Add/Modify/Delete a trail</h2>
+<p>The trails are contained in the index <span style="font-weight: bold;">pistes</span></p>
+<p><br>
+A trail is described by means of the numbers of cases in a table ( 10 rows x 15 columns )</p>
+<ul>
+  <li>Row 0 : 0-14</li>
+  <li>Row 1 : 15-29</li>
+  <li>Row 2 : 30-44</li>
+  <li>Row 3 : 45-59</li>
+  <li>Row 4 : 60-74</li>
+  <li>Row 5 : 75-89</li>
+  <li>Row 6 : 90-104</li>
+  <li>Row 7 : 105-119</li>
+  <li>Row 8 : 120-134</li>
+  <li>Row 9 : 135-149</li>
+</ul>
+<p>Therefore, a trail_file is a list of whole numbers contained between 0 and 149 (inclusive)</p>
+<p>The name of a trail_file is composed</p>
+<ul>
+  <li>of a <span style="font-weight: bold;">figure</span> representing the difficulty of the trail (on a scale of 0-9)</li>
+  <li>of the extension division . (<span style="font-weight: bold;">dot</span>)</li>
+  <li>of a <span style="font-weight: bold;">word</span> (evocative) constituting the extension</li>
+</ul>
+<p>The trails thus named are listed according to their degree of difficulty.</p>
+</body>
+</html>

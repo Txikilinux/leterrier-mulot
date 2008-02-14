@@ -1,0 +1,6 @@
+#!/bin/sh
+. /etc/abuledu/configuration
+cd ${REP_BASE}/applications/mulot
+wish mulot.tcl
+cd -
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+PROFDIR1=/home/profs/$USER/leterrier/mulot/log
+if [ -d $PRODIR1 ]
+then
+  PROFDIR=$PROFDIR1
+  ELEVEDIR=/home/eleves/*/leterrier/mulot/log
+fi
+PROFDIR2=/home/$USER/leterrier/mulot/log
+if [ -d $PROFDIR2 ]
+then
+  PROFDIR=$PROFDIR2
+  ELEVEDIR=/home/*/leterrier/mulot/log
+fi
+
+# faire le menage
+rm -f $PROFDIR/*_eleves.log 2>/dev/null
+
+# copie des bilans dans $PROFDIR
+n=0
+for i in $ELEVEDIR/*.log
+do
+#  echo "$n : $i"
+  cat $i >> $PROFDIR/bilans
+  n=`expr $n + 1`
+done
+
+mv $PROFDIR/bilans $PROFDIR/${n}_eleves.log
+
+

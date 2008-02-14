@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ -f variables ]; then rm -f variables; fi
+
+if [ -f *.spec ];
+then 
+  cat *.spec | grep define | sed s/"^%define "/""/ | tr " " "=" > variables
+  . variables
+  (
+  cd ..
+  if [ -d ../${name}-${version} ]; then rm -rf ../${name}-${version}; fi
+  mkdir ../${name}-${version}
+
+  find . -print | grep -v ~$ | grep -v CVS | grep -v debian | grep -v mandrake | sort | cpio -pmud ../${name}-${version}
+
+  chown root:root ../${name}-${version} -R
+
+  cd ..
+  tar cfsz ${name}-${version}.tgz ${name}-${version}
+  mv ${name}-${version}.tgz /usr/src/RPM/SOURCES
+  rm -rf ${name}-${version}
+  )
+fi
+
+cp *.png* /usr/src/RPM/SOURCES
+
+if [ -f variables ]; then rm -f variables; fi
+
+echo "you can now run rpm -ba *.spec or rpm -bb *.spec to make (S)RPMS"
+echo ""

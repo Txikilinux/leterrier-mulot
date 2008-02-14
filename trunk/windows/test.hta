@@ -1,0 +1,37 @@
+<HTML>
+<TITLE>Vérification de Tcl/Tk 8.3</TITLE>
+<BODY>
+<H1>Vérification de Tcl/Tk 8.3</H1>
+<HR>
+<BR>
+<script language="VBScript">
+Dim WSHShell
+Set WSHShell = CreateObject("WScript.Shell")
+Dim cle,zerr,cl2
+On error resume next
+cle = WSHShell.RegRead("HKLM\Software\CLASSES\.tcl\")
+if err then
+	document.write("Tcl n'est pas installé sur cet ordinateur.")
+	zerr=true
+else
+	cl2 = WSHShell.RegRead("HKCR\" & cle & "\shell\open\command\")
+	if (err>0) or (InStr(1,cl2,"wish83.exe") = 0) then
+		document.write("Tcl/Tk est bien installé mais la version de Tcl n'est pas 8.3," & vbCrLf & "la fonction Aide d'Aller 1.1 ne fonctionnera pas.")
+		zerr=true
+	else
+		document.write("<FONT size=""4"">La version 8.3 est bien installée sur cet ordinateur.</FONT><BR><BR>")
+		zerr=false
+	end if
+end if
+if zerr = true then
+	document.write "<HR>"
+	document.write "<H3><a href=""http://downloads.activestate.com/ActiveTcl/Windows/8.3.5/ActiveTcl8.3.5.0-2-win32-ix86.exe"">Télécharger Tcl/Tk 8.3.5 pour Windows</a> (10 Mo)</H3>"
+	document.write "<BR>"
+	document.write "<H3><A HREF=""http://libre.pedagosite.net/downloads/tcl832.exe"">Version ""légère"" 8.3.2</A> (2,5 Mo)</H3>"
+end if	
+</script>
+<HR>
+<FONT size="2">Vérification terminée.</FONT><BR>
+<P align="center"><INPUT type="button" value="Fermer" onClick="self.close()"></P>
+</BODY>
+</HTML>

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+for i in cliquer.gif double_cliquer.gif glisser.gif parcourir.gif quitter.gif quitter_minus.gif sourire_fr.png sourire_ok.png sourire.png sourire_win.png survoler.gif
+do
+  rm -f ./sysdata/$i > /dev/null
+done
+
+rm -f ./msgs/oc_lnc > /dev/null
+
+rm -f ./mulot_patch.tgz > /dev/null
+rm -f ./mulot.post_install > /dev/null
+
+echo "Patch appliqué."

@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=AbulEdu Mulot
+Name[fr]=Abuledu Mulot
+Comment=A mouse-training tool for young children
+Comment[fr]=Prise en main de la souris pour les enfants (école)
+GenericName=AbulEdu Mulot
+Exec=mulot
+TryExec=mulot
+Icon=abuledu-mulot.png
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=Application;Education;
