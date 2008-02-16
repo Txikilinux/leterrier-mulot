@@ -283,7 +283,7 @@ proc main {c} {
       for {set j 0} {$j < $glob(nbcol)} {incr j 1} {
         $c create rect [expr $glob(org) + $i*$wlen +1] [expr $glob(org) + $j*$hlen +1] \
 	  [expr $glob(org) + ($i+1)*$wlen +1] [expr $glob(org) + ($j+1)*$hlen +1] \
-	  -fill #ffff80 -width 0 -tag rect($i,$j) 
+	  -fill $glob(bgcolor) -width 0 -tag rect($i,$j) 
 	set cache($i,$j) 0  
       }
     }

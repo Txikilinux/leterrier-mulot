@@ -1,3 +1,7 @@
+v 8.2a
+======
+- correction mot de passe sous windows
+- nom du dossier image en minuscule obligatoire (bug Tck/Tk ?)
 v 8.2
 =====
 - suppression de la superposition des fenetres (fermeture de l'appli appelante)
