@@ -258,7 +258,7 @@ proc main {c} {
 	  [expr $glob(org) + $j*$im_choix(v_height) 		+1+7*$glob(boucle)] \
           [expr $glob(org) + ($i+2)*$im_choix(v_width) 		+1-7*$glob(boucle)] \
           [expr $glob(org) + ($j+1)*$im_choix(v_height) 	+1-7*$glob(boucle)] \
-          -fill #ff0000 -width 0 -tag rect$nv 
+          -fill $glob(rectcolor) -width 0 -tag rect$nv 
   }
   for {set nv 0} { $nv < $glob(nvignettes)} {incr nv 1} {
     set r [lindex $im_choix(vignettes_liste) $nv]

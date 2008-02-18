@@ -1,7 +1,15 @@
+v 8.2b
+======
+- verification du dossier-but lors de l'ajout d'images
+- "autoriser les menus" deplace de Fichiers vers Options
+- inutile de relancer le logiciel lors du changement de langue
 v 8.2a
 ======
 - correction mot de passe sous windows
 - nom du dossier image en minuscule obligatoire (bug Tck/Tk ?)
+- bouton de sortie toujours en 2e ligne (sinon disparaissait si + de 4 lignes)
+- ajout du menu montrer/cacher : 
+  permet à l'enseignant de choisir les dossiers à utiliser
 v 8.2
 =====
 - suppression de la superposition des fenetres (fermeture de l'appli appelante)

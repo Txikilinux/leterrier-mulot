@@ -196,16 +196,6 @@ proc main_loop {} {
 
   .menu.fichier add command -label [mc Images] -command "lanceappli gerer_images.tcl 0"
 
-if { [file exists /etc/abuledu ] } {
-  menu .menu.fichier.menus -tearoff 0
-  .menu.fichier add cascade -label [mc Menus] \
-	-state $etat_fichier \
-	-menu .menu.fichier.menus
-  .menu.fichier.menus add command -label [mc autoriser_menus] \
-	-command "lanceappli autoriser_menus.tcl normal"
-  .menu.fichier.menus add command -label [mc non_autoriser_menus] \
-	-command "lanceappli autoriser_menus.tcl disabled"
-}
   .menu.fichier add separator
 
   .menu.fichier add command -label [mc Bilans] -command "lanceappli bilan.tcl 0"
@@ -221,13 +211,27 @@ if { [file exists /etc/abuledu ] } {
   .menu add cascade -state $glob(etat_boutons) \
 	-label [mc Options] -menu .menu.options
 
+  if { $prof } {
+    # montrer/masquer des dossiers
+    .menu.options add command -label "[mc montrer_cacher]" -command "lanceappli montrer_cacher.tcl 0"
+    # autoriser les menus
+    menu .menu.options.menus -tearoff 0
+    .menu.options add cascade -label [mc Menus] \
+	-state $etat_fichier \
+	-menu .menu.options.menus
+    .menu.options.menus add command -label [mc autoriser_menus] \
+	-command "lanceappli autoriser_menus.tcl normal"
+    .menu.options.menus add command -label [mc non_autoriser_menus] \
+	-command "lanceappli autoriser_menus.tcl disabled"
+  }
+
   # langues
   menu .menu.options.lang -tearoff 0 
   .menu.options add cascade -label "[mc Langue]" -menu .menu.options.lang
 
   foreach i [glob [file join  $glob(home_msgs) *.msg]] {
     set langue [string map {.msg "" } [file tail $i]]
-    .menu.options.lang add radio -label $langue -variable langue -command "setlang $langue"
+    .menu.options.lang add radio -label $langue -variable langue -command "setlang $langue; lanceappli mulot.tcl 0"
   }
 
   # dossiers images
@@ -321,7 +325,7 @@ if { [file exists /etc/abuledu ] } {
         -text [mc Quitter] -compound top \
         -command exit
   }
-  grid $c.quitter -column 3 -row $nligne -sticky e -padx 10 -pady 10
+  grid $c.quitter -column 3 -row 1 -sticky e -padx 10 -pady 10
 
   set myimage [image create photo -file sysdata/background.png]
   label $c.imagedisplayer -image $myimage -background blue

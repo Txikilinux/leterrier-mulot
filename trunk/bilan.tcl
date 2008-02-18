@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 #
 #**************************************************************************
 #  File  : $$$
-#  AUthor  : andre.connes@toulouse.iufm.fr
+#  AUthor  : andre.connes@wanadoo.fr
 #  Date    : 13/08/2004 modification :
 #  Licence : GNU/GPL Version 2 ou plus
 #
@@ -39,6 +39,8 @@ exec wish "$0" ${1+"$@"}
 source mulot.conf
 source msg.tcl
 source fonts.tcl
+source lanceapplication.tcl
+
 # les sentinelles sont en place
 
   #
@@ -111,7 +113,7 @@ if { $env(HOME) == "/home/profs/$env(USER)" } {
   button .top.but_tous -text [mc tous] -command bilan_tous
 }
 button .top.but_efface -state disabled -text [mc effacer_bilan] -command efface_bilan
-button .top.but_exit -text [mc Fermer] -command exit
+button .top.but_exit -text [mc Fermer] -command "lanceappli mulot.tcl 0"
 pack .top.but_lemien .top.but_eleve .top.but_classe .top.but_tous .top.but_efface .top.but_exit -side left
 
 set bg #ffffff

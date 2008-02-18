@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : $Id: ajouter_images.tcl,v 1.6 2006/03/15 10:11:30 abuledu_andre Exp $
-#  Author  : andre.connes@toulouse.iufm.fr
+#  Author  : andre.connes@wanadoo.fr
 #  Date    : 23/06/2003 Modification : 01/12/2004
 #  Licence : GNU/GPL Version 2 ou plus
 # 
@@ -229,14 +229,19 @@ place .wg.but_effacer_images -x 420 -y 625
 #
 ###########################################################################################
 
-proc get_passwd {} {
-  global glob
-  if {[file exists /etc/abuledu]} {
-    set pass $glob(passwd)
+proc ok_passwd {} {
+  global glob prof
+
+  if { $prof } {
+    return 1
   } else {
     set pass [.wg.ent_passwd get]
+    if { $pass == $glob(passwd) } {
+      return 1
+    } else {
+      return 0
+    }
   }
-  return $pass
 }
 
 ############################################
@@ -248,10 +253,10 @@ proc get_passwd {} {
 #
 proc ajouter_dossier {} {
 #
-  global glob prof racine_dirOut ai_dirOut 
+  global glob racine_dirOut ai_dirOut 
 
-  if { $prof } {
-    set nom_dossier [.wg.ent_ajouter_dossier_leNom get]
+  if { [ok_passwd] } {
+    set nom_dossier [string tolower [.wg.ent_ajouter_dossier_leNom get]]
     if { [string length $nom_dossier] == 0 } {
       tk_messageBox -default ok -message [mc "pas_de_nom"] -parent .
       return
@@ -289,8 +294,8 @@ creer_ed_listOut
 #
 proc effacer_dossiers {} {
 #
-  global glob prof ed_dirOut listeDossiers_ed
-  if { ! $prof } {
+  global glob ed_dirOut listeDossiers_ed
+  if { ! [ok_passwd] } {
     tk_messageBox -type ok -message [mc pbpasse] -parent .
   } else {
     set lselection [.wg.listb_effacer_dossiers curselection]
@@ -410,12 +415,17 @@ proc capture_ai_dirOut { } {
 }
 
 proc ajouter_images {} {
-  global glob prof ai_dirIn ai_dirOut listeImages
+  global glob ai_dirIn ai_dirOut listeImages
 
-  if {  $prof } {
+  if { [ok_passwd] } {
     set lselection [.wg.listb_ajouter_images_dirIn curselection]
     if { [llength $lselection] == 0 } {
       tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .
+      return
+    }
+    # verifier que le dossier but st sous-dosssier de images
+    if { [lindex [split $ai_dirOut "/"] end-1] != "images" } {
+      tk_messageBox -type ok -message [mc sous_images] -parent .
       return
     }
     foreach i $lselection {
@@ -489,9 +499,9 @@ proc capture_ei { } {
 }
 
 proc effacer_images {} {
-  global glob prof ei_dirOut listeImages_ei
+  global glob ei_dirOut listeImages_ei
 
-  if { $prof } {
+  if { [ok_passwd] } {
     set lselection [.wg.listb_effacer_images curselection]
     if { [llength $lselection] == 0 } {
       tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .

@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : $Id: autoriser_menus.tcl,v 1.6 2006/03/15 10:11:30 abuledu_andre Exp $
-#  Author  : andre.connes@toulouse.iufm.fr
+#  Author  : andre.connes@wanadoo.fr
 #  Date    : 23/06/2003 Modification : 19/12/2004
 #  Licence : GNU/GPL Version 2 ou plus
 # 
@@ -41,9 +41,11 @@ set etat_menus [lindex $argv 0]
 
 source mulot.conf
 source msg.tcl
+source etre_prof.tcl
+source lanceapplication.tcl
 
   #
-  # langue par défaut
+  # langue par defaut
   #
   set f [open [file join $glob(home_reglages) lang.conf] "r"]
   gets $f lang
@@ -61,7 +63,10 @@ frame .wa -background #aaaaaa -height 420 -width 400
 grid .wa -column 0 -row 0
 
 #si abuledu nécessairement l'utilisateur est prof d'après mulot.tcl
-if { ! [file exists /etc/abuledu] } {
+
+set prof [est_prof]
+
+if { ! $prof } {
   label .wa.passwd -text [mc Password] -bg red
   grid .wa.passwd -row 1 -column 0 -padx 4 -sticky e
   entry .wa.password -show "*"
@@ -74,7 +79,7 @@ grid .wa.lab_classe -row 2 -column 0 -padx 4 -sticky e
 entry .wa.ent_classe
 grid .wa.ent_classe -row 2 -column 1 -padx 4 -sticky e
 
-button .wa.ok -text [mc Faire] -command "autoriser $etat_menus ; exit"
+button .wa.ok -text [mc Faire] -command "autoriser $etat_menus ; lanceappli mulot.tcl 0"
 grid .wa.ok -row 3 -column 0
 button .wa.cancel -text [mc Annuler] -command exit
 grid .wa.cancel -row 3 -column 1
@@ -92,11 +97,11 @@ proc existe_classe { n } {
 
 proc autoriser { e } {
 #  global glob newdir
-global glob
+global glob prof
 
   # astuce : si abuledu le mot de passe est auto mais
   #          droits d'ajout pour les profs only
-  if {[file exists /etc/abuledu]} {
+  if { $prof } {
     set groupe "profs"
     set pass $glob(passwd)
   } else {
@@ -110,19 +115,36 @@ global glob
   if {[file exists /usr/share/abuledu-mulot]} {
     set rdir "/usr/share/abuledu-mulot/reglages"
   }
-  if {$pass == $glob(passwd)} {
+  if { [ok_passwd] } {
     set nom_classe [.wa.ent_classe get]
     if { [ existe_classe $nom_classe ] } {
-      # file attributes ne fonctionne que pour le propriétaire du fichier
-      # effacer d'abord puis créer
+      # file attributes ne fonctionne que pour le proprietaire du fichier
+      # effacer d'abord puis creer
       file delete [file join $rdir boutons.$nom_classe]
       set f [open [file join $rdir boutons.$nom_classe] "w" ]
       puts $f $e
       close $f
 #     file attributes [file join $rdir boutons.$nom_classe] -permissions 00775
-      tk_messageBox -default ok -message terminé -parent .
+      tk_messageBox -default ok -message "Ok" -parent .
     } else {
       tk_messageBox -default ok -message "La classe n'existe pas." -parent .
     }
   }
 } ; #fin autoriser
+
+
+proc ok_passwd {} {
+  global glob prof
+  
+  if { $prof } {
+    return 1
+  } else {
+    set pass [.wa.ent_passwd get]
+    if { $pass == $glob(passwd) } {
+      return 1
+    } else {
+      return 0
+    }
+  }
+}
+                                        

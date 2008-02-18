@@ -296,7 +296,7 @@ proc main {c} {
       if { $cache($i,$j) == 0 } {
         $c create rect [expr $glob(org) + $i*$wlen +1] [expr $glob(org) + $j*$hlen +1] \
 	  [expr $glob(org) + ($i+1)*$wlen +1] [expr $glob(org) + ($j+1)*$hlen +1] \
-	  -fill #ff0000 -width 0 -tag rect($i,$j) 
+	  -fill $glob(rectcolor) -width 0 -tag rect($i,$j) 
 	set cache($i,$j) 1
 	set ncache [expr $ncache + 1]
         $c bind rect($i,$j) <$modeEffacement> "delete_rect $c $i $j "
