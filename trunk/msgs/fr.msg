@@ -19,7 +19,7 @@
 ::msgcat::mcset fr "selections" "Sélectionner les dossiers"
 ::msgcat::mcset fr "pas_de_nom" "Saisir un nom"
 ::msgcat::mcset fr "pas_de_selection" "Sélectionner dossiers ou images"
-::msgcat::mcset fr "montrer_cacher" "Gérer les dossiers : montrer ou cacher"
+::msgcat::mcset fr "montrer_cacher" "Dossiers"
 ::msgcat::mcset fr "a_montrer" "A montrer"
 ::msgcat::mcset fr "a_cacher" "A cacher"
 ::msgcat::mcset fr "selections_deplacer" "Sélectionner les dossiers à déplacer"
@@ -39,6 +39,11 @@
 ::msgcat::mcset fr "Glisser" "Glisser-déposer"
 
 ::msgcat::mcset fr "Options" "Options"
+::msgcat::mcset fr "ordre_hasard" "Déroulement..."
+::msgcat::mcset fr "ordonne" "dans l'ordre"
+::msgcat::mcset fr "hasard" "au hasard"
+
+::msgcat::mcset fr "Reglages" "Réglages"
 ::msgcat::mcset fr "Langue" "Langue"
 ::msgcat::mcset fr "dir_name"	"Nom du dossier"
 ::msgcat::mcset fr "dossier_in"	"Dossier source"

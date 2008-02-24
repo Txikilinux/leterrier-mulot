@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : $Id: parcourir_mulot.tcl,v 1.10 2006/03/25 00:55:15 abuledu_francois Exp $
-#  Author  : andre.connes@toulouse.iufm.fr
+#  Author  : andre.connes@wanadoo.fr
 #  Date    : 10/07/2003 Modification : 16/02/2004
 #  Licence : GNU/GPL Version 2 ou plus
 # 
@@ -52,13 +52,19 @@ source lanceapplication.tcl
   ::msgcat::mclocale $lang
   ::msgcat::mcload [file join [file dirname [info script]] msgs]
 
-
+  #
+  # ordre
+  #
+  set f [open [file join $glob(home_reglages) ordre.conf] "r"]
+  gets $f glob(ordre)
+  close $f
+            
 set ident $tcl_platform(user)
 
-#charger la liste des images
+#charger la liste (triee) des images
   set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
   set glob(dossier) [gets $f]
-  set limages [glob [file join images $glob(dossier) *.*]]
+  set limages [lsort [glob [file join images $glob(dossier) *.*]]]
 
 if { $glob(platform) == "windows" } {
   set f [open [file join $glob(home_mulot) reglages trace_user] "r"]
@@ -96,6 +102,9 @@ proc selectionner_images { } {
     if { [lsearch $glob(images_selectionnees) $r] == -1 } {
       set glob(images_selectionnees) [linsert $glob(images_selectionnees) end $r]
     }
+  }
+  if { $glob(ordre) == "1" } {
+    set glob(images_selectionnees) [lsort $glob(images_selectionnees)]
   }
 }
 
@@ -332,7 +341,7 @@ proc init_piste { c nom } {
   # image de la liste des images sélectionnées
 
   set bgimg [lindex $limages [lindex $glob(images_selectionnees) $glob(boucle)]]
-  
+
   set bgimage [image create photo -file $bgimg]
   set hbgimage [image height $bgimage]
   set wbgimage [image width $bgimage]

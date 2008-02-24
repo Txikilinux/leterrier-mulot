@@ -1,1 +1,0 @@
-@START test.hta>nul

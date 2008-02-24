@@ -5,7 +5,7 @@ exec wish "$0" ${1+"$@"}
 
 #*************************************************************************
 #  Copyright (C) 2002 André Connes <davidlucardi@aol.com>
-#  Copyright (C) 2002 André Connes <andre.connes@toulouse.iufm.fr>
+#  Copyright (C) 2002 André Connes <andre.connes@wanadoo.fr>
 # 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : mulot.tcl
-#  Author  : André Connes <andre.connes@toulouse.iufm.fr>
+#  Author  : André Connes <andre.connes@wanadoo.fr>
 #  Modifier:
 #  Date    : 15/04/2003 modifié le 06/12/2004
 #  Licence : GNU/GPL Version 2 ou plus
@@ -65,14 +65,27 @@ set maxcolonnes 2
 		puts $f "fr"
       } else {
   		puts $f [string range $env(LANG) 0 1]
-	}
-	close $f
+      }
+      close $f
   }
   set f [open [file join $glob(home_reglages) lang.conf] "r"]
   gets $f lang
   close $f
+
   ::msgcat::mclocale $lang
   ::msgcat::mcload [file join [file dirname [info script]] msgs]
+
+  #
+  # ordre aleatoire par defaut
+  #
+  if {![file exists [file join  $glob(home_reglages) ordre.conf]]} {
+	set f [open [file join $glob(home_reglages) ordre.conf] "w"]
+	puts $f "0"
+      	close $f
+  }
+  set f [open [file join $glob(home_reglages) ordre.conf] "r"]
+  gets $f glob(ordre)
+  close $f
 
 source fin_sequence.tcl
 
@@ -170,6 +183,14 @@ proc setwindowsusername {} {
     catch {destroy .utilisateur}
   } ;# fin verifnom
 
+proc ordonner { ordre } {
+  global glob
+  set glob(ordre) $ordre
+  set f [open [file join $glob(home_reglages) ordre.conf] "w"]
+  puts $f $ordre
+  close $f
+}
+
 #########################################################"
 proc main_loop {} {
   global . sysFont glob prof maxcolonnes env
@@ -180,8 +201,8 @@ proc main_loop {} {
   catch {destroy .menu}
   catch { destroy .frame.c}
   catch {destroy .frame}
-
   menu .menu -tearoff 0
+
   #
   # Creation du menu Fichier
   #
@@ -190,13 +211,6 @@ proc main_loop {} {
 	-label [mc Fichier] -menu .menu.fichier
 
   set etat_fichier "normal"
-  if { ! $prof } {
-    set etat_fichier "disabled"
-  }
-
-  .menu.fichier add command -label [mc Images] -command "lanceappli gerer_images.tcl 0"
-
-  .menu.fichier add separator
 
   .menu.fichier add command -label [mc Bilans] -command "lanceappli bilan.tcl 0"
 
@@ -205,13 +219,42 @@ proc main_loop {} {
   .menu.fichier add command -label [mc Quitter] -command exit
 
   #
+  # Creation du menu Reglages
+  #
+  menu .menu.reglages -tearoff 0
+  .menu add cascade -state $glob(etat_boutons) \
+	-label [mc Reglages] -menu .menu.reglages
+
+  set etat_reglages "normal"
+
+  # langues
+  menu .menu.reglages.lang -tearoff 0 
+  .menu.reglages add cascade -label "[mc Langue]" -menu .menu.reglages.lang
+
+  foreach i [glob [file join  $glob(home_msgs) *.msg]] {
+    set langue [string map {.msg "" } [file tail $i]]
+    .menu.reglages.lang add radio -label $langue -variable langue -command "setlang $langue; lanceappli mulot.tcl 0"
+  }
+
+  # quel ordre ?
+  menu .menu.reglages.ordre -tearoff 0
+  .menu.reglages add cascade -label [mc ordre_hasard] \
+	-state $etat_fichier \
+	-menu .menu.reglages.ordre
+  .menu.reglages.ordre add radio -label [mc ordonne] \
+	-command "ordonner 1"
+  .menu.reglages.ordre add radio -label [mc hasard] \
+	-command "ordonner 0"
+
+  #
   # Creation du menu Options
   #
-  menu .menu.options -tearoff 0
-  .menu add cascade -state $glob(etat_boutons) \
-	-label [mc Options] -menu .menu.options
-
   if { $prof } {
+    menu .menu.options -tearoff 0
+    .menu add cascade -state $glob(etat_boutons) \
+	-label [mc Options] -menu .menu.options
+    # gerer les images
+    .menu.options add command -label [mc Images] -command "lanceappli gerer_images.tcl 0"
     # montrer/masquer des dossiers
     .menu.options add command -label "[mc montrer_cacher]" -command "lanceappli montrer_cacher.tcl 0"
     # autoriser les menus
@@ -223,15 +266,6 @@ proc main_loop {} {
 	-command "lanceappli autoriser_menus.tcl normal"
     .menu.options.menus add command -label [mc non_autoriser_menus] \
 	-command "lanceappli autoriser_menus.tcl disabled"
-  }
-
-  # langues
-  menu .menu.options.lang -tearoff 0 
-  .menu.options add cascade -label "[mc Langue]" -menu .menu.options.lang
-
-  foreach i [glob [file join  $glob(home_msgs) *.msg]] {
-    set langue [string map {.msg "" } [file tail $i]]
-    .menu.options.lang add radio -label $langue -variable langue -command "setlang $langue; lanceappli mulot.tcl 0"
   }
 
   # dossiers images

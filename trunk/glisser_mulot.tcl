@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : $Id: glisser_mulot.tcl,v 1.11 2007/01/18 08:51:11 abuledu_andre Exp $
-#  Author  : andre.connes@toulouse.iufm.fr
+#  Author  : andre.connes@wanadoo.fr
 #  Date    : 10/07/2003 Modification : 08/12/2005
 #  Licence : GNU/GPL Version 2 ou plus
 # 
@@ -52,6 +52,12 @@ source lanceapplication.tcl
   ::msgcat::mclocale $lang
   ::msgcat::mcload [file join [file dirname [info script]] msgs]
 
+  #
+  # ordre
+  #
+  set f [open [file join $glob(home_reglages) ordre.conf] "r"]
+  gets $f glob(ordre)
+  close $f
 
 if { $glob(platform) == "windows" } {
   set f [open [file join $glob(home_mulot) reglages trace_user] "r"]
@@ -65,7 +71,7 @@ set glob(width) [expr $glob(width) + 150 ]
 #charger la liste des images
   set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
   set glob(dossier) [gets $f]
-  set tmp_choix [glob [file join images $glob(dossier) *.*]]
+  set tmp_choix [lsort [glob [file join images $glob(dossier) *.*]]]
   foreach i $tmp_choix {
     lappend im_choix(im_liste) [file tail $i]
   }
@@ -103,6 +109,9 @@ proc selectionner_images { } {
     if { [lsearch $glob(images_selectionnees) $r] == -1 } {
       set glob(images_selectionnees) [linsert $glob(images_selectionnees) end $r]
     }
+  }
+  if { $glob(ordre) == "1" } {
+    set glob(images_selectionnees) [lsort $glob(images_selectionnees)]
   }
 }
 

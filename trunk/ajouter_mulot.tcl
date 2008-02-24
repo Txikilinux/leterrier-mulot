@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : $Id: ajouter_mulot.tcl,v 1.3 2006/03/15 10:11:30 abuledu_andre Exp $
-#  Author  : andre.connes@toulouse.iufm.fr
+#  Author  : andre.connes@wanadoo.fr
 #  Date    : 23/06/2003 Modification : 01/05/2004
 #  Licence : GNU/GPL Version 2 ou plus
 # 

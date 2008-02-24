@@ -5,7 +5,7 @@ exec wish "$0" ${1+"$@"}
 
 #*************************************************************************
 #  Copyright (C) 2002 Eric Seigne <erics@rycks.com>
-#  Copyright (C) 2003 André Connes <andre.connes@toulouse.iufm.fr>
+#  Copyright (C) 2003 André Connes <andre.connes@wanadoo.fr>
 #  Copyright (C) 2003 David Lucardi <davidlucardi@aol.com>
 # 
 #  This program is free software; you can redistribute it and/or modify

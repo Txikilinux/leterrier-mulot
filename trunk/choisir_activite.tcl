@@ -5,7 +5,7 @@ exec wish "$0" ${1+"$@"}
 
 #*************************************************************************
 #  Copyright (C) 2002 André Connes <davidlucardi@aol.com>
-#  Copyright (C) 2002 André Connes <andre.connes@toulouse.iufm.fr>
+#  Copyright (C) 2002 André Connes <andre.connes@wanadoo.fr>
 # 
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : mulot.tcl
-#  Author  : André Connes <andre.connes@toulouse.iufm.fr>
+#  Author  : André Connes <andre.connes@wanadoo.fr>
 #  Modifier:
 #  Date    : 15/04/2003 modifié le 21/11/2004
 #  Licence : GNU/GPL Version 2 ou plus

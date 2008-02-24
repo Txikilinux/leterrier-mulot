@@ -22,7 +22,7 @@ exec wish "$0" ${1+"$@"}
 # 
 #**************************************************************************
 #  File  : $Id: play_mulot.tcl,v 1.9 2006/03/25 00:55:15 abuledu_francois Exp $
-#  Author  : andre.connes@toulouse.iufm.fr
+#  Author  : andre.connes@wanadoo.fr
 #  Date    : 05/01/2003 Modification : 16/02/2004
 #  Licence : GNU/GPL Version 2 ou plus
 # 
@@ -52,6 +52,13 @@ source lanceapplication.tcl
   ::msgcat::mclocale $lang
   ::msgcat::mcload [file join [file dirname [info script]] msgs]
 
+  #
+  # ordre
+  #
+  set f [open [file join $glob(home_reglages) ordre.conf] "r"]
+  gets $f glob(ordre)
+  close $f
+
 
 if { $glob(platform) == "windows" } {
   set f [open [file join $glob(home_mulot) Reglages trace_user] "r"]
@@ -71,17 +78,17 @@ if { [lindex $argv 0] == 1 } {
   set glob(modeEffacement) Survoler
 }
 
-#charger la liste des images
+#charger la liste (triee) des images
   set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
   set glob(dossier) [gets $f]
-  set limages [glob [file join images $glob(dossier) *.*]]
+  set limages [lsort [glob [file join images $glob(dossier) *.*]]]
 
-# Décommenter la ligne suivante si Img est installée
+# Decommenter la ligne suivante si Img est installee
 # package require Img
 
-########################### On crée la fenêtre principale###########################
+########################### On cree la fenetre principale###########################
 
-# placement de la fenêtre en haut et à gauche de l'écran
+# placement de la fenetre en haut et a gauche de l'ecran
 
 wm resizable . 0 0
 wm geometry . [expr int([winfo vrootwidth .]*0.99)]x[expr int([winfo vrootheight .]*0.9)]+0+0
@@ -91,9 +98,9 @@ frame .frame -width $glob(width) -height $glob(height) -bg $glob(bgcolor)
 pack .frame -side top -fill both -expand yes
 
 
-# #######################On crée un canvas###########################################
-# chargé d'accueillir les sorties graphiques,
-# qui peuvent être des images, des textes, des formes géométriques ...
+# #######################On cree un canvas###########################################
+# charge d'accueillir les sorties graphiques,
+# qui peuvent etre des images, des textes, des formes geometriques ...
 
 set c .frame.c
 canvas $c -width $glob(width) -height $glob(height) -bg $glob(bgcolor) -highlightbackground $glob(bgcolor)
@@ -109,6 +116,9 @@ proc selectionner_images { } {
     if { [lsearch $glob(images_selectionnees) $r] == -1 } {
       set glob(images_selectionnees) [linsert $glob(images_selectionnees) end $r]
     }
+  }
+  if { $glob(ordre) == "1" } {
+    set glob(images_selectionnees) [lsort $glob(images_selectionnees)]
   }
 }
 
