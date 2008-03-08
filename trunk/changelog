@@ -1,7 +1,12 @@
+v 8.3
+=====
+- remplacement de "winfo vrootwidth..." par "winfo screenwidth..."
+- reorganisation du code
+- prise en compte des autorisations d'ecriture du groupe leterrier (depend du packageur)
 v 8.2c
 ======
 - presentation ordonnee ou aleatoire des images
-- reorganisation des menus (et le menu reglage n'apparait que pour les profs)
+- reorganisation des menus (et le menu options n'apparait que pour les profs)
 v 8.2b
 ======
 - verification du dossier-but lors de l'ajout d'images

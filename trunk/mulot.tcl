@@ -45,7 +45,6 @@ source msg.tcl
 source aider.tcl
 source fonts.tcl
 source lanceapplication.tcl
-source etre_prof.tcl
 
 set maxcolonnes 2
 
@@ -112,9 +111,8 @@ source fin_sequence.tcl
 
   #set nom_utilisateur defaut
   #set classe defaut
-  set prof [est_prof]
   
-  if { $prof } {
+  if { $glob(autorise) } {
     # recherche du repertoire de reglage de la classe
     if {[file exists /usr/share/abuledu/applications/abuledu-mulot]} {
       set rdir "/usr/share/abuledu/applications/abuledu-mulot/reglages"
@@ -132,11 +130,6 @@ source fin_sequence.tcl
 #    close $f
 #  }
   set glob(etat_boutons) normal
-
-wm resizable . 0 0
-wm geometry . [expr int([winfo vrootwidth .]*0.99)]x[expr int([winfo vrootheight .]*0.9)]+0+0
-. configure -background blue
-wm title . "[mc title_m]"
 
 proc setlang {lang} {
   global env glob
@@ -193,7 +186,7 @@ proc ordonner { ordre } {
 
 #########################################################"
 proc main_loop {} {
-  global . sysFont glob prof maxcolonnes env
+  global . sysFont glob maxcolonnes env
 
   #
   # Creation du menu utilise comme barre de menu:
@@ -249,7 +242,7 @@ proc main_loop {} {
   #
   # Creation du menu Options
   #
-  if { $prof } {
+  if { $glob(autorise) } {
     menu .menu.options -tearoff 0
     .menu add cascade -state $glob(etat_boutons) \
 	-label [mc Options] -menu .menu.options
@@ -304,12 +297,12 @@ proc main_loop {} {
 
   #######################################################################"
   . configure -background blue
-  frame .frame -background blue -height 300 -width 200
+  frame .frame -background blue
   pack .frame -side top -fill both -expand yes
   ###################On crée un canvas####################################
 
   set c .frame.c
-  canvas $c -width $glob(width) -height $glob(height) -bg blue -highlightbackground blue
+  canvas $c -bg blue -highlightbackground blue
   pack $c -expand true
 
   set nligne 0
@@ -379,5 +372,10 @@ proc main_loop {} {
   }
 
 bind . <Control-q> {exit}
+
+wm resizable . 0 0
+wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-110]+0+0
+. configure -background blue
+wm title . "[mc title_m]"
 
 main_loop

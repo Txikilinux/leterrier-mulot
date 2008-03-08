@@ -86,26 +86,6 @@ if { [lindex $argv 0] == 1 } {
 # Decommenter la ligne suivante si Img est installee
 # package require Img
 
-########################### On cree la fenetre principale###########################
-
-# placement de la fenetre en haut et a gauche de l'ecran
-
-wm resizable . 0 0
-wm geometry . [expr int([winfo vrootwidth .]*0.99)]x[expr int([winfo vrootheight .]*0.9)]+0+0
-. configure -bg $glob(bgcolor)
-
-frame .frame -width $glob(width) -height $glob(height) -bg $glob(bgcolor)
-pack .frame -side top -fill both -expand yes
-
-
-# #######################On cree un canvas###########################################
-# charge d'accueillir les sorties graphiques,
-# qui peuvent etre des images, des textes, des formes geometriques ...
-
-set c .frame.c
-canvas $c -width $glob(width) -height $glob(height) -bg $glob(bgcolor) -highlightbackground $glob(bgcolor)
-pack $c -expand true 
-
 ################################################
 
 proc selectionner_images { } {
@@ -203,52 +183,6 @@ proc sauver_trace_parcours {} {
   enregistreval $titre $categorie $quoi $eleve
 }
 
-# ###########################################################"
-# on cree une frame en bas en avant-derniere ligne avec
-#   le score affiche sous forme de tetes (bien passable mal)
-#   un bouton 'continuer'
-# #################################################################################
-
-frame .bframe -bg $glob(bgcolor)
-pack .bframe -side bottom -expand true
-
-  image create photo pbien -file [file join sysdata pbien.png] 
-  image create photo ppass -file [file join sysdata ppass.png]
-  image create photo pmal -file [file join sysdata pmal.png]
-  image create photo pneutre -file [file join sysdata pneutre.png]
-
-for {set i 1} {$i <= $glob(bouclemax)} {incr i 1} {
-  label .bframe.tete$i -bg $glob(bgcolor) -width 4
-  grid .bframe.tete$i -column [expr $i -1] -row 1 -sticky e
-  .bframe.tete$i configure -image pneutre -width 85
-}
-
-button .bframe.but_gauche -image \
-  [image create photo fgauche -file [file join sysdata fgauche.png]] -command "recule; 
-main $c"
-grid .bframe.but_gauche -column [expr $glob(bouclemax)+2] -row 1
-.bframe.but_gauche configure -state disable
-
-    set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
-    set glob(dossier) [gets $f]
-    set i [lindex [glob [file join images $glob(dossier) *.*]] 0]
-      
-    image create photo lab_theme
-    lab_theme copy [image create photo -file [file join $i]] \
-	-subsample 5 5
-    label .bframe.img_theme \
-        -image lab_theme \
-        -borderwidth 2
-    grid .bframe.img_theme -column [expr $glob(bouclemax)+4] -row 1 -sticky e -padx 10 -pady 10
-
-button .bframe.but_quitter -image \
-  [image create photo fquitter \
-  -file [file join sysdata quitter_minus.png]] \
-  -command "lanceappli choisir_activite.tcl"
-grid .bframe.but_quitter  -column [expr $glob(bouclemax)+3] -row 1
-
-selectionner_images
-
 # #################################################################################
 # main, appelée depuis le bouton 'recommencer' cad 'next'
 
@@ -318,7 +252,7 @@ proc main {c} {
 }
 
 ##################################################################"
-  # Relire le nom réglé de l'utilisateur sous windows
+  # Relire le nom regle de l'utilisateur sous windows
   if {$glob(platform) == "windows"} {
     catch {set f [open [file join $glob(home_mulot) reglages trace_user] "r"]}
     gets $f glob(trace_user)
@@ -329,4 +263,71 @@ proc main {c} {
 set glob(nbrow) 3
 set glob(nbcol) 3
 set glob(nbmax) $glob(nbcol)
+
+########################### On cree la fenetre principale###########################
+
+# placement de la fenetre en haut et a gauche de l'ecran
+
+wm resizable . 0 0
+wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-80]+0+0
+. configure -bg $glob(bgcolor)
+
+frame .frame -bg $glob(bgcolor)
+pack .frame -side top -fill both -expand yes
+
+
+# #######################On cree un canvas###########################################
+# charge d'accueillir les sorties graphiques,
+# qui peuvent etre des images, des textes, des formes geometriques ...
+
+set c .frame.c
+canvas $c -width $glob(width) -height $glob(height) -bg $glob(bgcolor) -highlightbackground $glob(bgcolor)
+pack $c -expand true 
+
+# ###########################################################"
+# on cree une frame en bas en avant-derniere ligne avec
+#   le score affiche sous forme de tetes (bien passable mal)
+#   un bouton 'continuer'
+# #################################################################################
+
+frame .bframe -bg $glob(bgcolor)
+pack .bframe -side bottom -expand true
+
+  image create photo pbien -file [file join sysdata pbien.png] 
+  image create photo ppass -file [file join sysdata ppass.png]
+  image create photo pmal -file [file join sysdata pmal.png]
+  image create photo pneutre -file [file join sysdata pneutre.png]
+
+for {set i 1} {$i <= $glob(bouclemax)} {incr i 1} {
+  label .bframe.tete$i -bg $glob(bgcolor) -width 4
+  grid .bframe.tete$i -column [expr $i -1] -row 1 -sticky e
+  .bframe.tete$i configure -image pneutre -width 85
+}
+
+button .bframe.but_gauche -image \
+  [image create photo fgauche -file [file join sysdata fgauche.png]] -command "recule; 
+main $c"
+grid .bframe.but_gauche -column [expr $glob(bouclemax)+2] -row 1
+.bframe.but_gauche configure -state disable
+
+    set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
+    set glob(dossier) [gets $f]
+    set i [lindex [glob [file join images $glob(dossier) *.*]] 0]
+      
+    image create photo lab_theme
+    lab_theme copy [image create photo -file [file join $i]] \
+	-subsample 5 5
+    label .bframe.img_theme \
+        -image lab_theme \
+        -borderwidth 2
+    grid .bframe.img_theme -column [expr $glob(bouclemax)+4] -row 1 -sticky e -padx 10 -pady 10
+
+button .bframe.but_quitter -image \
+  [image create photo fquitter \
+  -file [file join sysdata quitter_minus.png]] \
+  -command "lanceappli choisir_activite.tcl"
+grid .bframe.but_quitter  -column [expr $glob(bouclemax)+3] -row 1
+
+selectionner_images
+
 main $c

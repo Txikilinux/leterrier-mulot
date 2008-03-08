@@ -72,26 +72,6 @@ if { $glob(platform) == "windows" } {
   close $f
 }
 
-########################### On crée la fenêtre principale###########################
-
-# placement de la fenêtre en haut et à gauche de l'écran
-
-wm resizable . 0 0
-wm geometry . [expr int([winfo vrootwidth .]*0.99)]x[expr int([winfo vrootheight .]*0.9)]+0+0
-. configure -background $glob(bgcolor)
-
-frame .frame -width $glob(width) -height $glob(height) -bg $glob(bgcolor)
-pack .frame -side top -fill both -expand yes
-
-
-# #######################On crée un canvas###########################################
-# chargé d'accueillir les sorties graphiques,
-# qui peuvent être des images, des textes, des formes géométriques ...
-
-set c .frame.c
-canvas $c -width $glob(width) -height $glob(height) -bg $glob(bgcolor) -highlightbackground $glob(bgcolor)
-pack $c -expand true 
-
 # ##############################################################################
 
 proc selectionner_images { } {
@@ -129,51 +109,6 @@ proc sauver_trace_parcours {} {
   enregistreval $titre $categorie $quoi $eleve
 
 }
-
-# #################################################################################
-# frame en bas avec boutons 'continuer', flèches gauche et droite, le score et une étiquette de controle de la réponse
-
-frame .bframe -bg $glob(bgcolor)
-pack .bframe -side bottom -expand true
-
-  image create photo pbien -file [file join sysdata pbien.png] 
-  image create photo ppass -file [file join sysdata ppass.png]
-  image create photo pmal -file [file join sysdata pmal.png]
-  image create photo pneutre -file [file join sysdata pneutre.png]
-
-for {set i 1} {$i <= $glob(bouclemax)} {incr i 1} {
-  label .bframe.tete$i -bg $glob(bgcolor) -width 4
-  grid .bframe.tete$i -column [expr $i -1] -row 1 -sticky e
-  .bframe.tete$i configure -image pneutre -width 85
-}
-
-button .bframe.but_gauche -image \
-  [image create photo fgauche -file [file join sysdata fgauche.png]] -command "recule; 
-main $c"
-grid .bframe.but_gauche -column [expr $glob(bouclemax)+2] -row 1
-.bframe.but_gauche configure -state disable
-
-    set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
-    set glob(dossier) [gets $f]
-    set i [lindex [glob [file join images $glob(dossier) *.*]] 0]
-      
-    image create photo lab_theme
-    lab_theme copy [image create photo -file [file join $i]] \
-	-subsample 5 5
-    label .bframe.img_theme \
-        -image lab_theme \
-        -borderwidth 2
-    grid .bframe.img_theme -column [expr $glob(bouclemax)+4] -row 1 -sticky e -padx 10 -pady 10
-
-
-
-button .bframe.but_quitter -image \
-	[image create photo fquitter \
-	-file [file join sysdata quitter_minus.png]] \
-	-command "lanceappli choisir_activite.tcl"
-grid .bframe.but_quitter -column  [expr $glob(bouclemax)+3]  -row 1
-
-selectionner_images
 
 # ##############################################################################
 # Dans un tableau de nc_piste colonnes et nr_piste lignes, 
@@ -402,19 +337,78 @@ proc main {c} {
 
 } ;# proc main
 
-#####################################Gestion des événements############################
-
-# bind . <Destroy> exit
-
 ##################################################################"
 
-  # Relire le nom réglé de l'utilisateur sous windows
+  # Relire le nom regle de l'utilisateur sous windows
   if {$glob(platform) == "windows"} {
     catch {set f [open [file join $glob(home_mulot) reglages trace_user] "r"]}
     gets $f glob(trace_user)
     close $f
   }
 
-# appel de la procédure principale
+########################### On cree la fenetre principale###########################
+
 set glob(difficulte_piste) 0
+
+# placement de la fenetre en haut et a gauche de l'ecran
+
+wm resizable . 0 0
+wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-80]+0+0
+. configure -background $glob(bgcolor)
+
+frame .frame -bg $glob(bgcolor)
+pack .frame -side top -fill both -expand yes
+
+
+# #######################On cree un canvas###########################################
+# charge d'accueillir les sorties graphiques,
+# qui peuvent etre des images, des textes, des formes geometriques ...
+
+set c .frame.c
+canvas $c -width $glob(width) -height $glob(height) -bg $glob(bgcolor) -highlightbackground $glob(bgcolor)
+pack $c -expand true 
+
+# #################################################################################
+# frame en bas avec boutons 'continuer', flèches gauche et droite, le score et une étiquette de controle de la réponse
+
+frame .bframe -bg $glob(bgcolor)
+pack .bframe -side bottom -expand true
+
+  image create photo pbien -file [file join sysdata pbien.png] 
+  image create photo ppass -file [file join sysdata ppass.png]
+  image create photo pmal -file [file join sysdata pmal.png]
+  image create photo pneutre -file [file join sysdata pneutre.png]
+
+for {set i 1} {$i <= $glob(bouclemax)} {incr i 1} {
+  label .bframe.tete$i -bg $glob(bgcolor) -width 4
+  grid .bframe.tete$i -column [expr $i -1] -row 1 -sticky e
+  .bframe.tete$i configure -image pneutre -width 85
+}
+
+button .bframe.but_gauche -image \
+  [image create photo fgauche -file [file join sysdata fgauche.png]] -command "recule; 
+main $c"
+grid .bframe.but_gauche -column [expr $glob(bouclemax)+2] -row 1
+.bframe.but_gauche configure -state disable
+
+    set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
+    set glob(dossier) [gets $f]
+    set i [lindex [glob [file join images $glob(dossier) *.*]] 0]
+      
+    image create photo lab_theme
+    lab_theme copy [image create photo -file [file join $i]] \
+	-subsample 5 5
+    label .bframe.img_theme \
+        -image lab_theme \
+        -borderwidth 2
+    grid .bframe.img_theme -column [expr $glob(bouclemax)+4] -row 1 -sticky e -padx 10 -pady 10
+
+button .bframe.but_quitter -image \
+	[image create photo fquitter \
+	-file [file join sysdata quitter_minus.png]] \
+	-command "lanceappli choisir_activite.tcl"
+grid .bframe.but_quitter -column  [expr $glob(bouclemax)+3]  -row 1
+
+selectionner_images
+
 main $c

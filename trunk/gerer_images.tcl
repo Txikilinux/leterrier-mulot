@@ -40,7 +40,6 @@ exec wish "$0" ${1+"$@"}
 source mulot.conf
 source msg.tcl
 source lanceapplication.tcl
-source etre_prof.tcl
 
 set WHAUTEUR 658
 set WLARGEUR 650
@@ -63,23 +62,6 @@ set dir_origine [pwd]
 
 frame .wg -background #aaaaaa -height $WHAUTEUR -width $WLARGEUR
 grid .wg -column 0 -row 0
-
-##
-## mot de passe
-##
-
-#si abuledu necessairement l'utilisateur est prof d'apres mulot.tcl
-set pass $glob(passwd)
-
-set prof [est_prof]
-
-if { ! $prof } {
-  label .wg.lab_passwd -text [mc Password] -bg red
-  place .wg.lab_passwd -x 150 -y 10
-  entry .wg.ent_passwd -show "*"
-  place .wg.ent_passwd -x 250 -y 10
-  .wg.ent_passwd delete 0 end
-}
 
 ##
 ## abandon
@@ -229,21 +211,6 @@ place .wg.but_effacer_images -x 420 -y 625
 #
 ###########################################################################################
 
-proc ok_passwd {} {
-  global glob prof
-
-  if { $prof } {
-    return 1
-  } else {
-    set pass [.wg.ent_passwd get]
-    if { $pass == $glob(passwd) } {
-      return 1
-    } else {
-      return 0
-    }
-  }
-}
-
 ############################################
 #
 #  gestion des dossiers : ajouter
@@ -255,7 +222,7 @@ proc ajouter_dossier {} {
 #
   global glob racine_dirOut ai_dirOut 
 
-  if { [ok_passwd] } {
+  if { $glob(autorise) } {
     set nom_dossier [string tolower [.wg.ent_ajouter_dossier_leNom get]]
     if { [string length $nom_dossier] == 0 } {
       tk_messageBox -default ok -message [mc "pas_de_nom"] -parent .
@@ -295,7 +262,7 @@ creer_ed_listOut
 proc effacer_dossiers {} {
 #
   global glob ed_dirOut listeDossiers_ed
-  if { ! [ok_passwd] } {
+  if { ! $glob(autorise) } {
     tk_messageBox -type ok -message [mc pbpasse] -parent .
   } else {
     set lselection [.wg.listb_effacer_dossiers curselection]
@@ -417,7 +384,7 @@ proc capture_ai_dirOut { } {
 proc ajouter_images {} {
   global glob ai_dirIn ai_dirOut listeImages
 
-  if { [ok_passwd] } {
+  if { $glob(autorise) } {
     set lselection [.wg.listb_ajouter_images_dirIn curselection]
     if { [llength $lselection] == 0 } {
       tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .
@@ -501,7 +468,7 @@ proc capture_ei { } {
 proc effacer_images {} {
   global glob ei_dirOut listeImages_ei
 
-  if { [ok_passwd] } {
+  if { $lob(autorise) } {
     set lselection [.wg.listb_effacer_images curselection]
     if { [llength $lselection] == 0 } {
       tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .

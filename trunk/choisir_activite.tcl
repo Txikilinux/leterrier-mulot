@@ -55,16 +55,9 @@ source lanceapplication.tcl
   ::msgcat::mcload [file join [file dirname [info script]] msgs]
 
 
-wm resizable . 0 0
-wm geometry . [expr int([winfo vrootwidth .]*0.99)]x[expr int([winfo vrootheight .]*0.9)]+0+0
-. configure -background blue
-#wm geometry . +0+0
-
   set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
   set glob(theme) [gets $f]
   close $f
-
-wm title . "[mc title_m] : $glob(theme)"
 
 ###########################################################################################""
 proc main_loop {} {
@@ -72,12 +65,12 @@ proc main_loop {} {
 
   #######################################################################"
   . configure -background blue
-  frame .frame -background blue -height 300 -width 200
+  frame .frame -background blue
   pack .frame -side top -fill both -expand yes
   ###################On crée un canvas####################################
 
   set c .frame.c
-  canvas $c -width $glob(width) -height $glob(height) -bg blue -highlightbackground blue
+  canvas $c -bg blue -highlightbackground blue
   pack $c -expand true
 
   if { $glob(platform) == "windows"  || $glob(tcl_version) < "8.4" } {
@@ -209,6 +202,11 @@ proc main_loop {} {
   }
 
 bind . <Control-q> {exit}
+
+wm resizable . 0 0
+wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-80]+0+0
+. configure -background blue
+wm title . "[mc title_m] : $glob(theme)"
 
 main_loop
 

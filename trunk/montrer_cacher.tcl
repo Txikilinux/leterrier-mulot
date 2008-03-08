@@ -40,7 +40,6 @@ exec wish "$0" ${1+"$@"}
 source mulot.conf
 source msg.tcl
 source lanceapplication.tcl
-source etre_prof.tcl
 
 set WHAUTEUR 358
 set WLARGEUR 450
@@ -63,23 +62,6 @@ set dir_origine [pwd]
 
 frame .wg -background #aaaaaa -height $WHAUTEUR -width $WLARGEUR
 grid .wg -column 0 -row 0
-
-##
-## mot de passe
-##
-
-#si abuledu necessairement l'utilisateur est prof d'apres mulot.tcl
-set pass $glob(passwd)
-
-set prof [est_prof]
-
-if { ! $prof } {
-  label .wg.lab_passwd -text [mc Password] -bg red
-  place .wg.lab_passwd -x 150 -y 10
-  entry .wg.ent_passwd -show "*"
-  place .wg.ent_passwd -x 250 -y 10
-  .wg.ent_passwd delete 0 end
-}
 
 ##
 ## abandon
@@ -161,21 +143,6 @@ place .wg.but_montrer -x 200 -y 180
 #
 ###########################################################################################
 
-proc ok_passwd {} {
-  global glob prof
-
-  if { $prof } {
-    return 1
-  } else {
-    set pass [.wg.ent_passwd get]
-    if { $pass == $glob(passwd) } {
-      return 1
-    } else {
-      return 0
-    }
-  }
-}
-
 ############################################
 #
 #  gestion des dossiers a montrer
@@ -199,7 +166,7 @@ creer_montrer
 proc cacher_dossiers {} {
 #
   global glob racine listeDossiers_montrer
-  if { ! [ok_passwd] } {
+  if { ! $glob(autorise) } {
     tk_messageBox -type ok -message [mc pbpasse] -parent .
   } else {
     set lselection [.wg.listb_montrer curselection]
@@ -244,7 +211,7 @@ creer_cacher
 proc montrer_dossiers {} {
 #
   global glob racine listeDossiers_cacher
-  if { ! [ok_passwd] } {
+  if { ! $glob(autorise) } {
     tk_messageBox -type ok -message [mc pbpasse] -parent .
   } else {
     set lselection [.wg.listb_cacher curselection]
