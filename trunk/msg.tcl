@@ -1,4 +1,4 @@
-# Recopié à partir de la librairie Img auteur?
+# Recopie a partir de la librairie Img auteur?
 #    This script activates msgcat if available, otherwise it
 #    defines a minimal number of functions to make Internationalization
 #    within Img possible using Tk 8.0 or higher.

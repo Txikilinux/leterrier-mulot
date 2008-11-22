@@ -78,15 +78,10 @@ place .wg.abandonner -x [expr $WLARGEUR - 80] -y 7
 
   set racine "[pwd]/images" ;# chez l'utilisateur par defaut
 
-  set tdir "/usr/share/abuledu/applications/abuledu-mulot/images"
-  if { [file exists $tdir] } { 
-    set racine $tdir ;# mandrake et/ou abuledu-mdk
-  } else {
     set tdir "/usr/share/abuledu-mulot/images"
     if { [file exists $tdir] } {
       set racine $tdir ;# debian et/ou abuledu-debian
     }
-  }
 
 ##
 ## gerer les dossiers a montrer

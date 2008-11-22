@@ -1,3 +1,5 @@
 droits d'ecriture dans les dossiers images:
 - fonction des paquetages (groupe profs ou leterrier)
-
+- dossier images en mode 777 (rwxrwxrwx) afin que l'utilisateur puisse
+cacher/montrer les dossiers
+ 

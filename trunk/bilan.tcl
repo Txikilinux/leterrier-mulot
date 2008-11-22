@@ -71,7 +71,7 @@ wm title . [mc bilan]
   set glob(themes) $glob(img_dirs)
   
 foreach theme $glob(themes) {
-  foreach action [list Survoler Cliquer Double-cliquer Parcourir Glisser-deposer] {
+  foreach action [list Survoler Cliquer Double-cliquer Parcourir Glisser-deposer Deviner] {
     set table($theme,$action,nbfois) 0
     set table($theme,$action,niveau_max) 0
     set table($theme,$action,duree_cumul) 0
@@ -99,7 +99,7 @@ if { [file exists [file join $glob(trace_dir) $env(USER).log]] } {
 } else {
   button .top.but_lemien -state disable -text [mc mon_bilan]
 }
-if { $env(HOME) == "/home/profs/$env(USER)" } {
+if {[lsearch [exec id -nG $env(USER)] "leterrier"] != -1} {
   button .top.but_eleve -text [mc eleve] -command bilan_eleve
   button .top.but_classe -state disable -text [mc classe] -command bilan_classe
   button .top.but_tous -text [mc tous] -command bilan_tous
@@ -193,7 +193,7 @@ proc bilan {qui} {
   puts $f "<th>[mc duree_min]</th><th>[mc duree_moyenne]</th><th>[mc duree_max]</th></tr>"
 
   foreach theme $glob(themes) {
-    foreach action [list Survoler Cliquer Double-cliquer Parcourir Glisser-deposer] {
+    foreach action [list Survoler Cliquer Double-cliquer Parcourir Glisser-deposer Deviner] {
       if { $table($theme,$action,nbfois)>0 } {
         puts $f "<tr>"
         puts $f "<td>$theme $action</td>"

@@ -1,3 +1,10 @@
+v 8.11
+======
+- ajout du bouton Deviner
+v 8.4
+=====
+- ajout du sous-menu credits
+- modification a_propos.tcl
 v 8.3
 =====
 - remplacement de "winfo vrootwidth..." par "winfo screenwidth..."

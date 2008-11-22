@@ -170,7 +170,7 @@ switch $tcl_platform(platform) {
 #	set progaide konqueror
 #erics 3 mars 2004, cf dans abuledu-leterrier on a un script dispo pour
 #tous les logiciels du terrier qui trouve tout seul le navigateur à lancer
-	set progaide ./runbrowser
+	set progaide runbrowser
 	set iwish wish
     }
     windows {

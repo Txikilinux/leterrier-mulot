@@ -147,6 +147,21 @@ proc main_loop {} {
   grid $c.glisser -column 1 -row 1 -sticky e -padx 10 -pady 10
 
   if { $glob(platform) == "windows"  || $glob(tcl_version) < "8.4" } {
+    button $c.deviner \
+        -image [image create photo -file sysdata/deviner.png] \
+        -borderwidth 10 -bg lightblue -cursor heart \
+        -text [mc Deviner] \
+        -command "lanceappli deviner.tcl"
+  } else {
+    button $c.deviner \
+        -image [image create photo -file sysdata/deviner.png] \
+        -borderwidth 10 -bg lightblue -cursor heart \
+        -text [mc Deviner] -compound top \
+        -command "lanceappli deviner.tcl"
+  }
+  grid $c.deviner -column 2 -row 1 -sticky e -padx 10 -pady 10
+
+  if { $glob(platform) == "windows"  || $glob(tcl_version) < "8.4" } {
     button $c.quitter \
         -image [image create photo -file sysdata/quitter.png] \
         -borderwidth 10 -bg pink -cursor heart \
@@ -159,7 +174,7 @@ proc main_loop {} {
         -text [mc Quitter] -compound top \
         -command "lanceappli mulot.tcl"
   }
-  grid $c.quitter -column 2 -row 1 -sticky e -padx 10 -pady 10
+  grid $c.quitter -column 3 -row 1 -sticky e -padx 10 -pady 10
 
     set f [open [file join $glob(home_mulot) reglages dir_images.conf] "r"]
     set glob(dossier) [gets $f]
@@ -179,7 +194,7 @@ proc main_loop {} {
         -text [mc $glob(dossier)] -compound top \
         -borderwidth 2
     }
-    grid $c.img_theme -column 3 -row 1 -sticky e -padx 10 -pady 10
+    grid $c.img_theme -column 4 -row 1 -sticky e -padx 10 -pady 10
 
   set myimage [image create photo -file sysdata/background.png]
   label $c.imagedisplayer -image $myimage -background blue

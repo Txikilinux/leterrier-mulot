@@ -43,6 +43,7 @@ global sysFont glob
 source mulot.conf
 source msg.tcl
 source aider.tcl
+source credits.tcl
 source fonts.tcl
 source lanceapplication.tcl
 
@@ -114,9 +115,6 @@ source fin_sequence.tcl
   
   if { $glob(autorise) } {
     # recherche du repertoire de reglage de la classe
-    if {[file exists /usr/share/abuledu/applications/abuledu-mulot]} {
-      set rdir "/usr/share/abuledu/applications/abuledu-mulot/reglages"
-    }
     if {[file exists /usr/share/abuledu-mulot]} {
       set rdir "/usr/share/abuledu-mulot/reglages"
     }
@@ -286,11 +284,22 @@ proc main_loop {} {
   menu .menu.aide -tearoff 0
   .menu add cascade -state $glob(etat_boutons) \
 	-label [mc Aide] -menu .menu.aide
+  # langues
   set l_langues [glob  [file join [pwd] aides aide.*.html]]
   foreach langue $l_langues {
     set lang [lindex [split $langue "."] end-1]
     .menu.aide add command -label "[mc Aide] $lang" -command "aider $lang"
   }
+    # credit
+  if { [llength [glob -nocomplain [file join  [pwd] credits *.html]]] > 0 } {
+    menu .menu.aide.credits -tearoff 0 
+    .menu.aide add cascade -label "[mc credits]" -menu .menu.aide.credits
+       foreach i [glob [file join  [pwd] credits *.html]] {
+        set c [string map {.html "" } [file tail $i]]
+        .menu.aide.credits add radio -label $c -variable credit -command "credits $c"
+      } 
+  }
+  # a propos
   .menu.aide add command -label [mc {A_propos ...}] -command "source apropos.tcl"
 
   . configure -menu .menu

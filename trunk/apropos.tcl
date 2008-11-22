@@ -1,5 +1,5 @@
 ##############################################################################
-# $Id: apropos.tcl,v 1.10 2006/03/24 23:54:15 abuledu_francois Exp $
+# $Id: apropos.tcl,v 1.6 2007/01/05 12:48:38 david Exp $
 #
 # apropos.tcl - inspiré du about dialog "about Visual Tcl"
 # adapté pour abuledu par Eric Seigne <eric.seigne@ryxeo.com>
@@ -22,29 +22,40 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ##############################################################################
+#
+global Home
+variable langue
 
+set version "Version 8.11a du 22/11/2008"
+package require Img
 ###################
 # CREATING WIDGETS
 ###################
 toplevel .apropos -background grey
 .apropos configure -width 200 -height 300
-wm title .apropos "À propos de Mulot"
+wm title .apropos "A propos de AbulEdu - MULOT"
 wm resizable .apropos 0 0
 
+	set fich "background.png"
+	#set fich $langue$fich
+
 label .apropos.lab28 \
-	-background #000000 -borderwidth 1 -image [image create photo fgauche -file [file join sysdata apropos.png]] -relief groove \
-        -text label
+	-background blue -image [image create photo fgauche -file [file join sysdata $fich]]
+label .apropos.lab29 -font {Helvetica 10 bold} -background blue -text "ABULEDU MULOT \n Crédits\n A. CONNES : <andre.connes@wanadoo.fr>\nActivités et documentation :\nA. Lesca <als@calestampar.org>\nH. Baronnet <herve.baronnet@free.fr>\nGraphismes : F. Audirac et E. François\n<http://webaf.net/spip/>\n Logiciel en licence GPL" -fg white
+
 frame .apropos.fra30 \
         -borderwidth 2 -height 300 -width 200 -background grey
 button .apropos.fra30.but31 \
-        -text [mc Fermer] -width 8 \
+        -text Fermer -width 8 \
         -command "destroy .apropos" \
         -borderwidth 1
 label .apropos.lab21 \
-        -borderwidth 1 -text "Version $glob(version)" -foreground black -background grey
+        -borderwidth 1 -text $version -foreground black -background grey
 ###################
 # SETTING GEOMETRY
 ###################
+pack .apropos.lab29 \
+        -in .apropos -anchor center -expand 1 -fill both -side top
 pack .apropos.lab28 \
         -in .apropos -anchor center -expand 1 -fill both -side top
 pack .apropos.fra30 \

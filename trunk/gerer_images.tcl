@@ -79,14 +79,9 @@ place .wg.abandonner -x [expr $WLARGEUR - 80] -y 7
   set racine_dirIn  $glob(home) ;# source chez l'utilisateur par defaut
   set racine_dirOut "[pwd]/images" ;# but par defaut mais...
 
-  set tdir "/usr/share/abuledu/applications/abuledu-mulot/images"
+  set tdir "/usr/share/abuledu-mulot/images"
   if { [file exists $tdir] } { 
-    set racine_dirOut $tdir ;# mandrake et/ou abuledu-mdk
-  } else {
-    set tdir "/usr/share/abuledu-mulot/images"
-    if { [file exists $tdir] } {
-      set racine_dirOut $tdir ;# debian et/ou abuledu-debian
-    }
+    set racine_dirOut $tdir ;# debian 
   }
 
 ##
@@ -399,7 +394,7 @@ proc ajouter_images {} {
       set img [lindex $listeImages $i]
       catch { file copy $ai_dirIn/$img $ai_dirOut }
       if { $glob(platform) == "unix" } {
-        catch {exec mogrify -geometry 600x400 $ai_dirOut/$img }
+        catch {exec mogrify -geometry 600x600 $ai_dirOut/$img }
       }
       creer_ei_listOut
     }

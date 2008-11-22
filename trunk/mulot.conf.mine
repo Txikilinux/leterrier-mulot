@@ -66,7 +66,7 @@ if { $tcl_platform(platform) == "unix" } {
   set glob(home_mulot) [file join $env(HOME) leterrier mulot]
   set glob(home_reglages) [file join $glob(home_mulot) reglages]
   set glob(home_msgs) [file join $glob(home_mulot) msgs]
-  set glob(progaide) ./runbrowser
+  set glob(progaide) runbrowser
   set glob(wish) wish
 # package require Img
   if {[info tclversion] == "8.4"} {

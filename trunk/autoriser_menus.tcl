@@ -102,7 +102,7 @@ global glob prof
   # astuce : si abuledu le mot de passe est auto mais
   #          droits d'ajout pour les profs only
   if { $prof } {
-    set groupe "profs"
+    set groupe "leterrier"
     set pass $glob(passwd)
   } else {
     set groupe "root"
