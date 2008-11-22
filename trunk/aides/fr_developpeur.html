@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html style="direction: ltr;">
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="CONTENT-TYPE">
+  <title>Aide du logiciel Mulot</title>
+
+
+  <meta content="20040417" name="CREATED">
+
+  <meta content="20080229" name="CHANGED">
+
+  <meta content="GNU/GPL Version 2 ou plus" name="copyright">
+
+<!--
+Copyright (C) 2008 Hervé Baronnet <herve.baronnet@free.fr>
+Licence : GNU/GPL Version 2 ou plus
+This file is part of Mulot.
+Mulot is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+Foobar is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with Foobar; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+#**************************************************************************
+# File : index.htm
+# Author : Hervé Baronnet <herve.baronnet@free.fr>
+# Modifier: 29/02/2008
+# Date : 24/04/2002
+# Licence : GNU/GPL Version 2 ou plus
+#
+# Description:
+# ------------
+#
+# @version Aide du logiciel Mulot V.8.2c 2008/02/28
+# @author André Connes
+# @modifier
+# @Graphisme : Eric François, François Audirac
+# @project Le terrier
+# @copyright André Connes
+-->
+  <link rel="stylesheet" href="aide.css" type="text/css">
+
+</head>
+
+
+<body>
+
+<a href="fr_index.html" name="menu"></a>
+<table style="width: 100%;" class="bandeau">
+ <tbody>
+
+    <tr>
+
+      <td class="bandeau" style="width: 20%; text-align: center;"><big><a href="fr_index.html"><span style="font-weight: bold;">Accueil</span></a></big></td>
+
+      <td class="bandeau" style="width: 20%; text-align: center;"><big><a href="fr_activite.html">Activit&eacute;s</a></big></td>
+
+      <td class="bandeau" style="width: 20%; text-align: center;"><big><a href="fr_editeur.html">Bilan</a></big></td>
+
+      <td class="bandeau" style="width: 20%; text-align: center;"><big><a href="fr_reglage.html">Options
+/ </a><a href="fr_reglage.html">R&eacute;glages
+      </a></big></td>
+
+      <td class="bandeau" style="width: 20%; text-align: center;"><big><a href="fr_developpeur.html">D&eacute;veloppeurs</a></big></td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<a href="fr_index.html" name="menu"></a><br>
+
+<h1>Informations aux d&eacute;veloppeurs</h1>
+
+<h2>Traces-&eacute;l&egrave;ves</h2>
+
+<p>Les traces-&eacute;l&egrave;ves sont
+conserv&eacute;es dans les fichiers&nbsp;<span style="font-style: italic;"><span style="font-weight: bold;">nom_de_l'eleve.log</span> </span>et&nbsp;<span style="font-style: italic; font-weight: bold;">nom_de_l'eleve.csv</span>
+du dossier <span style="font-style: italic; font-weight: bold;">leterrier/mulot/</span>.&nbsp;</p>
+
+<p>Ce dernier, au format csv, peut &ecirc;tre lu et
+trait&eacute; dans un tableur.</p>
+
+<p>Un bilan est possible &nbsp;:</p>
+
+<ul>
+
+  <li>pour l'utilisateur (menu Fichier &gt; Bilans &gt;
+Mon bilan)&nbsp;</li>
+
+</ul>
+
+<div style="margin-left: 40px;">Remarque : dans le cas
+d'un usage de
+classe,&nbsp;l'&eacute;l&egrave;ve
+peut&nbsp;copier/coller ou envoyer
+par e-mail les fichiers <span style="font-style: italic; font-weight: bold;">nom_de_l'eleve.csv</span>
+et <span style="font-style: italic; font-weight: bold;">nom_de_l'eleve.html</span>
+au professeur</div>
+
+<ul>
+
+  <li> pour tous les utilisateurs (menu Fichier &gt; Bilans
+&gt; Tous)</li>
+
+</ul>
+
+<div style="margin-left: 40px;">un fichier <span style="font-style: italic; font-weight: bold;">n_eleves.log</span>
+et <span style="font-style: italic; font-weight: bold;">n_eleves.html</span>
+sont produits avec <span style="font-weight: bold;">n</span>=<span style="font-weight: bold;">nombre d'utilisateurs</span>.<br>
+
+<br>
+
+</div>
+
+<h2>Ajouter les images "sourire" de fin de s&eacute;quence</h2>
+
+Ces images&nbsp;se trouvent selon la langue utilis&eacute;e
+dans le
+dossier
+"sysdata/fin_sequence/&lt;langueUtilis&eacute;e&gt;", par
+exemple
+"sysdata/fin_sequence/fr". Leur taille est 350x350 maximum et
+leur&nbsp;extension .PNG.<br>
+
+Le nom d'une image est compos&eacute;e :<br>
+
+<ul>
+
+  <li>Du pr&eacute;fixe <span style="font-weight: bold;">sourire</span></li>
+
+  <li>suivi d'un qualificatif </li>
+
+  <li>du s&eacute;parateur d'extension<strong> .(un
+point)</strong></li>
+
+  <li>de l'extension <span style="font-weight: bold;">png</span></li>
+
+</ul>
+
+Cette fa&ccedil;on de proc&eacute;der permet au logiciel de
+pr&eacute;senter des images vari&eacute;es de fin de
+s&eacute;quence
+dans la langue de l'utilisateur. Par d&eacute;faut la langue sera
+le
+fran&ccedil;ais.
+<h2>Ajouter/Modifier/Effacer une piste</h2>
+
+<p>Les pistes se trouvent dans le r&eacute;pertoire <b>pistes/</b></p>
+
+<p>Une piste est d&eacute;crite au moyen des
+num&eacute;ros des cases d'un tableau (10 lignes x 15 colonnes)</p>
+
+<ul>
+
+  <li>Ligne 0&nbsp;: de 0 &agrave; 14</li>
+
+  <li>Ligne 1&nbsp;: de 15 &agrave; 29</li>
+
+  <li>Ligne 2&nbsp;: de 30 &agrave; 44</li>
+
+  <li>Ligne 3&nbsp;: de 45 &agrave; 59</li>
+
+  <li>Ligne 4&nbsp;: de 60 &agrave; 74</li>
+
+  <li>Ligne 5&nbsp;: de 75 &agrave; 89</li>
+
+  <li>Ligne 6&nbsp;: de 90 &agrave; 104</li>
+
+  <li>Ligne 7&nbsp;: de 105 &agrave; 119</li>
+
+  <li>Ligne 8&nbsp;: de 120 &agrave; 134</li>
+
+  <li>Ligne 9&nbsp;: de 135 &agrave; 149</li>
+
+</ul>
+
+<p>Donc, un fichier_piste est une liste d'entiers compris entre 0
+et 149 (inclus)</p>
+
+<p>Le nom d'un fichier_piste est compos&eacute; :</p>
+
+<ul>
+
+  <li>d'un <strong>chiffre</strong>
+repr&eacute;sentant la difficult&eacute; de la piste (sur une
+&eacute;chelle de 0 &agrave; 9)</li>
+
+  <li>du s&eacute;parateur d'extension<strong> .(un
+point)</strong></li>
+
+  <li>d'un <strong>mot</strong>
+(&eacute;vocateur) constituant l'extension</li>
+
+</ul>
+
+<p>Les pistes ainsi nomm&eacute;es sont list&eacute;es
+selon leur degr&eacute; de difficult&eacute;.</p>
+
+<h2></h2>
+
+</body>
+</html>
