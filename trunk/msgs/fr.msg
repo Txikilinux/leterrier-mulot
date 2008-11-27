@@ -1,4 +1,5 @@
 ::msgcat::mcset fr "title_m" "Mulot : motricité fine"
+::msgcat::mcset fr "Titre" "Titre"
 
 ::msgcat::mcset fr "Fichier" "Fichier"
 ::msgcat::mcset fr "Images" "Images"
@@ -50,7 +51,7 @@
 ::msgcat::mcset fr "dossier_out" "Dossier but"
 
 ::msgcat::mcset fr "Utilisateur"  "Utilisateur"
-::msgcat::mcset fe "Ton nom"      "Ton nom"
+::msgcat::mcset fr "Ton nom"      "Ton nom"
 
 ::msgcat::mcset fr "Aide" "Aide"
 ::msgcat::mcset fr "A_propos ..." "À propos ..."
@@ -65,13 +66,13 @@
 ::msgcat::mcset fr "synthese" "Synthèse"
 ::msgcat::mcset fr "categorie" "Catégorie"
 ::msgcat::mcset fr "n_fois" "Nombre d'utilisation"
-::msgcat::mcset fr "niveau_atteint" "Niveau atteint"
+::msgcat::mcset fr "niveau_atteint" "Nombre d'utilisation"
 ::msgcat::mcset fr "duree_min" "Durée minimale"
 ::msgcat::mcset fr "duree_moyenne" "Durée moyenne"
 ::msgcat::mcset fr "duree_max" "Durée maximale"
 ::msgcat::mcset fr "effacer_bilan" "Effacer trace et bilan"
 ::msgcat::mcset fr "bilan_efface" "Trace et bilan effacés"
-
+::msgcat::mcset fr "non_implante" "Non implanté"
 # modifier ci-dessous suivant les themes installes
 
 ::msgcat::mcset fr "animaux" "Animaux"

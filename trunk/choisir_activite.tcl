@@ -77,13 +77,13 @@ proc main_loop {} {
     button $c.survoler \
         -image [image create photo -file sysdata/survoler.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Survoler] \
+        -text [mc "Survoler"] \
         -command "lanceappli play_mulot.tcl 0"
   } else {
     button $c.survoler \
         -image [image create photo -file sysdata/survoler.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Survoler] -compound top \
+        -text [mc "Survoler"] -compound top \
         -command "lanceappli play_mulot.tcl 0"
   }
   grid $c.survoler -column 0 -row 0 -sticky e -padx 10 -pady 10
@@ -91,13 +91,13 @@ proc main_loop {} {
     button $c.cliquer \
         -image [image create photo -file sysdata/cliquer.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Cliquer] \
+        -text [mc "Cliquer"] \
         -command "lanceappli play_mulot.tcl 1"
   } else {
     button $c.cliquer \
         -image [image create photo -file sysdata/cliquer.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Cliquer] -compound top \
+        -text [mc "Cliquer"] -compound top \
         -command "lanceappli play_mulot.tcl 1"
   }
   grid $c.cliquer -column 1 -row 0 -sticky e -padx 10 -pady 10
@@ -105,13 +105,13 @@ proc main_loop {} {
     button $c.double_cliquer \
         -image [image create photo -file sysdata/double_cliquer.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Double-cliquer] \
+        -text [mc "Double-cliquer"] \
         -command "lanceappli play_mulot.tcl 2"
   } else {
     button $c.double_cliquer \
         -image [image create photo -file sysdata/double_cliquer.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Double-cliquer] -compound top \
+        -text [mc "Double-cliquer"] -compound top \
         -command "lanceappli play_mulot.tcl 2"
   }
   grid $c.double_cliquer -column 2 -row 0 -sticky e -padx 10 -pady 10
@@ -120,13 +120,13 @@ proc main_loop {} {
     button $c.parcourir \
         -image [image create photo -file sysdata/parcourir.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Parcourir] \
+        -text [mc "Parcourir"] \
         -command "lanceappli parcourir_mulot.tcl"
   } else {
     button $c.parcourir \
         -image [image create photo -file sysdata/parcourir.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Parcourir] -compound top \
+        -text [mc "Parcourir"] -compound top \
         -command "lanceappli parcourir_mulot.tcl"
   }
   grid $c.parcourir -column 0 -row 1 -sticky e -padx 10 -pady 10
@@ -135,13 +135,13 @@ proc main_loop {} {
     button $c.glisser \
         -image [image create photo -file sysdata/glisser.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Glisser] \
+        -text [mc "Glisser"] \
         -command "lanceappli glisser_mulot.tcl"
   } else {
     button $c.glisser \
         -image [image create photo -file sysdata/glisser.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Glisser] -compound top \
+        -text [mc "Glisser"] -compound top \
         -command "lanceappli glisser_mulot.tcl"
   }
   grid $c.glisser -column 1 -row 1 -sticky e -padx 10 -pady 10
@@ -150,13 +150,13 @@ proc main_loop {} {
     button $c.deviner \
         -image [image create photo -file sysdata/deviner.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Deviner] \
+        -text [mc "Deviner"] \
         -command "lanceappli deviner.tcl"
   } else {
     button $c.deviner \
         -image [image create photo -file sysdata/deviner.png] \
         -borderwidth 10 -bg lightblue -cursor heart \
-        -text [mc Deviner] -compound top \
+        -text [mc "Deviner"] -compound top \
         -command "lanceappli deviner.tcl"
   }
   grid $c.deviner -column 2 -row 1 -sticky e -padx 10 -pady 10
@@ -165,13 +165,13 @@ proc main_loop {} {
     button $c.quitter \
         -image [image create photo -file sysdata/quitter.png] \
         -borderwidth 10 -bg pink -cursor heart \
-        -text [mc Quitter] \
+        -text [mc "Quitter"] \
         -command "lanceappli mulot.tcl"
   } else {
     button $c.quitter \
         -image [image create photo -file sysdata/quitter.png] \
         -borderwidth 10 -bg pink -cursor heart \
-        -text [mc Quitter] -compound top \
+        -text [mc "Quitter"] -compound top \
         -command "lanceappli mulot.tcl"
   }
   grid $c.quitter -column 3 -row 1 -sticky e -padx 10 -pady 10
@@ -221,7 +221,7 @@ bind . <Control-q> {exit}
 wm resizable . 0 0
 wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-80]+0+0
 . configure -background blue
-wm title . "[mc title_m] : $glob(theme)"
+wm title . "[mc Titre] : $glob(theme)"
 
 main_loop
 

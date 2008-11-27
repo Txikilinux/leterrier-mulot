@@ -56,7 +56,7 @@ set WLARGEUR 650
 ########## Construction de l'interface###########
 #frame wg pour gerer les images
 wm geometry . +0+0
-wm title . [mc gerer_images]
+wm title . [mc "Gérer les dossiers et les images"]
 
 set dir_origine [pwd]
 
@@ -67,7 +67,7 @@ grid .wg -column 0 -row 0
 ## abandon
 ##
 
-button .wg.abandonner -text [mc Quitter] \
+button .wg.abandonner -text [mc "Quitter"] \
 	-command "cd \"$dir_origine\" ; lanceappli mulot.tcl"
 place .wg.abandonner -x [expr $WLARGEUR - 80] -y 7
 
@@ -88,14 +88,14 @@ place .wg.abandonner -x [expr $WLARGEUR - 80] -y 7
 ## gerer les images : ajouter un dossier
 ##
 
-label .wg.lab_ajouter_dossier -background green -text [mc ajouter_dossier]
+label .wg.lab_ajouter_dossier -background green -text [mc "Ajouter un dossier"]
 place .wg.lab_ajouter_dossier -x 20 -y 43
-label .wg.lab_ajouter_dossier_quelNom -background yellow -text [mc dir_name]
+label .wg.lab_ajouter_dossier_quelNom -background yellow -text [mc "Nom du dossier"]
 place .wg.lab_ajouter_dossier_quelNom -x 20 -y 63
 entry .wg.ent_ajouter_dossier_leNom
 place .wg.ent_ajouter_dossier_leNom -x 20 -y 93
 
-button .wg.but_ajouter_dossier -text [mc Ajouter] -command "ajouter_dossier"
+button .wg.but_ajouter_dossier -text [mc "Ajouter"] -command "ajouter_dossier"
 place .wg.but_ajouter_dossier -x 40 -y 120
 
 
@@ -105,9 +105,9 @@ place .wg.but_ajouter_dossier -x 40 -y 120
 
   set ed_dirOut $racine_dirOut
 
-label .wg.lab_effacer_dossiers -background green -text [mc effacer_dossiers]
+label .wg.lab_effacer_dossiers -background green -text [mc "Effacer des dossiers"]
 place .wg.lab_effacer_dossiers -x 20 -y 370
-label .wg.lab_effacer_dossiers_selection -background yellow -text [mc selections]
+label .wg.lab_effacer_dossiers_selection -background yellow -text [mc "Sélectionner les dossiers"]
 place .wg.lab_effacer_dossiers_selection -x 20 -y 390
 
 listbox .wg.listb_effacer_dossiers \
@@ -122,22 +122,22 @@ place .wg.scroll_effacer_dossiers -x 167 -y 447 -height 172
 
 bind .wg.listb_effacer_dossiers <Double-ButtonRelease-1> "capture_ed"
 
-button .wg.but_effacer_dossiers -text [mc Effacer] -command "effacer_dossiers"
+button .wg.but_effacer_dossiers -text [mc "Effacer"] -command "effacer_dossiers"
 place .wg.but_effacer_dossiers -x 40 -y 625
 
 ##
 ## gerer les images : ajouter des images
 ##
 
-label .wg.lab_ajouter_images -background green -text [mc ajouter_images]
+label .wg.lab_ajouter_images -background green -text [mc "Ajouter des images dans un dossier"]
 place .wg.lab_ajouter_images -x 300 -y 43
-label .wg.lab_ajouter_images_5minimum -background yellow -text [mc  minimum5]
+label .wg.lab_ajouter_images_5minimum -background yellow -text [mc  "Votre attention : 5 images minimum par dossier"]
 place .wg.lab_ajouter_images_5minimum -x 300 -y 63
 
   set ai_dirIn  $racine_dirIn
   set ai_dirOut $racine_dirOut
 
-button .wg.but_ajouter_images_dirIn -text [mc dossier_in] ;# message initial
+button .wg.but_ajouter_images_dirIn -text [mc "Dossier source"] ;# message initial
 place .wg.but_ajouter_images_dirIn -x 300 -y 90
 bind .wg.but_ajouter_images_dirIn <ButtonRelease-1> changer_ai_dirIn
 
@@ -153,7 +153,7 @@ place .wg.scroll_ajouter_images_dirIn -x 447 -y 120 -height 210
 
 bind .wg.listb_ajouter_images_dirIn <Double-ButtonRelease-1> "capture_ai_dirIn"
 
-button .wg.but_ajouter_images_dirOut -text [mc dossier_out] ;# message intial
+button .wg.but_ajouter_images_dirOut -text [mc "Dossier but"] ;# message intial
 place .wg.but_ajouter_images_dirOut -x 475 -y 90
 bind .wg.but_ajouter_images_dirOut <ButtonRelease-1> changer_ai_dirOut
 
@@ -168,21 +168,21 @@ place .wg.scroll_ajouter_images_dirOut -x 622 -y 120 -height 210
 
 bind .wg.listb_ajouter_images_dirOut <Double-ButtonRelease-1> "capture_ai_dirOut"
 
-button .wg.but_ajouter_images_faire -text [mc Ajouter ] -command "ajouter_images"
+button .wg.but_ajouter_images_faire -text [mc "Ajouter" ] -command "ajouter_images"
 place .wg.but_ajouter_images_faire -x 420 -y 333
 
 ##
 ## gerer les images : effacer des images
 ##
 
-label .wg.lab_effacer_images -background green -text [mc effacer_images]
+label .wg.lab_effacer_images -background green -text [mc "Effacer des images d'un dossier"]
 place .wg.lab_effacer_images -x 300 -y 370
-label .wg.lab_effacer_images_5minimum -background yellow -text [mc  minimum5]
+label .wg.lab_effacer_images_5minimum -background yellow -text [mc  "Votre attention : 5 images minimum par dossier"]
 place .wg.lab_effacer_images_5minimum -x 300 -y 390
 
   set ei_dirOut $racine_dirOut
 
-button .wg.but_effacer_images_dirOut -text [mc dossier_out] ;# message intial
+button .wg.but_effacer_images_dirOut -text [mc "Dossier but"] ;# message intial
 place .wg.but_effacer_images_dirOut -x 300 -y 417
 bind .wg.but_effacer_images_dirOut <ButtonRelease-1> changer_ei_dirOut
 
@@ -197,7 +197,7 @@ place .wg.scroll_effacer_images -x 447 -y 447 -height 172
 
 bind .wg.listb_effacer_images <Double-ButtonRelease-1> "capture_ei"
 
-button .wg.but_effacer_images -text [mc Effacer ] -command "effacer_images"
+button .wg.but_effacer_images -text [mc "Effacer" ] -command "effacer_images"
 place .wg.but_effacer_images -x 420 -y 625
 
 ###########################################################################################
@@ -220,7 +220,7 @@ proc ajouter_dossier {} {
   if { $glob(autorise) } {
     set nom_dossier [string tolower [.wg.ent_ajouter_dossier_leNom get]]
     if { [string length $nom_dossier] == 0 } {
-      tk_messageBox -default ok -message [mc "pas_de_nom"] -parent .
+      tk_messageBox -default ok -message [mc "Saisir un nom"] -parent .
       return
     } 
     catch { file mkdir [file join $racine_dirOut $nom_dossier] }
@@ -228,9 +228,9 @@ proc ajouter_dossier {} {
     creer_ed_listOut
     creer_ai_listOut
     creer_ei_listOut
-    tk_messageBox -default ok -message [mc Fait] -parent .
+    tk_messageBox -default ok -message [mc "Fait"] -parent .
   } else {
-    tk_messageBox -type ok -message [mc pbpasse] -parent .
+    tk_messageBox -type ok -message [mc "Problème : Mot de passe"] -parent .
   }
 }; #fin ajouter_dossier
                                                 
@@ -258,11 +258,11 @@ proc effacer_dossiers {} {
 #
   global glob ed_dirOut listeDossiers_ed
   if { ! $glob(autorise) } {
-    tk_messageBox -type ok -message [mc pbpasse] -parent .
+    tk_messageBox -type ok -message [mc "Problème : Mot de passe"] -parent .
   } else {
     set lselection [.wg.listb_effacer_dossiers curselection]
     if { [llength $lselection] == 0 } {
-      tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .
+      tk_messageBox -type ok -message [mc "Sélectionner dossiers ou images"] -parent .
       return
     }
     foreach i $lselection {
@@ -271,7 +271,7 @@ proc effacer_dossiers {} {
     creer_ed_listOut
     creer_ai_listOut
     creer_ei_listOut
-    tk_messageBox -type ok -message [mc Fait] -parent .
+    tk_messageBox -type ok -message [mc "Fait"] -parent .
   }
   
 }
@@ -382,12 +382,12 @@ proc ajouter_images {} {
   if { $glob(autorise) } {
     set lselection [.wg.listb_ajouter_images_dirIn curselection]
     if { [llength $lselection] == 0 } {
-      tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .
+      tk_messageBox -type ok -message [mc "Sélectionner dossiers ou images"] -parent .
       return
     }
     # verifier que le dossier but st sous-dosssier de images
     if { [lindex [split $ai_dirOut "/"] end-1] != "images" } {
-      tk_messageBox -type ok -message [mc sous_images] -parent .
+      tk_messageBox -type ok -message [mc "Sélectionner le dossier-but images"] -parent .
       return
     }
     foreach i $lselection {
@@ -400,7 +400,7 @@ proc ajouter_images {} {
     }
     tk_messageBox -default ok -message "Ok" -parent .
   } else {
-    tk_messageBox -type ok -message [mc pbpasse] -parent .
+    tk_messageBox -type ok -message [mc "Problème : Mot de passe"] -parent .
   }
   creer_ai_listOut
 } ;# ajouter_images
@@ -466,7 +466,7 @@ proc effacer_images {} {
   if { $lob(autorise) } {
     set lselection [.wg.listb_effacer_images curselection]
     if { [llength $lselection] == 0 } {
-      tk_messageBox -type ok -message [mc "pas_de_selection"] -parent .
+      tk_messageBox -type ok -message [mc "Sélectionner dossiers ou images"] -parent .
       return
     }
     foreach i $lselection {
@@ -476,7 +476,7 @@ proc effacer_images {} {
     creer_ai_listOut
     tk_messageBox -default ok -message "Ok" -parent .
   } else {
-    tk_messageBox -type ok -message [mc pbpasse] -parent .
+    tk_messageBox -type ok -message [mc "Problème : Mot de passe"] -parent .
   }
   creer_ei_listOut
 } ;# effacer_images

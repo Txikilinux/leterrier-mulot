@@ -57,31 +57,31 @@ source lanceapplication.tcl
 ########## Construction de l'interface###########
 #frame wa pour autoriser ou pas les menus
 wm geometry . +50+50
-wm title . [mc Menus]
+wm title . [mc "Menus"]
 
 frame .wa -background #aaaaaa -height 420 -width 400
 grid .wa -column 0 -row 0
 
-#si abuledu nécessairement l'utilisateur est prof d'après mulot.tcl
+#si abuledu nï¿½cessairement l'utilisateur est prof d'aprï¿½s mulot.tcl
 
 set prof [est_prof]
 
 if { ! $prof } {
-  label .wa.passwd -text [mc Password] -bg red
+  label .wa.passwd -text [mc "Password"] -bg red
   grid .wa.passwd -row 1 -column 0 -padx 4 -sticky e
   entry .wa.password -show "*"
   grid .wa.password -row 1 -column 1 -padx 4 -sticky e
   .wa.password delete 0 end
 }
 
-label .wa.lab_classe -text [mc class_name]
+label .wa.lab_classe -text [mc "Nom de la classe"]
 grid .wa.lab_classe -row 2 -column 0 -padx 4 -sticky e
 entry .wa.ent_classe
 grid .wa.ent_classe -row 2 -column 1 -padx 4 -sticky e
 
-button .wa.ok -text [mc Faire] -command "autoriser $etat_menus ; lanceappli mulot.tcl 0"
+button .wa.ok -text [mc "Faire"] -command "autoriser $etat_menus ; lanceappli mulot.tcl 0"
 grid .wa.ok -row 3 -column 0
-button .wa.cancel -text [mc Annuler] -command exit
+button .wa.cancel -text [mc "Annuler"] -command exit
 grid .wa.cancel -row 3 -column 1
 
 proc existe_classe { n } {

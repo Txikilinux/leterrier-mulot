@@ -40,18 +40,18 @@ exec wish "$0" ${1+"$@"}
 source mulot.conf
 source msg.tcl
 
-# Décommenter la ligne suivante si Img est installée
+# Dï¿½commenter la ligne suivante si Img est installï¿½e
 # package require Img
 
 ########## Construction de l'interface###########
 #frame wa pour ajouter une image
 wm geometry . +0+0
-wm title . [mc Ajouter]
+wm title . [mc "Ajouter"]
 
 frame .wa -background #aaaaaa -height 420 -width 400
 grid .wa -column 0 -row 0
 
-label .wa.passwd -text [mc Password] -bg red
+label .wa.passwd -text [mc "Password"] -bg red
 place .wa.passwd -x 100 -y 10
 entry .wa.password -show "*"
 place .wa.password -x 100 -y 30
@@ -64,7 +64,7 @@ listbox .wa.listin -background #c0c0c0 -height 10 -width 20 -yscrollcommand ".wa
 scrollbar .wa.scrollin -command ".wa.listin yview"
 place .wa.listin -x 10 -y 80
 place .wa.scrollin -x 157 -y 80 -height 172
-label .wa.labelin -text [mc Source]
+label .wa.labelin -text [mc "Source"]
 place .wa.labelin -x 10 -y 270
 entry .wa.textin
 place .wa.textin -x 10 -y 290
@@ -78,16 +78,16 @@ listbox .wa.listout -background #c0c0c0 -height 10 -width 20 -yscrollcommand ".w
 scrollbar .wa.scrollout -command ".wa.listout yview"
 place .wa.listout -x 200 -y 80
 place .wa.scrollout -x 350 -y 80 -height 172
-label .wa.labelout -text [mc Destination]
+label .wa.labelout -text [mc "Destination"]
 place .wa.labelout -x 200 -y 270
 entry .wa.textout
 place .wa.textout -x 200 -y 290
 .wa.textout delete 0 end
 
 
-button .wa.faire -text [mc Faire ] -command "ajouter_image"
+button .wa.faire -text [mc "Faire" ] -command "ajouter_image"
 place .wa.faire -x 130 -y 325
-button .wa.abandonner -text [mc Quitter] -command exit
+button .wa.abandonner -text [mc "Quitter"] -command exit
 place .wa.abandonner -x 185 -y 325
 
 # lister les images in

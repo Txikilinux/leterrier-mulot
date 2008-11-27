@@ -117,7 +117,7 @@ proc sauver_trace_parcours {} {
   global glob heure_debut
 
   ## trace
-  # utilisateur/classe/date/durée/didacticiel/nvignettes/version
+  # utilisateur/classe/date/durï¿½e/didacticiel/nvignettes/version
   set eleve $glob(trace_user)
   set titre "mulot-$glob(version)"
   set categorie "$glob(theme) Glisser-deposer=$glob(boucle)"
@@ -144,7 +144,7 @@ proc main {c} {
   set glob(theme) [gets $f]
   close $f
 
-  wm title . "[mc Glisser-deposer] : $glob(theme)"
+  wm title . "[mc Glisser-dÃ©poser] : $glob(theme)"
 
   ################### choix de l'image
   # choisir une image dans la liste im_choix(im_liste)
@@ -227,7 +227,7 @@ proc itemStartDrag {c nv x y} {
   . config -cursor fleur
 }
 
-# ############### Déplacement de la vignette, gestion des coordonnées avec lastX et lastY
+# ############### Dï¿½placement de la vignette, gestion des coordonnï¿½es avec lastX et lastY
 proc itemDrag {c nv x y} {
   global lastX lastY glob im_choix
   set x [$c canvasx $x]
@@ -238,7 +238,7 @@ proc itemDrag {c nv x y} {
   set lastY $y
 }
 
-# ################ On relâche la souris.
+# ################ On relï¿½che la souris.
 # traitement et l'analyse de la position de la vignette
 
 proc itemStopDrag {c nv x y} {
@@ -247,7 +247,7 @@ proc itemStopDrag {c nv x y} {
   . config -cursor left_ptr
 
   set coord [$c coords current]
-  #On calcule le numéro de la case où se trouve la vignette (xc et yc)
+  #On calcule le numï¿½ro de la case oï¿½ se trouve la vignette (xc et yc)
   set xc [expr int(([lindex $coord 0] - $im_choix(v_width))/$im_choix(v_width))]
   set yc [expr int([lindex $coord 1]/$im_choix(v_height))]
 

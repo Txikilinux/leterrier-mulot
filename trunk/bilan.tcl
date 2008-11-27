@@ -54,9 +54,9 @@ source lanceapplication.tcl
 
 . configure -width 640 -height 480
 wm geometry . +0+0
-wm title . [mc bilan]
+wm title . [mc "bilan"]
 #
-# initialiser la tableau des resultats
+# initialiser le tableau des resultats
 #
 
   #charger la liste des dossiers images (peu importe le type ?)
@@ -95,25 +95,25 @@ pack .top -side top -fill x
   }
 set env(USER) [lindex [split $glob(trace_user) / ] end]
 if { [file exists [file join $glob(trace_dir) $env(USER).log]] } {
-  button .top.but_lemien -text [mc mon_bilan] -command mon_bilan
+  button .top.but_lemien -text [mc "Mon bilan"] -command mon_bilan
 } else {
-  button .top.but_lemien -state disable -text [mc mon_bilan]
+  button .top.but_lemien -state disable -text [mc "Mon bilan"]
 }
 if {[lsearch [exec id -nG $env(USER)] "leterrier"] != -1} {
-  button .top.but_eleve -text [mc eleve] -command bilan_eleve
-  button .top.but_classe -state disable -text [mc classe] -command bilan_classe
-  button .top.but_tous -text [mc tous] -command bilan_tous
+  button .top.but_eleve -text [mc "Elève"] -command bilan_eleve
+  button .top.but_classe -state disable -text [mc "Classe"] -command bilan_classe
+  button .top.but_tous -text [mc "Tous"] -command bilan_tous
 } elseif { $glob(platform) == "windows" } {
-  button .top.but_eleve -state disable -text [mc eleve] -command bilan_eleve
-  button .top.but_classe -state disable -text [mc classe] -command bilan_classe
-  button .top.but_tous -state disable -text [mc tous] -command bilan_tous
+  button .top.but_eleve -state disable -text [mc "Elève"] -command bilan_eleve
+  button .top.but_classe -state disable -text [mc "Classe"] -command bilan_classe
+  button .top.but_tous -state disable -text [mc "Tous"] -command bilan_tous
 } else {
-  button .top.but_eleve -state disable -text [mc eleve] -command bilan_eleve
-  button .top.but_classe -state disable -text [mc classe] -command bilan_classe
-  button .top.but_tous -text [mc tous] -command bilan_tous
+  button .top.but_eleve -state disable -text [mc "Elève"] -command bilan_eleve
+  button .top.but_classe -state disable -text [mc "Classe"] -command bilan_classe
+  button .top.but_tous -text [mc "Tous"] -command bilan_tous
 }
-button .top.but_efface -state disabled -text [mc effacer_bilan] -command efface_bilan
-button .top.but_exit -text [mc Fermer] -command "lanceappli mulot.tcl 0"
+button .top.but_efface -state disabled -text [mc "Effacer trace et bilan"] -command efface_bilan
+button .top.but_exit -text [mc "Fermer"] -command "lanceappli mulot.tcl 0"
 pack .top.but_lemien .top.but_eleve .top.but_classe .top.but_tous .top.but_efface .top.but_exit -side left
 
 set bg #ffffff
@@ -187,10 +187,10 @@ proc bilan {qui} {
   set f [open $fnom.html w]
   set ojourdui [clock format [clock seconds] -format "%d/%m/%Y"]
   puts $f "<html>\n<head>\n<title>Bilan Mulot de $nom</title>\n</head><body>\n"
-  puts $f "<h2> $ojourdui - [mc synthese] : $nom </h2>"
-  puts $f "<table border='1' cellspacing='0'>\n<tr>\n<th>[mc categorie]</th>"
-  puts $f "<th>[mc n_fois]</th><th>[mc niveau_atteint]</th>"
-  puts $f "<th>[mc duree_min]</th><th>[mc duree_moyenne]</th><th>[mc duree_max]</th></tr>"
+  puts $f "<h2> $ojourdui - [mc "Synthèse"] : $nom </h2>"
+  puts $f "<table border='1' cellspacing='0'>\n<tr>\n<th>[mc "Catégorie"]</th>"
+  puts $f "<th>[mc "Nombre d'utilisation"]</th><th>[mc "Nombre d'utilisation"]</th>"
+  puts $f "<th>[mc "Durée minimale"]</th><th>[mc "Durée moyenne"]</th><th>[mc "Durée maximale"]</th></tr>"
 
   foreach theme $glob(themes) {
     foreach action [list Survoler Cliquer Double-cliquer Parcourir Glisser-deposer Deviner] {
@@ -217,9 +217,9 @@ proc bilan {qui} {
   } else {
     .top.but_lemien configure -state disable
   }
-  .t.text insert end "\n[mc trace_en] \n $file (+ ...cvs)"
+  .t.text insert end "\n[mc "Trace dans le fichier"] \n $file (+ ...cvs)"
   .t.text see end
-  .t.text insert end "\n[mc synthese_en] \n $fnom.html "
+  .t.text insert end "\n[mc "Synthèse dans le fichier"] \n $fnom.html "
   .t.text see end
   .t.text insert end "\n\n*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*\n "
   .t.text see end
@@ -268,7 +268,7 @@ proc efface_bilan {} {
   global fnom file
   catch { file delete $file}
   file delete "$fnom.html"
-  tk_messageBox -message "[mc bilan_efface]"
+  tk_messageBox -message "[mc "Trace et bilan effacés"]"
   .top.but_efface configure -state disabled
 }
 

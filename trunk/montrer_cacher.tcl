@@ -56,7 +56,7 @@ set WLARGEUR 450
 ########## Construction de l'interface###########
 #frame wg pour gerer les images
 wm geometry . +0+0
-wm title . [mc montrer_cacher]
+wm title . [mc "Dossiers"]
 
 set dir_origine [pwd]
 
@@ -67,7 +67,7 @@ grid .wg -column 0 -row 0
 ## abandon
 ##
 
-button .wg.abandonner -text [mc Quitter] \
+button .wg.abandonner -text [mc "Quitter"] \
 	-command "cd \"$dir_origine\" ; lanceappli mulot.tcl"
 place .wg.abandonner -x [expr $WLARGEUR - 80] -y 7
 
@@ -87,9 +87,9 @@ place .wg.abandonner -x [expr $WLARGEUR - 80] -y 7
 ## gerer les dossiers a montrer
 ##
 
-label .wg.lab_montrer -background green -text [mc a_montrer]
+label .wg.lab_montrer -background green -text [mc "A montrer"]
 place .wg.lab_montrer -x 20 -y 43
-label .wg.lab_selection_deplacer -background yellow -text [mc selections_deplacer]
+label .wg.lab_selection_deplacer -background yellow -text [mc "Sélectionner les dossiers à déplacer"]
 place .wg.lab_selection_deplacer -x 70 -y 63
 
 listbox .wg.listb_montrer \
@@ -111,9 +111,9 @@ place .wg.but_cacher -x 200 -y 150
 ## gerer les dossiers a cacher
 ##
 
-label .wg.lab_cacher -background green -text [mc a_cacher]
+label .wg.lab_cacher -background green -text [mc "A cacher"]
 place .wg.lab_cacher -x 260 -y 43
-#label .wg.lab_cacher_selection -background yellow -text [mc selections]
+#label .wg.lab_cacher_selection -background yellow -text [mc "Sélectionner les dossiers"]
 #place .wg.lab_cacher_selection -x 260 -y 63
 
 listbox .wg.listb_cacher \
@@ -162,11 +162,11 @@ proc cacher_dossiers {} {
 #
   global glob racine listeDossiers_montrer
   if { ! $glob(autorise) } {
-    tk_messageBox -type ok -message [mc pbpasse] -parent .
+    tk_messageBox -type ok -message [mc "Problème : Mot de passe"] -parent .
   } else {
     set lselection [.wg.listb_montrer curselection]
     if { [llength $lselection] == 0 } {
-      tk_messageBox -type ok -message [mc "pas_de_selection_dossiers"] -parent .
+      tk_messageBox -type ok -message [mc "Sélectionner les dossiers"] -parent .
       return
     }
     foreach i $lselection {
@@ -175,7 +175,7 @@ proc cacher_dossiers {} {
     }      
     creer_cacher
     creer_montrer
-    #tk_messageBox -type ok -message [mc Fait] -parent .
+    #tk_messageBox -type ok -message [mc "Fait"] -parent .
   }
   
 }
@@ -207,11 +207,11 @@ proc montrer_dossiers {} {
 #
   global glob racine listeDossiers_cacher
   if { ! $glob(autorise) } {
-    tk_messageBox -type ok -message [mc pbpasse] -parent .
+    tk_messageBox -type ok -message [mc "Problème : Mot de passe"] -parent .
   } else {
     set lselection [.wg.listb_cacher curselection]
     if { [llength $lselection] == 0 } {
-      tk_messageBox -type ok -message [mc "pas_de_selection_dossiers"] -parent .
+      tk_messageBox -type ok -message [mc "Sélectionner les dossiers"] -parent .
       return
     }
     foreach i $lselection {
@@ -220,7 +220,7 @@ proc montrer_dossiers {} {
     }      
     creer_cacher
     creer_montrer
-    #tk_messageBox -type ok -message [mc Fait] -parent .
+    #tk_messageBox -type ok -message [mc "Fait"] -parent .
   }
   
 }

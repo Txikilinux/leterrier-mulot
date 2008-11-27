@@ -152,7 +152,7 @@ proc setwindowsusername {} {
     wm geometry .utilisateur +50+50
     frame .utilisateur.frame -background grey -width 250 -height 100
     pack .utilisateur.frame -side top
-    label .utilisateur.frame.labobj -font {Helvetica 10} -text "[mc {Ton nom}] ?" -background grey
+    label .utilisateur.frame.labobj -font {Helvetica 10} -text [mc "Ton nom"] -background grey
     pack .utilisateur.frame.labobj -side top 
     entry .utilisateur.frame.entobj -font {Helvetica 10} -width 10
     pack .utilisateur.frame.entobj -side top 
@@ -199,28 +199,28 @@ proc main_loop {} {
   #
   menu .menu.fichier -tearoff 0
   .menu add cascade -state $glob(etat_boutons) \
-	-label [mc Fichier] -menu .menu.fichier
+	-label [mc "Fichier"] -menu .menu.fichier
 
   set etat_fichier "normal"
 
-  .menu.fichier add command -label [mc Bilans] -command "lanceappli bilan.tcl 0"
+  .menu.fichier add command -label [mc "Bilans"] -command "lanceappli bilan.tcl 0"
 
   .menu.fichier add separator
 
-  .menu.fichier add command -label [mc Quitter] -command exit
+  .menu.fichier add command -label [mc "Quitter"] -command exit
 
   #
   # Creation du menu Reglages
   #
   menu .menu.reglages -tearoff 0
   .menu add cascade -state $glob(etat_boutons) \
-	-label [mc Reglages] -menu .menu.reglages
+	-label [mc "Reglages"] -menu .menu.reglages
 
   set etat_reglages "normal"
 
   # langues
   menu .menu.reglages.lang -tearoff 0 
-  .menu.reglages add cascade -label "[mc Langue]" -menu .menu.reglages.lang
+  .menu.reglages add cascade -label "[mc "Langue"]" -menu .menu.reglages.lang
 
   foreach i [glob [file join  $glob(home_msgs) *.msg]] {
     set langue [string map {.msg "" } [file tail $i]]
@@ -229,12 +229,12 @@ proc main_loop {} {
 
   # quel ordre ?
   menu .menu.reglages.ordre -tearoff 0
-  .menu.reglages add cascade -label [mc ordre_hasard] \
+  .menu.reglages add cascade -label [mc "Déroulement..."] \
 	-state $etat_fichier \
 	-menu .menu.reglages.ordre
-  .menu.reglages.ordre add radio -label [mc ordonne] \
+  .menu.reglages.ordre add radio -label [mc "dans l'ordre"] \
 	-command "ordonner 1"
-  .menu.reglages.ordre add radio -label [mc hasard] \
+  .menu.reglages.ordre add radio -label [mc "au hasard"] \
 	-command "ordonner 0"
 
   #
@@ -243,19 +243,19 @@ proc main_loop {} {
   if { $glob(autorise) } {
     menu .menu.options -tearoff 0
     .menu add cascade -state $glob(etat_boutons) \
-	-label [mc Options] -menu .menu.options
+	-label [mc "Options"] -menu .menu.options
     # gerer les images
-    .menu.options add command -label [mc Images] -command "lanceappli gerer_images.tcl 0"
+    .menu.options add command -label [mc "Images"] -command "lanceappli gerer_images.tcl 0"
     # montrer/masquer des dossiers
-    .menu.options add command -label "[mc montrer_cacher]" -command "lanceappli montrer_cacher.tcl 0"
+    .menu.options add command -label [mc "Dossiers"] -command "lanceappli montrer_cacher.tcl 0"
     # autoriser les menus
     menu .menu.options.menus -tearoff 0
-    .menu.options add cascade -label [mc Menus] \
+    .menu.options add cascade -label [mc "Menus"] \
 	-state $etat_fichier \
 	-menu .menu.options.menus
-    .menu.options.menus add command -label [mc autoriser_menus] \
+    .menu.options.menus add command -label [mc "Autoriser les menus"] \
 	-command "lanceappli autoriser_menus.tcl normal"
-    .menu.options.menus add command -label [mc non_autoriser_menus] \
+    .menu.options.menus add command -label [mc "Ne pas autoriser les menus"] \
 	-command "lanceappli autoriser_menus.tcl disabled"
   }
 
@@ -276,14 +276,14 @@ proc main_loop {} {
 
   # Nom de l'utilisateur sous windows
   if {$glob(platform) == "windows"} {
-    .menu add command -label [mc Utilisateur] -command "setwindowsusername"
+    .menu add command -label [mc "Utilisateur"] -command "setwindowsusername"
   }
   #
   # Creation du menu aide
   #
   menu .menu.aide -tearoff 0
   .menu add cascade -state $glob(etat_boutons) \
-	-label [mc Aide] -menu .menu.aide
+	-label [mc "Aide"] -menu .menu.aide
   # langues
   set l_langues [glob  [file join [pwd] aides aide.*.html]]
   foreach langue $l_langues {
@@ -293,14 +293,14 @@ proc main_loop {} {
     # credit
   if { [llength [glob -nocomplain [file join  [pwd] credits *.html]]] > 0 } {
     menu .menu.aide.credits -tearoff 0 
-    .menu.aide add cascade -label "[mc credits]" -menu .menu.aide.credits
+    .menu.aide add cascade -label [mc "credits"] -menu .menu.aide.credits
        foreach i [glob [file join  [pwd] credits *.html]] {
         set c [string map {.html "" } [file tail $i]]
         .menu.aide.credits add radio -label $c -variable credit -command "credits $c"
       } 
   }
   # a propos
-  .menu.aide add command -label [mc {A_propos ...}] -command "source apropos.tcl"
+  .menu.aide add command -label [mc "A_propos ..."] -command "source apropos.tcl"
 
   . configure -menu .menu
 
@@ -352,13 +352,13 @@ proc main_loop {} {
     button $c.quitter \
         -image [image create photo -file sysdata/quitter_minus.png] \
         -borderwidth 10 -bg pink -cursor heart \
-        -text [mc Quitter] \
+        -text [mc "Quitter"] \
         -command exit
   } else {
     button $c.quitter \
         -image [image create photo -file sysdata/quitter_minus.png] \
         -borderwidth 10 -bg pink -cursor heart \
-        -text [mc Quitter] -compound top \
+        -text [mc "Quitter"] -compound top \
         -command exit
   }
   grid $c.quitter -column 3 -row 1 -sticky e -padx 10 -pady 10
@@ -385,6 +385,6 @@ bind . <Control-q> {exit}
 wm resizable . 0 0
 wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-110]+0+0
 . configure -background blue
-wm title . "[mc title_m]"
+wm title . [mc "Titre"]
 
 main_loop

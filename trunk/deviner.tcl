@@ -211,7 +211,7 @@ proc sauver_trace_parcours {} {
   global glob heure_debut
 
   ## trace
-  # utilisateur/classe/date/durée/didacticiel/nvignettes/version
+  # utilisateur/classe/date/durï¿½e/didacticiel/nvignettes/version
   set eleve $glob(trace_user)
   set titre "mulot-$glob(version)"
   set categorie "$glob(theme) Deviner=$glob(boucle)"
