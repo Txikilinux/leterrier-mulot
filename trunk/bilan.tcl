@@ -189,7 +189,7 @@ proc bilan {qui} {
   puts $f "<html>\n<head>\n<title>Bilan Mulot de $nom</title>\n</head><body>\n"
   puts $f "<h2> $ojourdui - [mc "Synthèse"] : $nom </h2>"
   puts $f "<table border='1' cellspacing='0'>\n<tr>\n<th>[mc "Catégorie"]</th>"
-  puts $f "<th>[mc "Nombre d'utilisation"]</th><th>[mc "Nombre d'utilisation"]</th>"
+  puts $f "<th>[mc "Nombre d'utilisation"]</th><th>[mc "Niveau atteint"]</th>"
   puts $f "<th>[mc "Durée minimale"]</th><th>[mc "Durée moyenne"]</th><th>[mc "Durée maximale"]</th></tr>"
 
   foreach theme $glob(themes) {
