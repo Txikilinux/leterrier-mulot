@@ -64,7 +64,7 @@ set maxcolonnes 2
       if { $glob(platform) == "windows" } {
 		puts $f "fr"
       } else {
-  		puts $f [string range $env(LANG) 0 1]
+  		puts $f $env(LANG)
       }
       close $f
   }
@@ -133,7 +133,8 @@ proc setlang {lang} {
   global env glob
   set env(LANG) $lang
   catch {set f [open [file join $glob(home_reglages) lang.conf] "w"]}
-  puts $f [file rootname [file tail $lang]]
+#  puts $f [file rootname [file tail $lang]]
+  puts $f $lang
   close $f
 }
 
@@ -182,6 +183,25 @@ proc ordonner { ordre } {
   close $f
 }
 
+# liste les noms des images du dossier i avec clic-droit sur la vignette du dossier i
+proc lister_images { i } {
+  set d [lindex [split $i "/"] 1]
+  set limages [lsort [glob [file join images $d *.*]]]
+  destroy .top_liste
+  set tl [toplevel .top_liste]
+  raise $tl
+  wm title $tl [mc "Noms des images"]
+  #wm geometry $tl 200x300+100+0
+  #$tl configure -width 200 -height 380
+  foreach i $limages {
+    set iname [string map {.jpg ""} [file tail $i]]
+    label $tl.label$iname -text $iname
+    pack $tl.label$iname -padx 20 -side top
+  }
+  button $tl.fermer -text [mc "Fermer"] -width 8 -command "destroy $tl" -borderwidth 1
+  pack $tl.fermer -anchor center -fill none -pady 10 -side bottom
+}
+
 #########################################################"
 proc main_loop {} {
   global . sysFont glob maxcolonnes env
@@ -214,17 +234,19 @@ proc main_loop {} {
   #
   menu .menu.reglages -tearoff 0
   .menu add cascade -state $glob(etat_boutons) \
-	-label [mc "Reglages"] -menu .menu.reglages
+	-label [mc "Réglages"] -menu .menu.reglages
 
   set etat_reglages "normal"
 
   # langues
   menu .menu.reglages.lang -tearoff 0 
-  .menu.reglages add cascade -label "[mc "Langue"]" -menu .menu.reglages.lang
+  .menu.reglages add cascade -label [mc "Langue"] -menu .menu.reglages.lang
 
   foreach i [glob [file join  $glob(home_msgs) *.msg]] {
-    set langue [string map {.msg "" } [file tail $i]]
-    .menu.reglages.lang add radio -label $langue -variable langue -command "setlang $langue; lanceappli mulot.tcl 0"
+    set lang [string map {.msg "" } [file tail $i]]
+    set langAux [lindex [split $lang "."] end-1]
+    set langue [lindex [split $langAux "_"] 0]
+    .menu.reglages.lang add radio -label $langue -variable langue -command "setlang $lang; lanceappli mulot.tcl 0"
   }
 
   # quel ordre ?
@@ -287,20 +309,21 @@ proc main_loop {} {
   # langues
   set l_langues [glob  [file join [pwd] aides aide.*.html]]
   foreach langue $l_langues {
-    set lang [lindex [split $langue "."] end-1]
+    set langAux [lindex [split $langue "."] end-1]
+    set lang [lindex [split $langAux "_"] 0]
     .menu.aide add command -label "[mc Aide] $lang" -command "aider $lang"
   }
     # credit
   if { [llength [glob -nocomplain [file join  [pwd] credits *.html]]] > 0 } {
     menu .menu.aide.credits -tearoff 0 
-    .menu.aide add cascade -label [mc "credits"] -menu .menu.aide.credits
+    .menu.aide add cascade -label [mc "Crédits"] -menu .menu.aide.credits
        foreach i [glob [file join  [pwd] credits *.html]] {
         set c [string map {.html "" } [file tail $i]]
         .menu.aide.credits add radio -label $c -variable credit -command "credits $c"
       } 
   }
   # a propos
-  .menu.aide add command -label [mc "A_propos ..."] -command "source apropos.tcl"
+  .menu.aide add command -label [mc "À propos ..."] -command "source apropos.tcl"
 
   . configure -menu .menu
 
@@ -337,6 +360,7 @@ proc main_loop {} {
         -text [mc $d] -compound top \
         -command "set_img_dir $d"
     }
+    bind $c.$d <Button-3> "lister_images $i"
     grid $c.$d -column $ncolonne -row $nligne -sticky e -padx 10 -pady 10
     incr ncolonne
     if { $ncolonne > $maxcolonnes } {
@@ -385,6 +409,6 @@ bind . <Control-q> {exit}
 wm resizable . 0 0
 wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-110]+0+0
 . configure -background blue
-wm title . [mc "Titre"]
+wm title . [mc "Mulot : motricité fine"]
 
 main_loop

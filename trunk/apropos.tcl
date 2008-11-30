@@ -26,14 +26,14 @@
 global Home
 variable langue
 
-set version "Version 8.11a du 22/11/2008"
+set version "Version 8.11b du 30/11/2008"
 package require Img
 ###################
 # CREATING WIDGETS
 ###################
 toplevel .apropos -background grey
 .apropos configure -width 200 -height 300
-wm title .apropos "A propos de AbulEdu - MULOT"
+wm title .apropos [mc "A propos de AbulEdu - MULOT"]
 wm resizable .apropos 0 0
 
 	set fich "background.png"
@@ -41,7 +41,8 @@ wm resizable .apropos 0 0
 
 label .apropos.lab28 \
 	-background blue -image [image create photo fgauche -file [file join sysdata $fich]]
-label .apropos.lab29 -font {Helvetica 10 bold} -background blue -text "ABULEDU MULOT \n Crédits\n A. CONNES : <andre.connes@wanadoo.fr>\nActivités et documentation :\nA. Lesca <als@calestampar.org>\nH. Baronnet <herve.baronnet@free.fr>\nGraphismes : F. Audirac et E. François\n<http://webaf.net/spip/>\n Logiciel en licence GPL" -fg white
+label .apropos.lab29 -font {Helvetica 10 bold} -background blue \
+      -text "ABULEDU MULOT \n Crédits\n A. CONNES : <andre.connes@wanadoo.fr>\nActivités et documentation :\nA. Lesca <als@calestampar.org>\nH. Baronnet <herve.baronnet@free.fr>\nGraphismes : F. Audirac et E. François\n<http://webaf.net/spip/>\n Logiciel en licence GPL" -fg white
 
 frame .apropos.fra30 \
         -borderwidth 2 -height 300 -width 200 -background grey

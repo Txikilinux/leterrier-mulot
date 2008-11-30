@@ -1,6 +1,11 @@
+v 8.11b
+=======
+- internationalisation conforme cahier des charges du Terrier
+- ajout menu-contextuel (clic-droit) sur la vignette-image
+  pour lister les noms des images du dossier sélectionné
 v 8.11
 ======
-- ajout du bouton Deviner
+- ajout du module Deviner
 v 8.4
 =====
 - ajout du sous-menu credits
