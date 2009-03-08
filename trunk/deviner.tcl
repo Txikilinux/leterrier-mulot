@@ -239,7 +239,8 @@ proc main {c} {
   set glob(theme) [gets $f]
   close $f
 
-  wm title . "[mc Deviner] : $glob(theme)"
+  set message ""; append message [mc "Deviner"] " : " $glob(theme)
+  wm title . $message
 
   ################### choix de l'image
   # choisir une image dans la liste im_choix(im_liste)

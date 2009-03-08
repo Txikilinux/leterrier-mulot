@@ -26,7 +26,7 @@
 global Home
 variable langue
 
-set version "Version 8.11b du 30/11/2008"
+set version "Version 9.3 du 08/03/2009"
 package require Img
 ###################
 # CREATING WIDGETS

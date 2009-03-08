@@ -69,13 +69,13 @@ if { $glob(platform) == "windows" } {
 #mode d'effacement : survol ou clic ou double-clic ?
 if { [lindex $argv 0] == 1 } {
   set modeEffacement Button-1
-  set glob(modeEffacement) Cliquer
+  set glob(modeEffacement) [mc "Cliquer"]
 } elseif { [lindex $argv 0] == 2 } {
   set modeEffacement Double-ButtonPress-1
-  set glob(modeEffacement) Double-cliquer
+  set glob(modeEffacement) [mc "Double-cliquer"]
 } else {
   set modeEffacement Enter
-  set glob(modeEffacement) Survoler
+  set glob(modeEffacement) [mc "Survoler"]
 }
 
 #charger la liste (triee) des images
@@ -200,7 +200,8 @@ proc main {c} {
   set glob(theme) [gets $f]
   close $f
 
-  wm title . "[mc $glob(modeEffacement)] : $glob(theme)"
+  set mesage ""; append message $glob(modeEffacement) " : " $glob(theme)
+  wm title . $message
 
   # afficher le fond, fonction de la boucle,
   # image de la liste des images sélectionnées

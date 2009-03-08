@@ -311,7 +311,8 @@ proc main_loop {} {
   foreach langue $l_langues {
     set langAux [lindex [split $langue "."] end-1]
     set lang [lindex [split $langAux "_"] 0]
-    .menu.aide add command -label "[mc Aide] $lang" -command "aider $lang"
+    set mssage ""; append mssage [mc "Aide"] " " $lang
+    .menu.aide add command -label $message -command "aider $lang"
   }
     # credit
   if { [llength [glob -nocomplain [file join  [pwd] credits *.html]]] > 0 } {

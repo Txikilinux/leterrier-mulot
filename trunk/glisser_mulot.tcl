@@ -144,7 +144,8 @@ proc main {c} {
   set glob(theme) [gets $f]
   close $f
 
-  wm title . "[mc Glisser-déposer] : $glob(theme)"
+  set message ""; append message [mc "Glisser-déposer"] " : " $glob(theme)
+  wm title . $message
 
   ################### choix de l'image
   # choisir une image dans la liste im_choix(im_liste)

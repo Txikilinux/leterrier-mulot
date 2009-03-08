@@ -1,8 +1,0 @@
-INSTALLATION
-============
-tar zxvf mulot.tgz dans un répertoire de votre choix
-en général dans /usr/share/abuledu/applications
-mkdir /var/leterrier/mulot
-
-
-$id$

@@ -221,7 +221,8 @@ bind . <Control-q> {exit}
 wm resizable . 0 0
 wm geometry . [expr [winfo screenwidth .]-10]x[expr [winfo screenheight .]-80]+0+0
 . configure -background blue
-wm title . "[mc Titre] : $glob(theme)"
+set message ""; append message [mc "Titre"] " : " $glob(theme)
+wm title . $message
 
 main_loop
 

@@ -187,10 +187,14 @@ proc bilan {qui} {
   set f [open $fnom.html w]
   set ojourdui [clock format [clock seconds] -format "%d/%m/%Y"]
   puts $f "<html>\n<head>\n<title>Bilan Mulot de $nom</title>\n</head><body>\n"
-  puts $f "<h2> $ojourdui - [mc "Synthèse"] : $nom </h2>"
-  puts $f "<table border='1' cellspacing='0'>\n<tr>\n<th>[mc "Catégorie"]</th>"
-  puts $f "<th>[mc "Nombre d'utilisation"]</th><th>[mc "Niveau atteint"]</th>"
-  puts $f "<th>[mc "Durée minimale"]</th><th>[mc "Durée moyenne"]</th><th>[mc "Durée maximale"]</th></tr>"
+  set message ""; appnd message  "<h2> " $ojourdui " - " [mc "Synthèse"] " : " $nom " </h2>"
+  puts $f $message
+  set message ""; append message "<table border='1' cellspacing='0'>\n<tr>\n<th>" [mc "Catégorie"] "</th>"
+  puts $f message
+  set message ""; append message "<th>" [mc "Nombre d'utilisation"] "</th><th>" [mc "Niveau atteint"] "</th>"
+  puts $f $message
+  set message ""; append mssage "<th>" [mc "Durée minimale"] "</th><th>" [mc "Durée moyenne"] "</th><th>" [mc "Durée maximale"] "</th></tr>"
+  puts $f $message
 
   foreach theme $glob(themes) {
     foreach action [list Survoler Cliquer Double-cliquer Parcourir Glisser-deposer Deviner] {
@@ -217,9 +221,11 @@ proc bilan {qui} {
   } else {
     .top.but_lemien configure -state disable
   }
-  .t.text insert end "\n[mc "Trace dans le fichier"] \n $file (+ ...cvs)"
+  set message ""; append message "\n" [mc "Trace dans le fichier"] "\n" $file " (+ ...cvs)"
+  .t.text insert end $massage
   .t.text see end
-  .t.text insert end "\n[mc "Synthèse dans le fichier"] \n $fnom.html "
+  set message ""; append message "\n" [mc "Synthèse dans le fichier"] "\n" $fnom ".html "
+  .t.text insert end $message
   .t.text see end
   .t.text insert end "\n\n*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*\n "
   .t.text see end
@@ -252,7 +258,8 @@ proc bilan_eleve { } {
 }
 
 proc bilan_classe {} {
-  .t.text insert end "\n\nBilan classe : [mc non_implante].\n\n"
+  set message ""; append message "\n\n" [mc "Bilan classe"] " : " [mc "non implanté"] ".\n\n"
+  .t.text insert end $message
 }
 
 proc bilan_tous {} {
@@ -268,7 +275,7 @@ proc efface_bilan {} {
   global fnom file
   catch { file delete $file}
   file delete "$fnom.html"
-  tk_messageBox -message "[mc "Trace et bilan effacés"]"
+  tk_messageBox -message [mc "Trace et bilan effacés"]
   .top.but_efface configure -state disabled
 }
 

@@ -327,7 +327,8 @@ proc main {c} {
   set glob(theme) [gets $f]
   close $f
 
-  wm title . "[mc Parcourir] : $glob(theme)"
+  set message ""; append message [mc "Parcourir"] " : " $glob(theme)
+  wm title . $message
 
   set liste_pistes [glob pistes/$glob(difficulte_piste).*]
   set r [expr int(rand()*[llength $liste_pistes])]
