@@ -193,7 +193,7 @@ proc bilan {qui} {
   puts $f message
   set message ""; append message "<th>" [mc "Nombre d'utilisation"] "</th><th>" [mc "Niveau atteint"] "</th>"
   puts $f $message
-  set message ""; append mssage "<th>" [mc "Durée minimale"] "</th><th>" [mc "Durée moyenne"] "</th><th>" [mc "Durée maximale"] "</th></tr>"
+  set message ""; append message "<th>" [mc "Durée minimale"] "</th><th>" [mc "Durée moyenne"] "</th><th>" [mc "Durée maximale"] "</th></tr>"
   puts $f $message
 
   foreach theme $glob(themes) {

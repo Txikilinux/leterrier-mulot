@@ -311,7 +311,7 @@ proc main_loop {} {
   foreach langue $l_langues {
     set langAux [lindex [split $langue "."] end-1]
     set lang [lindex [split $langAux "_"] 0]
-    set mssage ""; append mssage [mc "Aide"] " " $lang
+    set message ""; append message [mc "Aide"] " " $lang
     .menu.aide add command -label $message -command "aider $lang"
   }
     # credit
