@@ -18,6 +18,8 @@ OutputBaseFilename=..\..\..\..\abuledu-mulot-9.3
 Compression=lzma
 SolidCompression=yes
 LicenseFile=..\licence_gpl.txt
+AllowRootDirectory=true
+WizardImageFile=..\windows\logo-pingouin3.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -31,9 +33,9 @@ Source: "..\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createalls
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Le Terrier d'AbulEdu - Mulot"; Filename: "{app}\mulot.tcl"
+Name: "{group}\Le Terrier d'AbulEdu - Mulot"; Filename: "{app}\mulot.tcl"; IconFilename: {app}\windows\mulot.ico; IconIndex: 0; WorkingDir: {app}
 Name: "{commondesktop}\Le Terrier d'AbulEdu - Mulot"; Filename: "{app}\mulot.tcl"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\mulot.tcl"; Description: "{cm:LaunchProgram,Le Terrier d'AbulEdu - Mulot}"; Flags: shellexec postinstall skipifsilent
+Filename: "{app}\mulot.tcl"; Description: "{cm:LaunchProgram,Le Terrier d'AbulEdu - Mulot}"; Flags: shellexec postinstall skipifsilent; WorkingDir: {app}
 
