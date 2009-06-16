@@ -5,7 +5,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{A7B3A526-5931-11DE-C687-000E2EB85B1E}
+AppId={{3578F48E-5ACB-11DE-C687-000E2EB85B1E}
 AppName=Le Terrier d'AbulEdu - Mulot
 AppVerName=Le Terrier d'AbulEdu - Mulot 9.3
 AppPublisher=abuledu.org
@@ -14,7 +14,7 @@ AppSupportURL=http://www.abuledu.org/
 AppUpdatesURL=http://www.abuledu.org/
 DefaultDirName={pf}\AbulEdu/Mulot
 DefaultGroupName=Le Terrier d'AbulEdu
-OutputBaseFilename=..\..\..\..\abuledu-mulot-9.3
+OutputBaseFilename=..\..\..\abuledu-mulot-9.3
 Compression=lzma
 SolidCompression=yes
 LicenseFile=..\licence_gpl.txt
@@ -32,10 +32,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
-[Icons]
-Name: "{group}\Le Terrier d'AbulEdu - Mulot"; Filename: "{app}\mulot.tcl"; IconFilename: {app}\windows\mulot.ico; IconIndex: 0; WorkingDir: {app}
-Name: "{commondesktop}\Le Terrier d'AbulEdu - Mulot"; Filename: "{app}\mulot.tcl"; Tasks: desktopicon
-
 [Run]
 Filename: "{app}\mulot.tcl"; Description: "{cm:LaunchProgram,Le Terrier d'AbulEdu - Mulot}"; Flags: shellexec postinstall skipifsilent; WorkingDir: {app}
+
+[Dirs]
+Name: {app}\images; Permissions: everyone-modify
+
+[Icons]
+Name: {group}\Mulot; Filename: {app}\mulot.tcl; IconFilename: {app}\windows\mulot.ico; IconIndex: 0; WorkingDir: {app}
+Name: "{commondesktop}\Le Terrier d'AbulEdu - Mulot"; Filename: "{app}\mulot.tcl"; Tasks: desktopicon
+
 
