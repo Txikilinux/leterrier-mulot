@@ -29,6 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
+    m_widgetChoixTheme->show();
+
+    setWindowTitle(abeApp->getAbeApplicationLongName());
 }
 
 MainWindow::~MainWindow()

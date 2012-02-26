@@ -20,18 +20,31 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
+
+#ifndef WIDGETCHOIXTHEME_H
+#define WIDGETCHOIXTHEME_H
+
 #include "abuleduapplicationv1.h"
-#include "mainwindow.h"
+#include <QWidget>
+#include <QDir>
+#include <QLabel>
+#include <QGridLayout>
+#include <QDebug>
 
-int main(int argc, char *argv[])
-{
-    AbulEduApplicationV1 a(argc, argv,"leterrier-mulot","0.9.0");
-    a.setAbeApplicationLongName(QObject::trUtf8("AbulÉdu LeTerrier -- Mulot"));
-    a.setOrganizationDomain("abuledu.org");
-    a.setOrganizationName("leterrier");
-
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+namespace Ui {
+    class widgetChoixTheme;
 }
+
+class widgetChoixTheme : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit widgetChoixTheme(QWidget *parent = 0);
+    ~widgetChoixTheme();
+
+private:
+    Ui::widgetChoixTheme *ui;
+};
+
+#endif // WIDGETCHOIXTHEME_H

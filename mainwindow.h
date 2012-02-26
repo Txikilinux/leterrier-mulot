@@ -25,6 +25,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "widgetchoixtheme.h"
 
 namespace Ui {
     class MainWindow;
@@ -40,6 +41,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    widgetChoixTheme *m_widgetChoixTheme;
 };
 
 #endif // MAINWINDOW_H
