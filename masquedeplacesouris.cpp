@@ -30,6 +30,11 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent) :
     setAcceptsHoverEvents(true);
 }
 
+void masqueDeplaceSouris::setSize(int width, int height)
+{
+    m_taille = QRectF(0,0,width,height);
+}
+
 void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPainterPath zoneDessin;
@@ -40,7 +45,7 @@ void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
 QRectF masqueDeplaceSouris::boundingRect() const
 {
-    return QRectF(0,0,50,50);
+    return m_taille;
 }
 
 void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)

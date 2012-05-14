@@ -38,12 +38,16 @@ widgetDeplaceSouris::widgetDeplaceSouris(QWidget *parent) :
     item = scene->addPixmap(image);
     ui->graphicsView->setScene(scene);
 
+    int largeur=150;
+    int hauteur=150;
+
     //Calcul du nombre de lignes et de colonnes necessaires
-    for(int i = 0; i < image.height(); i+=50) {
-        for(int j = 0; j < image.width(); j+=50) {
+    for(int i = 0; i < image.height(); i+=hauteur) {
+        for(int j = 0; j < image.width(); j+=largeur) {
             masqueDeplaceSouris *m = new masqueDeplaceSouris();
-            m->setParent(scene);
+            m->setSize(largeur,hauteur);
             m->moveBy(j,i);
+            m->setParent(scene);
             ui->graphicsView->scene()->addItem(m);
         }
     }
