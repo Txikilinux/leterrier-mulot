@@ -1,7 +1,7 @@
 /**
   * Classe 
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2010 Eric Seigne <eric.seigne@ryxeo.com>
+  * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -21,24 +21,34 @@
   */
 
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "masquedeplacesouris.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent) :
+    QGraphicsObject(parent)
 {
-    ui->setupUi(this);
-//    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
-//    m_widgetChoixTheme->show();
-
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
-    w->show();
-
-    setWindowTitle(abeApp->getAbeApplicationLongName());
+    m_taille = QRectF(0,0,50,50);
+    setAcceptsHoverEvents(true);
 }
 
-MainWindow::~MainWindow()
+void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    delete ui;
+    QPainterPath zoneDessin;
+    zoneDessin.addRect(boundingRect());
+    painter->setBrush(Qt::SolidPattern);
+    painter->drawRect(m_taille);
+}
+
+QRectF masqueDeplaceSouris::boundingRect() const
+{
+    return QRectF(0,0,50,50);
+}
+
+void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+{
+    setVisible(false);
+}
+
+void masqueDeplaceSouris::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
+{
+    setVisible(false);
 }

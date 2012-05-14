@@ -26,6 +26,7 @@
 
 #include <QMainWindow>
 #include "widgetchoixtheme.h"
+#include "widgetdeplacesouris.h"
 
 namespace Ui {
     class MainWindow;

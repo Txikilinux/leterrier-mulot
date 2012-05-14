@@ -1,7 +1,7 @@
 /**
   * Classe 
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2010 Eric Seigne <eric.seigne@ryxeo.com>
+  * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -21,24 +21,27 @@
   */
 
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#ifndef WIDGETDEPLACESOURIS_H
+#define WIDGETDEPLACESOURIS_H
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
-    ui->setupUi(this);
-//    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
-//    m_widgetChoixTheme->show();
+#include <QWidget>
+#include <QGraphicsItem>
+#include "masquedeplacesouris.h"
 
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
-    w->show();
-
-    setWindowTitle(abeApp->getAbeApplicationLongName());
+namespace Ui {
+class widgetDeplaceSouris;
 }
 
-MainWindow::~MainWindow()
+class widgetDeplaceSouris : public QWidget
 {
-    delete ui;
-}
+    Q_OBJECT
+    
+public:
+    explicit widgetDeplaceSouris(QWidget *parent = 0);
+    ~widgetDeplaceSouris();
+    
+private:
+    Ui::widgetDeplaceSouris *ui;
+};
+
+#endif // WIDGETDEPLACESOURIS_H

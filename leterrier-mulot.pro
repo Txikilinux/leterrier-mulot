@@ -12,13 +12,18 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    widgetchoixtheme.cpp
+    widgetchoixtheme.cpp \
+    widgetdeplacesouris.cpp \
+    masquedeplacesouris.cpp
 
 HEADERS  += mainwindow.h \
-    widgetchoixtheme.h
+    widgetchoixtheme.h \
+    widgetdeplacesouris.h \
+    masquedeplacesouris.h
 
 FORMS    += mainwindow.ui \
-    widgetchoixtheme.ui
+    widgetchoixtheme.ui \
+    widgetdeplacesouris.ui
 
 #AbulEduApplicationV1
 include(lib/abuleduapplicationv1/abuleduapplicationv1.pri)

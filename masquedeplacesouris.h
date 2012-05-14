@@ -1,7 +1,7 @@
 /**
   * Classe 
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2010 Eric Seigne <eric.seigne@ryxeo.com>
+  * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -21,24 +21,29 @@
   */
 
 
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#ifndef MASQUEDEPLACESOURIS_H
+#define MASQUEDEPLACESOURIS_H
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+#include <QGraphicsObject>
+#include <QPainter>
+
+class masqueDeplaceSouris : public QGraphicsObject
 {
-    ui->setupUi(this);
-//    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
-//    m_widgetChoixTheme->show();
+    Q_OBJECT
+public:
+    explicit masqueDeplaceSouris(QGraphicsObject *parent = 0);
 
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
-    w->show();
+private:
+        void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+        QRectF m_taille;
+        QRectF boundingRect() const;
 
-    setWindowTitle(abeApp->getAbeApplicationLongName());
-}
+signals:
+    
+public slots:
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+};
+
+#endif // MASQUEDEPLACESOURIS_H
