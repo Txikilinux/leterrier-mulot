@@ -24,6 +24,7 @@
 #ifndef WIDGETDEPLACESOURIS_H
 #define WIDGETDEPLACESOURIS_H
 
+#include <QDebug>
 #include <QWidget>
 #include <QGraphicsItem>
 #include "masquedeplacesouris.h"
@@ -36,12 +37,16 @@ class widgetDeplaceSouris : public QWidget
 {
     Q_OBJECT
     
+private slots:
+    void slotCacheMasque();
+
 public:
     explicit widgetDeplaceSouris(QWidget *parent = 0);
     ~widgetDeplaceSouris();
     
 private:
     Ui::widgetDeplaceSouris *ui;
+    int m_nbTotalMasques;
 };
 
 #endif // WIDGETDEPLACESOURIS_H

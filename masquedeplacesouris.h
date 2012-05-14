@@ -40,10 +40,10 @@ private:
         QRectF boundingRect() const;
 
 signals:
-    
+        void signalCacheMasque();
+
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 
 };
 

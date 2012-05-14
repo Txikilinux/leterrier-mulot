@@ -30,6 +30,8 @@ widgetDeplaceSouris::widgetDeplaceSouris(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_nbTotalMasques = 0;
+
     QGraphicsScene *scene = new QGraphicsScene();
     QGraphicsItem *item;
     QPixmap image;
@@ -44,11 +46,14 @@ widgetDeplaceSouris::widgetDeplaceSouris(QWidget *parent) :
     //Calcul du nombre de lignes et de colonnes necessaires
     for(int i = 0; i < image.height(); i+=hauteur) {
         for(int j = 0; j < image.width(); j+=largeur) {
+            qDebug() << "ajout d'une piece ... ";
             masqueDeplaceSouris *m = new masqueDeplaceSouris();
             m->setSize(largeur,hauteur);
             m->moveBy(j,i);
             m->setParent(scene);
+            connect(m, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             ui->graphicsView->scene()->addItem(m);
+            m_nbTotalMasques++;
         }
     }
 
@@ -58,4 +63,13 @@ widgetDeplaceSouris::widgetDeplaceSouris(QWidget *parent) :
 widgetDeplaceSouris::~widgetDeplaceSouris()
 {
     delete ui;
+}
+
+void widgetDeplaceSouris::slotCacheMasque()
+{
+    qDebug() << "widgetDeplaceSouris::slotCacheMasque : " << m_nbTotalMasques;
+    m_nbTotalMasques--;
+    if(m_nbTotalMasques == 0) {
+        qDebug() << "Bravo on passe à la suite ...";
+    }
 }

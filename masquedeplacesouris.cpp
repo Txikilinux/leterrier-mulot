@@ -1,5 +1,5 @@
 /**
-  * Classe 
+  * Classe masqueDeplaceSouris
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -26,6 +26,7 @@
 masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent) :
     QGraphicsObject(parent)
 {
+    //Une taille par défaut de 50x50
     m_taille = QRectF(0,0,50,50);
     setAcceptsHoverEvents(true);
 }
@@ -51,9 +52,5 @@ QRectF masqueDeplaceSouris::boundingRect() const
 void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
     setVisible(false);
-}
-
-void masqueDeplaceSouris::hoverLeaveEvent(QGraphicsSceneHoverEvent *)
-{
-    setVisible(false);
+    emit signalCacheMasque();
 }
