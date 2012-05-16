@@ -1,5 +1,5 @@
 /**
-  * Classe 
+  * Classe
   * @see https://redmine.ryxeo.com/projects/
   * @author 2010 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -29,16 +29,44 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
-//    m_widgetChoixTheme->show();
+    //    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
+    //    m_widgetChoixTheme->show();
 
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
-    w->show();
+    //Mettez ce qu'il faut en fonction de votre menu d'accueil
+    m_texteBulles.clear();
+    m_texteBulles.insert(0, trUtf8("Orthographe"));
+    m_texteBulles.insert(1, trUtf8("Reconnaître 1"));
+    m_texteBulles.insert(2, trUtf8("Reconnaître 2"));
 
-    setWindowTitle(abeApp->getAbeApplicationLongName());
+
+    QSettings *m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
+    m_abuleduaccueil = new AbulEduPageAccueilV1(m_config, &m_texteBulles, ui->fr_principale);
+    connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)));
+
+
+    //On centre la fenetre sur l'ecran de l'utilisateur
+    QDesktopWidget *widget = QApplication::desktop();
+    int desktop_width = widget->width();
+    int desktop_height = widget->height();
+    this->move((desktop_width-this->width())/2, (desktop_height-this->height())/2);
+
+    m_abuleduaccueil->setDimensionsWidgets();
+    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
+    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
+
+    //    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
+    //    w->show();
+    //    setWindowTitle(abeApp->getAbeApplicationLongName());
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_action_Survol_triggered()
+{
+    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
+    w->show();
+
 }

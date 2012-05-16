@@ -24,9 +24,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QDesktopWidget>
 #include <QMainWindow>
 #include "widgetchoixtheme.h"
 #include "widgetdeplacesouris.h"
+#include "abuledupageaccueilv1.h"
 
 namespace Ui {
     class MainWindow;
@@ -40,9 +42,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_action_Survol_triggered();
+
 private:
     Ui::MainWindow *ui;
     widgetChoixTheme *m_widgetChoixTheme;
+    AbulEduPageAccueilV1 *m_abuleduaccueil;
+    QMap<int, QString>m_texteBulles;
+
 };
 
 #endif // MAINWINDOW_H
