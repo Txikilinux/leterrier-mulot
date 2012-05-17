@@ -40,6 +40,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void resizeEvent(QResizeEvent *);
     ~MainWindow();
 
 private slots:

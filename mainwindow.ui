@@ -26,6 +26,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <layout class="QGridLayout" name="gridLayout_3"/>
      </widget>
     </item>
    </layout>

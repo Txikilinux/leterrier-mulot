@@ -34,9 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Mettez ce qu'il faut en fonction de votre menu d'accueil
     m_texteBulles.clear();
-    m_texteBulles.insert(0, trUtf8("Orthographe"));
-    m_texteBulles.insert(1, trUtf8("Reconnaître 1"));
-    m_texteBulles.insert(2, trUtf8("Reconnaître 2"));
+    m_texteBulles.insert(0, trUtf8("Survol"));
+//    m_texteBulles.insert(1, trUtf8("Reconnaître 1"));
+//    m_texteBulles.insert(2, trUtf8("Reconnaître 2"));
 
 
     QSettings *m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
@@ -59,6 +59,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //    setWindowTitle(abeApp->getAbeApplicationLongName());
 }
 
+void MainWindow::resizeEvent(QResizeEvent *)
+{
+    m_abuleduaccueil->setDimensionsWidgets();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -66,7 +71,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_action_Survol_triggered()
 {
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
+    widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
     w->show();
-
 }

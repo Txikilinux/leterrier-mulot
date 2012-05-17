@@ -27,6 +27,9 @@
 #include <QDebug>
 #include <QWidget>
 #include <QGraphicsItem>
+#include <QFileInfoList>
+#include <QDateTime>
+#include <QDir>
 #include "masquedeplacesouris.h"
 
 namespace Ui {
@@ -37,6 +40,9 @@ class widgetDeplaceSouris : public QWidget
 {
     Q_OBJECT
     
+private:
+    void lanceLeJeu();
+
 private slots:
     void slotCacheMasque();
 
@@ -47,6 +53,7 @@ public:
 private:
     Ui::widgetDeplaceSouris *ui;
     int m_nbTotalMasques;
+    QGraphicsScene *m_scene;
 };
 
 #endif // WIDGETDEPLACESOURIS_H

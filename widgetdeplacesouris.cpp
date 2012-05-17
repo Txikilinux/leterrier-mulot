@@ -32,32 +32,9 @@ widgetDeplaceSouris::widgetDeplaceSouris(QWidget *parent) :
 
     m_nbTotalMasques = 0;
 
-    QGraphicsScene *scene = new QGraphicsScene();
-    QGraphicsItem *item;
-    QPixmap image;
+    m_scene = new QGraphicsScene();
 
-    image.load("data/images/animaux/marmotte.jpg", 0, Qt::AutoColor);
-    item = scene->addPixmap(image);
-    ui->graphicsView->setScene(scene);
-
-    int largeur=150;
-    int hauteur=150;
-
-    //Calcul du nombre de lignes et de colonnes necessaires
-    for(int i = 0; i < image.height(); i+=hauteur) {
-        for(int j = 0; j < image.width(); j+=largeur) {
-            qDebug() << "ajout d'une piece ... ";
-            masqueDeplaceSouris *m = new masqueDeplaceSouris();
-            m->setSize(largeur,hauteur);
-            m->moveBy(j,i);
-            m->setParent(scene);
-            connect(m, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-            ui->graphicsView->scene()->addItem(m);
-            m_nbTotalMasques++;
-        }
-    }
-
-
+    lanceLeJeu();
 }
 
 widgetDeplaceSouris::~widgetDeplaceSouris()
@@ -72,4 +49,39 @@ void widgetDeplaceSouris::slotCacheMasque()
     if(m_nbTotalMasques == 0) {
         qDebug() << "Bravo on passe à la suite ...";
     }
+}
+
+void widgetDeplaceSouris::lanceLeJeu()
+{
+    QGraphicsItem *item;
+    QPixmap image;
+
+    QDir dir("data/images/animaux/");
+    dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    QFileInfoList list = dir.entryInfoList();
+    qsrand(QDateTime::currentDateTime ().toTime_t ());
+    int n = (qrand() % (list.size() + 1));
+    QFileInfo fileInfo = list.at(n);
+
+    image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
+    item = m_scene->addPixmap(image);
+    ui->graphicsView->setScene(m_scene);
+
+    int largeur=150;
+    int hauteur=150;
+
+    //Calcul du nombre de lignes et de colonnes necessaires
+    for(int i = 0; i < image.height(); i+=hauteur) {
+        for(int j = 0; j < image.width(); j+=largeur) {
+            qDebug() << "ajout d'une piece ... ";
+            masqueDeplaceSouris *m = new masqueDeplaceSouris();
+            m->setSize(largeur,hauteur);
+            m->moveBy(j,i);
+            m->setParent(m_scene);
+            connect(m, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+            ui->graphicsView->scene()->addItem(m);
+            m_nbTotalMasques++;
+        }
+    }
+
 }
