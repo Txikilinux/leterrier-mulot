@@ -30,6 +30,7 @@
 #include <QFileInfoList>
 #include <QDateTime>
 #include <QDir>
+#include <QTimer>
 #include "masquedeplacesouris.h"
 
 namespace Ui {
@@ -40,10 +41,8 @@ class widgetDeplaceSouris : public QWidget
 {
     Q_OBJECT
     
-private:
-    void lanceLeJeu();
-
 private slots:
+    void lanceLeJeu();
     void slotCacheMasque();
 
 public:
@@ -54,6 +53,8 @@ private:
     Ui::widgetDeplaceSouris *ui;
     int m_nbTotalMasques;
     QGraphicsScene *m_scene;
+    QStringList m_ListeFichiers;
+    int m_numImage; //pour savoir si on est a la 1ere ou 10 image -> taille des caches
 };
 
 #endif // WIDGETDEPLACESOURIS_H

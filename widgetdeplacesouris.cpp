@@ -30,8 +30,15 @@ widgetDeplaceSouris::widgetDeplaceSouris(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_numImage = 0;
     m_nbTotalMasques = 0;
 
+    QDir dir("data/images/animaux/");
+    dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    QFileInfoList list = dir.entryInfoList();
+    for(int i = 0; i < list.count(); i++) {
+        m_ListeFichiers << list.at(i).absoluteFilePath();
+    }
     m_scene = new QGraphicsScene();
 
     lanceLeJeu();
@@ -48,6 +55,13 @@ void widgetDeplaceSouris::slotCacheMasque()
     m_nbTotalMasques--;
     if(m_nbTotalMasques == 0) {
         qDebug() << "Bravo on passe à la suite ...";
+        if(m_ListeFichiers.count() > 0) {
+            m_numImage++;
+            QTimer::singleShot(2000, this, SLOT(lanceLeJeu()));
+        }
+        else {
+            qDebug() << "L'exercice est terminé ...";
+        }
     }
 }
 
@@ -56,12 +70,9 @@ void widgetDeplaceSouris::lanceLeJeu()
     QGraphicsItem *item;
     QPixmap image;
 
-    QDir dir("data/images/animaux/");
-    dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-    QFileInfoList list = dir.entryInfoList();
     qsrand(QDateTime::currentDateTime ().toTime_t ());
-    int n = (qrand() % (list.size() + 1));
-    QFileInfo fileInfo = list.at(n);
+    int n = (qrand() % (m_ListeFichiers.size()));
+    QFileInfo fileInfo = m_ListeFichiers.takeAt(n);
 
     image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
     item = m_scene->addPixmap(image);
@@ -69,6 +80,22 @@ void widgetDeplaceSouris::lanceLeJeu()
 
     int largeur=150;
     int hauteur=150;
+    if(m_numImage > 9) {
+        largeur=15;
+        hauteur=15;
+    }
+    else if(m_numImage > 7) {
+        largeur=25;
+        hauteur=25;
+    }
+    else if(m_numImage > 5) {
+        largeur=50;
+        hauteur=50;
+    }
+    else if(m_numImage > 3) {
+        largeur=100;
+        hauteur=100;
+    }
 
     //Calcul du nombre de lignes et de colonnes necessaires
     for(int i = 0; i < image.height(); i+=hauteur) {
