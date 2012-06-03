@@ -69,6 +69,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::slotDemo()
+{
+    qDebug() << " On passe en mode démo ...";
+}
+
 void MainWindow::on_action_Survol_triggered()
 {
     widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);

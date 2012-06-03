@@ -43,6 +43,9 @@ public:
     void resizeEvent(QResizeEvent *);
     ~MainWindow();
 
+public slots:
+    void slotDemo();
+
 private slots:
     void on_action_Survol_triggered();
 

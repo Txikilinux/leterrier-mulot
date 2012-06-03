@@ -20,6 +20,7 @@
   */
 
 #include "abuleduapplicationv1.h"
+#include "activityfilter.h"
 #include "version.h"
 #include "mainwindow.h"
 
@@ -57,6 +58,14 @@ int main(int argc, char *argv[])
     }
 //    splash->deleteLater();
     // ================== splashscreen end
+
+
+    activityFilter *ef;
+    ef = new activityFilter(&a);
+    a.installEventFilter(ef);
+
+    QObject::connect(ef, SIGNAL( userInactive() ),
+                     w,  SLOT( slotDemo() ));
 
     w->show();
 
