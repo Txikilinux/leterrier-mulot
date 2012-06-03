@@ -28,6 +28,8 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent) :
 {
     //Une taille par défaut de 50x50
     m_taille = QRectF(0,0,50,50);
+    m_couleur = QColor(Qt::black);
+    m_hideOnMouseOver = true;
     setAcceptsHoverEvents(true);
 }
 
@@ -36,11 +38,21 @@ void masqueDeplaceSouris::setSize(int width, int height)
     m_taille = QRectF(0,0,width,height);
 }
 
+void masqueDeplaceSouris::setColor(QColor couleur)
+{
+    m_couleur = couleur;
+}
+
+void masqueDeplaceSouris::setHideOnMouseOver(bool hide)
+{
+    m_hideOnMouseOver = hide;
+}
+
 void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPainterPath zoneDessin;
     zoneDessin.addRect(boundingRect());
-    painter->setBrush(Qt::SolidPattern);
+    painter->setBrush(QBrush(m_couleur));
     painter->drawRect(m_taille);
 }
 
@@ -51,6 +63,8 @@ QRectF masqueDeplaceSouris::boundingRect() const
 
 void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
-    setVisible(false);
-    emit signalCacheMasque();
+    if(m_hideOnMouseOver) {
+        setVisible(false);
+        emit signalCacheMasque();
+    }
 }

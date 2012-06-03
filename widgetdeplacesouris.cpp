@@ -1,5 +1,5 @@
 /**
-  * Classe 
+  * Classe
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -55,6 +55,12 @@ void widgetDeplaceSouris::slotCacheMasque()
     m_nbTotalMasques--;
     if(m_nbTotalMasques == 0) {
         qDebug() << "Bravo on passe à la suite ...";
+
+        //On affiche l'image en entier
+        for(int i = 0; i < m_listeMasquesFixes.count(); i++) {
+            m_listeMasquesFixes.at(i)->setVisible(false);
+        }
+
         if(m_ListeFichiers.count() > 0) {
             m_numImage++;
             QTimer::singleShot(2000, this, SLOT(lanceLeJeu()));
@@ -69,6 +75,9 @@ void widgetDeplaceSouris::lanceLeJeu()
 {
     QGraphicsItem *item;
     QPixmap image;
+
+    m_scene->clear();
+    m_listeMasquesFixes.clear();
 
     qsrand(QDateTime::currentDateTime ().toTime_t ());
     int n = (qrand() % (m_ListeFichiers.size()));
@@ -96,19 +105,33 @@ void widgetDeplaceSouris::lanceLeJeu()
         largeur=100;
         hauteur=100;
     }
-
+    int nbTotalPieces = 0;
     //Calcul du nombre de lignes et de colonnes necessaires
     for(int i = 0; i < image.height(); i+=hauteur) {
         for(int j = 0; j < image.width(); j+=largeur) {
-            qDebug() << "ajout d'une piece ... ";
+            qDebug() << "ajout d'une piece ... " << nbTotalPieces;
+            nbTotalPieces++;
             masqueDeplaceSouris *m = new masqueDeplaceSouris();
             m->setSize(largeur,hauteur);
             m->moveBy(j,i);
+            m->setColor(Qt::black);
             m->setParent(m_scene);
-            connect(m, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+            m->setHideOnMouseOver(false);
             ui->graphicsView->scene()->addItem(m);
-            m_nbTotalMasques++;
+            m_listeMasquesFixes << m;
         }
     }
 
+    //Et ensuite on fait en sorte que seuls 7 masques soient actifs
+    while(m_nbTotalMasques < 7) {
+        //Seuls quelques masques sont "survolables", les autres ne bougent pas quand
+        //on les survole mais disparaissent quand il n'y a plus de masques sensibles
+        int alea = (qrand() % (m_listeMasquesFixes.count()));
+        qDebug() << "alea = " << alea;
+        masqueDeplaceSouris *m = m_listeMasquesFixes.takeAt(alea);
+        connect(m, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+        m_nbTotalMasques++;
+        m->setColor(Qt::yellow);
+        m->setHideOnMouseOver(true);
+    }
 }

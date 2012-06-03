@@ -55,6 +55,7 @@ private:
     QGraphicsScene *m_scene;
     QStringList m_ListeFichiers;
     int m_numImage; //pour savoir si on est a la 1ere ou 10 image -> taille des caches
+    QList<masqueDeplaceSouris*> m_listeMasquesFixes;
 };
 
 #endif // WIDGETDEPLACESOURIS_H
