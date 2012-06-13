@@ -1,5 +1,4 @@
-/**
-  * Classe 
+/** Classe widgetDeplaceSouris
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -40,7 +39,7 @@ class widgetDeplaceSouris;
 class widgetDeplaceSouris : public QWidget
 {
     Q_OBJECT
-    
+
 private slots:
     void lanceLeJeu();
     void slotCacheMasque();
@@ -48,7 +47,7 @@ private slots:
 public:
     explicit widgetDeplaceSouris(QWidget *parent = 0);
     ~widgetDeplaceSouris();
-    
+
 private:
     Ui::widgetDeplaceSouris *ui;
     int m_nbTotalMasques;

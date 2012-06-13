@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
 
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
+
+    //Verifier si le chemin de stockage des langues est bien celui la
     translator.load("leterrier-mulot_"+locale, "./conf/lang");
     a.installTranslator(&translator);
 
@@ -60,6 +62,8 @@ int main(int argc, char *argv[])
     // ================== splashscreen end
 
 
+    //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
+    //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
     activityFilter *ef;
     ef = new activityFilter(&a);
     a.installEventFilter(ef);
