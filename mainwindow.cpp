@@ -22,12 +22,17 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "exercicesurvol.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    m_localDebug = true;
+
     ui->setupUi(this);
+    exerciceEnCours = false;
+
     //    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
     //    m_widgetChoixTheme->show();
 
@@ -77,4 +82,42 @@ void MainWindow::on_action_Survol_triggered()
 {
     widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
     w->show();
+}
+
+void MainWindow::abeLanceExo(int numero)
+{
+    //si un exercice est en cours -> on ignore
+    if(exerciceEnCours){return;}
+
+    // todo histoire des modules !
+
+    setWindowTitle(abeApp->getAbeApplicationLongName()+"--"+m_texteBulles[numero]);
+    show();
+
+    switch (numero)
+    {
+    case 0:
+        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Survol";
+        {
+            //Exer *b = new ExercicePhraseSansEspaces(gv_Accueil,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+            ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil);
+            connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+            //connect(b, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+            //gv_Accueil->abePageAccueilDesactiveZones(true);
+            //gv_Accueil->abePageAccueilGetMenu()->hide();
+            exerciceEnCours = true;
+        }
+
+        exerciceEnCours = true;
+        break;
+    }
+}
+
+void MainWindow::exerciceExited()
+{
+    if (m_localDebug) qDebug()<<"Exercice Exited";
+    m_abuleduaccueil->abePageAccueilDesactiveZones(false);
+    m_abuleduaccueil->abePageAccueilGetMenu()->show();
+    exerciceEnCours = false;
+    show();
 }

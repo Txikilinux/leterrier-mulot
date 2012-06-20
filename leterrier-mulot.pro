@@ -14,13 +14,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     widgetchoixtheme.cpp \
     widgetdeplacesouris.cpp \
-    masquedeplacesouris.cpp
+    masquedeplacesouris.cpp \
+    exercicesurvol.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
     widgetchoixtheme.h \
     widgetdeplacesouris.h \
-    masquedeplacesouris.h
+    masquedeplacesouris.h \
+    exercicesurvol.h
 
 FORMS    += mainwindow.ui \
     widgetchoixtheme.ui \
@@ -40,5 +42,5 @@ include(lib/abuledupageaccueilv1/abuledupageaccueilv1.pri)
 include(lib/abuledugraphicmenuv1/abuledugraphicmenuv1.pri)
 include(lib/abuledulabelv1/abuledulabelv1.pri)
 include(lib/maia/maia.pri)
-include(lib/abuleduetiquettev1/abuleduetiquettesv1.pri)
+include(lib/abuleduetiquettesv1/abuleduetiquettesv1.pri)
 

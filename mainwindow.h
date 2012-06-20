@@ -46,6 +46,7 @@ public slots:
     void slotDemo();
 
 private slots:
+    /** Slot qui gère l'action de survol avec la souris */
     void on_action_Survol_triggered();
 
 private:
@@ -53,6 +54,16 @@ private:
     widgetChoixTheme *m_widgetChoixTheme;
     AbulEduPageAccueilV1 *m_abuleduaccueil;
     QMap<int, QString>m_texteBulles;
+    // booléen qui indique si un exercice est en cours (cf abeLanceExo)
+    bool exerciceEnCours;
+
+    bool m_localDebug;
+
+private slots:
+    //methode qui lance les exos en fonction du numero et de la zone cliquée
+    // cf m_texteBulles.insert
+    void abeLanceExo(int numero);
+    void exerciceExited();
 
 };
 
