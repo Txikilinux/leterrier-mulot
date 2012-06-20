@@ -1,8 +1,8 @@
-http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduapplicationv1 lib/abuleduapplicationv1 revid:icham.sirat@ryxeo.com-20120612081819-lie0ehw2aw44lj35
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduapplicationv1 lib/abuleduapplicationv1 revid:eric.seigne@ryxeo.com-20120618204757-7vpklq9d55elbtg1
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduconstantesv1 lib/abuleduconstantesv1 revid:philippe.cadaugade@ryxeo.com-20120525070920-in0y3ee6wuda72h0
-http://redmine.ryxeo.com/code/leterrier-developpeu/abuleducommonstatesv1/ lib/abuleducommonstatesv1 revid:icham.sirat@ryxeo.com-20120612081659-rgwdrysf828l2nyp
-http://redmine.ryxeo.com/code/leterrier-developpeu/abuledustatemachinev1/ lib/abuledustatemachinev1 revid:eric.seigne@ryxeo.com-20120613121501-6c1bmcfq8r56rr0j
-http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduexercicev1/ lib/abuleduexercicev1 revid:icham.sirat@ryxeo.com-20120613103045-11dkzesrhhhj8p25
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuleducommonstatesv1/ lib/abuleducommonstatesv1 revid:philippe.cadaugade@ryxeo.com-20120614071507-wdkx7e1azw7jqgm4
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuledustatemachinev1/ lib/abuledustatemachinev1 revid:philippe.cadaugade@ryxeo.com-20120615131045-14y6ndxyxpc353ps
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduexercicev1/ lib/abuleduexercicev1 revid:eric.seigne@ryxeo.com-20120616130241-zfat7ru1vbxt9wz2
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuledutetev1 lib/abuledutetev1 revid:philippe.cadaugade@ryxeo.com-20120604121313-3urn7i5akhx1c6vg
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduflatboutonv1/ lib/abuleduflatboutonv1 revid:frucot.jeanlouis@free.fr-20120530131621-fday0n3ofz4b9oha
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuledunetworkaccessmanagerv1/ lib/abuledunetworkaccessmanagerv1 revid:eric.seigne@ryxeo.com-20120612140933-zvdpxiufen2k5mvy
@@ -10,3 +10,4 @@ http://redmine.ryxeo.com/code/leterrier-developpeu/maia/ lib/maia revid:eric.sei
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuledupageaccueilv1/ lib/abuledupageaccueilv1 revid:philippe.cadaugade@ryxeo.com-20120502075220-tsmjeepo157dycy5
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuledugraphicmenuv1/ lib/abuledugraphicmenuv1 revid:philippe.cadaugade@ryxeo.com-20120604120804-q5525bz2150eapq0
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuledulabelv1 lib/abuledulabelv1 revid:philippe.cadaugade@ryxeo.com-20120529094821-nyane32grdg17vxv
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduetiquettesv1 lib/abuleduetiquettesv1 revid:philippe.cadaugade@ryxeo.com-20120618075602-w687vg208phmjgry
