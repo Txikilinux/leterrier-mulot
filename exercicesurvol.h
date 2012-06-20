@@ -40,7 +40,7 @@ private slots:
 
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);
-//    void setDimensionsWidgets();
+    void setDimensionsWidgets();
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc

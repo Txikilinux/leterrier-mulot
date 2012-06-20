@@ -89,6 +89,7 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     // Dans notre cas, la liste d'images choisie aléatoirement
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
+    setDimensionsWidgets();
 
 }
 
@@ -101,6 +102,7 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
     // Choix de l'image dans la liste
     if (m_localDebug) qDebug()<<"Methode mon exercice !!!!!";
     AbulEduCommonStatesV1::slotInitQuestionEntered();
+    setDimensionsWidgets();
 }
 
 //void ExerciceSurvol::slotQuestionEntered() //todo
@@ -148,9 +150,10 @@ void ExerciceSurvol::showEvent(QShowEvent *event) //todo
     setDimensionsWidgets();
 }
 
-//void ExerciceSurvol::setDimensionsWidgets() //todo
-//{
-//}
+void ExerciceSurvol::setDimensionsWidgets() //todo
+{
+    getAbeExerciceTelecommandeV1()->abeTelecommandeResize();
+}
 
 
 ////////////////////////////// Méthodes propres à la classe ///////////////////////////////////////
