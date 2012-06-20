@@ -17,6 +17,24 @@ private:
     AbulEduEtiquettesV1 *gv_AireDeJeu;
 
     QWidget *m_parent;
+    bool m_localDebug;
+
+private slots:
+    void slotSequenceEntered();
+    void slotPresenteSequenceEntered();
+    void slotPresentationExerciceEntered();
+    void slotRealisationExerciceEntered();
+    void slotInitQuestionEntered();
+    void slotQuestionEntered();
+    void slotVerificationQuestionEntered();
+    void slotBilanExerciceEntered();
+    void slotBilanSequenceEntered();
+    void slotBilanSequenceExited();
+    void slotQuitter();
+
+    void resizeEvent(QResizeEvent *event);
+    void showEvent(QShowEvent *event);
+    void setDimensionsWidgets();
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
