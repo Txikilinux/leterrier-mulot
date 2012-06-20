@@ -1,6 +1,7 @@
 #ifndef EXERCICESURVOL_H
 #define EXERCICESURVOL_H
 
+#include <QGraphicsProxyWidget>
 #include "abuleduetiquettesv1.h"
 #include "abuleducommonstatesv1.h"
 
@@ -15,26 +16,31 @@ public:
 private:
     //mon AbulEduEtiquettes afin d'avoir une graphicView et tt ce qui va avec
     AbulEduEtiquettesV1 *gv_AireDeJeu;
+    // Pour stocker AbulEduLabelWidget
+    QGraphicsProxyWidget *proxy;
+
 
     QWidget *m_parent;
     bool m_localDebug;
 
+    void redimensionneConsigne();
+
 private slots:
     void slotSequenceEntered();
     void slotPresenteSequenceEntered();
-    void slotPresentationExerciceEntered();
+//    void slotPresentationExerciceEntered();
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
-    void slotQuestionEntered();
-    void slotVerificationQuestionEntered();
-    void slotBilanExerciceEntered();
-    void slotBilanSequenceEntered();
-    void slotBilanSequenceExited();
+//    void slotQuestionEntered();
+//    void slotVerificationQuestionEntered();
+//    void slotBilanExerciceEntered();
+//    void slotBilanSequenceEntered();
+//    void slotBilanSequenceExited();
     void slotQuitter();
 
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);
-    void setDimensionsWidgets();
+//    void setDimensionsWidgets();
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
