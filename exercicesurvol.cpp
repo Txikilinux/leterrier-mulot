@@ -8,9 +8,6 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     m_parent = parent;
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
 
-   // getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->setAcceptDrops(true);
-   // setAbeTeteTelecommande("attente");
-
     //Création de l'aire de travail + propriétés
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
     // On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget
@@ -23,16 +20,10 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)"); // Fond transparent
     gv_AireDeJeu->setFrameShape(QFrame::NoFrame);
 
-
-
     getAbeExerciceMessageV1()->setParent(m_parent);
-
 
     // Demarrage de la machine à états
     sequenceMachine->start();
-
-
-
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -54,13 +45,6 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 
     abeEnableAnimationsConsigneBilan(false);
 
-//    // Determine si on présente la séquence ou pas.
-//    onPeutPresenterSequence = m_config->value("motsMelanges/afficherConsigneSequence").toBool();
-//    // Determine si on présente l'exercice ou pas.
-//    onPeutPresenterExercice = m_config->value("motsMelanges/exercice/1/afficherConsigneExercice").toBool();
-//    // Determine si on affiche le bilan de l'exercice
-//    onPeutPresenterBilanExercice = true;
-
     boiteTetes->resetTetes(m_nbExercices);
 
 }
@@ -68,7 +52,6 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 {
     if (m_localDebug) qDebug()<<"               ExerciceSurvol::slotPresenteSequenceEntered()";
-    //presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true); // Pour activer le bouton suivant
 
     // Normalement, on n'efface pas cette ligne, sinon tant pis
     AbulEduCommonStatesV1::slotPresenteSequenceEntered();
@@ -83,7 +66,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
     getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->setVisible(true);
-    redimensionneConsigne();
+    redimensionnerConsigne();
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
 }
 
@@ -126,9 +109,10 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
     setDimensionsWidgets();
     // Test d'affichage d'une image (temporaire !)
-    item = gv_AireDeJeu->scene()->addPixmap(listeImage[0]);
-   // gv_AireDeJeu->scene()->addItem(item);
 
+    // Redimensionnement de l'image à la taille de l'aire de traivail ==> OK
+    QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height());
+    item = gv_AireDeJeu->scene()->addPixmap(listeImage[0].scaled(size));
 
 }
 
@@ -140,9 +124,6 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
 
     // Choix de l'image dans la liste
     if (m_localDebug) qDebug()<<"Methode mon exercice !!!!!";
-
-//    m_widgetDeplaceSouris = new widgetDeplaceSouris(gv_AireDeJeu);
-//    m_widgetDeplaceSouris->show();
 
     AbulEduCommonStatesV1::slotInitQuestionEntered();
     setDimensionsWidgets();
@@ -215,23 +196,11 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
 
-    QSet<QAbstractState *> etats = sequenceMachine->configuration(); // On ne bouge que si on est dans l'état aproprié
+    // Redimensionne le widget de consignes
+    redimensionnerConsigne();
+    //TODO Redimensionner l'image avec condition de garde car peut lever une exception donc bug
 
-    // Redimensionne le widget de consignes et de bilan
-    redimensionneConsigne();
 
-//    redimensionneBilan();
-//    placeMots();
-//    placeCellules();
-
-//    if(etats.contains(presentationExercices)
-//            | etats.contains(presentationSequence)
-//            | etats.contains(bilanExercice)
-//            | etats.contains(bilanSequence)){
-//        if(getAbeExerciceMessageV1()->isVisible()){
-//            getAbeExerciceMessageV1()->abeWidgetMessageResize();
-//        }
-//    }
     AbulEduCommonStatesV1::setDimensionsWidgets();
 
     if (m_localDebug) qDebug()<<"                ExerciceSurvol::setDimensionsWidgets()---end";
@@ -240,7 +209,7 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
 
 ////////////////////////////// Méthodes propres à la classe ///////////////////////////////////////
 
-void ExerciceSurvol::redimensionneConsigne()
+void ExerciceSurvol::redimensionnerConsigne()
 {
     //    fondConsigne->setVisible(false); // Scorie liée à la compatibilité avec l'ancienne façon de faire
     getAbeExerciceMessageV1()->abeWidgetMessageResize();

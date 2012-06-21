@@ -33,7 +33,8 @@ private:
     QWidget *m_parent;
     bool m_localDebug;
 
-    void redimensionneConsigne();
+    void redimensionnerConsigne();
+    void redimensionnerImage();
 
 private slots:
     void slotSequenceEntered();
