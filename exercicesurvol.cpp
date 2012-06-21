@@ -52,8 +52,7 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
     getAbeExerciceMessageV1()->setParent(0);
     getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
 
-    abeEnableAnimationsConsigneBilan(true);
-//    abeEnableAnimationsConsigneBilan(false);
+    abeEnableAnimationsConsigneBilan(false);
 
 //    // Determine si on présente la séquence ou pas.
 //    onPeutPresenterSequence = m_config->value("motsMelanges/afficherConsigneSequence").toBool();
@@ -68,8 +67,8 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 
 void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 {
-    if (m_localDebug) qDebug()<<"               ExerciceSurvol::slotPresenteSequenceEntered();";
-    presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true); // Pour activer le bouton suivant
+    if (m_localDebug) qDebug()<<"               ExerciceSurvol::slotPresenteSequenceEntered()";
+    //presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true); // Pour activer le bouton suivant
 
     // Normalement, on n'efface pas cette ligne, sinon tant pis
     AbulEduCommonStatesV1::slotPresenteSequenceEntered();
@@ -88,6 +87,8 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
 }
 
+// A ce stade j'ai n'ai pas besoin de presentation de question
+// Les questions portent  sur le même exercice, juste les images qui changent
 //void ExerciceSurvol::slotPresentationExerciceEntered() //todo
 //{
 //    AbulEduCommonStatesV1::slotPresentationExerciceEntered();
@@ -97,13 +98,37 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
 {
     if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotRealisationExerciceEntered()";
 
-
-
     // Mettre tout ce qui est commun à chaque question
-    // Dans notre cas, la liste d'images choisie aléatoirement
+    m_nbImage = m_nbExercices; // le nb image = le nb exercice
+    m_nbTotalMasques = 7; //toujours 7 masques sur chaque image
+
+    // aller chercher le pack image
+    QDir dir("data/images/animaux/");
+    dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    QFileInfoList list = dir.entryInfoList();
+    for(int i = 0; i < list.count(); i++) {
+        m_ListeFichiers << list.at(i).absoluteFilePath();
+    }
+    // choisir 5 images au hasard dans le pack
+
+
+    for(int i = 0; i < m_nbImage; i++)
+    {
+        qsrand(QDateTime::currentDateTime ().toTime_t ());
+        int n = (qrand() % (m_ListeFichiers.size()));
+        QFileInfo fileInfo = m_ListeFichiers.takeAt(n);
+
+        image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
+        listeImage << image;
+
+    }
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
     setDimensionsWidgets();
+    // Test d'affichage d'une image (temporaire !)
+    item = gv_AireDeJeu->scene()->addPixmap(listeImage[0]);
+   // gv_AireDeJeu->scene()->addItem(item);
+
 
 }
 
@@ -116,19 +141,22 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
     // Choix de l'image dans la liste
     if (m_localDebug) qDebug()<<"Methode mon exercice !!!!!";
 
+//    m_widgetDeplaceSouris = new widgetDeplaceSouris(gv_AireDeJeu);
+//    m_widgetDeplaceSouris->show();
+
     AbulEduCommonStatesV1::slotInitQuestionEntered();
     setDimensionsWidgets();
 }
 
-//void ExerciceSurvol::slotQuestionEntered() //todo
-//{
-    // mise en place du masque
-//    AbulEduCommonStatesV1::slotQuestionEntered();
-//}
+void ExerciceSurvol::slotQuestionEntered() //todo
+{
+     //mise en place du masque
+    AbulEduCommonStatesV1::slotQuestionEntered();
+}
 
 //void ExerciceSurvol::slotVerificationQuestionEntered() //todo
 //{
-//    AbulEduCommonStatesV1::slo
+//    AbulEduCommonStatesV1::slotAfficheVerificationQuestionEntered();
 //}
 
 //void ExerciceSurvol::slotBilanExerciceEntered() //todo

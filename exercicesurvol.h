@@ -4,6 +4,7 @@
 #include <QGraphicsProxyWidget>
 #include "abuleduetiquettesv1.h"
 #include "abuleducommonstatesv1.h"
+//#include "widgetdeplacesouris.h"
 
 class ExerciceSurvol : public AbulEduCommonStatesV1
 {
@@ -19,6 +20,15 @@ private:
     // Pour stocker AbulEduLabelWidget
     QGraphicsProxyWidget *proxy;
 
+    // Pour l'exerciceSurvol
+//    widgetDeplaceSouris *m_widgetDeplaceSouris;
+
+    QGraphicsItem *item;
+    QPixmap image;
+    QList<QPixmap> listeImage; // ma liste d'images (choisies aleatoirement)
+    int m_nbImage; // le nombre d'image = le nombre d'exercice
+    int m_nbTotalMasques; // = à 7
+    QStringList m_ListeFichiers; // la liste des fichiers présents dans le dossier pack image
 
     QWidget *m_parent;
     bool m_localDebug;
@@ -31,7 +41,7 @@ private slots:
 //    void slotPresentationExerciceEntered();
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
-//    void slotQuestionEntered();
+    void slotQuestionEntered();
 //    void slotVerificationQuestionEntered();
 //    void slotBilanExerciceEntered();
 //    void slotBilanSequenceEntered();
