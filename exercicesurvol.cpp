@@ -5,6 +5,15 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 {
     m_localDebug = true;
 
+    // Instanciation de toutes les variables membres
+    itemImage = new QGraphicsPixmapItem();
+    //image = new QPixmap();
+    //listeImage = new QList();
+    //m_ListeFichiers = new QList();
+    //m_nbImage = 0;
+    //m_nbTotalMasques = 0;
+
+
     m_parent = parent;
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
 
@@ -24,6 +33,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
     // Demarrage de la machine à états
     sequenceMachine->start();
+
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -92,9 +102,8 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     for(int i = 0; i < list.count(); i++) {
         m_ListeFichiers << list.at(i).absoluteFilePath();
     }
+
     // choisir 5 images au hasard dans le pack
-
-
     for(int i = 0; i < m_nbImage; i++)
     {
         qsrand(QDateTime::currentDateTime ().toTime_t ());
@@ -103,17 +112,15 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
 
         image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
         listeImage << image;
-
     }
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
     setDimensionsWidgets();
+
+    //------------------------------------------------------------------------------------------------------------------------------------------
     // Test d'affichage d'une image (temporaire !)
 
-    // Redimensionnement de l'image à la taille de l'aire de traivail ==> OK
-    QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height());
-    item = gv_AireDeJeu->scene()->addPixmap(listeImage[0].scaled(size));
-
+    itemImage = gv_AireDeJeu->scene()->addPixmap(listeImage[0]);
 }
 
 void ExerciceSurvol::slotInitQuestionEntered() //todo
@@ -131,7 +138,7 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
 
 void ExerciceSurvol::slotQuestionEntered() //todo
 {
-     //mise en place du masque
+    //mise en place du masque
     AbulEduCommonStatesV1::slotQuestionEntered();
 }
 
@@ -188,7 +195,6 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
 
     int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
-
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
     gv_AireDeJeu->move((150 * ratio) / 2, 50 * ratio);
 
@@ -199,7 +205,31 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
     // Redimensionne le widget de consignes
     redimensionnerConsigne();
     //TODO Redimensionner l'image avec condition de garde car peut lever une exception donc bug
+    // redimensionnerImage();
 
+//    if (!test->pixmap().isNull()) //!testItem->pixmap().isNull())
+//    {
+//        qDebug()<<"J'ai une image !";
+
+//        float ratio = abeApp->getAbeApplicationDecorRatio();
+//        QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height()); //a remonter constante =)
+//        // 498*ratio
+//        testItem->setPixmap(testItem->pixmap().scaledToWidth(ratio, Qt::SmoothTransformation));
+//    }
+    //    {
+//        qDebug()<<"je peux faire ce que je veux avec mon image";
+//    }
+
+    if(!itemImage->pixmap().isNull())
+    {
+        qDebug()<<"Ok j'ai une pixmap !";
+//        float ratio = abeApp->getAbeApplicationDecorRatio();
+//      //        QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height()); //a remonter constante =)
+//      //        // 498*ratio
+//        itemImage->setPixmap(itemImage->pixmap().scaledToWidth(ratio, Qt::SmoothTransformation));
+
+
+    }
 
     AbulEduCommonStatesV1::setDimensionsWidgets();
 
@@ -214,5 +244,11 @@ void ExerciceSurvol::redimensionnerConsigne()
     //    fondConsigne->setVisible(false); // Scorie liée à la compatibilité avec l'ancienne façon de faire
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->move((getAbeExerciceAireDeTravailV1()->width() - getAbeExerciceMessageV1()->width())/2,
-                    ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
+                                    ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
+}
+
+void ExerciceSurvol::redimensionnerImage()
+{
+    qDebug()<< "redimensionnerImage";
+
 }
