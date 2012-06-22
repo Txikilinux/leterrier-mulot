@@ -21,16 +21,13 @@ private:
     QGraphicsProxyWidget *proxy;
 
     // Pour l'exerciceSurvol
-//    QGraphicsItem *item;
-    QPixmap image;
-
-    QGraphicsPixmapItem *itemImage;
-
-    QList<QPixmap> listeImage; // ma liste d'images (choisies aleatoirement)
+    QPixmap m_image;
+    QGraphicsPixmapItem *m_itemImage;
+    QList<QPixmap> m_listeImage; // ma liste d'images (choisies aleatoirement)
 
     int m_nbImage; // le nombre d'image = le nombre d'exercice
     int m_nbTotalMasques; // = à 7
-    QStringList m_ListeFichiers; // la liste des fichiers présents dans le dossier pack image
+    QStringList m_listeFichiers; // la liste des fichiers présents dans le dossier pack image
 
     QWidget *m_parent;
     bool m_localDebug;

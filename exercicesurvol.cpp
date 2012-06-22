@@ -6,7 +6,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     m_localDebug = true;
 
     // Instanciation de toutes les variables membres
-    itemImage = new QGraphicsPixmapItem();
+    m_itemImage = new QGraphicsPixmapItem();
     //image = new QPixmap();
     //listeImage = new QList();
     //m_ListeFichiers = new QList();
@@ -100,18 +100,18 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
     QFileInfoList list = dir.entryInfoList();
     for(int i = 0; i < list.count(); i++) {
-        m_ListeFichiers << list.at(i).absoluteFilePath();
+        m_listeFichiers << list.at(i).absoluteFilePath();
     }
 
     // choisir 5 images au hasard dans le pack
     for(int i = 0; i < m_nbImage; i++)
     {
         qsrand(QDateTime::currentDateTime ().toTime_t ());
-        int n = (qrand() % (m_ListeFichiers.size()));
-        QFileInfo fileInfo = m_ListeFichiers.takeAt(n);
+        int n = (qrand() % (m_listeFichiers.size()));
+        QFileInfo fileInfo = m_listeFichiers.takeAt(n);
 
-        image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
-        listeImage << image;
+        m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
+        m_listeImage << m_image;
     }
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
@@ -120,7 +120,9 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     //------------------------------------------------------------------------------------------------------------------------------------------
     // Test d'affichage d'une image (temporaire !)
 
-    itemImage = gv_AireDeJeu->scene()->addPixmap(listeImage[0]);
+    m_itemImage = gv_AireDeJeu->scene()->addPixmap(m_listeImage[0]);
+
+
 }
 
 void ExerciceSurvol::slotInitQuestionEntered() //todo
@@ -202,34 +204,9 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
 
-    // Redimensionne le widget de consignes
+    // Redimensionne le widget de consignes et l'image
     redimensionnerConsigne();
-    //TODO Redimensionner l'image avec condition de garde car peut lever une exception donc bug
-    // redimensionnerImage();
-
-//    if (!test->pixmap().isNull()) //!testItem->pixmap().isNull())
-//    {
-//        qDebug()<<"J'ai une image !";
-
-//        float ratio = abeApp->getAbeApplicationDecorRatio();
-//        QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height()); //a remonter constante =)
-//        // 498*ratio
-//        testItem->setPixmap(testItem->pixmap().scaledToWidth(ratio, Qt::SmoothTransformation));
-//    }
-    //    {
-//        qDebug()<<"je peux faire ce que je veux avec mon image";
-//    }
-
-    if(!itemImage->pixmap().isNull())
-    {
-        qDebug()<<"Ok j'ai une pixmap !";
-//        float ratio = abeApp->getAbeApplicationDecorRatio();
-//      //        QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height()); //a remonter constante =)
-//      //        // 498*ratio
-//        itemImage->setPixmap(itemImage->pixmap().scaledToWidth(ratio, Qt::SmoothTransformation));
-
-
-    }
+    redimensionnerImage();
 
     AbulEduCommonStatesV1::setDimensionsWidgets();
 
@@ -249,6 +226,13 @@ void ExerciceSurvol::redimensionnerConsigne()
 
 void ExerciceSurvol::redimensionnerImage()
 {
-    qDebug()<< "redimensionnerImage";
-
+    //Redimensionner l'image avec condition de garde car peut lever une exception donc bug
+    if(!m_itemImage->pixmap().isNull())
+    {
+        if (m_localDebug) qDebug()<<"Ok j'ai une pixmap !";
+        // Calcule de la taille de l'aire de Jeu à chaque redimensionnement
+        QSize size(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height());
+        // Modification de l'image en conséquence
+        m_itemImage->setPixmap(m_itemImage->pixmap().scaled(size,Qt::KeepAspectRatio , Qt::SmoothTransformation));
+    }
 }
