@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
     QObject::connect(ef, SIGNAL( userInactive() ),
                      w,  SLOT( slotDemo() ));
 
+
     w->show();
 
     return a.exec();

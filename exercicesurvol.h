@@ -5,6 +5,9 @@
 #include "abuleduetiquettesv1.h"
 #include "abuleducommonstatesv1.h"
 //#include "widgetdeplacesouris.h"
+#include "masquedeplacesouris.h"
+
+
 
 class ExerciceSurvol : public AbulEduCommonStatesV1
 {
@@ -23,14 +26,23 @@ private:
     // Pour l'exerciceSurvol
     QPixmap m_image;
     QGraphicsPixmapItem *m_itemImage;
+
+
     QList<QPixmap> m_listeImage; // ma liste d'images (choisies aleatoirement)
 
     int m_nbImage; // le nombre d'image = le nombre d'exercice
-    int m_nbTotalMasques; // = à 7
+    int m_nbMasquesInteractifs; // = à 7
     QStringList m_listeFichiers; // la liste des fichiers présents dans le dossier pack image
+
+    QList<masqueDeplaceSouris *> m_listeMasquesFixes;
+    masqueDeplaceSouris *m_masque;
+    masqueDeplaceSouris *m_masqueInteractif;
+
+    QSize m_taille;
 
     QWidget *m_parent;
     bool m_localDebug;
+
 
     void redimensionnerConsigne();
     void redimensionnerImage();
@@ -51,6 +63,9 @@ private slots:
     void resizeEvent(QResizeEvent *event);
     void showEvent(QShowEvent *event);
     void setDimensionsWidgets();
+
+    // ExerciceSurvol
+    void slotCacheMasque();
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc

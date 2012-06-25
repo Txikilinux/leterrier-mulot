@@ -39,8 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //Mettez ce qu'il faut en fonction de votre menu d'accueil
     m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol"));
-//    m_texteBulles.insert(1, trUtf8("Reconnaître 1"));
-//    m_texteBulles.insert(2, trUtf8("Reconnaître 2"));
+    //    m_texteBulles.insert(1, trUtf8("Reconnaître 1"));
+    //    m_texteBulles.insert(2, trUtf8("Reconnaître 2"));
 
 
     QSettings *m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
@@ -98,16 +98,19 @@ void MainWindow::abeLanceExo(int numero)
     {
     case 0:
         if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Survol";
-        {
-            //Exer *b = new ExercicePhraseSansEspaces(gv_Accueil,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-            ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil);
+    {
+        //Exer *b = new ExercicePhraseSansEspaces(gv_Accueil,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil);
+//            s->getAbeExerciceAireDeTravailV1()->setParent(m_abuleduaccueil);
+//            s->getAbeExerciceAireDeTravailV1()->show();
+//            s->getAbeExerciceTelecommandeV1()->setParent(m_abuleduaccueil);
+//            s->getAbeExerciceTelecommandeV1()->move(745,100);
+//            s->getAbeExerciceTelecommandeV1()->show();
             connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-            //connect(b, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-            //gv_Accueil->abePageAccueilDesactiveZones(true);
-            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-            exerciceEnCours = true;
-        }
+        m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        exerciceEnCours = true;
+    }
 
         exerciceEnCours = true;
         break;
