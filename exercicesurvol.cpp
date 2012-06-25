@@ -5,18 +5,14 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 {
     m_localDebug = true;
 
-
     m_parent = parent;
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
 
     //Création de l'aire de travail + propriétés
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
 
-
     getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->setStyleSheet("background-color: yellow");
     getAbeExerciceTelecommandeV1()->setStyleSheet("background-color: red");
-
-
 
     // On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget
     proxy = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(gv_AireDeJeu) ;
@@ -25,16 +21,11 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
     // Instanciation de toutes les variables membres
     m_itemImage = new QGraphicsPixmapItem(0,getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene());
-
-
-
     m_listeImage.clear();
     m_listeFichiers.clear();
     m_listeMasquesFixes.clear();
-
     m_nbImage = 0;
     m_nbMasquesInteractifs = 0; // = à 7
-
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);

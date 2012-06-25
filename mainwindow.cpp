@@ -87,7 +87,13 @@ void MainWindow::on_action_Survol_triggered()
 void MainWindow::abeLanceExo(int numero)
 {
     //si un exercice est en cours -> on ignore
-    if(exerciceEnCours){ return; }
+    if(exerciceEnCours)
+    {
+
+
+
+        return;
+    }
 
     // todo histoire des modules !
 
@@ -110,6 +116,7 @@ void MainWindow::abeLanceExo(int numero)
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         exerciceEnCours = true;
+        setFixedSize(this->width(), this->height());
     }
 
         exerciceEnCours = true;
