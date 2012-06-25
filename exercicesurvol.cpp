@@ -124,8 +124,9 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     }
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
-    setDimensionsWidgets();
+  //  setDimensionsWidgets();
 }
+
 
 void ExerciceSurvol::slotInitQuestionEntered() //todo
 {
@@ -136,46 +137,35 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
     // Choix de l'image dans la liste
     if (m_localDebug) qDebug()<<"Methode mon exercice !!!!!";
 
-
-
-
-        // Je récupere la première image de ma liste et je la fixe sur l'aire de jeu
-
-
-        m_itemImage = gv_AireDeJeu->scene()->addPixmap(m_listeImage[0]);
-
-
-
-        gv_AireDeJeu->scene()->addItem(m_itemImage);
-
-
+    // Je récupere la première image de ma liste et je la fixe sur l'aire de jeu
+    m_itemImage = gv_AireDeJeu->scene()->addPixmap(m_listeImage[0]);
 
     //mise en place du masque
-//    int largeur=150;
-//    int hauteur=150;
+    int largeur=150;
+    int hauteur=150;
 
-//    int nbTotalPieces = 0;
-//    //Calcul du nombre de lignes et de colonnes necessaires
-//    for(int i = 0; i < height; i+=hauteur) {
-//        for(int j = 0; j < width; j+=largeur) {
-//            qDebug() << "ajout d'une piece ... " << nbTotalPieces;
-//            nbTotalPieces++;
-////            masqueDeplaceSouris *m_masque = new masqueDeplaceSouris();
+    int nbTotalPieces = 0;
+    //Calcul du nombre de lignes et de colonnes necessaires
+    for(int i = 0; i < gv_AireDeJeu->height(); i+=hauteur) {
+        for(int j = 0; j < gv_AireDeJeu->width(); j+=largeur) {
 
-//            m_masque = new masqueDeplaceSouris();
-//            m_masque->setSize(largeur,hauteur);
-//            m_masque->moveBy(j,i);
-//            m_masque->setColor(Qt::black);
-//            m_masque->setParent(gv_AireDeJeu->scene());
-//            m_masque->setHideOnMouseOver(false);
-//            gv_AireDeJeu->scene()->addItem(m_masque);
-//            m_listeMasquesFixes << m_masque;
-//        }
-//    }
+            qDebug() << "ajout d'une piece ... " << nbTotalPieces;
+            nbTotalPieces++;
+
+            m_masque = new masqueDeplaceSouris();
+            m_masque->setSize(largeur,hauteur);
+            m_masque->moveBy(j,i);
+            m_masque->setColor(Qt::black);
+            m_masque->setParent(gv_AireDeJeu->scene());
+            m_masque->setHideOnMouseOver(false);
+            gv_AireDeJeu->scene()->addItem(m_masque);
+            m_listeMasquesFixes << m_masque;
+        }
+    }
 
 
     AbulEduCommonStatesV1::slotInitQuestionEntered();
-    setDimensionsWidgets();
+       setDimensionsWidgets();
 }
 
 void ExerciceSurvol::slotQuestionEntered() //todo
@@ -184,26 +174,26 @@ void ExerciceSurvol::slotQuestionEntered() //todo
     if (m_localDebug) qDebug()<< m_nbMasquesInteractifs;
 
 //    //Et ensuite on fait en sorte que seuls 7 masques soient actifs
-//    m_nbMasquesInteractifs = 0;
-//    while (m_nbMasquesInteractifs < 7)
-//    {
-//        if (m_localDebug) qDebug()<<"*******************//   Boucle des Survolables ";
+    m_nbMasquesInteractifs = 0;
+    while (m_nbMasquesInteractifs < 7)
+    {
+        if (m_localDebug) qDebug()<<"*******************//   Boucle des Survolables ";
 
-//        //Seuls quelques masques sont "survolables", les autres ne bougent pas quand
-//        //on les survole mais disparaissent quand il n'y a plus de masques sensibles
+        //Seuls quelques masques sont "survolables", les autres ne bougent pas quand
+        //on les survole mais disparaissent quand il n'y a plus de masques sensibles
 
-//        // problème de alea -> si même chiffre, même case donc !!!!
-//        int alea = (qrand() % (m_listeMasquesFixes.count()));
-//        qDebug() << "alea = " << alea;
-//        //m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
-//        m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
-//        connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-//        m_masqueInteractif->setColor(Qt::yellow);
-//        m_masqueInteractif->setHideOnMouseOver(true);
+        // problème de alea -> si même chiffre, même case donc !!!!
+        int alea = (qrand() % (m_listeMasquesFixes.count()));
+        qDebug() << "alea = " << alea;
+        //m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
+        m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
+        connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+        m_masqueInteractif->setColor(Qt::yellow);
+        m_masqueInteractif->setHideOnMouseOver(true);
 
-//        m_nbMasquesInteractifs++;
-//        alea++;
-//    }
+        m_nbMasquesInteractifs++;
+        alea++;
+    }
 
     AbulEduCommonStatesV1::slotQuestionEntered();
 }
@@ -238,20 +228,15 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
     getAbeExerciceTelecommandeV1()->abeTelecommandeResize();
     getAbeExerciceTelecommandeV1()->move(1550*ratio, 0);
 
-
     // Placement de l'AireDeJeu
     int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
     gv_AireDeJeu->move((100 * ratio) / 2, 50 * ratio);
 
-
-
-
     // Placement des têtes
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
-
 
     // Redimensionne le widget de consignes et l'image
     redimensionnerConsigne();
