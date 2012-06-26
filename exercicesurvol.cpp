@@ -33,8 +33,6 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     gv_AireDeJeu->setStyleSheet("background-color: blue");
     gv_AireDeJeu->setFrameShape(QFrame::NoFrame);
 
-
-
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
     // Demarrage de la machine à états
@@ -103,15 +101,18 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     }
 
     // choisir 5 images au hasard dans le pack
-    for(int i = 0; i < m_nbImage; i++)
     {
-        qsrand(QDateTime::currentDateTime ().toTime_t ());
-        int n = (qrand() % (m_listeFichiers.size()));
-        QFileInfo fileInfo = m_listeFichiers.takeAt(n);
+        for(int i = 0; i < m_nbImage; i++)
+        {
+            qsrand(QDateTime::currentDateTime ().toTime_t ());
+            int n = (qrand() % (m_listeFichiers.size()));
+            QFileInfo fileInfo = m_listeFichiers.takeAt(n);
 
-        m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
+            m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
 
-        m_listeImage << m_image;
+            m_listeImage << m_image;
+        }
+
     }
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
@@ -128,8 +129,10 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
     // Choix de l'image dans la liste
     if (m_localDebug) qDebug()<<"Methode mon exercice !!!!!";
 
+    qDebug() << m_numExercice;
+
     // Je récupere la première image de ma liste et je la fixe sur l'aire de jeu
-    m_itemImage = gv_AireDeJeu->scene()->addPixmap(m_listeImage[0]);
+    m_itemImage = gv_AireDeJeu->scene()->addPixmap(m_listeImage[m_numExercice]);
 
     //mise en place du masque
     int largeur=150;
@@ -185,6 +188,8 @@ void ExerciceSurvol::slotQuestionEntered() //todo
         m_nbMasquesInteractifs++;
         alea++;
     }
+
+    if (m_nbMasquesInteractifs ==0)
 
     AbulEduCommonStatesV1::slotQuestionEntered();
 }
@@ -284,20 +289,18 @@ void ExerciceSurvol::slotCacheMasque()
     qDebug() << "ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
     m_nbMasquesInteractifs--;
     if(m_nbMasquesInteractifs == 0) {
-
-        qDebug() << "Bravo on passe à la suite ...";
-
         //On affiche l'image en entier
-        for(int i = 0; i < m_listeMasquesFixes.count(); i++) {
+        for(int i = 0; i < m_listeMasquesFixes.count(); i++)
+        {
             m_listeMasquesFixes.at(i)->setVisible(false);
         }
 
-        if(m_listeImage.count() > 0) {
-            m_nbImage++;
-            QTimer::singleShot(2000, this, SLOT(lanceLeJeu()));
-        }
-        else {
-            qDebug() << "L'exercice est terminé ...";
-        }
+//        if(m_listeImage.count() > 0) {
+//            m_nbImage++;
+//         //   QTimer::singleShot(2000, this, SLOT(lanceLeJeu()));
+//        }
+//        else {
+//            qDebug() << "L'exercice est terminé ...";
+//        }
     }
 }

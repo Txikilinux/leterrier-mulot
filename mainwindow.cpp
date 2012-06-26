@@ -89,9 +89,6 @@ void MainWindow::abeLanceExo(int numero)
     //si un exercice est en cours -> on ignore
     if(exerciceEnCours)
     {
-
-
-
         return;
     }
 
@@ -107,11 +104,6 @@ void MainWindow::abeLanceExo(int numero)
     {
         //Exer *b = new ExercicePhraseSansEspaces(gv_Accueil,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil);
-//            s->getAbeExerciceAireDeTravailV1()->setParent(m_abuleduaccueil);
-//            s->getAbeExerciceAireDeTravailV1()->show();
-//            s->getAbeExerciceTelecommandeV1()->setParent(m_abuleduaccueil);
-//            s->getAbeExerciceTelecommandeV1()->move(745,100);
-//            s->getAbeExerciceTelecommandeV1()->show();
             connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
@@ -130,5 +122,8 @@ void MainWindow::exerciceExited()
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     exerciceEnCours = false;
+//    this->setFixedSize(QWIDGETSIZE_MAX);
+    setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
+
     show();
 }

@@ -26,10 +26,7 @@ private:
     // Pour l'exerciceSurvol
     QPixmap m_image;
     QGraphicsPixmapItem *m_itemImage;
-
-
     QList<QPixmap> m_listeImage; // ma liste d'images (choisies aleatoirement)
-
     int m_nbImage; // le nombre d'image = le nombre d'exercice
     int m_nbMasquesInteractifs; // = à 7
     QStringList m_listeFichiers; // la liste des fichiers présents dans le dossier pack image
@@ -37,12 +34,9 @@ private:
     QList<masqueDeplaceSouris *> m_listeMasquesFixes;
     masqueDeplaceSouris *m_masque;
     masqueDeplaceSouris *m_masqueInteractif;
-
     QSize m_taille;
-
     QWidget *m_parent;
     bool m_localDebug;
-
 
     void redimensionnerConsigne();
     void redimensionnerImage();
