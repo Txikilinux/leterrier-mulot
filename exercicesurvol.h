@@ -49,6 +49,7 @@ private slots:
     void slotInitQuestionEntered();
     void slotQuestionEntered();
     void slotFinQuestionEntered();
+    void slotFinVerificationQuestionEntered();
 //    void slotVerificationQuestionEntered();
 //    void slotQuestionExited();
 //    void slotBilanExerciceEntered();
@@ -56,8 +57,8 @@ private slots:
 //    void slotBilanSequenceExited();
     void slotQuitter();
 
-    void resizeEvent(QResizeEvent *event);
-    void showEvent(QShowEvent *event);
+//    void resizeEvent(QResizeEvent *event);
+//    void showEvent(QShowEvent *event);
     void setDimensionsWidgets();
 
     // ExerciceSurvol
