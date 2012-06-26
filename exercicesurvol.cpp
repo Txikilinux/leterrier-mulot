@@ -21,7 +21,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     proxy->setZValue(-1) ;
 
     // Instanciation de toutes les variables membres
-//    m_itemImage = new QGraphicsPixmapItem(0,getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene());
+    //    m_itemImage = new QGraphicsPixmapItem(0,getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene());
 
     m_listeImage.clear();
     m_listeFichiers.clear();
@@ -86,7 +86,6 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
     getAbeExerciceMessageV1()->setVisible(true);
     redimensionnerConsigne();
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
-
 }
 
 
@@ -105,7 +104,6 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     for(int i = 0; i < list.count(); i++) {
         m_listeFichiers << list.at(i).absoluteFilePath();
     }
-
     // choisir 5 images au hasard dans le pack
     {
         for(int i = 0; i < m_nbImage; i++)
@@ -119,7 +117,6 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
             m_listeImage << m_image;
         }
     }
-
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
 }
 
@@ -127,52 +124,27 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
 void ExerciceSurvol::slotInitQuestionEntered() //todo
 {
     if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotInitQuestionEntered()";
-     AbulEduCommonStatesV1::slotInitQuestionEntered();
+    AbulEduCommonStatesV1::slotInitQuestionEntered();
 
     getAbeExerciceMessageV1()->setVisible(false);
-
 
     qDebug()<< "Numero de la question : " << m_numQuestion;
     // Au départ m_numQuestion = 0 !
 
-    //    if (!m_itemImage->pixmap().isNull())
-//    {
-
-//    }
-//    else
-//    {
-//        m_itemImage->setPixmap(m_listeImage[m_numQuestion]);
-//        gv_AireDeJeu->scene()->addItem(m_itemImage);
-//        m_itemImage->topLevelItem();
-//        redimensionnerImage();
-//        gv_AireDeJeu->show();
-//    }
-
     m_itemImage = new QGraphicsPixmapItem(0, gv_AireDeJeu->scene());
-    m_itemImage->setPixmap(m_listeImage[m_numQuestion]);
-    //gv_AireDeJeu->scene()->addItem(m_itemImage);
-
-    m_itemImage->topLevelItem();
+    m_itemImage->setPixmap(m_listeImage.takeAt(0));
+//    m_image = m_listeImage[0];
+//    gv_AireDeJeu->scene()->addPixmap(m_image);
     redimensionnerImage();
     gv_AireDeJeu->show();
 }
 
-/**
-  * Cette fonction représente une question précise de l'exercice
-  * Ce slot est appelé à l'entrée dans l'état question. On sortira de cet état par une des 4 transitions suivantes:
-  * getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()), verificationQuestion
-  * t_toucheEntreeQuestionTransition
-  * t_toucheEnterQuestionTransition
-  * t_QuestionVerifie
-  */
 void ExerciceSurvol::slotQuestionEntered() //todo
 {
     if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotQuestionEntered()";
 
     //mise en place du masque
-
     qDebug()<< "Numero de la question : " << m_numQuestion;
-
     int largeur;
     int hauteur;
 
@@ -194,10 +166,15 @@ void ExerciceSurvol::slotQuestionEntered() //todo
         break;
     }
 
+    qDebug()<< "Taille de l'Aire de jeu "  << gv_AireDeJeu->size();
+    //qDebug()<< "Taille de la pixmap     " << m_itemImage->pixmap().size();
+    qDebug()<< "Taille de la tele       " <<getAbeExerciceTelecommandeV1()->geometry().size();
+    qDebug()<< "Taille de la boitetete  " <<boiteTetes->geometry().size();
+
     int nbTotalPieces = 0;
     //Calcul du nombre de lignes et de colonnes necessaires
-    for(int i = 0; i < m_itemImage->pixmap().height(); i+=hauteur) {
-        for(int j = 0; j < m_itemImage->pixmap().width(); j+=largeur) {
+    for(int i = 0; i < gv_AireDeJeu->geometry().height(); i+=hauteur) {
+        for(int j = 0; j < gv_AireDeJeu->geometry().width(); j+=largeur) {
             qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteur << " larg " << j << " : " << largeur;
             nbTotalPieces++;
 
@@ -210,39 +187,45 @@ void ExerciceSurvol::slotQuestionEntered() //todo
             gv_AireDeJeu->scene()->addItem(m_masque);
             m_listeMasquesFixes << m_masque;
         }
+        qDebug()<<"Nombre de masques fixes :" << m_listeMasquesFixes.count();
     }
 
     //Et ensuite on fait en sorte que seuls 7 masques soient actifs
+    //Seuls quelques masques sont "survolables", les autres ne bougent pas quand
+    //on les survole mais disparaissent quand il n'y a plus de masques sensibles
+
     m_nbMasquesInteractifs = 0;
+    if (m_localDebug) qDebug()<<"*******************//   Boucle des Survolables ";
+
     while (m_nbMasquesInteractifs < 7)
     {
-        if (m_localDebug) qDebug()<<"*******************//   Boucle des Survolables ";
-
-        //Seuls quelques masques sont "survolables", les autres ne bougent pas quand
-        //on les survole mais disparaissent quand il n'y a plus de masques sensibles
-
         int alea = (qrand() % (m_listeMasquesFixes.count()));
         qDebug() << "alea = " << alea;
-
         m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
         connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
         m_masqueInteractif->setColor(Qt::yellow);
         m_masqueInteractif->setHideOnMouseOver(true);
 
         m_nbMasquesInteractifs++;
-        alea++;
+        qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
+//        alea++;
     }
 
-    //if (m_nbMasquesInteractifs ==0)
-
     AbulEduCommonStatesV1::slotQuestionEntered();
-    //    emit t_QuestionVerifie;
 }
 
 void ExerciceSurvol::slotFinVerificationQuestionEntered()
 {
     qDebug()<< "*******************ExerciceSurvol::slotFinVerificationQuestionEntered()";
     AbulEduCommonStatesV1::slotFinVerificationQuestionEntered();
+
+    qDebug()<< "Avant Nombre de masques fixes dans la liste" << m_listeMasquesFixes.count();
+    m_listeMasquesFixes.clear();
+    m_nbMasquesInteractifs = 0;
+    qDebug()<< "Apres Nombre de masques fixes dans la liste" << m_listeMasquesFixes.count();
+
+
+    boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
 
 }
 
@@ -252,8 +235,16 @@ void ExerciceSurvol::slotFinQuestionEntered()
 
 
     // Nettoyage de la liste des masques
+    for (int i =0; i< m_listeMasquesFixes.count(); i++)
+    {
+        delete m_listeMasquesFixes.takeAt(i);
+    }
+
+    qDebug()<< "Nombre de masques fixes dans la liste" << m_listeMasquesFixes.count();
     m_listeMasquesFixes.clear();
     m_nbMasquesInteractifs = 0;
+
+
 
     boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
 
@@ -267,7 +258,7 @@ void ExerciceSurvol::slotFinQuestionEntered()
 
     // Passer à l'image suivante
 
-       AbulEduCommonStatesV1::slotFinQuestionEntered();
+    AbulEduCommonStatesV1::slotFinQuestionEntered();
 
 }
 
