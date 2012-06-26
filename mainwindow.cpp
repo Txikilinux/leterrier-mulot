@@ -108,7 +108,7 @@ void MainWindow::abeLanceExo(int numero)
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         exerciceEnCours = true;
-        setFixedSize(this->width(), this->height());
+        setFixedSize(this->width(), this->height()); // redimensionnement interdit
     }
 
         exerciceEnCours = true;
@@ -122,8 +122,6 @@ void MainWindow::exerciceExited()
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     exerciceEnCours = false;
-//    this->setFixedSize(QWIDGETSIZE_MAX);
-    setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
-
+    setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
     show();
 }

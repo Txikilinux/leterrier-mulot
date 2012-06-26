@@ -29,7 +29,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)"); // Fond transparent
+    //    gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)"); // Fond transparent
     gv_AireDeJeu->setStyleSheet("background-color: blue");
     gv_AireDeJeu->setFrameShape(QFrame::NoFrame);
 
@@ -116,7 +116,7 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     }
 
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
-  //  setDimensionsWidgets();
+    //  setDimensionsWidgets();
 }
 
 
@@ -159,7 +159,7 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
 
 
     AbulEduCommonStatesV1::slotInitQuestionEntered();
-       setDimensionsWidgets();
+    setDimensionsWidgets();
 }
 
 void ExerciceSurvol::slotQuestionEntered() //todo
@@ -167,7 +167,7 @@ void ExerciceSurvol::slotQuestionEntered() //todo
     if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotQuestionEntered()";
     if (m_localDebug) qDebug()<< m_nbMasquesInteractifs;
 
-//    //Et ensuite on fait en sorte que seuls 7 masques soient actifs
+    //Et ensuite on fait en sorte que seuls 7 masques soient actifs
     m_nbMasquesInteractifs = 0;
     while (m_nbMasquesInteractifs < 7)
     {
@@ -175,8 +175,6 @@ void ExerciceSurvol::slotQuestionEntered() //todo
 
         //Seuls quelques masques sont "survolables", les autres ne bougent pas quand
         //on les survole mais disparaissent quand il n'y a plus de masques sensibles
-
-        // problème de alea -> si même chiffre, même case donc !!!!
         int alea = (qrand() % (m_listeMasquesFixes.count()));
         qDebug() << "alea = " << alea;
         //m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
@@ -191,8 +189,31 @@ void ExerciceSurvol::slotQuestionEntered() //todo
 
     if (m_nbMasquesInteractifs ==0)
 
-    AbulEduCommonStatesV1::slotQuestionEntered();
+        AbulEduCommonStatesV1::slotQuestionEntered();
 }
+
+void ExerciceSurvol::slotQuestionExited()
+{
+    qDebug()<< "!!!!!!!!!!!!!!!!!!!!!!!!!  On passe à l'image suivante";
+    // Nettoyage de la liste des masques
+    m_listeMasquesFixes.clear();
+    m_nbMasquesInteractifs = 0;
+    boiteTetes->setEtatTete(0,abe::evalA );
+
+   // m_numExercice ++;
+
+
+    // Passer à l'image suivante
+    // Incrementer nb exercice
+    //
+}
+
+
+//////Autres slots
+///////////////////
+////////////////
+
+
 
 void ExerciceSurvol::slotQuitter() // ok
 {
@@ -288,19 +309,23 @@ void ExerciceSurvol::slotCacheMasque()
 {
     qDebug() << "ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
     m_nbMasquesInteractifs--;
+
     if(m_nbMasquesInteractifs == 0) {
         //On affiche l'image en entier
         for(int i = 0; i < m_listeMasquesFixes.count(); i++)
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
-        }
 
-//        if(m_listeImage.count() > 0) {
-//            m_nbImage++;
-//         //   QTimer::singleShot(2000, this, SLOT(lanceLeJeu()));
-//        }
-//        else {
-//            qDebug() << "L'exercice est terminé ...";
-//        }
+            qDebug()<< m_listeMasquesFixes.count();
+        }
+        emit slotQuestionExited();
     }
+    //        if(m_listeImage.count() > 0) {
+    //            m_nbImage++;
+    //         //   QTimer::singleShot(2000, this, SLOT(lanceLeJeu()));
+    //        }
+    //        else {
+    //            qDebug() << "L'exercice est terminé ...";
+    //        }
+
 }
