@@ -138,11 +138,12 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
     int largeur=150;
     int hauteur=150;
 
+    m_itemImage->topLevelItem();
+
     int nbTotalPieces = 0;
     //Calcul du nombre de lignes et de colonnes necessaires
     for(int i = 0; i < gv_AireDeJeu->height(); i+=hauteur) {
         for(int j = 0; j < gv_AireDeJeu->width(); j+=largeur) {
-
             qDebug() << "ajout d'une piece ... " << nbTotalPieces;
             nbTotalPieces++;
 
@@ -192,7 +193,8 @@ void ExerciceSurvol::slotQuestionEntered() //todo
         AbulEduCommonStatesV1::slotQuestionEntered();
 }
 
-void ExerciceSurvol::slotQuestionExited()
+//void ExerciceSurvol::slotQuestionExited()
+void ExerciceSurvol::slotFinQuestionEntered()
 {
     qDebug()<< "!!!!!!!!!!!!!!!!!!!!!!!!!  On passe à l'image suivante";
     // Nettoyage de la liste des masques
@@ -200,8 +202,10 @@ void ExerciceSurvol::slotQuestionExited()
     m_nbMasquesInteractifs = 0;
     boiteTetes->setEtatTete(0,abe::evalA );
 
-   // m_numExercice ++;
+    sequenceMachine->postEvent(new StringEvent("QuestionLoopCorrect"));
 
+    // Vider itemImage
+    gv_AireDeJeu->scene()->removeItem(m_itemImage);
 
     // Passer à l'image suivante
     // Incrementer nb exercice

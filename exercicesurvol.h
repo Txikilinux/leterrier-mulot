@@ -48,8 +48,9 @@ private slots:
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
     void slotQuestionEntered();
+    void slotFinQuestionEntered();
 //    void slotVerificationQuestionEntered();
-    void slotQuestionExited();
+//    void slotQuestionExited();
 //    void slotBilanExerciceEntered();
 //    void slotBilanSequenceEntered();
 //    void slotBilanSequenceExited();

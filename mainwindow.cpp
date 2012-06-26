@@ -33,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     exerciceEnCours = false;
 
+    ui->fr_principale->setMinimumSize(QSize(1000, 500));
+
+
     //    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
     //    m_widgetChoixTheme->show();
 
@@ -60,7 +63,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //    widgetDeplaceSouris *w = new widgetDeplaceSouris(ui->centralWidget);
     //    w->show();
-    //    setWindowTitle(abeApp->getAbeApplicationLongName());
+    setWindowTitle(abeApp->getAbeApplicationLongName());
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
