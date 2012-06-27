@@ -1,0 +1,53 @@
+<RCC>
+    <qresource prefix="/abuleduexercicev1/fonds">
+        <file alias="airedetravail">picto/airedetravail.png</file>
+        <file alias="telecommande">picto/telecommande.png</file>
+        <file alias="fondmessagegrand">picto/fond-consignes-grand.png</file>
+        <file alias="fondmessagepetit">picto/fond-consignes-petit.png</file>
+    </qresource>
+    <qresource prefix="/abuleduexercicev1/boutons">
+        <file alias="btnQuitter">picto/quitter.png</file>
+        <file alias="btnQuitterOver">picto/quitter-over.png</file>
+        <file alias="btnRefaire">picto/refaire.png</file>
+        <file alias="btnRefaireOver">picto/refaire-over.png</file>
+        <file alias="btnSuivant">picto/suivant.png</file>
+        <file alias="btnSuivantOver">picto/suivant-over.png</file>
+        <file alias="btnCorriger">picto/corriger.png</file>
+        <file alias="btnCorrigerOver">picto/corriger-over.png</file>
+        <file alias="btnNiveau">picto/niveaux.png</file>
+        <file alias="btnNiveauOver">picto/niveaux-over.png</file>
+        <file alias="btnVerifier">picto/verifier.png</file>
+        <file alias="btnVerifierOver">picto/verifier-over.png</file>
+        <file alias="bottom">picto/bottom.png</file>
+        <file alias="top">picto/top.png</file>
+        <file alias="btnAide">picto/aide.png</file>
+        <file alias="btnAideOver">picto/aide-over.png</file>
+        <file alias="btnVerifierDisabled">picto/verifier-gris.png</file>
+        <file alias="btnSuivantDisabled">picto/suivant-gris.png</file>
+        <file alias="btnRefaireDisabled">picto/refaire-gris.png</file>
+        <file alias="btnQuitterDisabled">picto/quitter-gris.png</file>
+        <file alias="btnCorrigerDisabled">picto/corriger-gris.png</file>
+        <file alias="btnNiveauDisabled">picto/niveaux-gris.png</file>
+        <file alias="btnAideDisabled">picto/aide-gris.png</file>
+    </qresource>
+    <qresource prefix="/abuleduexercicev1/tetes">
+        <file alias="attente">picto/attente.png</file>
+        <file alias="bien">picto/bien.png</file>
+        <file alias="mal">picto/mal.png</file>
+        <file alias="moyen">picto/moyen.png</file>
+        <file alias="rien">picto/rien.png</file>
+        <file alias="tresbien">picto/tresbien.png</file>
+    </qresource>
+    <qresource prefix="/abuleduexercicev1/niveaux">
+        <file alias="+1">picto/difficulte+1.png</file>
+        <file alias="5">picto/difficulte5.png</file>
+        <file alias="4">picto/difficulte4.png</file>
+        <file alias="3">picto/difficulte3.png</file>
+        <file alias="2">picto/difficulte2.png</file>
+        <file alias="1">picto/difficulte1.png</file>
+        <file alias="0">picto/difficulte0.png</file>
+    </qresource>
+    <qresource prefix="/abuleduexercicev1/conf">
+        <file>abuleduexercicev1.conf</file>
+    </qresource>
+</RCC>
