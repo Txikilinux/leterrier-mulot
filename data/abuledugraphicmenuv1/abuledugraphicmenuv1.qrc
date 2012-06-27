@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/abuledugraphicmenuv1">
+        <file alias="btnAide-over">images/icon-aide-over.png</file>
+        <file alias="btnFermer">images/icon-fermer.png</file>
+        <file alias="btnFermer-over">images/icon-fermer-over.png</file>
+        <file alias="btnBox">images/icon-box.png</file>
+        <file alias="btnBox-over">images/icon-box-over.png</file>
+        <file alias="btnQuitter">images/icon-quitter.png</file>
+        <file alias="btnQuitter-over">images/icon-quitter-over.png</file>
+        <file alias="fond-01">images/fond-01.png</file>
+        <file alias="fond-02">images/fond-02.png</file>
+        <file alias="fond-03">images/fond-03.png</file>
+        <file alias="fond-04">images/fond-04.png</file>
+        <file alias="btnAide">images/icon-aide.png</file>
+        <file>abuledugraphicmenuv1.conf</file>
+        <file alias="btnLivret">images/icon-livret.png</file>
+        <file alias="btnLivret-over">images/icon-livret-over.png</file>
+        <file alias="lblLeft">images/left.png</file>
+        <file alias="lblRight">images/right.png</file>
+        <file alias="fond-00">images/fond-00.png</file>
+        <file alias="btnOuvrirMenu">images/icon-ouvrir.png</file>
+        <file alias="btnOuvrirMenu-over">images/icon-ouvrir-over.png</file>
+    </qresource>
+</RCC>
