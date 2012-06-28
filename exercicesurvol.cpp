@@ -12,6 +12,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
 
 
+
     // On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget
     proxy = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(gv_AireDeJeu) ;
     proxy->setGeometry(gv_AireDeJeu->rect());
@@ -31,6 +32,8 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
+
+//    qDebug() << getAbeExerciceAireDeTravailV1()->resize(size);
     // Demarrage de la machine à états
     sequenceMachine->start();
 }
@@ -140,43 +143,43 @@ void ExerciceSurvol::slotQuestionEntered() //todo
 
     //mise en place du masque
     qDebug()<< "Numero de la question : " << m_numQuestion;
-    int largeur;
-    int hauteur;
+    int largeurMasque;
+    int hauteurMasque;
 
     switch (m_numQuestion){
     case 1:
-        largeur = hauteur = 150;
+        largeurMasque = hauteurMasque = 150;
         break;
     case 2:
-        largeur = hauteur = 100;
+        largeurMasque = hauteurMasque = 100;
         break;
     case 3:
-        largeur = hauteur = 75;
+        largeurMasque = hauteurMasque = 75;
         break;
     case 4:
-        largeur =hauteur = 50;
+        largeurMasque = hauteurMasque = 50;
         break;
     case 5:
-        largeur = hauteur = 25;
+        largeurMasque = hauteurMasque = 25;
         break;
     default :
-        largeur = hauteur = 10;
+        largeurMasque = hauteurMasque = 10;
         break;
     }
 
     int nbTotalPieces = 0;
     int num = 0;
     //Calcul du nombre de lignes et de colonnes necessaires
-    for(int i = 0; i < gv_AireDeJeu->geometry().height(); i+=hauteur) {
-        for(int j = 0; j < gv_AireDeJeu->geometry().width(); j+=largeur) {
-            qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteur << " larg " << j << " : " << largeur;
+    for(int i = 0; i < gv_AireDeJeu->geometry().height(); i+=hauteurMasque) {
+        for(int j = 0; j < gv_AireDeJeu->geometry().width(); j+=largeurMasque) {
+            qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteurMasque << " larg " << j << " : " << largeurMasque;
             nbTotalPieces++;
 
             m_masque = new masqueDeplaceSouris();
             m_masque->setToolTip(QString("%1").arg(num));
-            m_masque->setSize(largeur,hauteur);
+            m_masque->setSize(largeurMasque,hauteurMasque);
             m_masque->moveBy(j,i);
-            m_masque->setColor(Qt::black);
+            m_masque->setColor(QColor::fromRgb(255,255,255));
             m_masque->setParent(gv_AireDeJeu->scene());
             m_masque->setHideOnMouseOver(false);
             gv_AireDeJeu->scene()->addItem(m_masque);
@@ -199,7 +202,7 @@ void ExerciceSurvol::slotQuestionEntered() //todo
         qDebug() << "alea = " << alea;
         m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
         connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-        m_masqueInteractif->setColor(Qt::yellow);
+        m_masqueInteractif->setColor(QColor::fromRgb(150,150,150));
         m_masqueInteractif->setHideOnMouseOver(true);
 
         m_nbMasquesInteractifs++;
@@ -216,12 +219,10 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 
     // Je me sers de ce slot pour appuyer automatiquement sur le bouton suivant de la télécommande,
     // et ainsi faciliter l'exercice de l'utilisateur =)
-
     qDebug()<< "Click bouton suivant automatique !";
 
     // Click auto du bouton suivant avec un timer
     QTimer::singleShot(2000,this,SLOT(slotPassageAutoImageSuivante()));
-
 }
 
 // Appeler lors de l'appui sur le bouton suivant
@@ -241,7 +242,6 @@ void ExerciceSurvol::slotFinVerificationQuestionEntered()
     gv_AireDeJeu->scene()->removeItem(m_itemImage);
     gv_AireDeJeu->scene()->clear();
     gv_AireDeJeu->show();
-
 }
 
 // Ce slot est pour la derniere question !
@@ -250,7 +250,6 @@ void ExerciceSurvol::slotFinQuestionEntered()
     qDebug()<< "*******************ExerciceSurvol::slotFinQuestionEntered()";
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
-//    boiteTetes->resetTetes(m_nbTotalQuestions);
 }
 
 void ExerciceSurvol::slotQuitter() // ok
@@ -265,7 +264,7 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
 
     // Placement de AireDeTravailV1
     float ratio = abeApp->getAbeApplicationDecorRatio();
-    getAbeExerciceAireDeTravailV1()->move(0, 0);
+    getAbeExerciceAireDeTravailV1()->move(0,0);
 
     // Placement de WidgetTelecommandeV1
     getAbeExerciceTelecommandeV1()->abeTelecommandeResize();
@@ -275,7 +274,9 @@ void ExerciceSurvol::setDimensionsWidgets() //todo
     int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
-    gv_AireDeJeu->move((100 * ratio) / 2, 50 * ratio);
+//    gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
+    gv_AireDeJeu->move(80 * ratio, 64 * ratio);
+
 
     // Placement des têtes
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
