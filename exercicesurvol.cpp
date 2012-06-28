@@ -11,6 +11,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     //Création de l'aire de travail + propriétés
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
 
+
     // On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget
     proxy = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(gv_AireDeJeu) ;
     proxy->setGeometry(gv_AireDeJeu->rect());
@@ -108,6 +109,8 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
         }
     }
     AbulEduCommonStatesV1::slotRealisationExerciceEntered();
+
+
 }
 
 void ExerciceSurvol::slotInitQuestionEntered() //todo
@@ -126,6 +129,8 @@ void ExerciceSurvol::slotInitQuestionEntered() //todo
 
     redimensionnerImage2();
     gv_AireDeJeu->show();
+
+    getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(m_numQuestion);
 
 }
 
