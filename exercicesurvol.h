@@ -52,6 +52,7 @@ private slots:
     void slotFinQuestionEntered();
     void slotFinVerificationQuestionEntered();
     void slotAfficheVerificationQuestionEntered();
+
 //    void slotVerificationQuestionEntered();
 //    void slotQuestionExited();
 //    void slotBilanExerciceEntered();

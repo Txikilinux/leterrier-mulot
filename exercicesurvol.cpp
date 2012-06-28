@@ -53,7 +53,7 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
     setAbeNbTotalQuestions(5); // a instancier avant appel du slot SequenceEntered !
 
     AbulEduCommonStatesV1::slotSequenceEntered();
-    boiteTetes->resetTetes(m_nbTotalQuestions);
+//    boiteTetes->resetTetes(m_nbTotalQuestions);
 
     setAbeLevel("1"); // a instancier après le slot sinon niveau 0 par def.
 
@@ -87,6 +87,7 @@ void ExerciceSurvol::slotRealisationExerciceEntered() //todo
     // Mettre tout ce qui est commun à chaque question
     m_nbImage = m_nbTotalQuestions; // le nb image = le nb de question
     m_nbMasquesInteractifs = 0;
+    boiteTetes->resetTetes(m_nbTotalQuestions);
 
     // aller chercher le pack image
     QDir dir("data/images/gourmandises/");
@@ -244,6 +245,7 @@ void ExerciceSurvol::slotFinQuestionEntered()
     qDebug()<< "*******************ExerciceSurvol::slotFinQuestionEntered()";
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
+//    boiteTetes->resetTetes(m_nbTotalQuestions);
 }
 
 void ExerciceSurvol::slotQuitter() // ok
@@ -349,6 +351,7 @@ void ExerciceSurvol::slotCacheMasque()
         }
         // Appui sur le bouton vérifier auto dès que le nb masques interactifs = 0
         getAbeExerciceTelecommandeV1()->ui->btnVerifier->click();
+        boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
     }
 }
 
