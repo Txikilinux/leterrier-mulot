@@ -40,6 +40,7 @@ private:
 
     void redimensionnerConsigne();
     void redimensionnerImage();
+    void redimensionnerImage2();
 
 private slots:
     void slotSequenceEntered();
@@ -50,6 +51,7 @@ private slots:
     void slotQuestionEntered();
     void slotFinQuestionEntered();
     void slotFinVerificationQuestionEntered();
+    void slotAfficheVerificationQuestionEntered();
 //    void slotVerificationQuestionEntered();
 //    void slotQuestionExited();
 //    void slotBilanExerciceEntered();
@@ -57,12 +59,11 @@ private slots:
 //    void slotBilanSequenceExited();
     void slotQuitter();
 
-//    void resizeEvent(QResizeEvent *event);
-//    void showEvent(QShowEvent *event);
     void setDimensionsWidgets();
 
     // ExerciceSurvol
     void slotCacheMasque();
+    void slotPassageAutoImageSuivante();
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
