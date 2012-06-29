@@ -45,13 +45,15 @@ private:
 private slots:
     void slotSequenceEntered();
     void slotPresenteSequenceEntered();
-//    void slotPresentationExerciceEntered();
+//    void slotPresentationExerciceEntered()
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
     void slotQuestionEntered();
     void slotFinQuestionEntered();
     void slotFinVerificationQuestionEntered();
     void slotAfficheVerificationQuestionEntered();
+
+    void slotExercicesEntered();
 
 //    void slotVerificationQuestionEntered();
 //    void slotQuestionExited();
