@@ -18,18 +18,17 @@ public:
     ~ExerciceSurvol();
 
 private:
-    //mon AbulEduEtiquettes afin d'avoir une graphicView et tt ce qui va avec
-    AbulEduEtiquettesV1 *gv_AireDeJeu;
-    // Pour stocker AbulEduLabelWidget
-    QGraphicsProxyWidget *proxy;
+
+    AbulEduEtiquettesV1 *gv_AireDeJeu;  //mon AbulEduEtiquettes afin d'avoir une graphicView et tt ce qui va avec
+    QGraphicsProxyWidget *proxy;        // Pour stocker AbulEduLabelWidget
 
     // Pour l'exerciceSurvol
     QPixmap m_image;
     QGraphicsPixmapItem *m_itemImage;
-    QList<QPixmap> m_listeImage; // ma liste d'images (choisies aleatoirement)
-    int m_nbImage; // le nombre d'image = le nombre d'exercice
-    int m_nbMasquesInteractifs; // = à 7
-    QStringList m_listeFichiers; // la liste des fichiers présents dans le dossier pack image
+    QList<QPixmap> m_listeImage;        // ma liste d'images (choisies aleatoirement)
+    int m_nbImage;                      // le nombre d'image = le nombre d'exercice
+    int m_nbMasquesInteractifs;         // = à 7
+    QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
 
     QList<masqueDeplaceSouris *> m_listeMasquesFixes;
     masqueDeplaceSouris *m_masque;
@@ -37,9 +36,10 @@ private:
     QSize m_taille;
     QWidget *m_parent;
     bool m_localDebug;
+    bool m_exerciceEnCours;
 
     void redimensionnerConsigne();
-    void redimensionnerImage();
+    void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();
 
 private slots:
@@ -53,7 +53,6 @@ private slots:
     void slotFinVerificationQuestionEntered();
     void slotAfficheVerificationQuestionEntered();
 
-    void slotExercicesEntered();
 
 //    void slotVerificationQuestionEntered();
 //    void slotQuestionExited();
