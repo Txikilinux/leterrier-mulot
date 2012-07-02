@@ -88,6 +88,10 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     redimensionnerConsigne();
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
+
+    // Appui auto sur bouton suivant
+    qDebug() << "Passage à l'exercice automatique";
+    QTimer::singleShot(2000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
 // Mettre tout ce qui est commun à chaque question
@@ -238,7 +242,8 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     qDebug()<< "Click bouton suivant automatique !";
 
     qDebug()<< m_exerciceEnCours;
-    if (m_exerciceEnCours){
+    if (m_exerciceEnCours)
+    {
         QTimer::singleShot(2000,this,SLOT(slotPassageAutoImageSuivante()));     // Click auto du bouton suivant avec un timer
     }
 }
@@ -393,7 +398,7 @@ void ExerciceSurvol::slotCacheMasque()
 }
 
 // Méthode qui appuie sur le bouton suivant
-void ExerciceSurvol::slotPassageAutoImageSuivante()
+void ExerciceSurvol::slotPassageAutoSuivant()
 {
     qDebug() << "ExerciceSurvol;;slotPassageAutoImageSuivante()";
     getAbeExerciceTelecommandeV1()->ui->btnSuivant->click();

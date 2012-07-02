@@ -65,7 +65,7 @@ private slots:
 
     // ExerciceSurvol
     void slotCacheMasque();
-    void slotPassageAutoImageSuivante();
+    void slotPassageAutoSuivant();
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
