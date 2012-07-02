@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="consigne">picto/consigne.png</file>
+    </qresource>
+    <qresource prefix="/evaluation">
+        <file alias="attente">picto/evaluation/attente.png</file>
+        <file alias="bien">picto/evaluation/bien.png</file>
+        <file alias="mal">picto/evaluation/mal.png</file>
+        <file alias="neutre">picto/evaluation/neutre.png</file>
+        <file alias="moyen">picto/evaluation/moyen.png</file>
+        <file alias="rien">picto/evaluation/rien.png</file>
+        <file alias="tresbien">picto/evaluation/tresbien.png</file>
+    </qresource>
+    <qresource prefix="/bilan">
+        <file alias="neutre">picto/bilan/neutre.png</file>
+        <file alias="attente">picto/bilan/attente.png</file>
+        <file alias="moyen">picto/bilan/moyen.png</file>
+        <file alias="bien">picto/bilan/bien.png</file>
+        <file alias="mal">picto/bilan/mal.png</file>
+        <file alias="tresbien">picto/bilan/tresbien.png</file>
+        <file alias="rien">picto/bilan/rien.png</file>
+    </qresource>
+</RCC>
