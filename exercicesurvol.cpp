@@ -47,13 +47,14 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 {
     if (m_localDebug) qDebug()<<"--------------ExerciceSurvol::slotSequenceEntered()";
 
-    getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
-    getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
 
-    abeEnableAnimationsConsigneBilan(false);
 
     if(!m_exerciceEnCours)
     {
+        getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
+        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
+
+        abeEnableAnimationsConsigneBilan(false);
         setAbeNbExercices(1);      // a instancier avant appel du slot SequenceEntered !
         setAbeNbTotalQuestions(5); // a instancier avant appel du slot SequenceEntered !
 
@@ -236,8 +237,10 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     // et ainsi faciliter l'exercice de l'utilisateur =)
     qDebug()<< "Click bouton suivant automatique !";
 
-    QTimer::singleShot(2000,this,SLOT(slotPassageAutoImageSuivante()));     // Click auto du bouton suivant avec un timer
-    m_exerciceEnCours = false;
+    qDebug()<< m_exerciceEnCours;
+    if (m_exerciceEnCours){
+        QTimer::singleShot(2000,this,SLOT(slotPassageAutoImageSuivante()));     // Click auto du bouton suivant avec un timer
+    }
 }
 
 
@@ -258,6 +261,7 @@ void ExerciceSurvol::slotFinVerificationQuestionEntered()
     gv_AireDeJeu->scene()->removeItem(m_itemImage);
     gv_AireDeJeu->scene()->clear();
     gv_AireDeJeu->show();
+    m_exerciceEnCours = false;
 
 }
 
@@ -382,6 +386,7 @@ void ExerciceSurvol::slotCacheMasque()
         }
         // Appui sur le bouton vérifier auto dès que le nb masques interactifs = 0
         getAbeExerciceTelecommandeV1()->ui->btnVerifier->click();
+
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();
     }
