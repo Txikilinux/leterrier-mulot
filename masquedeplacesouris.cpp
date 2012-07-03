@@ -32,7 +32,7 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent) :
     setAcceptsHoverEvents(true);
 }
 
-void masqueDeplaceSouris::setSize(int width, int height)
+void masqueDeplaceSouris::setSize(float width, float height)
 {
     m_taille = QRectF(0,0,width,height);
 }

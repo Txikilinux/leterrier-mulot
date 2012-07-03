@@ -31,7 +31,7 @@ class masqueDeplaceSouris : public QGraphicsObject
     Q_OBJECT
 public:
     explicit masqueDeplaceSouris(QGraphicsObject *parent = 0);
-    void setSize(int width,int height);
+    void setSize(float width,float height);
     void setColor(QColor couleur);
     void setHideOnMouseOver(bool hide);
 

@@ -140,56 +140,69 @@ void ExerciceSurvol::slotInitQuestionEntered()
     if (!m_exerciceEnCours)
     {
         getAbeExerciceMessageV1()->setVisible(false);
-        //    qDebug()<< "Numero de la question : " << m_numQuestion;
         m_itemImage = new QGraphicsPixmapItem(0, gv_AireDeJeu->scene());
         m_itemImage->setPixmap(m_listeImage.takeAt(0));
-        //    .scaled(500, 400,Qt::KeepAspectRatio, Qt::SmoothTransformation
-
         redimensionnerImage2();
-        gv_AireDeJeu->show();
 
+        gv_AireDeJeu->show();
         getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(m_numQuestion);
 
 
         //mise en place du masque
-        int largeurMasque;
-        int hauteurMasque;
+        qreal largeurMasque = 0.00;
+        qreal hauteurMasque = 0.00;
+
+
 
         switch (m_numQuestion){
         case 1:
-            largeurMasque = hauteurMasque = 150;
+            largeurMasque = gv_AireDeJeu->width()/4.00;
+            hauteurMasque = gv_AireDeJeu->height()/2.00;
             break;
         case 2:
-            largeurMasque = hauteurMasque = 100;
+            largeurMasque = gv_AireDeJeu->width()/8.00;
+            hauteurMasque = gv_AireDeJeu->height()/4.00;
             break;
         case 3:
-            largeurMasque = hauteurMasque = 75;
+            largeurMasque = gv_AireDeJeu->width()/16.00;
+            hauteurMasque = gv_AireDeJeu->height()/8.00;
             break;
         case 4:
-            largeurMasque = hauteurMasque = 50;
+            largeurMasque = gv_AireDeJeu->width()/32.00;
+            hauteurMasque = gv_AireDeJeu->height()/16.00;
             break;
         case 5:
-            largeurMasque = hauteurMasque = 25;
+            largeurMasque = gv_AireDeJeu->width()/64.00;
+            hauteurMasque = gv_AireDeJeu->height()/32.00;
             break;
         default :
-            largeurMasque = hauteurMasque = 10;
+            largeurMasque = hauteurMasque = 10.00;
             break;
         }
 
+        qDebug() <<"LARGEUR & HAUTEUR AIRE DE JEU"  << gv_AireDeJeu->width() << gv_AireDeJeu->height();
+        qDebug() << "LARGEUR MASQUE"<<largeurMasque<< "HAUTEUR MASQUE" << hauteurMasque;
+
+        qDebug() <<"LARGEUR IMAGE" << m_image.width();
+        qDebug() <<"TAILLE ITEM IMAGE" <<m_itemImage->boundingRect();
+
+        qDebug() << "TAILLE GV_PRINCIPALE"<< getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
+        qDebug() << "TAILLE PROXY"<<proxy->geometry().width();
+
         int nbTotalPieces = 0;
         int num = 0;
-        //Calcul du nombre de lignes et de colonnes necessaires
-        for(int i = 0; i < gv_AireDeJeu->geometry().height(); i+=hauteurMasque) {
-            for(int j = 0; j < gv_AireDeJeu->geometry().width(); j+=largeurMasque) {
+//        Calcul du nombre de lignes et de colonnes necessaires
+        for(float i = 0; i < gv_AireDeJeu->height() ; i+=hauteurMasque) {
+            for(float j = 0; j < gv_AireDeJeu->width() ; j+=largeurMasque) {
                 qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteurMasque << " larg " << j << " : " << largeurMasque;
                 nbTotalPieces++;
 
                 m_masque = new masqueDeplaceSouris();
                 m_masque->setToolTip(QString("%1").arg(num));
-                m_masque->setSize(largeurMasque,hauteurMasque);
+
+                m_masque->setSize(largeurMasque, hauteurMasque);
                 m_masque->moveBy(j,i);
                 m_masque->setColor(QColor::fromRgb(255,255,255));
-                m_masque->setParent(gv_AireDeJeu->scene());
                 m_masque->setHideOnMouseOver(false);
                 gv_AireDeJeu->scene()->addItem(m_masque);
                 m_listeMasquesFixes << m_masque;
@@ -198,7 +211,6 @@ void ExerciceSurvol::slotInitQuestionEntered()
             qDebug()<<"Nombre de masques fixes :" << m_listeMasquesFixes.count();
         }
     }
-
 }
 
 // Choix aléatoire des masques intéractifs
@@ -244,7 +256,7 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     qDebug()<< m_exerciceEnCours;
     if (m_exerciceEnCours)
     {
-        QTimer::singleShot(2000,this,SLOT(slotPassageAutoImageSuivante()));     // Click auto du bouton suivant avec un timer
+        QTimer::singleShot(2000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
     }
 }
 
@@ -301,7 +313,7 @@ void ExerciceSurvol::setDimensionsWidgets()
     int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
-    //    gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
+//        gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
     gv_AireDeJeu->move(80 * ratio, 64 * ratio);
 
     // Placement des têtes
