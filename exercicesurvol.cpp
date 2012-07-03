@@ -1,11 +1,32 @@
+/** Classe ExerciceSurvol
+  * @see https://redmine.ryxeo.com/projects/
+  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @see The GNU Public License (GNU/GPL) v3
+  *
+  *
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation; either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful, but
+  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  *
+  * You should have received a copy of the GNU General Public License along
+  * with this program. If not, see <http://www.gnu.org/licenses/>.
+  */
+
 #include "exercicesurvol.h"
+
 
 ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     AbulEduCommonStatesV1(parent)
 {
     m_localDebug = true;
     m_exerciceEnCours = false;
-
 
     m_parent = parent;
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
@@ -32,9 +53,27 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
-    // qDebug() << getAbeExerciceAireDeTravailV1()->resize(size);
     // Demarrage de la machine à états
     sequenceMachine->start();
+
+    // Assignation des propriétés de la télécommande
+    // Plus de bouton corriger car non géré dans cette exercice.
+    // Problème bouton vérifier
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
+    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
+    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
+    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
+    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
+    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
+
+    // Pour les appuis automatique sur les touches
+    connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
+    connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()));
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -47,8 +86,6 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 {
     if (m_localDebug) qDebug()<<"--------------ExerciceSurvol::slotSequenceEntered()";
 
-
-
     if(!m_exerciceEnCours)
     {
         getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
@@ -60,7 +97,6 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 
         AbulEduCommonStatesV1::slotSequenceEntered();
         //    boiteTetes->resetTetes(m_nbTotalQuestions);
-
         setAbeLevel("1"); // a instancier après le slot sinon niveau 0 par def.
     }
 }
@@ -91,7 +127,8 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     // Appui auto sur bouton suivant
     qDebug() << "Passage à l'exercice automatique";
-    QTimer::singleShot(2000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+
+    QTimer::singleShot(3000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
 // Mettre tout ce qui est commun à chaque question
@@ -128,7 +165,6 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
         }
         AbulEduCommonStatesV1::slotRealisationExerciceEntered();
     }
-
 }
 
 // Affichage de l'image
@@ -147,12 +183,9 @@ void ExerciceSurvol::slotInitQuestionEntered()
         gv_AireDeJeu->show();
         getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(m_numQuestion);
 
-
         //mise en place du masque
         qreal largeurMasque = 0.00;
         qreal hauteurMasque = 0.00;
-
-
 
         switch (m_numQuestion){
         case 1:
@@ -191,7 +224,7 @@ void ExerciceSurvol::slotInitQuestionEntered()
 
         int nbTotalPieces = 0;
         int num = 0;
-//        Calcul du nombre de lignes et de colonnes necessaires
+        //        Calcul du nombre de lignes et de colonnes necessaires
         for(float i = 0; i < gv_AireDeJeu->height() ; i+=hauteurMasque) {
             for(float j = 0; j < gv_AireDeJeu->width() ; j+=largeurMasque) {
                 qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteurMasque << " larg " << j << " : " << largeurMasque;
@@ -211,6 +244,7 @@ void ExerciceSurvol::slotInitQuestionEntered()
             qDebug()<<"Nombre de masques fixes :" << m_listeMasquesFixes.count();
         }
     }
+
 }
 
 // Choix aléatoire des masques intéractifs
@@ -220,6 +254,7 @@ void ExerciceSurvol::slotQuestionEntered()
     if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotQuestionEntered()";
 
     // Seuls 7 masques soient actifs et "survolables", les autres ne bougent pas quand mais disparaissent quand il n'y a plus de masques sensibles (see slotCacheMasque)
+    AbulEduCommonStatesV1::slotQuestionEntered();
 
     if (!m_exerciceEnCours)
     {
@@ -241,7 +276,6 @@ void ExerciceSurvol::slotQuestionEntered()
     }
 
     m_exerciceEnCours = true;
-    AbulEduCommonStatesV1::slotQuestionEntered();
 }
 
 // Appeler lors de l'appui sur le bouton suivant
@@ -250,13 +284,11 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     qDebug()<< "*******************ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
 
     // Je me sers de ce slot pour appuyer automatiquement sur le bouton suivant de la télécommande,
-    // et ainsi faciliter l'exercice de l'utilisateur =)
     qDebug()<< "Click bouton suivant automatique !";
 
-    qDebug()<< m_exerciceEnCours;
     if (m_exerciceEnCours)
     {
-        QTimer::singleShot(2000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+        QTimer::singleShot(3000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
     }
 }
 
@@ -286,6 +318,7 @@ void ExerciceSurvol::slotFinVerificationQuestionEntered()
 void ExerciceSurvol::slotFinQuestionEntered()
 {
     qDebug()<< "*******************ExerciceSurvol::slotFinQuestionEntered()";
+    qDebug()<< "*******************BRAVO !!!!!!!!!!!!!!!!!";
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }
@@ -313,7 +346,7 @@ void ExerciceSurvol::setDimensionsWidgets()
     int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
-//        gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
+    //        gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
     gv_AireDeJeu->move(80 * ratio, 64 * ratio);
 
     // Placement des têtes
@@ -322,17 +355,14 @@ void ExerciceSurvol::setDimensionsWidgets()
 
     // Redimensionne le widget de consignes
     //  redimensionnerConsigne();
-
     AbulEduCommonStatesV1::setDimensionsWidgets();
     if (m_localDebug) qDebug()<<"                ExerciceSurvol::setDimensionsWidgets()---end";
 }
 
 
-
 //------------------------------------------------------------------
 //                 Méthodes propres à la classe
 //------------------------------------------------------------------
-
 
 void ExerciceSurvol::redimensionnerConsigne()
 {
@@ -398,20 +428,20 @@ void ExerciceSurvol::slotCacheMasque()
         for(int i = 0; i < m_listeMasquesFixes.count(); i++)
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
-
             qDebug()<< "Nb de masques fixes: " <<m_listeMasquesFixes.count();
         }
-        // Appui sur le bouton vérifier auto dès que le nb masques interactifs = 0
-        getAbeExerciceTelecommandeV1()->ui->btnVerifier->click();
+        qDebug() << "Appui sur le bouton Verifier";
+        emit appuiVerifier();
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();
     }
 }
 
+
 // Méthode qui appuie sur le bouton suivant
 void ExerciceSurvol::slotPassageAutoSuivant()
 {
-    qDebug() << "ExerciceSurvol;;slotPassageAutoImageSuivante()";
-    getAbeExerciceTelecommandeV1()->ui->btnSuivant->click();
+    qDebug() << "ExerciceSurvol::slotPassageAutoSuivant()";
+    emit appuiSuivant();
 }
