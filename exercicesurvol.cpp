@@ -57,8 +57,6 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     sequenceMachine->start();
 
     // Assignation des propriétés de la télécommande
-    // Plus de bouton corriger car non géré dans cette exercice.
-    // Problème bouton vérifier
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
@@ -70,8 +68,9 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
+    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
 
-    // Pour les appuis automatique sur les touches
+    // Pour les appuis automatiques sur les touches
     connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
     connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()));
 }
@@ -119,7 +118,6 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
-
     getAbeExerciceMessageV1()->setVisible(true);
 
     redimensionnerConsigne();
@@ -127,7 +125,6 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     // Appui auto sur bouton suivant
     qDebug() << "Passage à l'exercice automatique";
-
     QTimer::singleShot(3000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
@@ -253,6 +250,11 @@ void ExerciceSurvol::slotQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotQuestionEntered()";
 
+    // Lancement du chrono
+    // Instanciation du chronometre
+    m_chronometre = new QTime();
+    m_chronometre->start();
+
     // Seuls 7 masques soient actifs et "survolables", les autres ne bougent pas quand mais disparaissent quand il n'y a plus de masques sensibles (see slotCacheMasque)
     AbulEduCommonStatesV1::slotQuestionEntered();
 
@@ -276,21 +278,26 @@ void ExerciceSurvol::slotQuestionEntered()
     }
 
     m_exerciceEnCours = true;
+
+
+
+    //    qDebug("Time elapsed: %d ms", m_chronometre->elapsed());
+
 }
 
 // Appeler lors de l'appui sur le bouton suivant
 void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 {
     qDebug()<< "*******************ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
-
     // Je me sers de ce slot pour appuyer automatiquement sur le bouton suivant de la télécommande,
     qDebug()<< "Click bouton suivant automatique !";
 
     if (m_exerciceEnCours)
     {
-        QTimer::singleShot(3000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+        QTimer::singleShot(2000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
     }
 }
+
 
 
 // Appeler lors de l'appui sur le bouton suivant
@@ -320,8 +327,27 @@ void ExerciceSurvol::slotFinQuestionEntered()
     qDebug()<< "*******************ExerciceSurvol::slotFinQuestionEntered()";
     qDebug()<< "*******************BRAVO !!!!!!!!!!!!!!!!!";
 
+    // Affichage du temps passé Total
+    qDebug("Temps écoulé en millisecondes: %d ms", m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5);
+    // On ne veut pas un chronometre précis au millième près =)
+    qDebug("Temps écoulé en secondes: %d sec", (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
+
+
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }
+
+void ExerciceSurvol::slotBilanExerciceEntered()
+{
+    gv_AireDeJeu->scene()->removeItem(m_itemImage);
+
+    gv_AireDeJeu->scene()->clear();
+    gv_AireDeJeu->show();
+    m_listeImage.clear();
+
+    AbulEduCommonStatesV1::slotBilanExerciceEntered();
+
+}
+
 
 void ExerciceSurvol::slotQuitter() // ok
 {
@@ -423,7 +449,8 @@ void ExerciceSurvol::slotCacheMasque()
     qDebug() << "ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
     m_nbMasquesInteractifs--;
 
-    if(m_nbMasquesInteractifs == 0) {
+    if(m_nbMasquesInteractifs == 0)
+    {
         //On affiche l'image en entier
         for(int i = 0; i < m_listeMasquesFixes.count(); i++)
         {
@@ -435,7 +462,35 @@ void ExerciceSurvol::slotCacheMasque()
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();
+
+        // Affichage du temps passé
+        qDebug("Temps écoulé: %d ms",     m_chronometre->elapsed());
+        qDebug("Temps écoulé: %d sec",     (m_chronometre->elapsed())/1000);
+
+
+        // Enregistrement du temps passé pour chaque question
+        switch (m_numQuestion){
+        case 1:
+            m_tempsQuestion1 = m_chronometre->elapsed();
+            break;
+        case 2:
+            m_tempsQuestion2 = m_chronometre->elapsed();
+            break;
+        case 3:
+            m_tempsQuestion3 = m_chronometre->elapsed();
+            break;
+        case 4:
+            m_tempsQuestion4 = m_chronometre->elapsed();
+            break;
+        case 5:
+            m_tempsQuestion5 = m_chronometre->elapsed();
+            break;
+        default :
+            qDebug("!!!!!!!! Case Default !!!!!! Temps écoulé: %d ms",     m_chronometre->elapsed());
+            break;
+        }
     }
+
 }
 
 
@@ -445,3 +500,5 @@ void ExerciceSurvol::slotPassageAutoSuivant()
     qDebug() << "ExerciceSurvol::slotPassageAutoSuivant()";
     emit appuiSuivant();
 }
+
+

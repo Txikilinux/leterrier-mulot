@@ -57,6 +57,16 @@ private:
     bool m_localDebug;
     bool m_exerciceEnCours;
 
+    // Chronometre
+    QTime *m_chronometre;
+    int m_tempsQuestion1;
+    int m_tempsQuestion2;
+    int m_tempsQuestion3;
+    int m_tempsQuestion4;
+    int m_tempsQuestion5;
+
+
+
     void redimensionnerConsigne();
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();
@@ -75,7 +85,7 @@ private slots:
 
 //    void slotVerificationQuestionEntered();
 //    void slotQuestionExited();
-//    void slotBilanExerciceEntered();
+    void slotBilanExerciceEntered();
 //    void slotBilanSequenceEntered();
 //    void slotBilanSequenceExited();
     void slotQuitter();
@@ -84,8 +94,8 @@ private slots:
 
     // ExerciceSurvol
     void slotCacheMasque();
-//    void slotAppuiBtnVerifie();
     void slotPassageAutoSuivant();
+
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
