@@ -20,6 +20,7 @@
   */
 
 #include "exercicesurvol.h"
+#include <QtCore/qmath.h>
 
 
 ExerciceSurvol::ExerciceSurvol(QWidget *parent):
@@ -344,7 +345,55 @@ void ExerciceSurvol::slotBilanExerciceEntered()
     gv_AireDeJeu->show();
     m_listeImage.clear();
 
+    // Variables locales
+    int m_minute;
+    int m_seconde;
+    QString debutTableau;
+    QString imagetete;
+    QString consigne;
+    QString finTableau;
+
+    m_tempsTotal = qCeil((m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
+    // Case ou le temps total (exprimé en secondes) est supérieur à une minute => conversion
+
+    // TEST
+    m_tempsTotal = 60;
+
+    if(m_tempsTotal > 59)
+    {
+        m_seconde = m_tempsTotal %60;
+        m_minute  = m_tempsTotal /60;
+    }
+
+
     AbulEduCommonStatesV1::slotBilanExerciceEntered();
+
+    getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Bilan");
+    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Survol"));
+
+    debutTableau = "<tr>";
+    imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
+
+    if (m_tempsTotal <= 59) // Affichage en secondes
+    {
+        consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_tempsTotal) +" secondes" +" </td>" ;
+    }
+    else if((m_tempsTotal%60) == 0) // Affichage que en minutes (pas besoin d'afficher "en 0 secondes" :p)
+    {
+        consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_minute) +" minute(s)" +" </td>" ;
+    }
+    else if (m_tempsTotal > 59) // Affichage en minutes et secondes
+    {
+        consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_minute) +" minute(s)" + " et "+ QString::number(m_seconde) +" secondes" + " </td>" ;
+    }
+    finTableau = "</tr>";
+    getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
+
+    getAbeExerciceMessageV1()->abeWidgetMessageResize();
+    getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
+    getAbeExerciceMessageV1()->setVisible(true);
+
+    redimensionnerConsigne();
 
 }
 

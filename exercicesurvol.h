@@ -59,11 +59,12 @@ private:
 
     // Chronometre
     QTime *m_chronometre;
-    int m_tempsQuestion1;
-    int m_tempsQuestion2;
-    int m_tempsQuestion3;
-    int m_tempsQuestion4;
-    int m_tempsQuestion5;
+    float m_tempsQuestion1;
+    float m_tempsQuestion2;
+    float m_tempsQuestion3;
+    float m_tempsQuestion4;
+    float m_tempsQuestion5;
+    int m_tempsTotal;
 
 
 
