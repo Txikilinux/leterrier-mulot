@@ -70,6 +70,8 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
+    presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
+    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
 
     // Pour les appuis automatiques sur les touches
     connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
@@ -78,13 +80,12 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
 ExerciceSurvol::~ExerciceSurvol()
 {
-    // Permet à la MainWindow de savoir que l'exercice est terminé
-    emit exerciceExited();
+    emit exerciceExited(); // Permet à la MainWindow de savoir que l'exercice est terminé
 }
 
 void ExerciceSurvol::slotSequenceEntered() // en cours
 {
-    if (m_localDebug) qDebug()<<"--------------ExerciceSurvol::slotSequenceEntered()";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotSequenceEntered()";
 
     if(!m_exerciceEnCours)
     {
@@ -96,14 +97,15 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
         setAbeNbTotalQuestions(5); // a instancier avant appel du slot SequenceEntered !
 
         AbulEduCommonStatesV1::slotSequenceEntered();
-        //    boiteTetes->resetTetes(m_nbTotalQuestions);
+        presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
+
         setAbeLevel("1"); // a instancier après le slot sinon niveau 0 par def.
     }
 }
 
 void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 {
-    if (m_localDebug) qDebug()<<"               ExerciceSurvol::slotPresenteSequenceEntered()";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotPresenteSequenceEntered()";
 
     // Normalement, on n'efface pas cette ligne, sinon tant pis
     AbulEduCommonStatesV1::slotPresenteSequenceEntered();
@@ -125,7 +127,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
 
     // Appui auto sur bouton suivant
-    qDebug() << "Passage à l'exercice automatique";
+    if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
     QTimer::singleShot(3000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
@@ -134,7 +136,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 // choisir 5 images au hasard dans le pack
 void ExerciceSurvol::slotRealisationExerciceEntered()
 {
-    if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotRealisationExerciceEntered()";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotRealisationExerciceEntered()";
 
     if (!m_exerciceEnCours)
     {
@@ -169,7 +171,7 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
 // Calcule et mise en place des masques
 void ExerciceSurvol::slotInitQuestionEntered()
 {
-    if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotInitQuestionEntered()";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotInitQuestionEntered()";
     AbulEduCommonStatesV1::slotInitQuestionEntered();
     if (!m_exerciceEnCours)
     {
@@ -211,21 +213,22 @@ void ExerciceSurvol::slotInitQuestionEntered()
             break;
         }
 
-        qDebug() <<"LARGEUR & HAUTEUR AIRE DE JEU"  << gv_AireDeJeu->width() << gv_AireDeJeu->height();
-        qDebug() << "LARGEUR MASQUE"<<largeurMasque<< "HAUTEUR MASQUE" << hauteurMasque;
-
-        qDebug() <<"LARGEUR IMAGE" << m_image.width();
-        qDebug() <<"TAILLE ITEM IMAGE" <<m_itemImage->boundingRect();
-
-        qDebug() << "TAILLE GV_PRINCIPALE"<< getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
-        qDebug() << "TAILLE PROXY"<<proxy->geometry().width();
+//        if (m_localDebug)
+//        {
+//            qDebug() <<"LARGEUR & HAUTEUR AIRE DE JEU"  << gv_AireDeJeu->width() << gv_AireDeJeu->height();
+//            qDebug() << "LARGEUR MASQUE"<<largeurMasque<< "HAUTEUR MASQUE" << hauteurMasque;
+//            qDebug() <<"LARGEUR IMAGE" << m_image.width();
+//            qDebug() <<"TAILLE ITEM IMAGE" <<m_itemImage->boundingRect();
+//            qDebug() << "TAILLE GV_PRINCIPALE"<< getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
+//            qDebug() << "TAILLE PROXY"<<proxy->geometry().width();
+//        }
 
         int nbTotalPieces = 0;
         int num = 0;
         //        Calcul du nombre de lignes et de colonnes necessaires
         for(float i = 0; i < gv_AireDeJeu->height() ; i+=hauteurMasque) {
             for(float j = 0; j < gv_AireDeJeu->width() ; j+=largeurMasque) {
-                qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteurMasque << " larg " << j << " : " << largeurMasque;
+//                if (m_localDebug) qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteurMasque << " larg " << j << " : " << largeurMasque;
                 nbTotalPieces++;
 
                 m_masque = new masqueDeplaceSouris();
@@ -239,7 +242,7 @@ void ExerciceSurvol::slotInitQuestionEntered()
                 m_listeMasquesFixes << m_masque;
                 num ++;
             }
-            qDebug()<<"Nombre de masques fixes :" << m_listeMasquesFixes.count();
+//            if (m_localDebug) qDebug()<<"Nombre de masques fixes :" << m_listeMasquesFixes.count();
         }
     }
 
@@ -249,7 +252,7 @@ void ExerciceSurvol::slotInitQuestionEntered()
 // Connexion du slotCacheMasque
 void ExerciceSurvol::slotQuestionEntered()
 {
-    if (m_localDebug) qDebug()<<"*******************ExerciceSurvol::slotQuestionEntered()";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotQuestionEntered()";
 
     // Lancement du chrono
     // Instanciation du chronometre
@@ -267,31 +270,26 @@ void ExerciceSurvol::slotQuestionEntered()
         while (m_nbMasquesInteractifs < 7)
         {
             int alea = (qrand() % (m_listeMasquesFixes.count()));
-            qDebug() << "alea = " << alea;
+            if (m_localDebug) qDebug() << "alea = " << alea;
             m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
             connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             m_masqueInteractif->setColor(QColor::fromRgb(150,150,150));
             m_masqueInteractif->setHideOnMouseOver(true);
 
             m_nbMasquesInteractifs++;
-            qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
+//            if (m_localDebug) qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
         }
     }
 
     m_exerciceEnCours = true;
-
-
-
-    //    qDebug("Time elapsed: %d ms", m_chronometre->elapsed());
-
 }
 
 // Appeler lors de l'appui sur le bouton suivant
 void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 {
-    qDebug()<< "*******************ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
+    if (m_localDebug) qDebug()<< "##########################  ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
     // Je me sers de ce slot pour appuyer automatiquement sur le bouton suivant de la télécommande,
-    qDebug()<< "Click bouton suivant automatique !";
+    if (m_localDebug) qDebug()<< "Click bouton suivant automatique !";
 
     if (m_exerciceEnCours)
     {
@@ -304,13 +302,11 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 // Appeler lors de l'appui sur le bouton suivant
 void ExerciceSurvol::slotFinVerificationQuestionEntered()
 {
-    qDebug()<< "*******************ExerciceSurvol::slotFinVerificationQuestionEntered()";
+    if (m_localDebug) qDebug()<< "##########################  ExerciceSurvol::slotFinVerificationQuestionEntered()";
     AbulEduCommonStatesV1::slotFinVerificationQuestionEntered();
 
-    qDebug()<< "Avant Nombre de masques fixes dans la liste" << m_listeMasquesFixes.count();
     m_listeMasquesFixes.clear();
     m_nbMasquesInteractifs = 0;
-    qDebug()<< "Apres Nombre de masques fixes dans la liste" << m_listeMasquesFixes.count();
 
     boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
 
@@ -325,20 +321,23 @@ void ExerciceSurvol::slotFinVerificationQuestionEntered()
 // Ce slot est pour la derniere question !
 void ExerciceSurvol::slotFinQuestionEntered()
 {
-    qDebug()<< "*******************ExerciceSurvol::slotFinQuestionEntered()";
-    qDebug()<< "*******************BRAVO !!!!!!!!!!!!!!!!!";
+    if (m_localDebug)qDebug()<< "##########################  ExerciceSurvol::slotFinQuestionEntered()";
+
+    if (m_localDebug)qDebug()<< "*******************BRAVO !!!!!!!!!!!!!!!!!";
 
     // Affichage du temps passé Total
-    qDebug("Temps écoulé en millisecondes: %d ms", m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5);
+    if (m_localDebug) qDebug("Temps écoulé en millisecondes: %d ms", m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5);
     // On ne veut pas un chronometre précis au millième près =)
-    qDebug("Temps écoulé en secondes: %d sec", (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
+    if (m_localDebug) qDebug("Temps écoulé en secondes: %d sec", (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
 
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }
 
-void ExerciceSurvol::slotBilanExerciceEntered()
+void ExerciceSurvol::slotBilanExerciceEntered() // todo boucle pour les têtes
 {
+    if (m_localDebug)qDebug()<< "##########################  ExerciceSurvol::slotBilanExerciceEntered()";
+
     gv_AireDeJeu->scene()->removeItem(m_itemImage);
 
     gv_AireDeJeu->scene()->clear();
@@ -353,17 +352,16 @@ void ExerciceSurvol::slotBilanExerciceEntered()
     QString consigne;
     QString finTableau;
 
+    // Les heures ne sont pas gérées
+    // Arrondi à l'entier supérieur
     m_tempsTotal = qCeil((m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
-    // Case ou le temps total (exprimé en secondes) est supérieur à une minute => conversion
-
-    // TEST
-    m_tempsTotal = 60;
-
+    // Cas ou le temps total (exprimé en secondes) est supérieur à une minute => conversion
     if(m_tempsTotal > 59)
     {
         m_seconde = m_tempsTotal %60;
         m_minute  = m_tempsTotal /60;
     }
+
 
 
     AbulEduCommonStatesV1::slotBilanExerciceEntered();
@@ -374,6 +372,9 @@ void ExerciceSurvol::slotBilanExerciceEntered()
     debutTableau = "<tr>";
     imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
 
+    //-------------------------------------------
+    // Boucle pour l'affichage de la consigne !
+    //-------------------------------------------
     if (m_tempsTotal <= 59) // Affichage en secondes
     {
         consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_tempsTotal) +" secondes" +" </td>" ;
@@ -389,6 +390,7 @@ void ExerciceSurvol::slotBilanExerciceEntered()
     finTableau = "</tr>";
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
+
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
     getAbeExerciceMessageV1()->setVisible(true);
@@ -400,14 +402,14 @@ void ExerciceSurvol::slotBilanExerciceEntered()
 
 void ExerciceSurvol::slotQuitter() // ok
 {
-    if (m_localDebug) qDebug()<<"               ExerciceSurvol::slotQuitter";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotQuitter";
 
     AbulEduCommonStatesV1::slotQuitter();
 }
 
 void ExerciceSurvol::setDimensionsWidgets()
 {
-    if (m_localDebug) qDebug()<<"                ExerciceSurvol::setDimensionsWidgets()---start";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::setDimensionsWidgets()---start";
 
     // Placement de AireDeTravailV1
     float ratio = abeApp->getAbeApplicationDecorRatio();
@@ -431,7 +433,7 @@ void ExerciceSurvol::setDimensionsWidgets()
     // Redimensionne le widget de consignes
     //  redimensionnerConsigne();
     AbulEduCommonStatesV1::setDimensionsWidgets();
-    if (m_localDebug) qDebug()<<"                ExerciceSurvol::setDimensionsWidgets()---end";
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::setDimensionsWidgets()---end";
 }
 
 
@@ -450,7 +452,7 @@ void ExerciceSurvol::redimensionnerConsigne()
 // Methode obsolete mais à garder (a voir plus tard avec l'editeur)
 void ExerciceSurvol::redimensionnerImage()
 {
-    qDebug()<< m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
+    if (m_localDebug) qDebug()<< m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
     int largeurImage = m_itemImage->pixmap().width();
     int hauteurImage = m_itemImage->pixmap().height();
 
@@ -461,7 +463,7 @@ void ExerciceSurvol::redimensionnerImage()
         if (largeurImage > hauteurImage)
         {
             m_itemImage->setPixmap(m_itemImage->pixmap().scaledToHeight(gv_AireDeJeu->height(), Qt::SmoothTransformation));
-            qDebug()<<"Redimm" <<m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
+            if (m_localDebug)  qDebug()<<"Redimm" <<m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
             int differenceLargeur = (gv_AireDeJeu->width()) - (m_itemImage->pixmap().width());
             // Centrage de l'image
             m_itemImage->moveBy(differenceLargeur/2,0);
@@ -471,7 +473,7 @@ void ExerciceSurvol::redimensionnerImage()
         else // largeurImage < hauteurImage
         {
             m_itemImage->setPixmap(m_itemImage->pixmap().scaledToWidth(gv_AireDeJeu->width(), Qt::SmoothTransformation));
-            qDebug()<<"Redimm" <<m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
+            if (m_localDebug)  qDebug()<<"Redimm" <<m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
             int differenceLargeur = (gv_AireDeJeu->width()) - (m_itemImage->pixmap().width());
             // Centrage de l'image
             m_itemImage->moveBy(differenceLargeur/2,0);
@@ -495,7 +497,7 @@ void ExerciceSurvol::redimensionnerImage2()
 // On vide m_listeMasquesFixes
 void ExerciceSurvol::slotCacheMasque()
 {
-    qDebug() << "ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
+    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
     m_nbMasquesInteractifs--;
 
     if(m_nbMasquesInteractifs == 0)
@@ -504,18 +506,20 @@ void ExerciceSurvol::slotCacheMasque()
         for(int i = 0; i < m_listeMasquesFixes.count(); i++)
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
-            qDebug()<< "Nb de masques fixes: " <<m_listeMasquesFixes.count();
+//            if (m_localDebug) qDebug()<< "Nb de masques fixes: " <<m_listeMasquesFixes.count();
         }
-        qDebug() << "Appui sur le bouton Verifier";
+        if (m_localDebug) qDebug() << "Appui sur le bouton Verifier";
         emit appuiVerifier();
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();
 
         // Affichage du temps passé
-        qDebug("Temps écoulé: %d ms",     m_chronometre->elapsed());
-        qDebug("Temps écoulé: %d sec",     (m_chronometre->elapsed())/1000);
-
+        if (m_localDebug)
+        {
+            qDebug("Temps écoulé: %d ms",     m_chronometre->elapsed());
+            qDebug("Temps écoulé: %d sec",     (m_chronometre->elapsed())/1000);
+        }
 
         // Enregistrement du temps passé pour chaque question
         switch (m_numQuestion){
@@ -535,18 +539,17 @@ void ExerciceSurvol::slotCacheMasque()
             m_tempsQuestion5 = m_chronometre->elapsed();
             break;
         default :
-            qDebug("!!!!!!!! Case Default !!!!!! Temps écoulé: %d ms",     m_chronometre->elapsed());
+            if (m_localDebug) qDebug("!!!!!!!! Case Default !!!!!! Temps écoulé: %d ms",     m_chronometre->elapsed());
             break;
         }
     }
-
 }
 
 
 // Méthode qui appuie sur le bouton suivant
 void ExerciceSurvol::slotPassageAutoSuivant()
 {
-    qDebug() << "ExerciceSurvol::slotPassageAutoSuivant()";
+    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotPassageAutoSuivant()";
     emit appuiSuivant();
 }
 
