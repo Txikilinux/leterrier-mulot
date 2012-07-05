@@ -56,7 +56,7 @@ private:
     AbulEduPageAccueilV1 *m_abuleduaccueil;
     QMap<int, QString>m_texteBulles;
     // booléen qui indique si un exercice est en cours (cf abeLanceExo)
-    bool exerciceEnCours;
+    bool m_exerciceEnCours;
 
     bool m_localDebug;
 
@@ -66,6 +66,7 @@ private slots:
     void abeLanceExo(int numero);
     void exerciceExited();
 
+    void on_actionEditeur_triggered();
 };
 
 #endif // MAINWINDOW_H

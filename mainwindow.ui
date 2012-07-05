@@ -47,6 +47,7 @@
     </property>
     <addaction name="action_Quitter"/>
     <addaction name="action_Survol"/>
+    <addaction name="actionEditeur"/>
    </widget>
    <addaction name="menu_Fichier"/>
   </widget>
@@ -61,6 +62,11 @@
   <action name="action_Survol">
    <property name="text">
     <string>&amp;Survol</string>
+   </property>
+  </action>
+  <action name="actionEditeur">
+   <property name="text">
+    <string>&amp;Editeur</string>
    </property>
   </action>
  </widget>

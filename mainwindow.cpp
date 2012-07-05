@@ -22,7 +22,10 @@
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "editeur.h"
 #include "exercicesurvol.h"
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_localDebug = true;
 
     ui->setupUi(this);
-    exerciceEnCours = false;
+    setAttribute( Qt::WA_DeleteOnClose );
+    m_exerciceEnCours = false;
 
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
@@ -63,8 +67,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
-
-    setAttribute( Qt::WA_DeleteOnClose );
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -83,16 +85,11 @@ void MainWindow::slotDemo()
     qDebug() << " On passe en mode démo ...";
 }
 
-void MainWindow::on_action_Survol_triggered()
-{
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
-    w->show();
-}
 
 void MainWindow::abeLanceExo(int numero)
 {
     //si un exercice est en cours -> on ignore
-    if(exerciceEnCours)
+    if(m_exerciceEnCours)
     {
         return;
     }
@@ -112,11 +109,10 @@ void MainWindow::abeLanceExo(int numero)
             connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-        exerciceEnCours = true;
+        m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
     }
-
-        exerciceEnCours = true;
+        m_exerciceEnCours = true;
         break;
     }
 }
@@ -126,7 +122,29 @@ void MainWindow::exerciceExited()
     if (m_localDebug) qDebug()<<"Exercice Exited";
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
-    exerciceEnCours = false;
+    m_exerciceEnCours = false;
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
     show();
+}
+
+void MainWindow::on_action_Survol_triggered()
+{
+    widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
+    w->show();
+}
+
+void MainWindow::on_actionEditeur_triggered()
+{
+    if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
+    {
+        Editeur *monEditeur = new Editeur(this);
+        monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
+
+        monEditeur->show();
+    }
+    else // On affiche un petit message...
+    {
+        QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
+    }
+
 }

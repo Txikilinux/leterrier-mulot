@@ -15,18 +15,21 @@ SOURCES += main.cpp\
     widgetchoixtheme.cpp \
     widgetdeplacesouris.cpp \
     masquedeplacesouris.cpp \
-    exercicesurvol.cpp
+    exercicesurvol.cpp \
+    editeur.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
     widgetchoixtheme.h \
     widgetdeplacesouris.h \
     masquedeplacesouris.h \
-    exercicesurvol.h
+    exercicesurvol.h \
+    editeur.h
 
 FORMS    += mainwindow.ui \
     widgetchoixtheme.ui \
-    widgetdeplacesouris.ui
+    widgetdeplacesouris.ui \
+    editeur.ui
 
 RESOURCES += \
 
