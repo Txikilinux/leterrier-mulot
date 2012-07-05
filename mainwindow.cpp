@@ -63,6 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
+
+    setAttribute( Qt::WA_DeleteOnClose );
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -72,6 +74,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
 
 MainWindow::~MainWindow()
 {
+    if (m_localDebug) qDebug() << "##########################  MainWindow::~MainWindow()";
     delete ui;
 }
 
