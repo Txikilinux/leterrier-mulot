@@ -46,10 +46,16 @@
      <string>&amp;Fichier</string>
     </property>
     <addaction name="action_Quitter"/>
-    <addaction name="action_Survol"/>
     <addaction name="actionEditeur"/>
    </widget>
+   <widget class="QMenu" name="menuExercice">
+    <property name="title">
+     <string>Exercices</string>
+    </property>
+    <addaction name="action_Survol"/>
+   </widget>
    <addaction name="menu_Fichier"/>
+   <addaction name="menuExercice"/>
   </widget>
   <action name="action_Quitter">
    <property name="text">
@@ -59,14 +65,14 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="action_Survol">
-   <property name="text">
-    <string>&amp;Survol</string>
-   </property>
-  </action>
   <action name="actionEditeur">
    <property name="text">
     <string>&amp;Editeur</string>
+   </property>
+  </action>
+  <action name="action_Survol">
+   <property name="text">
+    <string>&amp;Survol</string>
    </property>
   </action>
  </widget>

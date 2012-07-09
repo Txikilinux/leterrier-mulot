@@ -111,6 +111,8 @@ void MainWindow::abeLanceExo(int numero)
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+        connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
     }
         m_exerciceEnCours = true;
         break;
@@ -129,8 +131,9 @@ void MainWindow::exerciceExited()
 
 void MainWindow::on_action_Survol_triggered()
 {
-    widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
-    w->show();
+//    widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
+//    w->show();
+    abeLanceExo(1);
 }
 
 void MainWindow::on_actionEditeur_triggered()
