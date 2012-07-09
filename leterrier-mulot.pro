@@ -13,7 +13,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     widgetchoixtheme.cpp \
-    widgetdeplacesouris.cpp \
     masquedeplacesouris.cpp \
     exercicesurvol.cpp \
     editeur.cpp
@@ -21,7 +20,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     version.h \
     widgetchoixtheme.h \
-    widgetdeplacesouris.h \
     masquedeplacesouris.h \
     exercicesurvol.h \
     editeur.h
