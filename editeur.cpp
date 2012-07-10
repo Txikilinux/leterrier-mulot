@@ -1,12 +1,6 @@
 #include "editeur.h"
 #include "ui_editeur.h"
 
-#include "QFileDialog"
-#include <QMessageBox>
-
-
-
-
 Editeur::Editeur(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editeur)
@@ -18,6 +12,46 @@ Editeur::Editeur(QWidget *parent) :
 
     ui->treeWidget->setAlternatingRowColors(true);
     ui->treeWidget->setColumnCount(1);
+
+    m_menuTreeWidget = new QMenu(ui->treeWidget);
+    QList<QAction *> actions;
+
+
+    QAction *a_supprimer = new QAction(trUtf8("&Supprimer..."),m_menuTreeWidget);
+    QStyle* style =  QApplication::style();
+    QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
+    a_supprimer->setIcon(iconSupprimer);
+    a_supprimer->setIconVisibleInMenu(true);
+    a_supprimer->connect(a_supprimer, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_album_triggered()));
+
+    actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
+
+    m_menuTreeWidget->addActions(actions);
+}
+
+void Editeur::on_action_Supprimer_album_triggered()
+{
+
+    if (m_localDebug) qDebug() << "##########################  Editeur::on_action_Supprimer_album_triggered()";
+
+    QTreeWidgetItem *item = ui->treeWidget->currentItem(); // je recupere l'item
+
+    // Le supprimer de la liste de dossier
+    QString nom = item->data(1,0).toString();
+    qDebug() << nom;
+    m_listeDossiers.removeOne(nom);
+
+    if (m_localDebug)
+    {
+        for (int i=0; i< m_listeDossiers.count(); i++)
+            qDebug() << m_listeDossiers.at(i);
+    }
+
+    // Supprimer l'item du TreeWidget
+    int index = ui->treeWidget->indexOfTopLevelItem(item);
+    ui->treeWidget->takeTopLevelItem(index);
+    ui->treeWidget->update();
+    ui->listWidget->clear(); // nettoyage de la listeWidget
 
 }
 
@@ -33,73 +67,88 @@ void Editeur::on_btnImporterDossierImage_clicked()
     if(m_localDebug) qDebug() << "##########################  Appuie sur le bouton d'Importation des images";
     //    QString fichier = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
 
-    QString dossier = QFileDialog::getExistingDirectory(this);
-    if(m_localDebug) qDebug() << dossier;
+    // Icone standard de dossier
+    QStyle* style =  QApplication::style();
+    QIcon iconDossier = style->standardIcon(QStyle::SP_DirIcon);
 
-    // Afficher le nom du dossier et de ses sous dossiers
-    m_dir = new QDir(dossier);
+    QString dossier = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
-    m_dir->setFilter(QDir::Dirs | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    if (m_localDebug)   qDebug() << dossier;
+
+    if (dossier.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
+    {
+        qDebug() << "Appui sur le bouton annuler";
+        return;
+    }
+
+    m_dir = new QDir();
+    m_dir->setPath(dossier);
+
+    m_dir->setFilter(QDir::Dirs | QDir::NoSymLinks | QDir::NoDotAndDotDot );
     QFileInfoList list = m_dir->entryInfoList();
 
-
-    if (!m_listeDossiers.contains(m_dir->absolutePath(), Qt::CaseSensitive)) // si ma liste de dossiers ne contient pas ce dossier, je l'ajoute
+    if (m_localDebug)
     {
-        m_listeDossiers << m_dir->absolutePath();
+        for (int i=0; i< list.count(); i++)
+            qDebug() << "Entree enregistree ds le QFileInfoList"<< list.at(i).filePath();
+    }
 
-        if (list.isEmpty()) // il n'y a pas de ss dossiers, donc le nom du dossier courant est affiché dans item
+    if (list.isEmpty()) // il n'y a pas de ss dossiers, donc le nom du dossier courant est affiché dans item
+    {
+        if (m_listeDossiers.contains(m_dir->absolutePath()))
+        {
+            qDebug() << "Ce dossier est déjà présent";
+        }
+        else
         {
             QStringList m_nomDossier = m_dir->absolutePath().split("/"); // la liste des strings contenus dans le chemin absolu moins les "/"
             if(!m_nomDossier.isEmpty()) // on sait jamais, évitons les bugs
             {
                 QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
                 item->setText(0, m_nomDossier.back());
+                item->setIcon(0,iconDossier);
                 item->setData(1, 0, m_dir->absolutePath());
                 ui->treeWidget->show();
-                if (m_localDebug) qDebug() << item;
 
                 m_listeDossiers << m_dir->absolutePath();
             }
             m_nomDossier.clear();
-
         }
-        else // on parcourt les ss dossiers et on les affiche
+
+    }
+    else // on parcourt les ss dossiers et on les affiche
+    {
+        for(int i = 0; i < list.count(); i++)
         {
-            for(int i = 0; i < list.count(); i++)
+            if (m_listeDossiers.contains(list.at(i).filePath()))
+            {
+                qDebug() << "Ce dossier est déjà présent";
+            }
+            else
             {
                 QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
                 item->setText(0, list.at(i).fileName());
+                item->setIcon(0,iconDossier);
                 item->setData(1, 0, list.at(i).absoluteFilePath());
                 ui->treeWidget->addTopLevelItem(item);
                 ui->treeWidget->show();
 
-                m_listeDossiers << list.at(i).absoluteFilePath();
+                m_listeDossiers << list.at(i).filePath();
+
                 // DEBUG
                 if (m_localDebug) qDebug() << item->data(1,0) << "" << list.at(i).fileName() << "" << list.at(i).absoluteFilePath();
             }
         }
-    } // FIN if contains
-
-    else // ma liste de dossiers contient ce dossier, je ne l'ajoute pas
-    {
-        // Ce dossier est déjà présent
-        qDebug() << "Ce dossier est déjà présent";
     }
 
-    // DEBUG  Parcours de la liste des dossiers
-    if (m_localDebug)
-    {
-        for (int i=0; i< m_listeDossiers.count(); i++)
-            qDebug() << m_listeDossiers.at(i);
-    }
 }
+
 
 void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)";
     // Quand je clique sur un item (dossier), parcours du dossier et affichage de toutes les images dans la listWidget
 
-    //    item = ui->treeWidget->currentItem();
     QFileInfo fi (item->data(1,0).toString());
 
     m_dir = new QDir(fi.absoluteFilePath());
@@ -141,3 +190,10 @@ void Editeur::rafraichirListeImages()
     }
 
 }
+
+void Editeur::on_treeWidget_customContextMenuRequested(const QPoint &pos)
+{
+    m_menuTreeWidget->exec(ui->treeWidget->mapToGlobal(pos));
+}
+
+

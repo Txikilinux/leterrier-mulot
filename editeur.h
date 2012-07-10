@@ -6,6 +6,10 @@
 #include <QDir>
 #include <QTreeWidgetItem>
 #include <QListWidgetItem>
+#include <QMenu>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QIcon>
 
 
 namespace Ui {
@@ -20,14 +24,20 @@ public:
     explicit Editeur(QWidget *parent = 0);
     ~Editeur();
 
+private :
+
+    void rafraichirListeImages();
 
 private slots:
 
-    void rafraichirListeImages();
     void on_btnImporterDossierImage_clicked();
-
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+
+    void on_treeWidget_customContextMenuRequested(const QPoint &pos);
+
+    // actions menu TreeWidet
+    void on_action_Supprimer_album_triggered();
 
 private:
     Ui::Editeur *ui;
@@ -37,6 +47,8 @@ private:
     QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
     QStringList m_listeDossiers; // la liste des dossiers ouverts
     QDir *m_dir;
+
+    QMenu *m_menuTreeWidget;
 
 
 };
