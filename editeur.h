@@ -23,9 +23,11 @@ public:
 
 private slots:
 
+    void rafraichirListeImages();
     void on_btnImporterDossierImage_clicked();
 
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
+
 
 private:
     Ui::Editeur *ui;

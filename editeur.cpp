@@ -117,6 +117,27 @@ void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
         m_listeFichiers << listeFichiers.at(i).absoluteFilePath();
         if (m_localDebug)
             qDebug() << "chemin des fichiers contenus dans le dossier" << m_listeFichiers[i];
+        rafraichirListeImages();
     }
     m_listeFichiers.clear();
+}
+
+void Editeur::rafraichirListeImages()
+{
+    QTreeWidgetItem *item = ui->treeWidget->currentItem();
+    ui->listWidget->clear();
+    m_dir = new QDir(item->data(1,0).toString());
+
+    m_dir->setFilter(QDir::Files);
+    m_dir->setSorting(QDir::Name | QDir::IgnoreCase | QDir::LocaleAware);
+    QFileInfoList list = m_dir->entryInfoList();
+    for(int i = 0; i < list.count(); i++)
+    {
+        QListWidgetItem *item = new QListWidgetItem();
+        QIcon icone(list.at(i).absoluteFilePath());//pour la mettre  à coté de l'item
+        item->setIcon(icone); // ajout de la petite icone sur l'item
+        item->setText(list.at(i).fileName());
+        ui->listWidget->insertItem(i,item);
+    }
+
 }
