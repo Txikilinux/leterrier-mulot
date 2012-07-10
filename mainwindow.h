@@ -27,7 +27,6 @@
 #include <QDesktopWidget>
 #include <QMainWindow>
 #include "widgetchoixtheme.h"
-#include "widgetdeplacesouris.h"
 #include "abuledupageaccueilv1.h"
 
 namespace Ui {

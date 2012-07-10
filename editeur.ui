@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>843</width>
-    <height>430</height>
+    <width>869</width>
+    <height>444</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,33 +29,58 @@
       <attribute name="title">
        <string>Gestion des Images</string>
       </attribute>
-      <widget class="QPushButton" name="btnImporterImage">
+      <widget class="QTreeWidget" name="treeWidget">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>10</y>
+         <width>211</width>
+         <height>361</height>
+        </rect>
+       </property>
+       <property name="lineWidth">
+        <number>0</number>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>true</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+       <column>
+        <property name="text">
+         <string notr="true">1</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QListWidget" name="listWidget">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>10</y>
+         <width>351</width>
+         <height>361</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnImporterDossierImage">
        <property name="geometry">
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>127</width>
+         <width>181</width>
          <height>27</height>
         </rect>
        </property>
        <property name="text">
-        <string>Importer Images</string>
+        <string>Importer Dossier Images</string>
        </property>
-      </widget>
-      <widget class="QWidget" name="horizontalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>0</y>
-         <width>591</width>
-         <height>371</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QListView" name="listViewImage"/>
-        </item>
-       </layout>
       </widget>
      </widget>
      <widget class="QWidget" name="tab_2">
