@@ -15,14 +15,16 @@ SOURCES += main.cpp\
     widgetchoixtheme.cpp \
     masquedeplacesouris.cpp \
     exercicesurvol.cpp \
-    editeur.cpp
+    editeur.cpp \
+    visionneuseimage.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
     widgetchoixtheme.h \
     masquedeplacesouris.h \
     exercicesurvol.h \
-    editeur.h
+    editeur.h \
+    visionneuseimage.h
 
 FORMS    += mainwindow.ui \
     widgetchoixtheme.ui \

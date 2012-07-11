@@ -1,3 +1,24 @@
+/** Classe Editeur
+  * @see https://redmine.ryxeo.com/projects/
+  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @see The GNU Public License (GNU/GPL) v3
+  *
+  *
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation; either version 3 of the License, or
+  * (at your option) any later version.
+  *
+  * This program is distributed in the hope that it will be useful, but
+  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+  * for more details.
+  *
+  * You should have received a copy of the GNU General Public License along
+  * with this program. If not, see <http://www.gnu.org/licenses/>.
+  */
+
 #include "editeur.h"
 #include "ui_editeur.h"
 
@@ -6,7 +27,7 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-    setAttribute( Qt::WA_DeleteOnClose );
+    setAttribute(Qt::WA_DeleteOnClose);
 
     m_localDebug = true;
 
@@ -27,6 +48,7 @@ Editeur::Editeur(QWidget *parent) :
     actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
 
     m_menuTreeWidget->addActions(actions);
+
 }
 
 void Editeur::on_action_Supprimer_album_triggered()
@@ -186,6 +208,7 @@ void Editeur::rafraichirListeImages()
         QIcon icone(list.at(i).absoluteFilePath());//pour la mettre  à coté de l'item
         item->setIcon(icone); // ajout de la petite icone sur l'item
         item->setText(list.at(i).fileName());
+        item->setData(4,list.at(i).absoluteFilePath());
         ui->listWidget->insertItem(i,item);
     }
 
@@ -196,4 +219,17 @@ void Editeur::on_treeWidget_customContextMenuRequested(const QPoint &pos)
     m_menuTreeWidget->exec(ui->treeWidget->mapToGlobal(pos));
 }
 
+void Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item)";
 
+    item = ui->listWidget->currentItem();
+    qDebug() << item->data(0) << "" << item->data(4);
+
+    if (m_localDebug) qDebug() << "Ouverture de l'image";
+    m_visionneuseImage = new VisionneuseImage(this);
+    m_visionneuseImage->ouvrirFicher(item->data(4).toString());
+
+    m_visionneuseImage->setWindowModality(Qt::WindowModal);
+    m_visionneuseImage->show();
+}
