@@ -188,7 +188,7 @@ void VisionneuseImage::ouvrir()
      a_aPropos = new QAction(tr("&A propos"), this);
      connect(a_aPropos, SIGNAL(triggered()), this, SLOT(aPropos()));
 
-     a_aProposQt = new QAction(tr("About &Qt"), this);
+     a_aProposQt = new QAction(tr("A propos &Qt"), this);
      connect(a_aProposQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
  }
 

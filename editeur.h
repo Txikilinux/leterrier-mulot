@@ -58,7 +58,11 @@ private slots:
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
     // actions list Widget
+    void on_action_Supprimer_photo_triggered();
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+    void on_listWidget_customContextMenuRequested(const QPoint &pos);
+
+    void on_btSelection_clicked();
 
 private:
     Ui::Editeur *ui;
@@ -69,6 +73,7 @@ private:
     QStringList m_listeDossiers; // la liste des dossiers ouverts
     QDir *m_dir;
     QMenu *m_menuTreeWidget;
+    QMenu *m_menuListWidget;
     VisionneuseImage *m_visionneuseImage;
 
     void rafraichirListeImages();

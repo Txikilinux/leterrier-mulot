@@ -40,9 +40,9 @@ public:
     ~VisionneuseImage();
 
     void ouvrirFicher(QString chemin);
+
 private slots:
     void ouvrir();
-//    void ouvrirFicher(QString chemin);
     void imprimer();
     void zoomIn();
     void zoomOut();
