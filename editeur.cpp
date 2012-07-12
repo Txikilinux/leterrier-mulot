@@ -35,10 +35,14 @@ Editeur::Editeur(QWidget *parent) :
     ui->treeWidget->setColumnCount(1);
 
 
-    QList<QAction *> actions;
+
+
 
     // ------- Action Menu Contextuel Tree Widget ------------------------------------------------------------
+    QList<QAction *> actionsMenuTreeWidget;
+
     m_menuTreeWidget = new QMenu(ui->treeWidget);
+
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer..."),m_menuTreeWidget);
     QStyle* style =  QApplication::style();
     QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
@@ -46,21 +50,22 @@ Editeur::Editeur(QWidget *parent) :
     a_supprimer->setIconVisibleInMenu(true);
     a_supprimer->connect(a_supprimer, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_dossier_triggered()));
 
-    actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
-    m_menuTreeWidget->addActions(actions);
-    //----------------------------------------------------------------------------------------------------------
+    actionsMenuTreeWidget << a_supprimer /*a_nouveau << a_renommer <<*/ ;
+    m_menuTreeWidget->addActions(actionsMenuTreeWidget);
 
-    // ------- Action Menu Contextuel Tree Widget --------------------------------------------------------------
-    m_menuListWidget = new QMenu(ui->listWidget);
-    QAction *a_supprimer2 = new QAction(trUtf8("&Supprimer..."),m_menuListWidget);
-    //   QStyle* style =  QApplication::style();
-    //   QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
+    // ------- Action Menu Contextuel Liste Widget Selection ---------------------------------------------------
+    QList<QAction *> actionsMenuListWidgetSelection;
+
+    m_menuListWidgetSelection = new QMenu(ui->listWidgetSelection);
+
+    QAction *a_supprimer2 = new QAction(trUtf8("&Supprimer..."),m_menuListWidgetSelection);
     a_supprimer2->setIcon(iconSupprimer);
     a_supprimer2->setIconVisibleInMenu(true);
     a_supprimer2->connect(a_supprimer2, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_photo_triggered()));
 
-    actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
-    m_menuTreeWidget->addActions(actions);
+
+    actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
+    m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
 
 }
 
@@ -78,35 +83,19 @@ void Editeur::on_action_Supprimer_dossier_triggered()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_action_Supprimer_dossier_triggered()";
 
-    QTreeWidgetItem *item = ui->treeWidget->currentItem(); // je recupere l'item
-
     // Le supprimer de la liste de dossier
-    QString nom = item->data(1,0).toString();
-    qDebug() << nom;
-    m_listeDossiers.removeOne(nom);
-
-    if (m_localDebug)
-    {
-        for (int i=0; i< m_listeDossiers.count(); i++)
-            qDebug() << m_listeDossiers.at(i);
-    }
+    m_listeDossiers.removeOne(ui->treeWidget->currentItem()->data(1,0).toString());
 
     // Supprimer l'item du TreeWidget
-    int index = ui->treeWidget->indexOfTopLevelItem(item);
-    ui->treeWidget->takeTopLevelItem(index);
-    ui->treeWidget->update();
+    ui->treeWidget->takeTopLevelItem(ui->treeWidget->indexOfTopLevelItem(ui->treeWidget->currentItem()));
     ui->listWidget->clear(); // nettoyage de la listeWidget
-
-    // Supprimer la liste de fichier correspondante
-    m_listeFichiers.clear();
 }
 
 void Editeur::on_action_Supprimer_photo_triggered()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_action_Supprimer_photo_triggered()";
-
-    QListWidgetItem *item = ui->listWidget->currentItem();
-
+    // Suppression de l'item
+    ui->listWidgetSelection->takeItem(ui->listWidgetSelection->row(ui->listWidgetSelection->currentItem()));
 }
 
 void Editeur::on_btnImporterDossierImage_clicked()
@@ -196,7 +185,6 @@ void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
     // Quand je clique sur un item (dossier), parcours du dossier et affichage de toutes les images dans la listWidget
 
     QFileInfo fi (item->data(1,0).toString());
-
     m_dir = new QDir(fi.absoluteFilePath());
 
     if (m_localDebug) qDebug() << "Lecture de " << fi.absoluteFilePath() << " " << m_dir->absolutePath();
@@ -209,12 +197,8 @@ void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
     QFileInfoList listeFichiers = m_dir->entryInfoList();
     for(int i = 0; i < listeFichiers.count(); i++)
     {
-        m_listeFichiers << listeFichiers.at(i).absoluteFilePath();
-        if (m_localDebug)
-            qDebug() << "chemin des fichiers contenus dans le dossier" << m_listeFichiers[i];
         rafraichirListeImages();
     }
-    m_listeFichiers.clear();
 }
 
 void Editeur::rafraichirListeImages()
@@ -233,12 +217,9 @@ void Editeur::rafraichirListeImages()
         item->setIcon(icone); // ajout de la petite icone sur l'item
         item->setText(list.at(i).fileName());
         item->setData(4,list.at(i).absoluteFilePath());
-        //        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
-        //        item->setFlags(!Qt::ItemIsEnabled);
         item->setCheckState(Qt::Unchecked);
         ui->listWidget->insertItem(i,item);
     }
-
 }
 
 void Editeur::on_treeWidget_customContextMenuRequested(const QPoint &pos)
@@ -250,6 +231,18 @@ void Editeur::on_treeWidget_customContextMenuRequested(const QPoint &pos)
     else // sinon je fais rien
     {
         if (m_localDebug) qDebug()<< "pas d'item";
+    }
+}
+
+void Editeur::on_listWidgetSelection_customContextMenuRequested(const QPoint &pos)
+{
+    if (ui->listWidgetSelection->itemAt(pos) != NULL) // j'ai un item à cet endroit, j'appelle mon menu
+    {
+        m_menuListWidgetSelection->exec(ui->listWidgetSelection->mapToGlobal(pos));
+    }
+    else // sinon je fais rien
+    {
+        if (m_localDebug) qDebug() << "Pas d'item";
     }
 }
 
@@ -267,9 +260,6 @@ void Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item) // Ouvertur
 
 void Editeur::on_btSelection_clicked()
 {
-    // TODO
-    // Pouvoir Supprimer une image
-
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btSelection_clicked()";
 
     for (int i =0; i< ui->listWidget->count(); i++ ) // Parcours de tout les items de la ListWidget
@@ -308,7 +298,6 @@ void Editeur::on_btSelection_clicked()
         {
             if (m_localDebug) qDebug() << trUtf8("item non selectionné");
         }
-
     }
 }
 
@@ -327,16 +316,11 @@ bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataIte
     return true;
 }
 
-void Editeur::on_listWidgetSelection_customContextMenuRequested(const QPoint &pos)
+void Editeur::on_btnCreationtheme_clicked()
 {
-    if (ui->listWidgetSelection->itemAt(pos) != NULL)
-    {
-        if (m_localDebug) qDebug() << "J'appelle mon menu ";
-    }
-    else
-    {
-        if (m_localDebug) qDebug() << "J'ai cliqué lààààà !!!!";
-    }
+    if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
+
+
+//    void AbulEduFileV1::abeFileSave(QString destFileName, QStringList fileList, QString fileBase, QString fileFormat)
+
 }
-
-

@@ -32,6 +32,7 @@
 #include <QMessageBox>
 #include <QIcon>
 #include <QLabel>
+#include "abuledufilev1.h"
 #include "visionneuseimage.h"
 
 
@@ -67,6 +68,8 @@ private slots:
     void on_btSelection_clicked();
 
 
+    void on_btnCreationtheme_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -76,7 +79,7 @@ private:
     QStringList m_listeDossiers; // la liste des dossiers ouverts
     QDir *m_dir;
     QMenu *m_menuTreeWidget;
-    QMenu *m_menuListWidget;
+    QMenu *m_menuListWidgetSelection;
     VisionneuseImage *m_visionneuseImage;
 
     void rafraichirListeImages();
