@@ -42,7 +42,7 @@ VisionneuseImage::VisionneuseImage(QWidget *parent)
     creerActions();
     creerMenus();
 
-    setWindowTitle(tr("Visionneuse Image"));
+    setWindowTitle(trUtf8("Visionneuse Image"));
     resize(500, 400);
 }
 
@@ -54,12 +54,12 @@ VisionneuseImage::~VisionneuseImage()
 void VisionneuseImage::ouvrir()
 {
     QString nomFichier = QFileDialog::getOpenFileName(this,
-                                    tr("Ouvrir fichier"), QDir::currentPath());
+                                    trUtf8("Ouvrir fichier"), QDir::currentPath());
     if (!nomFichier.isEmpty()) {
         QImage image(nomFichier);
         if (image.isNull()) {
-            QMessageBox::information(this, tr("Visionneuse Image"),
-                                     tr("Impossible d'ouvrir %1.").arg(nomFichier));
+            QMessageBox::information(this, trUtf8("Visionneuse Image"),
+                                     trUtf8("Impossible d'ouvrir %1.").arg(nomFichier));
             return;
         }
         imageLabel->setPixmap(QPixmap::fromImage(image));
@@ -80,8 +80,8 @@ void VisionneuseImage::ouvrir()
      if (!chemin.isEmpty()) {
          QImage image(chemin);
          if (image.isNull()) {
-             QMessageBox::information(this, tr("Visionneuse Image"),
-                                      tr("Impossible d'ouvrir %1.").arg(chemin));
+             QMessageBox::information(this, trUtf8("Visionneuse Image"),
+                                      trUtf8("Impossible d'ouvrir %1.").arg(chemin));
              return;
          }
          imageLabel->setPixmap(QPixmap::fromImage(image));
@@ -150,64 +150,64 @@ void VisionneuseImage::ouvrir()
 
  void VisionneuseImage::creerActions()
  {
-     a_ouvrir = new QAction(tr("&Ouvrir..."), this);
-     a_ouvrir->setShortcut(tr("Ctrl+O"));
+     a_ouvrir = new QAction(trUtf8("&Ouvrir..."), this);
+     a_ouvrir->setShortcut(trUtf8("Ctrl+O"));
      connect(a_ouvrir, SIGNAL(triggered()), this, SLOT(ouvrir()));
 
 
-     a_imprimer = new QAction(tr("&Imprimer..."), this);
-     a_imprimer->setShortcut(tr("Ctrl+P"));
+     a_imprimer = new QAction(trUtf8("&Imprimer..."), this);
+     a_imprimer->setShortcut(trUtf8("Ctrl+P"));
      a_imprimer->setEnabled(false);
      connect(a_imprimer, SIGNAL(triggered()), this, SLOT(imprimer()));
 
-     a_quitter = new QAction(tr("&Quitter"), this);
-     a_quitter->setShortcut(tr("Ctrl+Q"));
+     a_quitter = new QAction(trUtf8("&Quitter"), this);
+     a_quitter->setShortcut(trUtf8("Ctrl+Q"));
      connect(a_quitter, SIGNAL(triggered()), this, SLOT(close()));
 
-     a_zoomIn = new QAction(tr("Zoom &In (25%)"), this);
-     a_zoomIn->setShortcut(tr("Ctrl++"));
+     a_zoomIn = new QAction(trUtf8("Zoom &In (25%)"), this);
+     a_zoomIn->setShortcut(trUtf8("Ctrl++"));
      a_zoomIn->setEnabled(false);
      connect(a_zoomIn, SIGNAL(triggered()), this, SLOT(zoomIn()));
 
-     a_zoomOut = new QAction(tr("Zoom &Out (25%)"), this);
-     a_zoomOut->setShortcut(tr("Ctrl+-"));
+     a_zoomOut = new QAction(trUtf8("Zoom &Out (25%)"), this);
+     a_zoomOut->setShortcut(trUtf8("Ctrl+-"));
      a_zoomOut->setEnabled(false);
      connect(a_zoomOut, SIGNAL(triggered()), this, SLOT(zoomOut()));
 
-     a_tailleNormal = new QAction(tr("&Taille Normale"), this);
-     a_tailleNormal->setShortcut(tr("Ctrl+S"));
+     a_tailleNormal = new QAction(trUtf8("&Taille Normale"), this);
+     a_tailleNormal->setShortcut(trUtf8("Ctrl+S"));
      a_tailleNormal->setEnabled(false);
      connect(a_tailleNormal, SIGNAL(triggered()), this, SLOT(tailleNormale()));
 
-     a_ajusterFenetre = new QAction(tr("&Ajuster a la fenetre"), this);
+     a_ajusterFenetre = new QAction(trUtf8("&Ajuster a la fenetre"), this);
      a_ajusterFenetre->setEnabled(false);
      a_ajusterFenetre->setCheckable(true);
-     a_ajusterFenetre->setShortcut(tr("Ctrl+F"));
+     a_ajusterFenetre->setShortcut(trUtf8("Ctrl+F"));
      connect(a_ajusterFenetre, SIGNAL(triggered()), this, SLOT(ajusterFenetre()));
 
-     a_aPropos = new QAction(tr("&A propos"), this);
+     a_aPropos = new QAction(trUtf8("&A propos"), this);
      connect(a_aPropos, SIGNAL(triggered()), this, SLOT(aPropos()));
 
-     a_aProposQt = new QAction(tr("A propos &Qt"), this);
+     a_aProposQt = new QAction(trUtf8("A propos &Qt"), this);
      connect(a_aProposQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
  }
 
  void VisionneuseImage::creerMenus()
  {
-     menu_fichier = new QMenu(tr("&Fichier"), this);
+     menu_fichier = new QMenu(trUtf8("&Fichier"), this);
      menu_fichier->addAction(a_ouvrir);
      menu_fichier->addAction(a_imprimer);
      menu_fichier->addSeparator();
      menu_fichier->addAction(a_quitter);
 
-     menu_vue = new QMenu(tr("&Vue"), this);
+     menu_vue = new QMenu(trUtf8("&Vue"), this);
      menu_vue->addAction(a_zoomIn);
      menu_vue->addAction(a_zoomOut);
      menu_vue->addAction(a_tailleNormal);
      menu_vue->addSeparator();
      menu_vue->addAction(a_ajusterFenetre);
 
-     menu_aide = new QMenu(tr("&Aide"), this);
+     menu_aide = new QMenu(trUtf8("&Aide"), this);
      menu_aide->addAction(a_aPropos);
      menu_aide->addAction(a_aProposQt);
 
