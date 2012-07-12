@@ -1,13 +1,3 @@
-#ifndef EDITEUR_H
-#define EDITEUR_H
-
-#include <QDialog>
-#include <QDebug>
-#include <QDir>
-#include <QTreeWidgetItem>
-#include <QListWidgetItem>
-#include <QMenu>
-#include <QFileDialog>
 /** Classe Editeur
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
@@ -29,6 +19,16 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
+#ifndef EDITEUR_H
+#define EDITEUR_H
+
+#include <QDialog>
+#include <QDebug>
+#include <QDir>
+#include <QTreeWidgetItem>
+#include <QListWidgetItem>
+#include <QMenu>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QIcon>
 #include <QLabel>
@@ -77,6 +77,7 @@ private:
     VisionneuseImage *m_visionneuseImage;
 
     void rafraichirListeImages();
+    bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
 
 
 };

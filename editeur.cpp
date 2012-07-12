@@ -37,7 +37,7 @@ Editeur::Editeur(QWidget *parent) :
 
     QList<QAction *> actions;
 
-// ------- Action Menu Contextuel Tree Widget ------------------------------------------------------------
+    // ------- Action Menu Contextuel Tree Widget ------------------------------------------------------------
     m_menuTreeWidget = new QMenu(ui->treeWidget);
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer..."),m_menuTreeWidget);
     QStyle* style =  QApplication::style();
@@ -48,19 +48,19 @@ Editeur::Editeur(QWidget *parent) :
 
     actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
     m_menuTreeWidget->addActions(actions);
-//----------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------
 
-// ------- Action Menu Contextuel Tree Widget --------------------------------------------------------------
-   m_menuListWidget = new QMenu(ui->listWidget);
-   QAction *a_supprimer2 = new QAction(trUtf8("&Supprimer..."),m_menuListWidget);
-//   QStyle* style =  QApplication::style();
-//   QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
-   a_supprimer2->setIcon(iconSupprimer);
-   a_supprimer2->setIconVisibleInMenu(true);
-   a_supprimer2->connect(a_supprimer2, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_photo_triggered()));
+    // ------- Action Menu Contextuel Tree Widget --------------------------------------------------------------
+    m_menuListWidget = new QMenu(ui->listWidget);
+    QAction *a_supprimer2 = new QAction(trUtf8("&Supprimer..."),m_menuListWidget);
+    //   QStyle* style =  QApplication::style();
+    //   QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
+    a_supprimer2->setIcon(iconSupprimer);
+    a_supprimer2->setIconVisibleInMenu(true);
+    a_supprimer2->connect(a_supprimer2, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_photo_triggered()));
 
-   actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
-   m_menuTreeWidget->addActions(actions);
+    actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
+    m_menuTreeWidget->addActions(actions);
 
 }
 
@@ -279,22 +279,75 @@ void Editeur::on_listWidget_customContextMenuRequested(const QPoint &pos)
 
 void Editeur::on_btSelection_clicked()
 {
+    // TODO
+    // Enlever les CheckState
+    // Pouvoir Supprimer une image
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btSelection_clicked()";
 
-    for (int i =0; i<ui->listWidget->count();i++)
+
+    for (int i =0; i< ui->listWidget->count(); i++ ) // Parcours de tout les items de la ListWidget
     {
 
-        if(ui->listWidget->item(i)->checkState() == 2)
+        if(ui->listWidget->item(i)->checkState() == 2) // Si l'etat de mon item est "checked"
         {
-            qDebug() << "cet item est selectionné";
-            QListWidgetItem *item = ui->listWidget->item(i)->clone();
+            qDebug() << trUtf8("cet item est selectionné");
 
-            ui->listWidgetSelection->insertItem(0, item );
+            QListWidgetItem *item = ui->listWidget->item(i)->clone(); // on le clone
+
+            // Ne pas remettre 2 fois le meme item
+            // Si ma liste des widget selectionné est vide
+            // Insertion de l'item sans controle
+
+            if (ui->listWidgetSelection->count() == 0)
+            {
+
+                qDebug() << "Liste des selection vide >>>> Insertion de l'item";
+                ui->listWidgetSelection->insertItem(0, item ); //... et on l'insere dans les listWidget des selectionnés
+            }
+
+            else if (ui->listWidgetSelection->count() > 0)
+            {
+                qDebug() << "Liste des selection non vide";
+
+                for(int i =0; i < ui->listWidgetSelection->count(); i++)
+                {
+                    if (controleDoublonsSelection(ui->listWidgetSelection, item->data(4).toString())) // Si true, j'insere
+                        ui->listWidgetSelection->insertItem(0, item );
+                    else
+                        qDebug() << "item deja Present";
+                }
+            }
         }
-        else if (ui->listWidget->item(i)->checkState() == 0)
+
+        else if (ui->listWidget->item(i)->checkState() == 0) // Si l'etat n'est pas "checked", on ne fait rien
         {
-            qDebug() << "item non selectionné";
+            qDebug() << trUtf8("item non selectionné");
         }
 
     }
 }
+
+
+bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataItem)
+{
+    if (listWidget->count() == 0)
+        return true;
+    else
+    {
+        for (int i = 0; i < listWidget->count(); i++)
+        {
+            if (listWidget->item(i)->data(4) == dataItem)
+                return false;
+        }
+    }
+    return true;
+}
+
+
+
+
+
+
+
+
+
