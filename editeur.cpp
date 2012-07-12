@@ -34,10 +34,6 @@ Editeur::Editeur(QWidget *parent) :
     ui->treeWidget->setAlternatingRowColors(true);
     ui->treeWidget->setColumnCount(1);
 
-
-
-
-
     // ------- Action Menu Contextuel Tree Widget ------------------------------------------------------------
     QList<QAction *> actionsMenuTreeWidget;
 
@@ -62,7 +58,6 @@ Editeur::Editeur(QWidget *parent) :
     a_supprimer2->setIcon(iconSupprimer);
     a_supprimer2->setIconVisibleInMenu(true);
     a_supprimer2->connect(a_supprimer2, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_photo_triggered()));
-
 
     actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
     m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
@@ -320,7 +315,72 @@ void Editeur::on_btnCreationtheme_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
+    // Condition de garde = listeWidgetSelection est inferieur à 5
+    if (ui->listWidgetSelection->count() < 5)
+    {
+        QMessageBox::information(this, "Creation d'un Theme", "Veuillez selectionner au minimum 5 images");
+        return;
+    }
 
-//    void AbulEduFileV1::abeFileSave(QString destFileName, QStringList fileList, QString fileBase, QString fileFormat)
+    // Remplissage de la liste de fichier
+    for (int i=0; i< ui->listWidgetSelection->count(); i++)
+    {
+        m_listeFichiers << ui->listWidgetSelection->item(i)->data(4).toString();
+    }
+//    bool valid  = QFile::copy ("C:/copie.txt", "C:/copieNext.txt");
+
+    m_dir = new QDir(QDir::currentPath());
+    qDebug() << m_dir->absolutePath(); // test OK -> "/home/utilisateurs/icham.sirat/mulot/version-1.0"
+
+    // Effacement de l'ancien fichier temp
+    m_dir->setFilter(QDir::Dirs);
+    if(m_dir->entryInfoList().contains(QString("temp")))
+    {
+        m_dir->rmdir("temp");
+        qDebug() << "Effacement de l'ancien fichier temp";
+    }
+
+    // creation du repertoire temp
+    if (!m_dir->mkdir("temp"))
+    {
+        return;
+    }
+    else // j'ai reussi à creer mon fichier temporaire
+    {
+        qDebug() << "Creation fichier temporaire ok";
+        m_dir->setCurrent(QDir::currentPath()+"/temp");
+        qDebug()<< m_dir->absolutePath();
+
+    }
+
+    //    QString nomTheme = "monThemeTest"; // Que l'utilisateur choisira
+    //    QString fileBase = "/home/utilisateurs/icham.sirat/Images/";  // +nomTheme;
+
+//    AbulEduFileV1 *toto = new AbulEduFileV1();
+//    toto->abeFileSave(nomTheme, m_listeFichiers, fileBase, "abe");
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
