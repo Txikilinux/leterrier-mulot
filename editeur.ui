@@ -118,6 +118,12 @@
          <property name="acceptDrops">
           <bool>true</bool>
          </property>
+         <property name="editTriggers">
+          <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+         </property>
+         <property name="alternatingRowColors">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item row="1" column="5" rowspan="5">
@@ -132,6 +138,9 @@
           <enum>Qt::CustomContextMenu</enum>
          </property>
          <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
+         <property name="alternatingRowColors">
           <bool>true</bool>
          </property>
         </widget>

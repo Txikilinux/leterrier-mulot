@@ -32,7 +32,6 @@
 #include <QMessageBox>
 #include <QIcon>
 #include <QLabel>
-
 #include "visionneuseimage.h"
 
 
@@ -50,25 +49,29 @@ public:
 
 private slots:
 
+// ----------- Onglet Creer Theme-------------
     void on_btnImporterDossierImage_clicked();
 
     // actions menu TreeWidet
-    void on_action_Supprimer_album_triggered();
+    void on_action_Supprimer_dossier_triggered();
     void on_treeWidget_customContextMenuRequested(const QPoint &pos);
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
     // actions list Widget
     void on_action_Supprimer_photo_triggered();
     void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-    void on_listWidget_customContextMenuRequested(const QPoint &pos);
+
+    // actions list Widget Selection
+    void on_listWidgetSelection_customContextMenuRequested(const QPoint &pos);
 
     void on_btSelection_clicked();
 
+
 private:
     Ui::Editeur *ui;
-
     bool m_localDebug;
 
+// ----------- Onglet Creer Theme-------------
     QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
     QStringList m_listeDossiers; // la liste des dossiers ouverts
     QDir *m_dir;

@@ -44,7 +44,7 @@ Editeur::Editeur(QWidget *parent) :
     QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
     a_supprimer->setIcon(iconSupprimer);
     a_supprimer->setIconVisibleInMenu(true);
-    a_supprimer->connect(a_supprimer, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_album_triggered()));
+    a_supprimer->connect(a_supprimer, SIGNAL(triggered()), this, SLOT(on_action_Supprimer_dossier_triggered()));
 
     actions << /*a_nouveau << a_renommer <<*/ a_supprimer;
     m_menuTreeWidget->addActions(actions);
@@ -70,9 +70,13 @@ Editeur::~Editeur()
     delete ui;
 }
 
-void Editeur::on_action_Supprimer_album_triggered()
+//---------------------------------------------------------------------------------------------------------------------
+//                            ONGLET CREATION THEME
+//---------------------------------------------------------------------------------------------------------------------
+
+void Editeur::on_action_Supprimer_dossier_triggered()
 {
-    if (m_localDebug) qDebug() << "##########################  Editeur::on_action_Supprimer_album_triggered()";
+    if (m_localDebug) qDebug() << "##########################  Editeur::on_action_Supprimer_dossier_triggered()";
 
     QTreeWidgetItem *item = ui->treeWidget->currentItem(); // je recupere l'item
 
@@ -186,7 +190,6 @@ void Editeur::on_btnImporterDossierImage_clicked()
 
 }
 
-
 void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)";
@@ -230,7 +233,8 @@ void Editeur::rafraichirListeImages()
         item->setIcon(icone); // ajout de la petite icone sur l'item
         item->setText(list.at(i).fileName());
         item->setData(4,list.at(i).absoluteFilePath());
-        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+        //        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+        //        item->setFlags(!Qt::ItemIsEnabled);
         item->setCheckState(Qt::Unchecked);
         ui->listWidget->insertItem(i,item);
     }
@@ -239,14 +243,13 @@ void Editeur::rafraichirListeImages()
 
 void Editeur::on_treeWidget_customContextMenuRequested(const QPoint &pos)
 {
-
     if (ui->treeWidget->itemAt(pos)!=NULL) // j'ai un item à cet endroit, j'appelle mon menu
     {
         m_menuTreeWidget->exec(ui->treeWidget->mapToGlobal(pos));
     }
     else // sinon je fais rien
     {
-        qDebug()<< "pas d'item";
+        if (m_localDebug) qDebug()<< "pas d'item";
     }
 }
 
@@ -255,78 +258,59 @@ void Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item) // Ouvertur
     if (m_localDebug) qDebug() << "##########################  Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item)";
 
     item = ui->listWidget->currentItem();
-    qDebug() << item->data(0) << "" << item->data(4);
-
     if (m_localDebug) qDebug() << "Ouverture de l'image";
     m_visionneuseImage = new VisionneuseImage(this);
     m_visionneuseImage->ouvrirFicher(item->data(4).toString());
-
     m_visionneuseImage->setWindowModality(Qt::WindowModal);
     m_visionneuseImage->show();
-}
-
-void Editeur::on_listWidget_customContextMenuRequested(const QPoint &pos)
-{
-    if (ui->listWidget->itemAt(pos) != NULL)
-    {
-        qDebug() << "J'appelle mon menu ";
-    }
-    else
-    {
-        qDebug() << "J'ai cliqué lààààà !!!!";
-    }
 }
 
 void Editeur::on_btSelection_clicked()
 {
     // TODO
-    // Enlever les CheckState
     // Pouvoir Supprimer une image
-    if (m_localDebug) qDebug() << "##########################  Editeur::on_btSelection_clicked()";
 
+    if (m_localDebug) qDebug() << "##########################  Editeur::on_btSelection_clicked()";
 
     for (int i =0; i< ui->listWidget->count(); i++ ) // Parcours de tout les items de la ListWidget
     {
-
         if(ui->listWidget->item(i)->checkState() == 2) // Si l'etat de mon item est "checked"
         {
-            qDebug() << trUtf8("cet item est selectionné");
+            if (m_localDebug) qDebug() << trUtf8("cet item est selectionné");
 
-            QListWidgetItem *item = ui->listWidget->item(i)->clone(); // on le clone
-
-            // Ne pas remettre 2 fois le meme item
-            // Si ma liste des widget selectionné est vide
-            // Insertion de l'item sans controle
+            QListWidgetItem *item = new QListWidgetItem();
+            QIcon icone(ui->listWidget->item(i)->icon());//pour la mettre  à coté de l'item
+            item->setIcon(icone); // ajout de la petite icone sur l'item
+            item->setText(ui->listWidget->item(i)->text());
+            item->setData(4,ui->listWidget->item(i)->data(4));
 
             if (ui->listWidgetSelection->count() == 0)
             {
-
-                qDebug() << "Liste des selection vide >>>> Insertion de l'item";
+                if (m_localDebug) qDebug() << "Liste des selection vide >>>> Insertion de l'item";
                 ui->listWidgetSelection->insertItem(0, item ); //... et on l'insere dans les listWidget des selectionnés
             }
 
             else if (ui->listWidgetSelection->count() > 0)
             {
-                qDebug() << "Liste des selection non vide";
+                if (m_localDebug) qDebug() << "Liste des selection non vide";
 
                 for(int i =0; i < ui->listWidgetSelection->count(); i++)
                 {
                     if (controleDoublonsSelection(ui->listWidgetSelection, item->data(4).toString())) // Si true, j'insere
                         ui->listWidgetSelection->insertItem(0, item );
                     else
-                        qDebug() << "item deja Present";
+                        if (m_localDebug) qDebug() << "item deja Present";
                 }
             }
         }
 
         else if (ui->listWidget->item(i)->checkState() == 0) // Si l'etat n'est pas "checked", on ne fait rien
         {
-            qDebug() << trUtf8("item non selectionné");
+            if (m_localDebug) qDebug() << trUtf8("item non selectionné");
         }
 
     }
 }
-
 
 bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataItem)
 {
@@ -343,11 +327,16 @@ bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataIte
     return true;
 }
 
-
-
-
-
-
-
+void Editeur::on_listWidgetSelection_customContextMenuRequested(const QPoint &pos)
+{
+    if (ui->listWidgetSelection->itemAt(pos) != NULL)
+    {
+        if (m_localDebug) qDebug() << "J'appelle mon menu ";
+    }
+    else
+    {
+        if (m_localDebug) qDebug() << "J'ai cliqué lààààà !!!!";
+    }
+}
 
 
