@@ -389,42 +389,59 @@ void Editeur::on_btnCreationtheme_clicked()
     //----------------------- Effacement du dossier Temporaire
     //--------------------------------------------------------
     // Effacer les fichiers contenus dans Temp
-    destDir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-    QFileInfoList fichiersASupp = destDir.entryInfoList();
-    foreach( QFileInfo fichier, fichiersASupp )
-    {
-        qDebug() << fichier.fileName();
-        if(QFile::remove(fichier.absoluteFilePath()))
-            qDebug() << "Suppression OK";
-        else
-            qDebug() << "Suppression impossible";
-    }
-    // Effacer le dossier
-    if(destDir.rmdir(destDir.absolutePath()))
+//    destDir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+//    QFileInfoList fichiersASupp = destDir.entryInfoList();
+//    foreach( QFileInfo fichier, fichiersASupp )
+//    {
+//        qDebug() << fichier.fileName();
+//        if(QFile::remove(fichier.absoluteFilePath()))
+//            qDebug() << "Suppression OK";
+//        else
+//            qDebug() << "Suppression impossible";
+//    }
+//    // Effacer le dossier
+//    if(destDir.rmdir(destDir.absolutePath()))
+//        qDebug() << "Effacement dossier temp ok";
+    if(supprimerDir(destDir.absolutePath()))
         qDebug() << "Effacement dossier temp ok";
+    else
+        qDebug() << "Suppression impossible";
+
 
 }
 
+bool Editeur::supprimerDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+{
+    QDir folder(dirPath);
+    //On va lister dans ce répertoire tous les éléments différents de "." et ".."
+    //(désignant respectivement le répertoire en cours et le répertoire parent)
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
+    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    {
+        //Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif
+        if(fileInfo.isDir())
+        {
+            if(!supprimerDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
+                return false;
+        }
+        //Si l'élément est un fichier, on le supprime
+        else if(fileInfo.isFile())
+        {
+            if(!QFile::remove(fileInfo.filePath()))
+            {
+                //Si une erreur survient, on retourne false
+                return false;
+            }
+        }
+    }
 
+    //Le dossier est maintenant vide, on le supprime
+    if(!folder.rmdir(dirPath))
+    {
+        //Si une erreur survient, on retourne false
+        return false;
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //Sinon, on retourne true
+    return true;
+}

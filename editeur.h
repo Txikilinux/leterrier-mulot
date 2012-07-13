@@ -69,6 +69,7 @@ private slots:
 
 
     void on_btnCreationtheme_clicked();
+    bool supprimerDir(const QString& dirPath);
 
 private:
     Ui::Editeur *ui;
