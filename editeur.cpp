@@ -315,43 +315,78 @@ void Editeur::on_btnCreationtheme_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
-    // Condition de garde = listeWidgetSelection est inferieur à 5
-    if (ui->listWidgetSelection->count() < 5)
+//    // Condition de garde = listeWidgetSelection est inferieur à 5
+//    if (ui->listWidgetSelection->count() < 5)
+//    {
+//        QMessageBox::information(this, "Creation d'un Theme", "Veuillez selectionner au minimum 5 images");
+//        return;
+//    }
+
+//    // Remplissage de la liste de fichier
+//    for (int i=0; i< ui->listWidgetSelection->count(); i++)
+//    {
+//        m_listeFichiers << ui->listWidgetSelection->item(i)->data(4).toString();
+//    }
+
+//------------------------------------------------------------------------------------------------------------------
+//---------------------------------------- Ok jusque là Commenter juste pour tests ---------------------------------
+//------------------------------------------------------------------------------------------------------------------
+
+
+    //copie de la liste des fichiers vers le repertoire temporaire
+    QDir destDir(QDir::tempPath() + "/icham-tests");
+    destDir.mkdir(QDir::tempPath() + "/icham-tests");
+
+//    qDebug() << destinationTemp->fileName();
+    for (int i =0; i< ui->listWidgetSelection->count(); i++)
     {
-        QMessageBox::information(this, "Creation d'un Theme", "Veuillez selectionner au minimum 5 images");
-        return;
+        QFileInfo fi(ui->listWidgetSelection->item(i)->data(4).toString());
+        if ( QFile::copy(fi.absoluteFilePath(), destDir.absolutePath() + "/" + fi.fileName()) ) {
+            qDebug() << "Copie Ok";
+        }
     }
 
-    // Remplissage de la liste de fichier
-    for (int i=0; i< ui->listWidgetSelection->count(); i++)
-    {
-        m_listeFichiers << ui->listWidgetSelection->item(i)->data(4).toString();
-    }
+
+//    QStringList m_nomDossier = m_dir->absolutePath().split("/"); // la liste des strings contenus dans le chemin absolu moins les "/"
+//    if(!m_nomDossier.isEmpty()) // on sait jamais, évitons les bugs
+//    {
+//        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
+//        item->setText(0, m_nomDossier.back());
+//        item->setIcon(0,iconDossier);
+//        item->setData(1, 0, m_dir->absolutePath());
+//        ui->treeWidget->show();
+
+//        m_listeDossiers << m_dir->absolutePath();
+//    }
+//    m_nomDossier.clear();
+
 //    bool valid  = QFile::copy ("C:/copie.txt", "C:/copieNext.txt");
 
-    m_dir = new QDir(QDir::currentPath());
-    qDebug() << m_dir->absolutePath(); // test OK -> "/home/utilisateurs/icham.sirat/mulot/version-1.0"
+//    m_dir = new QDir(QDir::currentPath());
+//    qDebug() << m_dir->absolutePath(); // test OK -> "/home/utilisateurs/icham.sirat/mulot/version-1.0"
 
-    // Effacement de l'ancien fichier temp
-    m_dir->setFilter(QDir::Dirs);
-    if(m_dir->entryInfoList().contains(QString("temp")))
-    {
-        m_dir->rmdir("temp");
-        qDebug() << "Effacement de l'ancien fichier temp";
-    }
+//    // Effacement de l'ancien fichier temp
+//    m_dir->setFilter(QDir::Dirs);
+//    if(m_dir->entryInfoList().contains(QString("temp")))
+//    {
+//        m_dir->rmdir("temp");
+//        qDebug() << "Effacement de l'ancien fichier temp";
+//    }
 
-    // creation du repertoire temp
-    if (!m_dir->mkdir("temp"))
-    {
-        return;
-    }
-    else // j'ai reussi à creer mon fichier temporaire
-    {
-        qDebug() << "Creation fichier temporaire ok";
-        m_dir->setCurrent(QDir::currentPath()+"/temp");
-        qDebug()<< m_dir->absolutePath();
+//    // creation du repertoire temp
+//    if (!m_dir->mkdir("temp"))
+//    {
+//        return;
+//    }
+//    else // j'ai reussi à creer mon fichier temporaire
+//    {
+//        qDebug() << "Creation fichier temporaire ok";
+//        m_dir->setCurrent(QDir::currentPath()+"/temp");
+//        qDebug()<< m_dir->absolutePath();
 
-    }
+//    }
+
+
 
     //    QString nomTheme = "monThemeTest"; // Que l'utilisateur choisira
     //    QString fileBase = "/home/utilisateurs/icham.sirat/Images/";  // +nomTheme;
