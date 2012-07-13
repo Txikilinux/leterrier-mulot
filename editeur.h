@@ -84,6 +84,7 @@ private:
 
     void rafraichirListeImages();
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
+    QString uniqIDTemp();
 
 
 };

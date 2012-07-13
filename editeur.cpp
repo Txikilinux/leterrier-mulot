@@ -132,18 +132,13 @@ void Editeur::on_btnImporterDossierImage_clicked()
         }
         else
         {
-            QStringList m_nomDossier = m_dir->absolutePath().split("/"); // la liste des strings contenus dans le chemin absolu moins les "/"
-            if(!m_nomDossier.isEmpty()) // on sait jamais, évitons les bugs
-            {
-                QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-                item->setText(0, m_nomDossier.back());
-                item->setIcon(0,iconDossier);
-                item->setData(1, 0, m_dir->absolutePath());
-                ui->treeWidget->show();
-
-                m_listeDossiers << m_dir->absolutePath();
-            }
-            m_nomDossier.clear();
+            QFileInfo file(m_dir->absolutePath()); // pour l'affichage du nom de dossier uniquement dans le tree widget
+            QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
+            item->setText(0, file.fileName());
+            item->setIcon(0,iconDossier);
+            item->setData(1, 0, m_dir->absolutePath());
+            ui->treeWidget->show();
+            m_listeDossiers << m_dir->absolutePath();
         }
 
     }
@@ -311,88 +306,112 @@ bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataIte
     return true;
 }
 
+/**
+  * Cette méthode retourne un identifiant unique pour le fichier temporaire
+  * Elle est implémentée pour pallier les risques de sécurité liés au fichier codé en "dur"
+  * Utilisation d'un QTemporyFile afin d'avoir un nom unique
+  * C'est un fichier créé avec un id imprévisible
+  * Je me sers de cet id pour renommer le dossier temp dont j'ai besoin =)
+  * note -> le file temp créé s'efface en même tps que la destruction de l'objet
+  */
+QString Editeur::uniqIDTemp()
+{
+    QTemporaryFile file;
+    QString strArenvoyer ="";
+    if (file.open()) {
+        strArenvoyer = file.fileName();
+        file.close();
+    }
+    return strArenvoyer;
+}
+
 void Editeur::on_btnCreationtheme_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
-//    // Condition de garde = listeWidgetSelection est inferieur à 5
-//    if (ui->listWidgetSelection->count() < 5)
-//    {
-//        QMessageBox::information(this, "Creation d'un Theme", "Veuillez selectionner au minimum 5 images");
-//        return;
-//    }
+    //    // Condition de garde = listeWidgetSelection est inferieur à 5
+    //    if (ui->listWidgetSelection->count() < 5)
+    //    {
+    //        QMessageBox::information(this, "Creation d'un Theme", "Veuillez selectionner au minimum 5 images");
+    //        return;
+    //    }
 
-//    // Remplissage de la liste de fichier
-//    for (int i=0; i< ui->listWidgetSelection->count(); i++)
-//    {
-//        m_listeFichiers << ui->listWidgetSelection->item(i)->data(4).toString();
-//    }
+    //------------------------------------------------------------------------------------------------------------------
+    //---------------------------------------- Ok jusque là Commenter juste pour tests ---------------------------------
+    //------------------------------------------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------------------------------------------
-//---------------------------------------- Ok jusque là Commenter juste pour tests ---------------------------------
-//------------------------------------------------------------------------------------------------------------------
+    if (m_localDebug) qDebug() << "tentative de creation de " << uniqIDTemp();
 
+    QString destinationIdUniq = uniqIDTemp();
+    QDir destDir(destinationIdUniq);
+    if(destDir.mkpath(destinationIdUniq)) // tentative de création du fichier temp avec un id unique
+    {
+        if (m_localDebug) qDebug() << "Creation ok ";
+    }
+    else // si echec pas la peine d'aller plus loin
+    {
+        return;
+    }
+    if (m_localDebug) qDebug() << destDir.absolutePath();
 
-    //copie de la liste des fichiers vers le repertoire temporaire
-    QDir destDir(QDir::tempPath() + "/icham-tests");
-    destDir.mkdir(QDir::tempPath() + "/icham-tests");
-
-//    qDebug() << destinationTemp->fileName();
+    // Copie des images selectionnées dans le fichier temporaire
     for (int i =0; i< ui->listWidgetSelection->count(); i++)
     {
-        QFileInfo fi(ui->listWidgetSelection->item(i)->data(4).toString());
-        if ( QFile::copy(fi.absoluteFilePath(), destDir.absolutePath() + "/" + fi.fileName()) ) {
-            qDebug() << "Copie Ok";
+        QFileInfo originale(ui->listWidgetSelection->item(i)->data(4).toString());
+
+        qDebug() << "Chemin de l'image a copier      " << originale.absoluteFilePath();
+        qDebug() << "Chemin ou l'image va etre copiee" << destDir.absolutePath() + "/" + originale.fileName();
+
+        if( QFile::copy(originale.absoluteFilePath(), destDir.absolutePath() + "/" + originale.fileName()) )
+        {
+            qDebug() << "Copie Ok ";
+        }
+        else // Si la copie échoue, pas la peine d'aller plus loin
+        {
+            qDebug() << "Copie impossible";
+            return;
         }
     }
 
+    ui->listWidgetSelection->clear();
 
-//    QStringList m_nomDossier = m_dir->absolutePath().split("/"); // la liste des strings contenus dans le chemin absolu moins les "/"
-//    if(!m_nomDossier.isEmpty()) // on sait jamais, évitons les bugs
-//    {
-//        QTreeWidgetItem *item = new QTreeWidgetItem(ui->treeWidget);
-//        item->setText(0, m_nomDossier.back());
-//        item->setIcon(0,iconDossier);
-//        item->setData(1, 0, m_dir->absolutePath());
-//        ui->treeWidget->show();
-
-//        m_listeDossiers << m_dir->absolutePath();
-//    }
-//    m_nomDossier.clear();
-
-//    bool valid  = QFile::copy ("C:/copie.txt", "C:/copieNext.txt");
-
-//    m_dir = new QDir(QDir::currentPath());
-//    qDebug() << m_dir->absolutePath(); // test OK -> "/home/utilisateurs/icham.sirat/mulot/version-1.0"
-
-//    // Effacement de l'ancien fichier temp
-//    m_dir->setFilter(QDir::Dirs);
-//    if(m_dir->entryInfoList().contains(QString("temp")))
-//    {
-//        m_dir->rmdir("temp");
-//        qDebug() << "Effacement de l'ancien fichier temp";
-//    }
-
-//    // creation du repertoire temp
-//    if (!m_dir->mkdir("temp"))
-//    {
-//        return;
-//    }
-//    else // j'ai reussi à creer mon fichier temporaire
-//    {
-//        qDebug() << "Creation fichier temporaire ok";
-//        m_dir->setCurrent(QDir::currentPath()+"/temp");
-//        qDebug()<< m_dir->absolutePath();
-
-//    }
-
-
-
+    // Je creer le .abe
+    //......
     //    QString nomTheme = "monThemeTest"; // Que l'utilisateur choisira
     //    QString fileBase = "/home/utilisateurs/icham.sirat/Images/";  // +nomTheme;
 
-//    AbulEduFileV1 *toto = new AbulEduFileV1();
-//    toto->abeFileSave(nomTheme, m_listeFichiers, fileBase, "abe");
+    //    AbulEduFileV1 *toto = new AbulEduFileV1();
+    //    toto->abeFileSave(nomTheme, m_listeFichiers, fileBase, "abe");
+
+    //Et j'efface le fichier temp
+
+    //    if(destDir.rmdir(QDir::tempPath() + "/tmp_EditeurMulot"))
+    //
+    //    else
+    //        qDebug() << "Effacement du fichier temp impossible";
+
+    //    qDebug() <<"chemin avant"<< destDir.absolutePath(); // test je suis dans /tmp/tmp_EditeurMulot
+
+    //    destDir.setPath(QDir::tempPath());
+    //    qDebug() <<"chemin apres"<< destDir.absolutePath();
+
+    //    destDir.setFilter(QDir::Dirs);
+
+    //    for (int i=0; i<destDir.entryList().count(); i++)
+    //    {
+    //        qDebug() << destDir.entryList().at(i);
+    //    }
+
+
+
+    //    if (destDir.entryList().contains(QString("tmp_EditeurMulot")))
+    //    {
+    //        if(destDir.rmdir("tmp_EditeurMulot"))
+    //            qDebug() << "Effacement du fichier temp OK";
+    //        else
+    //            qDebug() << "Effacement du fichier temp impossible";
+    //    }
+
 
 }
 
