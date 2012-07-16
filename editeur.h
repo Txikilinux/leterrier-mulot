@@ -83,6 +83,7 @@ private:
     QMenu *m_menuListWidgetSelection;
     VisionneuseImage *m_visionneuseImage;
 
+
     void rafraichirListeImages();
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
     QString uniqIDTemp();

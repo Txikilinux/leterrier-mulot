@@ -340,74 +340,100 @@ void Editeur::on_btnCreationtheme_clicked()
     //---------------------------------------- Ok jusque là Commenter juste pour tests ---------------------------------
     //------------------------------------------------------------------------------------------------------------------
 
+    m_listeFichiers.clear(); // Cette liste contient les images choisies pour le thème avec les chemins du dossier temporaire
+    QString nomtheme = "Animaux"; // Que l'utilisateur choisira
+
     //----------------------- Création du dossier Temporaire
     //--------------------------------------------------------
 
     if (m_localDebug) qDebug() << "tentative de creation de " << uniqIDTemp();
 
     QString destinationIdUnique = uniqIDTemp(); //je récupère mon Id unique
-    QDir destDir(destinationIdUnique);
-    if(destDir.mkpath(destinationIdUnique)) // tentative de création du fichier temp avec un id unique
+    QString arborescence = QString("data") + QDir::separator() + QString("images") + QDir::separator() + nomtheme;
+    QString cheminImage = destinationIdUnique + QDir::separator() + arborescence ;
+
+    QDir destDir(cheminImage);
+    if(destDir.mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
     {
-        if (m_localDebug) qDebug() << "Creation ok ";
-    }
-    else // si echec pas la peine d'aller plus loin
-    {
-        return;
-    }
-    // Copie des images selectionnées dans le fichier temporaire
-    for (int i =0; i< ui->listWidgetSelection->count(); i++)
-    {
-        QFileInfo originale(ui->listWidgetSelection->item(i)->data(4).toString());
         if (m_localDebug)
         {
-            qDebug() << "Chemin de l'image a copier      " << originale.absoluteFilePath();
-            qDebug() << "Chemin ou l'image va etre copiee" << destDir.absolutePath() + "/" + originale.fileName();
+            qDebug() << "Creation ok "
+                     << destDir.absolutePath();
         }
-        if( QFile::copy(originale.absoluteFilePath(), destDir.absolutePath() + "/" + originale.fileName()) )
+
+        else // si echec pas la peine d'aller plus loin
         {
-            if (m_localDebug) qDebug() << "Copie Ok ";
-        }
-        else // Si la copie échoue, pas la peine d'aller plus loin
-        {
-            if (m_localDebug) qDebug() << "Copie impossible";
             return;
         }
+
+
+
+        // Copie des images selectionnées dans le fichier temporaire
+        for (int i =0; i< ui->listWidgetSelection->count(); i++)
+        {
+            QFileInfo originale(ui->listWidgetSelection->item(i)->data(4).toString());
+            if (m_localDebug) // Affichage chemin originale & destination des images
+            {
+                qDebug() << "Chemin de l'image a copier      " << originale.absoluteFilePath();
+                qDebug() << "Chemin ou l'image va etre copiee" << destDir.absolutePath() + QDir::separator() + originale.fileName();
+            }
+            if( QFile::copy(originale.absoluteFilePath(), destDir.absolutePath() + QDir::separator() + originale.fileName()) )
+            {
+                if (m_localDebug) qDebug() << "Copie Ok ";
+                m_listeFichiers << destDir.absolutePath() + QDir::separator() + originale.fileName();
+                if (m_localDebug)
+                {
+                    qDebug() << "Enregistrement de l'image ds la liste " << m_listeFichiers.at(i);
+                }
+            }
+            else // Si la copie échoue, pas la peine d'aller plus loin
+            {
+                if (m_localDebug) qDebug() << "Copie impossible";
+                return;
+            }
+        }
+
+        ui->listWidgetSelection->clear();
+
+        //------------------------ Création du .abe
+        //--------------------------------------------------------
+
+//        QString m_fileBase = destDir.absolutePath();
+
+//        AbulEduFileV1 *m_theme = new AbulEduFileV1();
+//        m_theme->abeFileSave(nomtheme, m_listeFichiers, m_fileBase, "abe");
+
+
+//        if (m_localDebug) qDebug() << "Création abe OK";
+
+
+
+
+
+        //----------------------- Effacement du dossier Temporaire
+        //--------------------------------------------------------
+        // Effacer les fichiers contenus dans Temp
+        //    destDir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+        //    QFileInfoList fichiersASupp = destDir.entryInfoList();
+        //    foreach( QFileInfo fichier, fichiersASupp )
+        //    {
+        //        qDebug() << fichier.fileName();
+        //        if(QFile::remove(fichier.absoluteFilePath()))
+        //            qDebug() << "Suppression OK";
+        //        else
+        //            qDebug() << "Suppression impossible";
+        //    }
+        //    // Effacer le dossier
+        //    if(destDir.rmdir(destDir.absolutePath()))
+        //        qDebug() << "Effacement dossier temp ok";
+
+        // De façon récursive maintenant
+        QDir temp(destinationIdUnique);
+        if(supprimerDir(temp.absolutePath()))
+            qDebug() << "Effacement dossier temp ok";
+        else
+            qDebug() << "Suppression impossible";
     }
-
-    ui->listWidgetSelection->clear();
-
-    //------------------------ Création du .abe
-    //--------------------------------------------------------
-
-    //    QString nomTheme = "monThemeTest"; // Que l'utilisateur choisira
-    //    QString fileBase = "/home/utilisateurs/icham.sirat/Images/";  // +nomTheme;
-
-    //    AbulEduFileV1 *toto = new AbulEduFileV1();
-    //    toto->abeFileSave(nomTheme, m_listeFichiers, fileBase, "abe");
-
-    //----------------------- Effacement du dossier Temporaire
-    //--------------------------------------------------------
-    // Effacer les fichiers contenus dans Temp
-//    destDir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-//    QFileInfoList fichiersASupp = destDir.entryInfoList();
-//    foreach( QFileInfo fichier, fichiersASupp )
-//    {
-//        qDebug() << fichier.fileName();
-//        if(QFile::remove(fichier.absoluteFilePath()))
-//            qDebug() << "Suppression OK";
-//        else
-//            qDebug() << "Suppression impossible";
-//    }
-//    // Effacer le dossier
-//    if(destDir.rmdir(destDir.absolutePath()))
-//        qDebug() << "Effacement dossier temp ok";
-    if(supprimerDir(destDir.absolutePath()))
-        qDebug() << "Effacement dossier temp ok";
-    else
-        qDebug() << "Suppression impossible";
-
-
 }
 
 bool Editeur::supprimerDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
@@ -434,14 +460,12 @@ bool Editeur::supprimerDir(const QString& dirPath) //dirPath = le chemin du rép
             }
         }
     }
-
     //Le dossier est maintenant vide, on le supprime
     if(!folder.rmdir(dirPath))
     {
         //Si une erreur survient, on retourne false
         return false;
     }
-
     //Sinon, on retourne true
     return true;
 }
