@@ -372,7 +372,6 @@ void Editeur::on_btnCreationtheme_clicked()
         //----------------------- Effacement du dossier Temporaire
         //--------------------------------------------------------
 
-//        QDir temp(destinationIdUnique);
         if(supprimerDir(temp.absolutePath()))
             qDebug() << "Effacement dossier temp ok";
         else

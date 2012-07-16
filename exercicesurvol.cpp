@@ -54,6 +54,9 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
 
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
+    chargerOption();
+
+
     // Demarrage de la machine à états
     sequenceMachine->start();
 
@@ -128,7 +131,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     // Appui auto sur bouton suivant
     if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-    QTimer::singleShot(3000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+    QTimer::singleShot(opt_timerSuivant,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
 // Mettre tout ce qui est commun à chaque question
@@ -293,7 +296,7 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 
     if (m_exerciceEnCours)
     {
-        QTimer::singleShot(2000,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+        QTimer::singleShot(opt_timerVerifier ,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
     }
 }
 
@@ -545,7 +548,6 @@ void ExerciceSurvol::slotCacheMasque()
     }
 }
 
-
 // Méthode qui appuie sur le bouton suivant
 void ExerciceSurvol::slotPassageAutoSuivant()
 {
@@ -553,4 +555,18 @@ void ExerciceSurvol::slotPassageAutoSuivant()
     emit appuiSuivant();
 }
 
+void ExerciceSurvol::chargerOption()
+{
+    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
 
+    QSettings parametres(QDir::currentPath()+QDir::separator()+QString("data")+QDir::separator()+QString("parametres.ini"), QSettings::IniFormat);
+    opt_timerSuivant  = parametres.value("Survol/timerSuivant", 3000).toInt();
+    opt_timerVerifier = parametres.value("Survol/timerVerifier", 2000).toInt();
+
+    if (m_localDebug)
+    {
+        qDebug() <<"Timer Suivant :"   << opt_timerSuivant  << "\n"
+                 <<"Timer Verifier  :" << opt_timerVerifier << "\n";
+    }
+
+}

@@ -42,6 +42,10 @@ private:
     QGraphicsProxyWidget *proxy;        // Pour stocker AbulEduLabelWidget
 
     // Pour l'exerciceSurvol
+    QSettings *m_parametres;
+    int opt_timerSuivant;
+    int opt_timerVerifier;
+
     QPixmap m_image;
     QGraphicsPixmapItem *m_itemImage;
     QList<QPixmap> m_listeImage;        // ma liste d'images (choisies aleatoirement)
@@ -66,11 +70,10 @@ private:
     float m_tempsQuestion5;
     int m_tempsTotal;
 
-
-
     void redimensionnerConsigne();
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();
+    void chargerOption();
 
 private slots:
     void slotSequenceEntered();
