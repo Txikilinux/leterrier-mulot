@@ -66,10 +66,13 @@ private slots:
     void on_listWidgetSelection_customContextMenuRequested(const QPoint &pos);
 
     void on_btSelection_clicked();
-
-
-    void on_btnCreationtheme_clicked();
     bool supprimerDir(const QString& dirPath);
+
+    void on_btnCreerTheme_clicked();
+
+    void on_btnSaveOptionSurvol_clicked();
+
+    void on_btnSaveImage_clicked();
 
 private:
     Ui::Editeur *ui;
@@ -83,6 +86,12 @@ private:
     QMenu *m_menuListWidgetSelection;
     VisionneuseImage *m_visionneuseImage;
 
+//---------------Chemin temp
+    QString destinationIdUnique;
+    QString arborescenceImage;
+    QString cheminImage;
+    QString arborescenceConf;
+    QString cheminConf;
 
     void rafraichirListeImages();
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);

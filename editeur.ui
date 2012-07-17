@@ -2,25 +2,41 @@
 <ui version="4.0">
  <class>Editeur</class>
  <widget class="QDialog" name="Editeur">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1015</width>
-    <height>595</height>
+    <width>992</width>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Editeur</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetDefaultConstraint</enum>
+   </property>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btnCreerTheme">
+     <property name="text">
+      <string>Créer Thème</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QTabWidget" name="tabWidgetEditeur">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
      </property>
      <property name="tabPosition">
       <enum>QTabWidget::North</enum>
@@ -45,33 +61,73 @@
        <string>Création de thèmes</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="4" rowspan="4">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="btnImporterDossierImage">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
-         <property name="sizeHint" stdset="0">
+         <property name="maximumSize">
           <size>
-           <width>67</width>
-           <height>160</height>
+           <width>200</width>
+           <height>40</height>
           </size>
          </property>
-        </spacer>
-       </item>
-       <item row="0" column="6" rowspan="2">
-        <spacer name="verticalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
+         <property name="text">
+          <string>Importer Dossier Images</string>
          </property>
-         <property name="sizeHint" stdset="0">
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="maximumSize">
           <size>
-           <width>100</width>
-           <height>75</height>
+           <width>250</width>
+           <height>16777215</height>
           </size>
          </property>
-        </spacer>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Plain</enum>
+         </property>
+         <property name="lineWidth">
+          <number>1</number>
+         </property>
+         <property name="text">
+          <string>Image(s) contenue(s) dans le dossier</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
        </item>
-       <item row="1" column="0" rowspan="5">
+       <item row="0" column="3">
+        <widget class="QLabel" name="label_2">
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="text">
+          <string>Image(s) selectionnée(s)</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" rowspan="4">
         <widget class="QTreeWidget" name="treeWidget">
          <property name="maximumSize">
           <size>
@@ -104,7 +160,7 @@
          </column>
         </widget>
        </item>
-       <item row="1" column="2" rowspan="5">
+       <item row="1" column="1" rowspan="4">
         <widget class="QListWidget" name="listWidget">
          <property name="maximumSize">
           <size>
@@ -126,7 +182,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="5" rowspan="5">
+       <item row="1" column="3" rowspan="4">
         <widget class="QListWidget" name="listWidgetSelection">
          <property name="maximumSize">
           <size>
@@ -145,27 +201,14 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="6">
-        <widget class="QPushButton" name="btnCreationtheme">
+       <item row="2" column="4">
+        <widget class="QPushButton" name="btnSaveImage">
          <property name="text">
-          <string>Creer Theme</string>
+          <string>Sauvegarder</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="6" rowspan="3">
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>100</width>
-           <height>406</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="4" column="4">
+       <item row="3" column="2">
         <widget class="QPushButton" name="btSelection">
          <property name="minimumSize">
           <size>
@@ -182,96 +225,159 @@
          </property>
         </widget>
        </item>
-       <item row="5" column="4">
-        <spacer name="verticalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>67</width>
-           <height>308</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="btnImporterDossierImage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Importer Dossier Images</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="label">
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="lineWidth">
-          <number>1</number>
-         </property>
-         <property name="text">
-          <string>Image(s) contenue(s) dans le dossier</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="5">
-        <widget class="QLabel" name="label_2">
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="text">
-          <string>Image(s) selectionnée(s)</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
       </layout>
+      <zorder>treeWidget</zorder>
+      <zorder>listWidget</zorder>
+      <zorder>listWidgetSelection</zorder>
+      <zorder>btnSaveImage</zorder>
+      <zorder>btSelection</zorder>
+      <zorder>btnImporterDossierImage</zorder>
+      <zorder>label</zorder>
+      <zorder>label_2</zorder>
+      <zorder>btnCreerTheme</zorder>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="tabSurvol">
       <attribute name="title">
-       <string>Tab 2</string>
+       <string>Exercice Survol</string>
       </attribute>
+      <widget class="QLabel" name="labelReglageBtnSuivant">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>44</y>
+         <width>194</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Réglage timer bouton Suivant</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelReglageBtnVerifier">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>77</y>
+         <width>192</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Réglage timer bouton Vérifier</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelReglageMasque">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>110</y>
+         <width>206</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Nombre de masques interactifs</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditReglageVerifier">
+       <property name="geometry">
+        <rect>
+         <x>221</x>
+         <y>77</y>
+         <width>146</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="lineEditReglageMasque">
+       <property name="geometry">
+        <rect>
+         <x>221</x>
+         <y>110</y>
+         <width>146</width>
+         <height>27</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="labelConsigne">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>591</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Veuillez remplir tous les champs avant d'appuyer sur le bouton Sauvegarder</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnSaveOptionSurvol">
+       <property name="geometry">
+        <rect>
+         <x>240</x>
+         <y>150</y>
+         <width>93</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Sauvegarder</string>
+       </property>
+      </widget>
+      <widget class="QSpinBox" name="spinBox">
+       <property name="geometry">
+        <rect>
+         <x>230</x>
+         <y>40</y>
+         <width>55</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="accelerated">
+        <bool>true</bool>
+       </property>
+       <property name="suffix">
+        <string>s</string>
+       </property>
+       <property name="value">
+        <number>7</number>
+       </property>
+      </widget>
      </widget>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tabWidgetEditeur</tabstop>
+  <tabstop>btnCreerTheme</tabstop>
+  <tabstop>treeWidget</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>listWidgetSelection</tabstop>
+  <tabstop>btnSaveImage</tabstop>
+  <tabstop>btSelection</tabstop>
+  <tabstop>btnImporterDossierImage</tabstop>
+  <tabstop>lineEditReglageVerifier</tabstop>
+  <tabstop>lineEditReglageMasque</tabstop>
+  <tabstop>treeWidget_2</tabstop>
+  <tabstop>listWidget_2</tabstop>
+  <tabstop>listWidgetSelection_2</tabstop>
+  <tabstop>btnSauvegarder_2</tabstop>
+  <tabstop>btSelection_2</tabstop>
+  <tabstop>btnImporterDossierImage_2</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>lineEdit_5</tabstop>
+  <tabstop>lineEdit_6</tabstop>
+  <tabstop>btnSaveOptionSurvol</tabstop>
+  <tabstop>spinBox</tabstop>
+ </tabstops>
  <resources>
   <include location="lib/abuledunetworkaccessmanagerv1/abuledussologinv1.qrc"/>
  </resources>

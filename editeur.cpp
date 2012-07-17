@@ -62,6 +62,14 @@ Editeur::Editeur(QWidget *parent) :
     actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
     m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
 
+
+    //-------------------------------------------------------------------------------------------------------------
+    // Initialisation des chemins temporaires
+    destinationIdUnique = uniqIDTemp(); //je récupère mon Id unique
+    arborescenceImage = QString("data") + QDir::separator() + QString("images");
+    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
+    arborescenceConf = QString("conf") + QDir::separator();
+    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
 }
 
 Editeur::~Editeur()
@@ -73,6 +81,8 @@ Editeur::~Editeur()
 //---------------------------------------------------------------------------------------------------------------------
 //                                      ONGLET CREATION THEME
 //---------------------------------------------------------------------------------------------------------------------
+
+/* Onglet creation theme */
 
 void Editeur::on_action_Supprimer_dossier_triggered()
 {
@@ -291,33 +301,24 @@ void Editeur::on_btSelection_clicked()
     }
 }
 
-void Editeur::on_btnCreationtheme_clicked()
+/**
+  * Sauvegarde des images choisies dans un dossier temporaire
+  * qui sera sauvegarder en .abe à l'appui sur le bouton CreerTheme
+  */
+void Editeur::on_btnSaveImage_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
-    //    // Condition de garde = listeWidgetSelection est inferieur à 5
-    //    if (ui->listWidgetSelection->count() < 5)
-    //    {
-    //        QMessageBox::information(this, "Creation d'un Theme", "Veuillez selectionner au minimum 5 images");
-    //        return;
-    //    }
-
-    //------------------------------------------------------------------------------------------------------------------
-    //---------------------------------------- Ok jusque là Commenter juste pour tests ---------------------------------
-    //------------------------------------------------------------------------------------------------------------------
-
+    // Condition de garde = listeWidgetSelection est inferieur à 5
+    if (ui->listWidgetSelection->count() < 5)
+    {
+        QMessageBox::information(this, "Sauvegarder Images", "Veuillez selectionner au minimum 5 images");
+        return;
+    }
     m_listeFichiers.clear(); // Cette liste contient les images choisies pour le thème avec les chemins du dossier temporaire
-    QString nomtheme = "Animaux"; // Que l'utilisateur choisira
 
     //----------------------- Création du dossier Temporaire
     //--------------------------------------------------------
-
-    if (m_localDebug) qDebug() << "tentative de creation de " << uniqIDTemp();
-
-    QString destinationIdUnique = uniqIDTemp(); //je récupère mon Id unique
-    QString arborescence = QString("data") + QDir::separator() + QString("images");
-    QString cheminImage = destinationIdUnique + QDir::separator() + arborescence ;
-
     QDir destDir(cheminImage);
     if(destDir.mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
     {
@@ -326,7 +327,6 @@ void Editeur::on_btnCreationtheme_clicked()
             qDebug() << "Creation ok "
                      << destDir.absolutePath();
         }
-
         else // si echec pas la peine d'aller plus loin
         {
             return;
@@ -356,27 +356,48 @@ void Editeur::on_btnCreationtheme_clicked()
                 return;
             }
         }
-
         ui->listWidgetSelection->clear();
-
-        //------------------------ Création du .abe
-        //--------------------------------------------------------
-
-        QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
-        QString m_fileBase = temp.absolutePath();
-        AbulEduFileV1 *m_theme = new AbulEduFileV1();
-        m_theme->abeFileSave(nomtheme, m_listeFichiers, m_fileBase, "abe");
-        if (m_localDebug) qDebug() << "Création abe OK";
-
-
-        //----------------------- Effacement du dossier Temporaire
-        //--------------------------------------------------------
-
-        if(supprimerDir(temp.absolutePath()))
-            qDebug() << "Effacement dossier temp ok";
-        else
-            qDebug() << "Suppression impossible";
     }
+}
+
+void Editeur::on_btnSaveOptionSurvol_clicked()
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::on_btnSaveOptionSurvol_clicked()";
+
+}
+
+/**
+  * Creation du .abe
+  */
+void Editeur::on_btnCreerTheme_clicked()
+{
+    /** Aller chercher les images */
+    //        //------------------------ Création du .abe
+    //        //--------------------------------------------------------
+    //            QString nomtheme = "Animaux"; // Que l'utilisateur choisira
+
+    //        QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
+    //        QString m_fileBase = temp.absolutePath();
+    //        AbulEduFileV1 *m_theme = new AbulEduFileV1();
+    //        m_theme->abeFileSave(nomtheme, m_listeFichiers, m_fileBase, "abe");
+    //        if (m_localDebug) qDebug() << "Création abe OK";
+
+    /** Aller chercher le fichier conf*/
+
+
+    /** Supprimer le dossier temporaire*/
+
+    //        //----------------------- Effacement du dossier Temporaire
+    //        //--------------------------------------------------------
+
+    //        if(supprimerDir(temp.absolutePath()))
+    //            qDebug() << "Effacement dossier temp ok";
+    //        else
+    //            qDebug() << "Suppression impossible";
+    //    }
+
+
+
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------
@@ -403,8 +424,7 @@ bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataIte
     return true;
 }
 
-/**
-  * Cette méthode retourne un identifiant unique pour le fichier temporaire
+/** Cette méthode retourne un identifiant unique pour le fichier temporaire
   * Elle est implémentée pour pallier les risques de sécurité liés au fichier codé en "dur"
   * Utilisation d'un QTemporyFile afin d'avoir un nom unique
   * C'est un fichier créé avec un id imprévisible
@@ -423,7 +443,7 @@ QString Editeur::uniqIDTemp()
 }
 
 /** Supprime un répertoire et tout son contenu
-  * Le répertoire passé en parmètre est aussi supprimé
+  * Le répertoire passé en paramètre est aussi supprimé
   */
 bool Editeur::supprimerDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
 {
