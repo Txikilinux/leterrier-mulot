@@ -45,6 +45,7 @@ private:
     QSettings *m_parametres;
     int opt_timerSuivant;
     int opt_timerVerifier;
+    int opt_nbMasquesChoisis;
 
     QPixmap m_image;
     QGraphicsPixmapItem *m_itemImage;
@@ -52,6 +53,10 @@ private:
     int m_nbImage;                      // le nombre d'image = le nombre d'exercice
     int m_nbMasquesInteractifs;         // = à 7
     QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
+
+    QPair<int, int> plusPetiteDivision(int monChiffre); // Pour le choix du découpage de l'image par rapport au nb de masques interactifs choisis
+    qreal nbMasquesLargeur;
+    qreal nbMasquesHauteur;
 
     QList<masqueDeplaceSouris *> m_listeMasquesFixes;
     masqueDeplaceSouris *m_masque;
@@ -78,20 +83,18 @@ private:
 private slots:
     void slotSequenceEntered();
     void slotPresenteSequenceEntered();
-//    void slotPresentationExerciceEntered()
+    //    void slotPresentationExerciceEntered()
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
     void slotQuestionEntered();
     void slotFinQuestionEntered();
     void slotFinVerificationQuestionEntered();
     void slotAfficheVerificationQuestionEntered();
-
-
-//    void slotVerificationQuestionEntered();
-//    void slotQuestionExited();
+    //    void slotVerificationQuestionEntered();
+    //    void slotQuestionExited();
     void slotBilanExerciceEntered();
-//    void slotBilanSequenceEntered();
-//    void slotBilanSequenceExited();
+    //    void slotBilanSequenceEntered();
+    //    void slotBilanSequenceExited();
     void slotQuitter();
 
     void setDimensionsWidgets();

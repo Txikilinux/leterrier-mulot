@@ -46,6 +46,8 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     m_listeMasquesFixes.clear();
     m_nbImage = 0;
     m_nbMasquesInteractifs = 0;
+    nbMasquesLargeur = 0;
+    nbMasquesHauteur = 0;
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -55,7 +57,6 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
     chargerOption();
-
 
     // Demarrage de la machine à états
     sequenceMachine->start();
@@ -106,6 +107,8 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
     }
 }
 
+/** Affichage de la consigne
+  */
 void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotPresenteSequenceEntered()";
@@ -134,9 +137,10 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
     QTimer::singleShot(opt_timerSuivant,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
-// Mettre tout ce qui est commun à chaque question
-// aller chercher le pack image
-// choisir 5 images au hasard dans le pack
+/** Mettre tout ce qui est commun à chaque question
+  * Aller chercher le pack image
+  * Choisir 5 images au hasard dans le pack
+  */
 void ExerciceSurvol::slotRealisationExerciceEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotRealisationExerciceEntered()";
@@ -168,13 +172,27 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
         }
         AbulEduCommonStatesV1::slotRealisationExerciceEntered();
     }
+
+    QPair<int, int> divisionEcran = plusPetiteDivision(opt_nbMasquesChoisis);
+    if (divisionEcran.first > divisionEcran.second)
+    {
+        nbMasquesLargeur = divisionEcran.first;
+        nbMasquesHauteur = divisionEcran.second;
+    }
+    else
+    {
+        nbMasquesLargeur = divisionEcran.second;
+        nbMasquesHauteur = divisionEcran.first;
+    }
 }
 
-// Affichage de l'image
-// Calcule et mise en place des masques
+/** Affichage de l'image
+  * Calcul et mise en place des masques
+  */
 void ExerciceSurvol::slotInitQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotInitQuestionEntered()";
+
     AbulEduCommonStatesV1::slotInitQuestionEntered();
     if (!m_exerciceEnCours)
     {
@@ -186,83 +204,60 @@ void ExerciceSurvol::slotInitQuestionEntered()
         gv_AireDeJeu->show();
         getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(m_numQuestion);
 
-        //mise en place du masque
+        //--------- Calcul de la taille des masques
         qreal largeurMasque = 0.00;
         qreal hauteurMasque = 0.00;
 
-        switch (m_numQuestion){
-        case 1:
-            largeurMasque = gv_AireDeJeu->width()/4.00;
-            hauteurMasque = gv_AireDeJeu->height()/2.00;
-            break;
-        case 2:
-            largeurMasque = gv_AireDeJeu->width()/8.00;
-            hauteurMasque = gv_AireDeJeu->height()/4.00;
-            break;
-        case 3:
-            largeurMasque = gv_AireDeJeu->width()/16.00;
-            hauteurMasque = gv_AireDeJeu->height()/8.00;
-            break;
-        case 4:
-            largeurMasque = gv_AireDeJeu->width()/32.00;
-            hauteurMasque = gv_AireDeJeu->height()/16.00;
-            break;
-        case 5:
-            largeurMasque = gv_AireDeJeu->width()/64.00;
-            hauteurMasque = gv_AireDeJeu->height()/32.00;
-            break;
-        default :
-            largeurMasque = hauteurMasque = 10.00;
-            break;
+        if (m_localDebug)
+        {
+            qDebug() << "nb masques largeur :" << nbMasquesLargeur ;
+            qDebug() << "nb masques hauteur :" << nbMasquesHauteur ;
         }
 
-//        if (m_localDebug)
-//        {
-//            qDebug() <<"LARGEUR & HAUTEUR AIRE DE JEU"  << gv_AireDeJeu->width() << gv_AireDeJeu->height();
-//            qDebug() << "LARGEUR MASQUE"<<largeurMasque<< "HAUTEUR MASQUE" << hauteurMasque;
-//            qDebug() <<"LARGEUR IMAGE" << m_image.width();
-//            qDebug() <<"TAILLE ITEM IMAGE" <<m_itemImage->boundingRect();
-//            qDebug() << "TAILLE GV_PRINCIPALE"<< getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
-//            qDebug() << "TAILLE PROXY"<<proxy->geometry().width();
-//        }
+        largeurMasque =  qreal(gv_AireDeJeu->width() / nbMasquesLargeur);
+        hauteurMasque = qreal(gv_AireDeJeu->height() / nbMasquesHauteur);
 
-        int nbTotalPieces = 0;
-        int num = 0;
-        //        Calcul du nombre de lignes et de colonnes necessaires
-        for(float i = 0; i < gv_AireDeJeu->height() ; i+=hauteurMasque) {
-            for(float j = 0; j < gv_AireDeJeu->width() ; j+=largeurMasque) {
-//                if (m_localDebug) qDebug() << "ajout d'une piece ... " << nbTotalPieces << " haut : " << i << " : " << hauteurMasque << " larg " << j << " : " << largeurMasque;
-                nbTotalPieces++;
+        int nbMasques = nbMasquesLargeur * nbMasquesHauteur;
+        qreal xMasque = 0.00;
+        qreal yMasque = 0.00;
 
+        qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
+        for (int i =0; i<nbMasquesHauteur; i++)
+        {
+            int j = 0;
+            while (j < nbMasquesLargeur)
+            {
                 m_masque = new masqueDeplaceSouris();
-                m_masque->setToolTip(QString("%1").arg(num));
-
                 m_masque->setSize(largeurMasque, hauteurMasque);
-                m_masque->moveBy(j,i);
+                m_masque->setPos(xMasque, yMasque);
+                j++;
+                xMasque += largeurMasque;
                 m_masque->setColor(QColor::fromRgb(255,255,255));
                 m_masque->setHideOnMouseOver(false);
+
                 gv_AireDeJeu->scene()->addItem(m_masque);
                 m_listeMasquesFixes << m_masque;
-                num ++;
+                qDebug()<< "masque ajoute";
             }
-//            if (m_localDebug) qDebug()<<"Nombre de masques fixes :" << m_listeMasquesFixes.count();
+            xMasque = 0.00;
+            yMasque += hauteurMasque;
         }
+        nbMasquesLargeur = nbMasquesLargeur*2;
+        nbMasquesHauteur = nbMasquesHauteur*2;
     }
-
 }
 
-// Choix aléatoire des masques intéractifs
-// Connexion du slotCacheMasque
+/** Choix aléatoire du positionnement des masques interactifs
+  * Connexion du slot cacheMasque sur chaque masque interactif
+  */
 void ExerciceSurvol::slotQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotQuestionEntered()";
 
-    // Lancement du chrono
-    // Instanciation du chronometre
+    // Instanciation & Demarrage du chronometre
     m_chronometre = new QTime();
     m_chronometre->start();
 
-    // Seuls 7 masques soient actifs et "survolables", les autres ne bougent pas quand mais disparaissent quand il n'y a plus de masques sensibles (see slotCacheMasque)
     AbulEduCommonStatesV1::slotQuestionEntered();
 
     if (!m_exerciceEnCours)
@@ -270,28 +265,28 @@ void ExerciceSurvol::slotQuestionEntered()
         m_nbMasquesInteractifs = 0;
         if (m_localDebug) qDebug()<<"*******************//   Boucle des Survolables ";
 
-        while (m_nbMasquesInteractifs < 7)
+        while (m_nbMasquesInteractifs < opt_nbMasquesChoisis)
         {
             int alea = (qrand() % (m_listeMasquesFixes.count()));
             if (m_localDebug) qDebug() << "alea = " << alea;
             m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
             connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-            m_masqueInteractif->setColor(QColor::fromRgb(150,150,150));
             m_masqueInteractif->setHideOnMouseOver(true);
+            m_masqueInteractif->setColor(QColor::fromRgb(0,0,0));
 
             m_nbMasquesInteractifs++;
-//            if (m_localDebug) qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
+            if (m_localDebug) qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
         }
     }
-
     m_exerciceEnCours = true;
 }
 
-// Appeler lors de l'appui sur le bouton suivant
+/**
+  * Appeler pour appuyer automatiquement sur le bouton suivant
+  */
 void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 {
     if (m_localDebug) qDebug()<< "##########################  ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
-    // Je me sers de ce slot pour appuyer automatiquement sur le bouton suivant de la télécommande,
     if (m_localDebug) qDebug()<< "Click bouton suivant automatique !";
 
     if (m_exerciceEnCours)
@@ -300,16 +295,12 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     }
 }
 
-
-
-// Appeler lors de l'appui sur le bouton suivant
 void ExerciceSurvol::slotFinVerificationQuestionEntered()
 {
     if (m_localDebug) qDebug()<< "##########################  ExerciceSurvol::slotFinVerificationQuestionEntered()";
     AbulEduCommonStatesV1::slotFinVerificationQuestionEntered();
 
     m_listeMasquesFixes.clear();
-    m_nbMasquesInteractifs = 0;
 
     boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
 
@@ -326,13 +317,10 @@ void ExerciceSurvol::slotFinQuestionEntered()
 {
     if (m_localDebug)qDebug()<< "##########################  ExerciceSurvol::slotFinQuestionEntered()";
 
-    if (m_localDebug)qDebug()<< "*******************BRAVO !!!!!!!!!!!!!!!!!";
-
     // Affichage du temps passé Total
     if (m_localDebug) qDebug("Temps écoulé en millisecondes: %d ms", m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5);
     // On ne veut pas un chronometre précis au millième près =)
     if (m_localDebug) qDebug("Temps écoulé en secondes: %d sec", (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
-
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }
@@ -365,8 +353,6 @@ void ExerciceSurvol::slotBilanExerciceEntered() // todo boucle pour les têtes
         m_minute  = m_tempsTotal /60;
     }
 
-
-
     AbulEduCommonStatesV1::slotBilanExerciceEntered();
 
     getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Bilan");
@@ -393,15 +379,12 @@ void ExerciceSurvol::slotBilanExerciceEntered() // todo boucle pour les têtes
     finTableau = "</tr>";
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
-
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
     getAbeExerciceMessageV1()->setVisible(true);
 
     redimensionnerConsigne();
-
 }
-
 
 void ExerciceSurvol::slotQuitter() // ok
 {
@@ -443,16 +426,20 @@ void ExerciceSurvol::setDimensionsWidgets()
 //------------------------------------------------------------------
 //                 Méthodes propres à la classe
 //------------------------------------------------------------------
-
+/**
+  * Redimensionne la consigne
+  */
 void ExerciceSurvol::redimensionnerConsigne()
 {
-    //        fondConsigne->setVisible(false); // Scorie liée à la compatibilité avec l'ancienne façon de faire
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->move((getAbeExerciceAireDeTravailV1()->width() - getAbeExerciceMessageV1()->width())/2,
                                     ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
 }
 
-// Methode obsolete mais à garder (a voir plus tard avec l'editeur)
+/**
+  * Redimensionne l'image par rapport à sa largeur ou sa hauteur.
+  * Obsolète mais conserver au cas ou !
+  */
 void ExerciceSurvol::redimensionnerImage()
 {
     if (m_localDebug) qDebug()<< m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
@@ -484,20 +471,18 @@ void ExerciceSurvol::redimensionnerImage()
     }
 }
 
+/** Redimmensionne l'image (2e méthode)
+  */
 void ExerciceSurvol::redimensionnerImage2()
 {
-    //    m_itemImage->setPixmap(m_itemImage->pixmap().scaledToWidth(gv_AireDeJeu->width(), Qt::SmoothTransformation));
-    //    m_itemImage->setPixmap(m_itemImage->pixmap().scaled(gv_AireDeJeu->size(),Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
-
-    //    imageLabel->setPixmap(myPixmap->scaled(scrollArea->maximumViewportSize(), Qt::KeepAspectRatio));
-    //    imageLabel->adjustSize();
     m_itemImage->setPixmap(m_itemImage->pixmap().scaled(gv_AireDeJeu->maximumViewportSize(), Qt::IgnoreAspectRatio));
 }
 
-// A chaque passsage sur un masque interactif, on décremente le nombre de masques interactifs.
-// Dès que les masques interactifs sont tous survolés, on affiche l'image.
-// On affiche la tête dans la boiteTete
-// On vide m_listeMasquesFixes
+/** A chaque passsage sur un masque interactif, on décremente le nombre de masques interactifs.
+  * Dès que les masques interactifs sont tous survolés, on affiche l'image.
+  * On affiche la tête dans la boiteTete.
+  * On vide m_listeMasquesFixes
+  */
 void ExerciceSurvol::slotCacheMasque()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
@@ -509,7 +494,6 @@ void ExerciceSurvol::slotCacheMasque()
         for(int i = 0; i < m_listeMasquesFixes.count(); i++)
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
-//            if (m_localDebug) qDebug()<< "Nb de masques fixes: " <<m_listeMasquesFixes.count();
         }
         if (m_localDebug) qDebug() << "Appui sur le bouton Verifier";
         emit appuiVerifier();
@@ -548,25 +532,83 @@ void ExerciceSurvol::slotCacheMasque()
     }
 }
 
-// Méthode qui appuie sur le bouton suivant
+/** Cette méthode emet le signal appuiSuivant
+  * Permet donc d'activer (de simuler) l'appui sur le bouton suivant de la telecommande
+  */
 void ExerciceSurvol::slotPassageAutoSuivant()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotPassageAutoSuivant()";
     emit appuiSuivant();
 }
 
+/** Charge les options contenues dans le fichier de configuration (parametres.ini)
+  */
 void ExerciceSurvol::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
 
     QSettings parametres(QDir::currentPath()+QDir::separator()+QString("data")+QDir::separator()+QString("parametres.ini"), QSettings::IniFormat);
-    opt_timerSuivant  = parametres.value("Survol/timerSuivant", 3000).toInt();
-    opt_timerVerifier = parametres.value("Survol/timerVerifier", 2000).toInt();
+    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 3000).toInt();
+    opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
+    opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
 
     if (m_localDebug)
     {
-        qDebug() <<"Timer Suivant :"   << opt_timerSuivant  << "\n"
-                 <<"Timer Verifier  :" << opt_timerVerifier << "\n";
+        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
+                 << "Timer Verifier     :"   << opt_timerVerifier << "\n"
+                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
     }
 
+}
+
+/** Cette méthode retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
+  * Elle sert au calcul de la taille des masques.
+  * exemple: pour 11 masques, les divisions possibles sont 2*6 ou 3*4.
+  * le QPair retourné sera 3*4, ce qui nous donne 12.
+  * Donc à la première question, l'image sera divisé par 12 petits masques de taille identique (4 dans la largeur et 3 dans la hauteur)
+  */
+QPair<int, int> ExerciceSurvol::plusPetiteDivision(int monChiffre)
+{
+    QList<QPair<int,int> > listeResultat;
+    QPair<int,int> paire;
+
+    for (int a = 2; a<10; a++){
+        for (int b=2; b<10; b++)
+        {
+            if ((a*b) > monChiffre)
+            {
+                if (listeResultat.isEmpty())
+                {
+                    listeResultat << QPair<int,int>(a,b);
+                }
+                else
+                {
+                    if (a*b < listeResultat.first().first*listeResultat.first().second)
+                    {
+                        listeResultat.clear();
+                        listeResultat << QPair<int,int>(a,b);
+                    }
+                    else
+                    {
+                        if(a*b == listeResultat.first().first*listeResultat.first().second)
+                        {
+                            listeResultat << QPair<int,int>(a,b);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if(m_localDebug) qDebug()  << listeResultat;
+    int mini = monChiffre;
+    for(int k = 0 ; k<listeResultat.size();k++)
+    {
+        if(qAbs((listeResultat[k].first - listeResultat[k].second)) < mini)
+        {
+            mini = qAbs((listeResultat[k].first - listeResultat[k].second));
+            paire = listeResultat[k];
+        }
+    }
+    if(m_localDebug) qDebug()<<paire;
+    return paire;
 }
