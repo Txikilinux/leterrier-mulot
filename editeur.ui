@@ -17,6 +17,201 @@
    <string>Editeur</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
+   <item row="0" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayoutParamExercice">
+     <item>
+      <widget class="QGroupBox" name="groupBoxSurvol">
+       <property name="title">
+        <string>Survol</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayoutSurvol">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelSurvolSuivant">
+            <property name="text">
+             <string>TImer Suivant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolSuivant">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelSurvolVerifier">
+            <property name="text">
+             <string>Timer Vérifier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolVerifier"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolMasque">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelSurvolNbMasques">
+            <property name="text">
+             <string>Nombre Masques</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBoxClic">
+       <property name="title">
+        <string>Clic</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayoutClic">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelClicSuivant">
+            <property name="text">
+             <string>TImer Suivant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxClicSuivant"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxClicVerifier"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxClicMasque">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelClicVerifier">
+            <property name="text">
+             <string>Timer Vérifier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelClicNbMasques">
+            <property name="text">
+             <string>Nombre Masques</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBoxDoubleClic">
+       <property name="title">
+        <string>Double-Clic</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayoutDoubleClic">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelDoubleClicSuivant">
+            <property name="text">
+             <string>TImer Suivant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxDoubleClicSuivant"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelDoubleClicVerifier">
+            <property name="text">
+             <string>Timer Vérifier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolVerifier_5"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelDoubleClicNbMasques">
+            <property name="text">
+             <string>Nombre Masques</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="2" column="2">
+    <layout class="QVBoxLayout" name="verticalLayoutEditeur">
+     <item>
+      <widget class="QPushButton" name="btnCreerTheme">
+       <property name="text">
+        <string>Créer Thème</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="2">
+    <spacer name="verticalSpacerEditeur">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>368</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1">
+    <spacer name="horizontalSpacerEditeur">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>517</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
    <item row="0" column="0" rowspan="2">
     <widget class="QGroupBox" name="groupBoxImage">
      <property name="title">
@@ -24,7 +219,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="gridLayoutGBImage">
         <property name="sizeConstraint">
          <enum>QLayout::SetDefaultConstraint</enum>
         </property>
@@ -48,7 +243,7 @@
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="labelContenuDossier">
           <property name="maximumSize">
            <size>
             <width>250</width>
@@ -73,7 +268,7 @@
          </widget>
         </item>
         <item row="0" column="3">
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="labelImageSelection">
           <property name="maximumSize">
            <size>
             <width>250</width>
@@ -206,259 +401,9 @@
        </layout>
       </item>
      </layout>
-     <zorder></zorder>
-     <zorder></zorder>
-     <zorder></zorder>
-     <zorder>btnImporterDossierImage</zorder>
-     <zorder>treeWidget</zorder>
-     <zorder>listWidget</zorder>
-     <zorder>label</zorder>
-     <zorder>btSelection</zorder>
-     <zorder>listWidgetSelection</zorder>
-     <zorder>listWidgetSelection</zorder>
-     <zorder>label_2</zorder>
-     <zorder></zorder>
     </widget>
    </item>
-   <item row="0" column="1" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QGroupBox" name="groupBoxSurvol">
-       <property name="title">
-        <string>Survol</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <layout class="QFormLayout" name="formLayoutSurvol">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="labelSurvolSuivant">
-            <property name="text">
-             <string>TImer Suivant</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolSuivant"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelSurvolVerifier">
-            <property name="text">
-             <string>Timer Vérifier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolVerifier"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolMasque">
-            <property name="value">
-             <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelSurvolNbMasques">
-            <property name="text">
-             <string>Nombre Masques</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-       <zorder></zorder>
-       <zorder></zorder>
-       <zorder></zorder>
-       <zorder></zorder>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBoxClic">
-       <property name="title">
-        <string>Clic</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <layout class="QFormLayout" name="formLayoutClic">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="labelClicSuivant">
-            <property name="text">
-             <string>TImer Suivant</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxClicSuivant"/>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxClicVerifier"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBoxClicMasque">
-            <property name="value">
-             <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelClicVerifier">
-            <property name="text">
-             <string>Timer Vérifier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelClicNbMasques">
-            <property name="text">
-             <string>Nombre Masques</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-       <zorder>groupBoxSurvol</zorder>
-       <zorder>layoutWidget</zorder>
-       <zorder>groupBoxSurvol</zorder>
-       <zorder>layoutWidget</zorder>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="groupBoxDoubleClic">
-       <property name="title">
-        <string>Double-Clic</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <layout class="QFormLayout" name="formLayoutDoubleClic">
-          <property name="fieldGrowthPolicy">
-           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-          </property>
-          <item row="0" column="0">
-           <widget class="QLabel" name="labelDoubleClicSuivant">
-            <property name="text">
-             <string>TImer Suivant</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxDoubleClicSuivant"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelDoubleClicVerifier">
-            <property name="text">
-             <string>Timer Vérifier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolVerifier_5"/>
-          </item>
-          <item row="2" column="1">
-           <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
-            <property name="value">
-             <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelDoubleClicNbMasques">
-            <property name="text">
-             <string>Nombre Masques</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-       <zorder>layoutWidget_2</zorder>
-       <zorder>layoutWidget_2</zorder>
-       <zorder>layoutWidget_2</zorder>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="1" column="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>368</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="1">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>517</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="2" column="2">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QPushButton" name="btnSaveImage">
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Sauvegarder</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnCreerTheme">
-       <property name="text">
-        <string>Créer Thème</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
-  <zorder>btnCreerTheme</zorder>
-  <zorder>btnImporterDossierImage</zorder>
-  <zorder>treeWidget</zorder>
-  <zorder>label</zorder>
-  <zorder>listWidget</zorder>
-  <zorder>btSelection</zorder>
-  <zorder>btnSaveImage</zorder>
-  <zorder>groupBoxImage</zorder>
-  <zorder>btnSaveImage</zorder>
-  <zorder>label_2</zorder>
-  <zorder>listWidgetSelection</zorder>
-  <zorder>groupBoxSurvol</zorder>
-  <zorder>groupBoxClic</zorder>
-  <zorder>groupBoxDoubleClic</zorder>
-  <zorder>spinBoxSurvolSuivant</zorder>
-  <zorder>spinBoxSurvolVerifier</zorder>
-  <zorder>spinBoxSurvolMasque</zorder>
-  <zorder>labelSurvolSuivant</zorder>
-  <zorder>labelSurvolNbMasques</zorder>
-  <zorder>labelSurvolVerifier</zorder>
-  <zorder></zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>horizontalSpacer</zorder>
  </widget>
  <tabstops>
   <tabstop>btnCreerTheme</tabstop>

@@ -70,10 +70,6 @@ private slots:
 
     void on_btnCreerTheme_clicked();
 
-    void on_btnSaveOptionSurvol_clicked();
-
-    void on_btnSaveImage_clicked();
-
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -96,8 +92,7 @@ private:
     void rafraichirListeImages();
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
     QString uniqIDTemp();
-
-
+    void enregistrerAbe();
 };
 
 #endif // EDITEUR_H

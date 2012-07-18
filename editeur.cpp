@@ -71,9 +71,9 @@ Editeur::Editeur(QWidget *parent) :
     cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
 
     parent->setStyleSheet("QGroupBox { border: 1px solid black; }");
-//    /* Pour que tous les QGroupBox contenus dans le parent (ex : Fenêtre principale)
-//    aient ce style (donc une bordure large de 1 pixel de type solid (= continue) et
-//    de couleur noire. */
+    //    /* Pour que tous les QGroupBox contenus dans le parent (ex : Fenêtre principale)
+    //    aient ce style (donc une bordure large de 1 pixel de type solid (= continue) et
+    //    de couleur noire. */
 }
 
 Editeur::~Editeur()
@@ -82,11 +82,6 @@ Editeur::~Editeur()
     delete ui;
 }
 
-//---------------------------------------------------------------------------------------------------------------------
-//                                      ONGLET CREATION THEME
-//---------------------------------------------------------------------------------------------------------------------
-
-/* Onglet creation theme */
 
 void Editeur::on_action_Supprimer_dossier_triggered()
 {
@@ -305,12 +300,14 @@ void Editeur::on_btSelection_clicked()
     }
 }
 
-/** Sauvegarde des images choisies dans un dossier temporaire
-  * qui sera sauvegarder en .abe à l'appui sur le bouton CreerTheme
+/**
+  * Creation du .abe
   */
-void Editeur::on_btnSaveImage_clicked()
+void Editeur::on_btnCreerTheme_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
+
+    /** Aller chercher les images et les enregistrer dans le fichier temporaire */
 
     // Condition de garde = listeWidgetSelection est inferieur à 5
     if (ui->listWidgetSelection->count() < 5)
@@ -320,9 +317,7 @@ void Editeur::on_btnSaveImage_clicked()
     }
     m_listeFichiers.clear(); // Cette liste contient les images choisies pour le thème avec les chemins du dossier temporaire
 
-    //----------------------- Création du dossier Temporaire
-    //--------------------------------------------------------
-    QDir destDir(cheminImage);
+    QDir destDir(cheminImage); // creation dossier temporaire pour les images
     if(destDir.mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
     {
         if (m_localDebug)
@@ -330,10 +325,7 @@ void Editeur::on_btnSaveImage_clicked()
             qDebug() << "Creation ok "
                      << destDir.absolutePath();
         }
-        else // si echec pas la peine d'aller plus loin
-        {
-            return;
-        }
+        else { return; } // si echec pas la peine d'aller plus loin
 
         // Copie des images selectionnées dans le fichier temporaire
         for (int i =0; i< ui->listWidgetSelection->count(); i++)
@@ -360,33 +352,19 @@ void Editeur::on_btnSaveImage_clicked()
             }
         }
         ui->listWidgetSelection->clear();
+        if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
     }
-}
-
-void Editeur::on_btnSaveOptionSurvol_clicked()
-{
-    if (m_localDebug) qDebug() << "##########################  Editeur::on_btnSaveOptionSurvol_clicked()";
-
-}
-
-/**
-  * Creation du .abe
-  */
-void Editeur::on_btnCreerTheme_clicked()
-{
-    /** Aller chercher les images */
-    //        //------------------------ Création du .abe
-    //        //--------------------------------------------------------
-    //            QString nomtheme = "Animaux"; // Que l'utilisateur choisira
-
-    //        QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
-    //        QString m_fileBase = temp.absolutePath();
-    //        AbulEduFileV1 *m_theme = new AbulEduFileV1();
-    //        m_theme->abeFileSave(nomtheme, m_listeFichiers, m_fileBase, "abe");
-    //        if (m_localDebug) qDebug() << "Création abe OK";
-
     /** Aller chercher le fichier conf*/
-
+    QDir confDir(cheminConf);//creation dossier temporaire pour .ini
+    if(confDir.mkpath(cheminConf)) // tentative de création
+    {
+        if (m_localDebug)
+        {
+            qDebug() << "Creation ok "
+                     << confDir.absolutePath();
+        }
+        else { return; } // si echec pas la peine d'aller plus loin
+    }
 
     /** Supprimer le dossier temporaire*/
 
@@ -398,6 +376,17 @@ void Editeur::on_btnCreerTheme_clicked()
     //        else
     //            qDebug() << "Suppression impossible";
     //    }
+
+
+    //        //------------------------ Création du .abe
+    //        //--------------------------------------------------------
+    //            QString nomtheme = "Animaux"; // Que l'utilisateur choisira
+
+    //        QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
+    //        QString m_fileBase = temp.absolutePath();
+    //        AbulEduFileV1 *m_theme = new AbulEduFileV1();
+    //        m_theme->abeFileSave(nomtheme, m_listeFichiers, m_fileBase, "abe");
+    //        if (m_localDebug) qDebug() << "Création abe OK";
 
 }
 
