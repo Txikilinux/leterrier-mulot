@@ -287,7 +287,7 @@ void ExerciceSurvol::slotQuestionEntered()
 void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 {
     if (m_localDebug) qDebug()<< "##########################  ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
-    if (m_localDebug) qDebug()<< "Click bouton suivant automatique !";
+    if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
 
     if (m_exerciceEnCours)
     {
@@ -426,8 +426,7 @@ void ExerciceSurvol::setDimensionsWidgets()
 //------------------------------------------------------------------
 //                 Méthodes propres à la classe
 //------------------------------------------------------------------
-/**
-  * Redimensionne la consigne
+/** Redimensionne la consigne
   */
 void ExerciceSurvol::redimensionnerConsigne()
 {
@@ -436,8 +435,7 @@ void ExerciceSurvol::redimensionnerConsigne()
                                     ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
 }
 
-/**
-  * Redimensionne l'image par rapport à sa largeur ou sa hauteur.
+/** Redimensionne l'image par rapport à sa largeur ou sa hauteur.
   * Obsolète mais conserver au cas ou !
   */
 void ExerciceSurvol::redimensionnerImage()
@@ -495,7 +493,7 @@ void ExerciceSurvol::slotCacheMasque()
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
         }
-        if (m_localDebug) qDebug() << "Appui sur le bouton Verifier";
+        if (m_localDebug) qDebug() << "Appui sur le bouton Verifier " << opt_timerVerifier ;
         emit appuiVerifier();
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
@@ -548,7 +546,7 @@ void ExerciceSurvol::chargerOption()
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
 
     QSettings parametres(QDir::currentPath()+QDir::separator()+QString("data")+QDir::separator()+QString("parametres.ini"), QSettings::IniFormat);
-    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 3000).toInt();
+    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
     opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
     opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
 
