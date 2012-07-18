@@ -101,7 +101,8 @@ private slots:
 
     // ExerciceSurvol
     void slotCacheMasque();
-    void slotPassageAutoSuivant();
+    void slotAppuiAutoSuivant();
+    void slotAppuiAutoVerifier();
 
 
 signals:

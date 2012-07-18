@@ -134,7 +134,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     // Appui auto sur bouton suivant
     if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-    QTimer::singleShot(opt_timerSuivant,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+    QTimer::singleShot(opt_timerSuivant,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
 }
 
 /** Mettre tout ce qui est commun à chaque question
@@ -287,11 +287,11 @@ void ExerciceSurvol::slotQuestionEntered()
 void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
 {
     if (m_localDebug) qDebug()<< "##########################  ExerciceSurvol::slotAfficheVerificationQuestionEntered()";
-    if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
 
     if (m_exerciceEnCours)
     {
-        QTimer::singleShot(opt_timerVerifier ,this,SLOT(slotPassageAutoSuivant()));     // Click auto du bouton suivant avec un timer
+        if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
+        QTimer::singleShot(opt_timerSuivant ,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
     }
 }
 
@@ -493,8 +493,10 @@ void ExerciceSurvol::slotCacheMasque()
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
         }
+
+        // Appui sur le bouton vérifier
         if (m_localDebug) qDebug() << "Appui sur le bouton Verifier " << opt_timerVerifier ;
-        emit appuiVerifier();
+        QTimer::singleShot(opt_timerVerifier,this,SLOT(slotAppuiAutoVerifier()));
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();
@@ -533,10 +535,16 @@ void ExerciceSurvol::slotCacheMasque()
 /** Cette méthode emet le signal appuiSuivant
   * Permet donc d'activer (de simuler) l'appui sur le bouton suivant de la telecommande
   */
-void ExerciceSurvol::slotPassageAutoSuivant()
+void ExerciceSurvol::slotAppuiAutoSuivant()
 {
-    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotPassageAutoSuivant()";
+    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotAppuiAutoSuivant()";
     emit appuiSuivant();
+}
+
+void ExerciceSurvol::slotAppuiAutoVerifier()
+{
+    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotAppuiAutoVerifier()";
+    emit appuiVerifier();
 }
 
 /** Charge les options contenues dans le fichier de configuration (parametres.ini)
