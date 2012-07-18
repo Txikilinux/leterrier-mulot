@@ -9,374 +9,459 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>992</width>
-    <height>619</height>
+    <width>1254</width>
+    <height>596</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Editeur</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <property name="sizeConstraint">
-    <enum>QLayout::SetDefaultConstraint</enum>
-   </property>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="btnCreerTheme">
-     <property name="text">
-      <string>Créer Thème</string>
+  <layout class="QGridLayout" name="gridLayout_6">
+   <item row="0" column="0" rowspan="2">
+    <widget class="QGroupBox" name="groupBoxImage">
+     <property name="title">
+      <string>Gestion des Images</string>
      </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="btnImporterDossierImage">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Importer Dossier</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="label">
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Plain</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>Contenu dossier</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLabel" name="label_2">
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="text">
+           <string>Image(s) selectionnée(s)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QTreeWidget" name="treeWidget">
+          <property name="minimumSize">
+           <size>
+            <width>160</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>160</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="lineWidth">
+           <number>0</number>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="rootIsDecorated">
+           <bool>true</bool>
+          </property>
+          <attribute name="headerVisible">
+           <bool>false</bool>
+          </attribute>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QListWidget" name="listWidget">
+          <property name="minimumSize">
+           <size>
+            <width>160</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>160</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QPushButton" name="btSelection">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="lib/abuledunetworkaccessmanagerv1/abuledussologinv1.qrc">
+            <normaloff>:/abuledussologinv1/flecheVerte-connexion</normaloff>:/abuledussologinv1/flecheVerte-connexion</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QListWidget" name="listWidgetSelection">
+          <property name="minimumSize">
+           <size>
+            <width>160</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>160</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::CustomContextMenu</enum>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+     <zorder></zorder>
+     <zorder></zorder>
+     <zorder></zorder>
+     <zorder>btnImporterDossierImage</zorder>
+     <zorder>treeWidget</zorder>
+     <zorder>listWidget</zorder>
+     <zorder>label</zorder>
+     <zorder>btSelection</zorder>
+     <zorder>listWidgetSelection</zorder>
+     <zorder>listWidgetSelection</zorder>
+     <zorder>label_2</zorder>
+     <zorder></zorder>
     </widget>
    </item>
-   <item row="1" column="0">
-    <widget class="QTabWidget" name="tabWidgetEditeur">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="tabPosition">
-      <enum>QTabWidget::North</enum>
-     </property>
-     <property name="tabShape">
-      <enum>QTabWidget::Rounded</enum>
-     </property>
-     <property name="currentIndex">
-      <number>0</number>
-     </property>
-     <property name="elideMode">
-      <enum>Qt::ElideNone</enum>
-     </property>
-     <property name="documentMode">
-      <bool>false</bool>
-     </property>
-     <property name="tabsClosable">
-      <bool>false</bool>
-     </property>
-     <widget class="QWidget" name="tabCreationThemes">
-      <attribute name="title">
-       <string>Création de thèmes</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="btnImporterDossierImage">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>Importer Dossier Images</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label">
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Plain</enum>
-         </property>
-         <property name="lineWidth">
-          <number>1</number>
-         </property>
-         <property name="text">
-          <string>Image(s) contenue(s) dans le dossier</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLabel" name="label_2">
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="text">
-          <string>Image(s) selectionnée(s)</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" rowspan="4">
-        <widget class="QTreeWidget" name="treeWidget">
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="lineWidth">
-          <number>0</number>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-         <property name="rootIsDecorated">
-          <bool>true</bool>
-         </property>
-         <attribute name="headerVisible">
-          <bool>false</bool>
-         </attribute>
-         <column>
-          <property name="text">
-           <string notr="true">1</string>
+   <item row="0" column="1" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QGroupBox" name="groupBoxSurvol">
+       <property name="title">
+        <string>Survol</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayoutSurvol">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
-         </column>
-        </widget>
-       </item>
-       <item row="1" column="1" rowspan="4">
-        <widget class="QListWidget" name="listWidget">
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="acceptDrops">
-          <bool>true</bool>
-         </property>
-         <property name="editTriggers">
-          <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed</set>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3" rowspan="4">
-        <widget class="QListWidget" name="listWidgetSelection">
-         <property name="maximumSize">
-          <size>
-           <width>250</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::CustomContextMenu</enum>
-         </property>
-         <property name="acceptDrops">
-          <bool>true</bool>
-         </property>
-         <property name="alternatingRowColors">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="4">
-        <widget class="QPushButton" name="btnSaveImage">
-         <property name="text">
-          <string>Sauvegarder</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QPushButton" name="btSelection">
-         <property name="minimumSize">
-          <size>
-           <width>70</width>
-           <height>40</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="lib/abuledunetworkaccessmanagerv1/abuledussologinv1.qrc">
-           <normaloff>:/abuledussologinv1/flecheVerte-connexion</normaloff>:/abuledussologinv1/flecheVerte-connexion</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
-      <zorder>treeWidget</zorder>
-      <zorder>listWidget</zorder>
-      <zorder>listWidgetSelection</zorder>
-      <zorder>btnSaveImage</zorder>
-      <zorder>btSelection</zorder>
-      <zorder>btnImporterDossierImage</zorder>
-      <zorder>label</zorder>
-      <zorder>label_2</zorder>
-      <zorder>btnCreerTheme</zorder>
-     </widget>
-     <widget class="QWidget" name="tabSurvol">
-      <attribute name="title">
-       <string>Exercice Survol</string>
-      </attribute>
-      <widget class="QLabel" name="labelReglageBtnSuivant">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>44</y>
-         <width>194</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Réglage timer bouton Suivant</string>
-       </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelSurvolSuivant">
+            <property name="text">
+             <string>TImer Suivant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolSuivant"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelSurvolVerifier">
+            <property name="text">
+             <string>Timer Vérifier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolVerifier"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolMasque">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelSurvolNbMasques">
+            <property name="text">
+             <string>Nombre Masques</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+       <zorder></zorder>
+       <zorder></zorder>
+       <zorder></zorder>
+       <zorder></zorder>
       </widget>
-      <widget class="QLabel" name="labelReglageBtnVerifier">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>77</y>
-         <width>192</width>
-         <height>17</height>
-        </rect>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBoxClic">
+       <property name="title">
+        <string>Clic</string>
        </property>
-       <property name="text">
-        <string>Réglage timer bouton Vérifier</string>
-       </property>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayoutClic">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelClicSuivant">
+            <property name="text">
+             <string>TImer Suivant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxClicSuivant"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxClicVerifier"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxClicMasque">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelClicVerifier">
+            <property name="text">
+             <string>Timer Vérifier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelClicNbMasques">
+            <property name="text">
+             <string>Nombre Masques</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+       <zorder>groupBoxSurvol</zorder>
+       <zorder>layoutWidget</zorder>
+       <zorder>groupBoxSurvol</zorder>
+       <zorder>layoutWidget</zorder>
       </widget>
-      <widget class="QLabel" name="labelReglageMasque">
-       <property name="geometry">
-        <rect>
-         <x>9</x>
-         <y>110</y>
-         <width>206</width>
-         <height>17</height>
-        </rect>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBoxDoubleClic">
+       <property name="title">
+        <string>Double-Clic</string>
        </property>
-       <property name="text">
-        <string>Nombre de masques interactifs</string>
-       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <layout class="QFormLayout" name="formLayoutDoubleClic">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="labelDoubleClicSuivant">
+            <property name="text">
+             <string>TImer Suivant</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="spinBoxDoubleClicSuivant"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelDoubleClicVerifier">
+            <property name="text">
+             <string>Timer Vérifier</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="spinBoxSurvolVerifier_5"/>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
+            <property name="value">
+             <number>7</number>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelDoubleClicNbMasques">
+            <property name="text">
+             <string>Nombre Masques</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+       <zorder>layoutWidget_2</zorder>
+       <zorder>layoutWidget_2</zorder>
+       <zorder>layoutWidget_2</zorder>
       </widget>
-      <widget class="QLineEdit" name="lineEditReglageVerifier">
-       <property name="geometry">
-        <rect>
-         <x>221</x>
-         <y>77</y>
-         <width>146</width>
-         <height>27</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="lineEditReglageMasque">
-       <property name="geometry">
-        <rect>
-         <x>221</x>
-         <y>110</y>
-         <width>146</width>
-         <height>27</height>
-        </rect>
-       </property>
-      </widget>
-      <widget class="QLabel" name="labelConsigne">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>591</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Veuillez remplir tous les champs avant d'appuyer sur le bouton Sauvegarder</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="btnSaveOptionSurvol">
-       <property name="geometry">
-        <rect>
-         <x>240</x>
-         <y>150</y>
-         <width>93</width>
-         <height>27</height>
-        </rect>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>368</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>517</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="2" column="2">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QPushButton" name="btnSaveImage">
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>16777215</height>
+        </size>
        </property>
        <property name="text">
         <string>Sauvegarder</string>
        </property>
       </widget>
-      <widget class="QSpinBox" name="spinBox">
-       <property name="geometry">
-        <rect>
-         <x>230</x>
-         <y>40</y>
-         <width>55</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="accelerated">
-        <bool>true</bool>
-       </property>
-       <property name="suffix">
-        <string>s</string>
-       </property>
-       <property name="value">
-        <number>7</number>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnCreerTheme">
+       <property name="text">
+        <string>Créer Thème</string>
        </property>
       </widget>
-     </widget>
-    </widget>
+     </item>
+    </layout>
    </item>
   </layout>
+  <zorder>btnCreerTheme</zorder>
+  <zorder>btnImporterDossierImage</zorder>
+  <zorder>treeWidget</zorder>
+  <zorder>label</zorder>
+  <zorder>listWidget</zorder>
+  <zorder>btSelection</zorder>
+  <zorder>btnSaveImage</zorder>
+  <zorder>groupBoxImage</zorder>
+  <zorder>btnSaveImage</zorder>
+  <zorder>label_2</zorder>
+  <zorder>listWidgetSelection</zorder>
+  <zorder>groupBoxSurvol</zorder>
+  <zorder>groupBoxClic</zorder>
+  <zorder>groupBoxDoubleClic</zorder>
+  <zorder>spinBoxSurvolSuivant</zorder>
+  <zorder>spinBoxSurvolVerifier</zorder>
+  <zorder>spinBoxSurvolMasque</zorder>
+  <zorder>labelSurvolSuivant</zorder>
+  <zorder>labelSurvolNbMasques</zorder>
+  <zorder>labelSurvolVerifier</zorder>
+  <zorder></zorder>
+  <zorder>verticalSpacer</zorder>
+  <zorder>horizontalSpacer</zorder>
  </widget>
  <tabstops>
-  <tabstop>tabWidgetEditeur</tabstop>
   <tabstop>btnCreerTheme</tabstop>
-  <tabstop>treeWidget</tabstop>
-  <tabstop>listWidget</tabstop>
-  <tabstop>listWidgetSelection</tabstop>
-  <tabstop>btnSaveImage</tabstop>
-  <tabstop>btSelection</tabstop>
-  <tabstop>btnImporterDossierImage</tabstop>
-  <tabstop>lineEditReglageVerifier</tabstop>
-  <tabstop>lineEditReglageMasque</tabstop>
-  <tabstop>treeWidget_2</tabstop>
-  <tabstop>listWidget_2</tabstop>
-  <tabstop>listWidgetSelection_2</tabstop>
-  <tabstop>btnSauvegarder_2</tabstop>
-  <tabstop>btSelection_2</tabstop>
-  <tabstop>btnImporterDossierImage_2</tabstop>
-  <tabstop>lineEdit_4</tabstop>
-  <tabstop>lineEdit_5</tabstop>
-  <tabstop>lineEdit_6</tabstop>
-  <tabstop>btnSaveOptionSurvol</tabstop>
-  <tabstop>spinBox</tabstop>
  </tabstops>
  <resources>
   <include location="lib/abuledunetworkaccessmanagerv1/abuledussologinv1.qrc"/>

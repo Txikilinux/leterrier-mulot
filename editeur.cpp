@@ -62,7 +62,6 @@ Editeur::Editeur(QWidget *parent) :
     actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
     m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
 
-
     //-------------------------------------------------------------------------------------------------------------
     // Initialisation des chemins temporaires
     destinationIdUnique = uniqIDTemp(); //je récupère mon Id unique
@@ -70,6 +69,11 @@ Editeur::Editeur(QWidget *parent) :
     cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
     arborescenceConf = QString("conf") + QDir::separator();
     cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
+
+    parent->setStyleSheet("QGroupBox { border: 1px solid black; }");
+//    /* Pour que tous les QGroupBox contenus dans le parent (ex : Fenêtre principale)
+//    aient ce style (donc une bordure large de 1 pixel de type solid (= continue) et
+//    de couleur noire. */
 }
 
 Editeur::~Editeur()
@@ -301,8 +305,7 @@ void Editeur::on_btSelection_clicked()
     }
 }
 
-/**
-  * Sauvegarde des images choisies dans un dossier temporaire
+/** Sauvegarde des images choisies dans un dossier temporaire
   * qui sera sauvegarder en .abe à l'appui sur le bouton CreerTheme
   */
 void Editeur::on_btnSaveImage_clicked()
@@ -396,8 +399,6 @@ void Editeur::on_btnCreerTheme_clicked()
     //            qDebug() << "Suppression impossible";
     //    }
 
-
-
 }
 
 //---------------------------------------------------------------------------------------------------------------------------------
@@ -407,7 +408,9 @@ void Editeur::on_btnCreerTheme_clicked()
 /** Contrôle l'insertion d'un item dans un QListWidget
   * Le controle s'effectue sur le parametre data(4) de l'item
   * qui sert à contenir le chemin de l'image
-  * true si non existant, false dans le cas contraire
+  * @param QListWidget *listWidget, un pointeur sur l'objet QListWidget où l'on veut contrôler l'insertion
+  * @param QString dataItem, la chaîne de caractere à controler
+  * @return bool, true si non existant, false sinon
   */
 bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataItem)
 {
@@ -430,6 +433,7 @@ bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataIte
   * C'est un fichier créé avec un id imprévisible
   * Je me sers de cet id pour renommer le dossier temp dont j'ai besoin =)
   * note -> le file temp créé s'efface en même tps que la destruction de l'objet
+  * @return QString, une chaîne de caractere unique et imprévisible
   */
 QString Editeur::uniqIDTemp()
 {
@@ -444,8 +448,10 @@ QString Editeur::uniqIDTemp()
 
 /** Supprime un répertoire et tout son contenu
   * Le répertoire passé en paramètre est aussi supprimé
+  * @param const QString& dirPath, le chemin du répertoire à supprimer (ex : "/home/user/monRepertoire")
+  * @return bool, true si suppression ok, false sinon
   */
-bool Editeur::supprimerDir(const QString& dirPath) //dirPath = le chemin du répertoire à supprimer, ex : "/home/user/monRepertoire")
+bool Editeur::supprimerDir(const QString& dirPath)
 {
     QDir folder(dirPath);
     //On va lister dans ce répertoire tous les éléments différents de "." et ".."
