@@ -253,6 +253,9 @@
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="spinBoxSurvolSuivant">
+            <property name="suffix">
+             <string>s</string>
+            </property>
             <property name="value">
              <number>7</number>
             </property>
@@ -267,6 +270,9 @@
           </item>
           <item row="1" column="1">
            <widget class="QSpinBox" name="spinBoxSurvolVerifier">
+            <property name="suffix">
+             <string>s</string>
+            </property>
             <property name="value">
              <number>0</number>
             </property>
@@ -317,6 +323,9 @@
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="spinBoxClicSuivant">
+            <property name="suffix">
+             <string>s</string>
+            </property>
             <property name="value">
              <number>7</number>
             </property>
@@ -330,7 +339,11 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxClicVerifier"/>
+           <widget class="QSpinBox" name="spinBoxClicVerifier">
+            <property name="suffix">
+             <string>s</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="0">
            <widget class="QLabel" name="labelClicNbMasques">
@@ -377,6 +390,9 @@
           </item>
           <item row="0" column="1">
            <widget class="QSpinBox" name="spinBoxDoubleClicSuivant">
+            <property name="suffix">
+             <string>s</string>
+            </property>
             <property name="maximum">
              <number>99</number>
             </property>
@@ -393,7 +409,11 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxDoubleClicVerifier"/>
+           <widget class="QSpinBox" name="spinBoxDoubleClicVerifier">
+            <property name="suffix">
+             <string>s</string>
+            </property>
+           </widget>
           </item>
           <item row="2" column="1">
            <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
@@ -481,6 +501,22 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item row="1" column="3" rowspan="2">
+    <spacer name="verticalSpacerEditeur">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Expanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>0</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>
