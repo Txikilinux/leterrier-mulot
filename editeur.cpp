@@ -27,6 +27,7 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
+//    ui->widget->abeSetSource("data");
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_localDebug = true;
@@ -61,19 +62,6 @@ Editeur::Editeur(QWidget *parent) :
 
     actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
     m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
-
-    //-------------------------------------------------------------------------------------------------------------
-    // Initialisation des chemins temporaires
-    destinationIdUnique = uniqIDTemp(); //je récupère mon Id unique
-    arborescenceImage = QString("data") + QDir::separator() + QString("images");
-    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
-    arborescenceConf = QString("conf") + QDir::separator();
-    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
-
-    parent->setStyleSheet("QGroupBox { border: 1px solid black; }");
-    //    /* Pour que tous les QGroupBox contenus dans le parent (ex : Fenêtre principale)
-    //    aient ce style (donc une bordure large de 1 pixel de type solid (= continue) et
-    //    de couleur noire. */
 }
 
 Editeur::~Editeur()
@@ -82,14 +70,12 @@ Editeur::~Editeur()
     delete ui;
 }
 
-
 void Editeur::on_action_Supprimer_dossier_triggered()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_action_Supprimer_dossier_triggered()";
 
     // Le supprimer de la liste de dossier
     m_listeDossiers.removeOne(ui->treeWidget->currentItem()->data(1,0).toString());
-
     // Supprimer l'item du TreeWidget
     ui->treeWidget->takeTopLevelItem(ui->treeWidget->indexOfTopLevelItem(ui->treeWidget->currentItem()));
     ui->listWidget->clear(); // nettoyage de la listeWidget
@@ -112,7 +98,6 @@ void Editeur::on_btnImporterDossierImage_clicked()
     QIcon iconDossier = style->standardIcon(QStyle::SP_DirIcon);
 
     QString dossier = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-
     if (m_localDebug)   qDebug() << dossier;
 
     if (dossier.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
@@ -149,7 +134,6 @@ void Editeur::on_btnImporterDossierImage_clicked()
             ui->treeWidget->show();
             m_listeDossiers << m_dir->absolutePath();
         }
-
     }
     else // on parcourt les ss dossiers et on les affiche
     {
@@ -170,7 +154,6 @@ void Editeur::on_btnImporterDossierImage_clicked()
 
                 m_listeDossiers << list.at(i).filePath();
 
-                // DEBUG
                 if (m_localDebug) qDebug() << item->data(1,0) << "" << list.at(i).fileName() << "" << list.at(i).absoluteFilePath();
             }
         }
@@ -188,8 +171,7 @@ void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 
     if (m_localDebug) qDebug() << "Lecture de " << fi.absoluteFilePath() << " " << m_dir->absolutePath();
 
-    // Ici, au clic sur l'item, j'ai son adresse =)
-    // Plus qu'à remplir le widget list des miniatures !
+    // Ici, au clic sur l'item, j'ai son adresse =). Plus qu'à remplir le widget list des miniatures !
     m_dir->refresh();
     m_dir->setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
 
@@ -307,15 +289,46 @@ void Editeur::on_btnCreerTheme_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
+    AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
+    // Initialisation des chemins temporaires
+    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
+    arborescenceImage = QString("data") + QDir::separator() + QString("images");
+    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
+    arborescenceConf = QString("conf");
+    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
+
+//    qDebug() << "destinationIdUnique " << destinationIdUnique;
+//    qDebug() << "arborescenceImage " << arborescenceImage;
+//    qDebug() << "cheminImage " << cheminImage;
+//    qDebug() << "arborescenceConf" << arborescenceConf;
+//    qDebug() << "cheminConf" << cheminConf;
+
+    // Condition de garde si le nom du theme est vide
+    if (ui->lineEditNomTheme->text().isEmpty())
+    {
+        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez remplir le champs \"Nom du thème\" "));
+        return;
+    }
     /** Aller chercher les images et les enregistrer dans le fichier temporaire */
 
     // Condition de garde = listeWidgetSelection est inferieur à 5
     if (ui->listWidgetSelection->count() < 5)
     {
-        QMessageBox::information(this, "Sauvegarder Images", "Veuillez selectionner au minimum 5 images");
+        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
         return;
     }
-    m_listeFichiers.clear(); // Cette liste contient les images choisies pour le thème avec les chemins du dossier temporaire
+
+    // Choix destination .abe
+    QString destAbe = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (m_localDebug)   qDebug() << destAbe;
+    if (destAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
+    {
+        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez choisir un emplacement de destination pour le thème"));
+        qDebug() << "Appui sur le bouton annuler";
+        return;
+    }
+    m_dirAbe = new QDir();
+    m_dirAbe->setPath(destAbe);
 
     QDir destDir(cheminImage); // creation dossier temporaire pour les images
     if(destDir.mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
@@ -338,12 +351,7 @@ void Editeur::on_btnCreerTheme_clicked()
             }
             if( QFile::copy(originale.absoluteFilePath(), destDir.absolutePath() + QDir::separator() + originale.fileName()) )
             {
-                if (m_localDebug) qDebug() << "Copie Ok ";
-                m_listeFichiers << destDir.absolutePath() + QDir::separator() + originale.fileName();
-                if (m_localDebug)
-                {
-                    qDebug() << "Enregistrement de l'image ds la liste " << m_listeFichiers.at(i);
-                }
+                if (m_localDebug) qDebug() << "Copie image ok";
             }
             else // Si la copie échoue, pas la peine d'aller plus loin
             {
@@ -358,41 +366,56 @@ void Editeur::on_btnCreerTheme_clicked()
     QDir confDir(cheminConf);//creation dossier temporaire pour .ini
     if(confDir.mkpath(cheminConf)) // tentative de création
     {
-        if (m_localDebug)
-        {
-            qDebug() << "Creation ok "
-                     << confDir.absolutePath();
-        }
+        if (m_localDebug) qDebug() << "Creation fichier temp/conf ok " << confDir.absolutePath();
         else { return; } // si echec pas la peine d'aller plus loin
     }
 
+    // Creation fichier Conf (note les timers sont convertis en millisecondes)
+    QSettings parametres(cheminConf +QDir::separator()+"parametres.conf", QSettings::IniFormat);
+    // Parametres Survol
+    parametres.setValue("Survol/timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+    parametres.setValue("Survol/timerVerifier", (ui->spinBoxSurvolVerifier->value()*1000));
+    parametres.setValue("Survol/nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+    // Parametres Clic
+    parametres.setValue("Clic/timerSuivant", (ui->spinBoxClicSuivant->value()*1000));
+    parametres.setValue("Clic/timerVerifier", (ui->spinBoxClicVerifier->value()*1000));
+    parametres.setValue("Clic/nbMasquesChoisis", (ui->spinBoxClicMasque->value()));
+    // Parametres Double-Clic
+    parametres.setValue("Double-Clic/timerSuivant", (ui->spinBoxDoubleClicSuivant->value()*1000));
+    parametres.setValue("Double-Clic/timerVerifier", (ui->spinBoxDoubleClicVerifier->value()*1000));
+    parametres.setValue("Double-Clic/nbMasquesChoisis", (ui->spinBoxDoubleClicMasque->value()));
+
+    //------------------------ Création du .abe
+    //--------------------------------------------------------
+    // remplir ma liste de fichiers (parcours recursif)
+    parametres.sync(); //pour forcer l'écriture du .conf
+
+    if (m_localDebug) qDebug() << destinationIdUnique<< " " << parametres.fileName();
+    if (m_localDebug) qDebug() << parcoursRecursif(destinationIdUnique);
+
+    QString nomtheme = ui->lineEditNomTheme->text();
+    QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
+    QString m_fileBase = temp.absolutePath();
+
+    QString destination = m_dirAbe->absolutePath() + QDir::separator() + nomtheme ;
+    m_abuledufilev1->abeFileSave(destination, parcoursRecursif(destinationIdUnique), m_fileBase, "abe");
+    if (m_localDebug) qDebug() << "Création abe OK";
+
     /** Supprimer le dossier temporaire*/
 
-    //        //----------------------- Effacement du dossier Temporaire
-    //        //--------------------------------------------------------
+    //----------------------- Effacement du dossier Temporaire
+    //--------------------------------------------------------
 
-    //        if(supprimerDir(temp.absolutePath()))
-    //            qDebug() << "Effacement dossier temp ok";
-    //        else
-    //            qDebug() << "Suppression impossible";
-    //    }
+    if(supprimerDir(temp.absolutePath())) qDebug() << "Effacement dossier temp ok";
+    else qDebug() << "Suppression impossible";
 
-
-    //        //------------------------ Création du .abe
-    //        //--------------------------------------------------------
-    //            QString nomtheme = "Animaux"; // Que l'utilisateur choisira
-
-    //        QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
-    //        QString m_fileBase = temp.absolutePath();
-    //        AbulEduFileV1 *m_theme = new AbulEduFileV1();
-    //        m_theme->abeFileSave(nomtheme, m_listeFichiers, m_fileBase, "abe");
-    //        if (m_localDebug) qDebug() << "Création abe OK";
-
+    // Arrangement graphique
+    ui->lineEditNomTheme->clear();
+    ui->listWidget->clear();
+    ui->listWidgetSelection->clear();
+    ui->treeWidget->clear();
+    QMessageBox::information(this, trUtf8("Sauvegarder Thème"), trUtf8("Le theme a été sauvegardé avec succès"));
 }
-
-//---------------------------------------------------------------------------------------------------------------------------------
-//                                    Méthodes propres à la classe
-//---------------------------------------------------------------------------------------------------------------------------------
 
 /** Contrôle l'insertion d'un item dans un QListWidget
   * Le controle s'effectue sur le parametre data(4) de l'item
@@ -414,25 +437,6 @@ bool Editeur::controleDoublonsSelection(QListWidget *listWidget, QString dataIte
         }
     }
     return true;
-}
-
-/** Cette méthode retourne un identifiant unique pour le fichier temporaire
-  * Elle est implémentée pour pallier les risques de sécurité liés au fichier codé en "dur"
-  * Utilisation d'un QTemporyFile afin d'avoir un nom unique
-  * C'est un fichier créé avec un id imprévisible
-  * Je me sers de cet id pour renommer le dossier temp dont j'ai besoin =)
-  * note -> le file temp créé s'efface en même tps que la destruction de l'objet
-  * @return QString, une chaîne de caractere unique et imprévisible
-  */
-QString Editeur::uniqIDTemp()
-{
-    QTemporaryFile file;
-    QString strArenvoyer ="";
-    if (file.open()) {
-        strArenvoyer = file.fileName();
-        file.close();
-    }
-    return strArenvoyer;
 }
 
 /** Supprime un répertoire et tout son contenu
@@ -472,4 +476,21 @@ bool Editeur::supprimerDir(const QString& dirPath)
     }
     //Sinon, on retourne true
     return true;
+}
+
+QStringList Editeur::parcoursRecursif(QString dossier)
+{
+    QStringList resultat;
+    QDir dir(dossier);
+    //Attention a ne pas prendre le repertoire "." et ".."
+    foreach(QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+        if(fileInfo.isDir()) {
+            //C'est ici que le parcours est récursif
+            resultat << parcoursRecursif(fileInfo.absoluteFilePath());
+        }
+        else {
+            resultat << fileInfo.absoluteFilePath();
+        }
+    }
+    return resultat;
 }

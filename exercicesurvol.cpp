@@ -553,7 +553,7 @@ void ExerciceSurvol::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
 
-    QSettings parametres(QDir::currentPath()+QDir::separator()+QString("data")+QDir::separator()+QString("parametres.ini"), QSettings::IniFormat);
+    QSettings parametres(QDir::currentPath()+QDir::separator()+QString("data")+QDir::separator()+QString("parametres.conf"), QSettings::IniFormat);
     opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
     opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
     opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();

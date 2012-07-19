@@ -50,9 +50,6 @@ public:
 
 private slots:
 
-// ----------- Onglet Creer Theme-------------
-    void on_btnImporterDossierImage_clicked();
-
     // actions menu TreeWidet
     void on_action_Supprimer_dossier_triggered();
     void on_treeWidget_customContextMenuRequested(const QPoint &pos);
@@ -65,19 +62,18 @@ private slots:
     // actions list Widget Selection
     void on_listWidgetSelection_customContextMenuRequested(const QPoint &pos);
 
+    void on_btnImporterDossierImage_clicked();
     void on_btSelection_clicked();
-    bool supprimerDir(const QString& dirPath);
-
     void on_btnCreerTheme_clicked();
 
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
 
-// ----------- Onglet Creer Theme-------------
     QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
     QStringList m_listeDossiers; // la liste des dossiers ouverts
     QDir *m_dir;
+    QDir *m_dirAbe;
     QMenu *m_menuTreeWidget;
     QMenu *m_menuListWidgetSelection;
     VisionneuseImage *m_visionneuseImage;
@@ -91,8 +87,8 @@ private:
 
     void rafraichirListeImages();
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
-    QString uniqIDTemp();
-    void enregistrerAbe();
+    bool supprimerDir(const QString& dirPath);
+    QStringList parcoursRecursif(QString dossier);
 };
 
 #endif // EDITEUR_H
