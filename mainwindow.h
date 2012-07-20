@@ -43,6 +43,8 @@ public:
     void resizeEvent(QResizeEvent *);
     ~MainWindow();
 
+    QString getThemeCourant();
+
 public slots:
     void slotDemo();
 
@@ -59,10 +61,9 @@ private:
     bool m_exerciceEnCours;
 
     bool m_localDebug;
+    QString m_theme; // le path du theme choisi
 
 private slots:
-    //methode qui lance les exos en fonction du numero et de la zone cliquée
-    // cf m_texteBulles.insert
     void abeLanceExo(int numero);
     void exerciceExited();
 

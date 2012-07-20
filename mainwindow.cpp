@@ -64,6 +64,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
+
+    m_theme = "";
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -99,15 +101,23 @@ void MainWindow::abeLanceExo(int numero)
     case 0:
         if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Survol";
     {
-        //Exer *b = new ExercicePhraseSansEspaces(gv_Accueil,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-        ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil);
+        if (m_theme.isEmpty())
+        {
+            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Survol"),
+                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
+            return;
+        }
+        else
+        {
+            ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_theme);
             connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-        m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-        m_exerciceEnCours = true;
-        setFixedSize(this->width(), this->height()); // redimensionnement interdit
-        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-        connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+            m_exerciceEnCours = true;
+            setFixedSize(this->width(), this->height()); // redimensionnement interdit
+            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+            connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+        }
     }
         m_exerciceEnCours = true;
         break;
@@ -142,30 +152,47 @@ void MainWindow::on_actionEditeur_triggered()
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
 }
+
 void MainWindow::on_actionDefinirTheme_triggered()
 {
-    if (m_localDebug) qDebug() << "Choix du thème";
-    // Aller chercher un .abe
-    QString destinationIdUnique;
-    QString fichierAbe = QFileDialog::getOpenFileName(this, "Ouvrir un .abe", QString(), "Abe(*.abe)");
-
-    if (fichierAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
+    if (!m_exerciceEnCours)
     {
-        if (m_localDebug) qDebug() << "Appui sur le bouton annuler";
-        return;
+        // Aller chercher un .abe
+        QString destinationIdUnique;
+        QFileInfo fichierAbe = QFileDialog::getOpenFileName(this, "Ouvrir un .abe", QString(), "Abe(*.abe)");
+
+        if (fichierAbe.absolutePath().isEmpty()) // dossier est nul, donc pas la peine d'aller plus loin
+        {
+            if (m_localDebug) qDebug() << "Appui sur le bouton annuler";
+            return;
+        }
+        else
+        {
+            if (m_localDebug) qDebug() << fichierAbe.absolutePath();
+        }
+        // Ok j'ai le chemin de mon .abe
+
+        // Le dezipper dans un fichier temp
+        AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
+        destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
+
+        QDir *temp = new QDir(destinationIdUnique);
+        if (m_localDebug) qDebug() << destinationIdUnique;
+
+        m_abuledufilev1->abeFileOpen(fichierAbe.absoluteFilePath(),temp);
+
+        m_theme = destinationIdUnique;
+
+        // Petit message =)
+        QMessageBox::information(this,trUtf8("Choix thème"), trUtf8("Le thème est ") + QString("<strong>"+fichierAbe.fileName()+"</strong>") ,0,0);
     }
     else
     {
-        if (m_localDebug) qDebug() << fichierAbe;
+        QMessageBox::critical(this,trUtf8("Choix thème"), trUtf8("Veuillez quitter l'exercice avant de choisir un thème"),0,0);
     }
-    // Ok j'ai le chemin de mon .abe
+}
 
-    // Le dezipper dans un fichier temp
-    AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
-    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
-
-    QDir *temp = new QDir(destinationIdUnique);
-    if (m_localDebug) qDebug() << destinationIdUnique;
-    m_abuledufilev1->abeFileOpen(fichierAbe,temp);
-    // Et les exercices doivent pouvoir aller le chercher =)
+QString MainWindow::getThemeCourant()
+{
+    return m_theme;
 }

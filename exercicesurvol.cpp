@@ -20,10 +20,12 @@
   */
 
 #include "exercicesurvol.h"
+
+#include <QMessageBox>
 #include <QtCore/qmath.h>
 
 
-ExerciceSurvol::ExerciceSurvol(QWidget *parent):
+ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
 {
     m_localDebug = true;
@@ -32,6 +34,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     m_parent = parent;
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
 
+    m_theme = theme;
     //Création de l'aire de travail + propriétés
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
 
@@ -55,6 +58,9 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     gv_AireDeJeu->setFrameShape(QFrame::NoFrame);
 
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
+
+    cheminConf = m_theme + QDir::separator()+QString("conf")+QDir::separator() + QString("parametres.conf");
+    cheminImage = m_theme + QDir::separator() + QString("data") +QDir::separator() + QString("images") + QDir::separator()  ;
 
     chargerOption();
 
@@ -80,6 +86,9 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent):
     // Pour les appuis automatiques sur les touches
     connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
     connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()));
+
+    qDebug() << "Chemin du conf" << cheminConf;
+    qDebug() << "Chemin Image" << cheminImage;
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -153,36 +162,54 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
         boiteTetes->resetTetes(m_nbTotalQuestions);
 
         // aller chercher le pack image
-        QDir dir("data/images/AnimauxAfrique/");
+        QDir dir(cheminImage);
         dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
         QFileInfoList list = dir.entryInfoList();
-        for(int i = 0; i < list.count(); i++) {
-            m_listeFichiers << list.at(i).absoluteFilePath();
-        }
-        // choisir 5 images au hasard dans le pack
-        {
-            for(int i = 0; i < m_nbImage; i++)
-            {
-                qsrand(QDateTime::currentDateTime ().toTime_t ());
-                int n = (qrand() % (m_listeFichiers.size()));
-                QFileInfo fileInfo = m_listeFichiers.takeAt(n);
-                m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
-                m_listeImage << m_image;
-            }
-        }
-        AbulEduCommonStatesV1::slotRealisationExerciceEntered();
-    }
 
-    QPair<int, int> divisionEcran = plusPetiteDivision(opt_nbMasquesChoisis);
-    if (divisionEcran.first > divisionEcran.second)
-    {
-        nbMasquesLargeur = divisionEcran.first;
-        nbMasquesHauteur = divisionEcran.second;
-    }
-    else
-    {
-        nbMasquesLargeur = divisionEcran.second;
-        nbMasquesHauteur = divisionEcran.first;
+        if (dir.entryInfoList().count() <= 0)
+        {
+
+            QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'excercice a rencontré un problème.")+
+                                  QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
+            slotQuitterAccueil();
+        }
+
+
+            for(int i = 0; i < list.count(); i++) {
+                m_listeFichiers << list.at(i).absoluteFilePath();
+            }
+
+        // Condition de garde
+        if (m_listeFichiers.size() <= 0 )
+        {
+            QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'excercice a rencontré un problème.")+
+                                  QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
+            slotQuitterAccueil();
+        }
+
+        for(int i = 0; i < m_nbImage; i++) // choisir 5 images au hasard dans le pack
+        {
+            qsrand(QDateTime::currentDateTime ().toTime_t ());
+            int n = (qrand() % (m_listeFichiers.size()));
+            QFileInfo fileInfo = m_listeFichiers.takeAt(n);
+            m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
+            m_listeImage << m_image;
+        }
+
+        AbulEduCommonStatesV1::slotRealisationExerciceEntered();
+
+
+        QPair<int, int> divisionEcran = plusPetiteDivision(opt_nbMasquesChoisis);
+        if (divisionEcran.first > divisionEcran.second)
+        {
+            nbMasquesLargeur = divisionEcran.first;
+            nbMasquesHauteur = divisionEcran.second;
+        }
+        else
+        {
+            nbMasquesLargeur = divisionEcran.second;
+            nbMasquesHauteur = divisionEcran.first;
+        }
     }
 }
 
@@ -192,6 +219,10 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
 void ExerciceSurvol::slotInitQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotInitQuestionEntered()";
+
+    if(m_listeImage.count() <= 0) {
+        return;
+    }
 
     AbulEduCommonStatesV1::slotInitQuestionEntered();
     if (!m_exerciceEnCours)
@@ -247,6 +278,8 @@ void ExerciceSurvol::slotInitQuestionEntered()
         nbMasquesLargeur += 2;
         nbMasquesHauteur += 1;
     }
+
+
 }
 
 /** Choix aléatoire du positionnement des masques interactifs
@@ -555,7 +588,7 @@ void ExerciceSurvol::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
 
-    QSettings parametres(QDir::currentPath()+QDir::separator()+QString("data")+QDir::separator()+QString("parametres.conf"), QSettings::IniFormat);
+    QSettings parametres(cheminConf, QSettings::IniFormat);
     opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
     opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
     opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();

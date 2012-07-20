@@ -33,7 +33,7 @@ class ExerciceSurvol : public AbulEduCommonStatesV1
     Q_OBJECT
 
 public:
-    ExerciceSurvol(QWidget *parent = 0);
+    ExerciceSurvol(QWidget *parent = 0, QString theme ="");
     ~ExerciceSurvol();
 
 private:
@@ -59,21 +59,26 @@ private:
     float nbMasquesHauteur;
 
     QList<masqueDeplaceSouris *> m_listeMasquesFixes;
-    masqueDeplaceSouris *m_masque;
-    masqueDeplaceSouris *m_masqueInteractif;
-    QSize m_taille;
+        masqueDeplaceSouris *m_masque;
+        masqueDeplaceSouris *m_masqueInteractif;
+        QSize m_taille;
+
     QWidget *m_parent;
     bool m_localDebug;
     bool m_exerciceEnCours;
 
     // Chronometre
     QTime *m_chronometre;
-    float m_tempsQuestion1;
-    float m_tempsQuestion2;
-    float m_tempsQuestion3;
-    float m_tempsQuestion4;
-    float m_tempsQuestion5;
-    int m_tempsTotal;
+        float m_tempsQuestion1;
+        float m_tempsQuestion2;
+        float m_tempsQuestion3;
+        float m_tempsQuestion4;
+        float m_tempsQuestion5;
+        int m_tempsTotal;
+
+    QString m_theme;
+    QString cheminConf;
+    QString cheminImage;
 
     void redimensionnerConsigne();
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
