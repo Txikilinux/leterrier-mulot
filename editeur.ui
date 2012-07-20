@@ -134,6 +134,9 @@
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
+          <property name="indentation">
+           <number>0</number>
+          </property>
           <property name="rootIsDecorated">
            <bool>true</bool>
           </property>
