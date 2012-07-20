@@ -45,12 +45,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Mettez ce qu'il faut en fonction de votre menu d'accueil
     m_texteBulles.clear();
-    m_texteBulles.insert(0, trUtf8("Double clic ..."));
-    m_texteBulles.insert(1, trUtf8("Survol ..."));
-    m_texteBulles.insert(2, trUtf8("Simple clic ..."));
-    m_texteBulles.insert(3, trUtf8("Glisser déposer ..."));
-    m_texteBulles.insert(4, trUtf8("L'ami molette..."));
-    m_texteBulles.insert(5, trUtf8(".../.../.../..."));
+//    m_texteBulles.insert(0, trUtf8("Double clic ..."));
+//    m_texteBulles.insert(1, trUtf8("Survol ..."));
+//    m_texteBulles.insert(2, trUtf8("Simple clic ..."));
+//    m_texteBulles.insert(3, trUtf8("Glisser déposer ..."));
+//    m_texteBulles.insert(4, trUtf8("L'ami molette..."));
+//    m_texteBulles.insert(5, trUtf8(".../.../.../..."));
+
+    m_texteBulles.insert(0, trUtf8("Survol ..."));
+    m_texteBulles.insert(1, trUtf8("Clic ..."));
+    m_texteBulles.insert(2, trUtf8("L'ami molette ..."));
+    m_texteBulles.insert(3, trUtf8("Parcours ..."));
+    m_texteBulles.insert(4, trUtf8("Double clic..."));
 
 
     QSettings *m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
@@ -101,7 +107,7 @@ void MainWindow::abeLanceExo(int numero)
 
     switch (numero)
     {
-    case 1:
+    case 0:
         if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Survol";
     {
         //Exer *b = new ExercicePhraseSansEspaces(gv_Accueil,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
