@@ -91,7 +91,6 @@ void Editeur::on_action_Supprimer_photo_triggered()
 void Editeur::on_btnImporterDossierImage_clicked()
 {
     if(m_localDebug) qDebug() << "##########################  Appuie sur le bouton d'Importation des images";
-    //    QString fichier = QFileDialog::getOpenFileName(this, "Ouvrir un fichier", QString(), "Images (*.png *.gif *.jpg *.jpeg)");
 
     // Icone standard de dossier
     QStyle* style =  QApplication::style();

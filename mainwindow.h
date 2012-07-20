@@ -28,6 +28,7 @@
 #include <QMainWindow>
 #include "widgetchoixtheme.h"
 #include "abuledupageaccueilv1.h"
+#include "abuledufilev1.h"
 
 namespace Ui {
     class MainWindow;
@@ -66,6 +67,7 @@ private slots:
     void exerciceExited();
 
     void on_actionEditeur_triggered();
+    void on_actionDefinirTheme_triggered();
 };
 
 #endif // MAINWINDOW_H

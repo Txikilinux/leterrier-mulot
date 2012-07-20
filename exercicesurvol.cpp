@@ -134,7 +134,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     // Appui auto sur bouton suivant
     if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-    QTimer::singleShot(opt_timerSuivant,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
+    QTimer::singleShot(opt_timerSuivant,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
 }
 
 /** Mettre tout ce qui est commun à chaque question
@@ -153,7 +153,7 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
         boiteTetes->resetTetes(m_nbTotalQuestions);
 
         // aller chercher le pack image
-        QDir dir("data/images/gourmandises/");
+        QDir dir("data/images/AnimauxAfrique/");
         dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
         QFileInfoList list = dir.entryInfoList();
         for(int i = 0; i < list.count(); i++) {
@@ -242,8 +242,9 @@ void ExerciceSurvol::slotInitQuestionEntered()
             xMasque = 0.00;
             yMasque += hauteurMasque;
         }
-        nbMasquesLargeur = nbMasquesLargeur*2;
-        nbMasquesHauteur = nbMasquesHauteur*2;
+        // Pour la prochaine question, on rajoute 2 masques dans la largeur et 1 dans la hauteur
+        nbMasquesLargeur += 2;
+        nbMasquesHauteur += 1;
     }
 }
 

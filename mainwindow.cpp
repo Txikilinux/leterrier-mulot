@@ -39,25 +39,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
-
     //    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
     //    m_widgetChoixTheme->show();
 
     //Mettez ce qu'il faut en fonction de votre menu d'accueil
     m_texteBulles.clear();
-//    m_texteBulles.insert(0, trUtf8("Double clic ..."));
-//    m_texteBulles.insert(1, trUtf8("Survol ..."));
-//    m_texteBulles.insert(2, trUtf8("Simple clic ..."));
-//    m_texteBulles.insert(3, trUtf8("Glisser déposer ..."));
-//    m_texteBulles.insert(4, trUtf8("L'ami molette..."));
-//    m_texteBulles.insert(5, trUtf8(".../.../.../..."));
-
     m_texteBulles.insert(0, trUtf8("Survol ..."));
     m_texteBulles.insert(1, trUtf8("Clic ..."));
     m_texteBulles.insert(2, trUtf8("L'ami molette ..."));
     m_texteBulles.insert(3, trUtf8("Parcours ..."));
     m_texteBulles.insert(4, trUtf8("Double clic..."));
-
 
     QSettings *m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
     m_abuleduaccueil = new AbulEduPageAccueilV1(m_config, &m_texteBulles, ui->fr_principale);
@@ -91,7 +82,6 @@ void MainWindow::slotDemo()
     qDebug() << " On passe en mode démo ...";
 }
 
-
 void MainWindow::abeLanceExo(int numero)
 {
     //si un exercice est en cours -> on ignore
@@ -101,7 +91,6 @@ void MainWindow::abeLanceExo(int numero)
     }
 
     // todo histoire des modules !
-
     setWindowTitle(abeApp->getAbeApplicationLongName()+"--"+m_texteBulles[numero]);
     show();
 
@@ -137,8 +126,6 @@ void MainWindow::exerciceExited()
 
 void MainWindow::on_action_Survol_triggered()
 {
-//    widgetDeplaceSouris *w = new widgetDeplaceSouris(m_abuleduaccueil);
-//    w->show();
     abeLanceExo(1);
 }
 
@@ -149,11 +136,36 @@ void MainWindow::on_actionEditeur_triggered()
         Editeur *monEditeur = new Editeur(this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
         monEditeur->show();
-
     }
     else // On affiche un petit message...
     {
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
+}
+void MainWindow::on_actionDefinirTheme_triggered()
+{
+    if (m_localDebug) qDebug() << "Choix du thème";
+    // Aller chercher un .abe
+    QString destinationIdUnique;
+    QString fichierAbe = QFileDialog::getOpenFileName(this, "Ouvrir un .abe", QString(), "Abe(*.abe)");
 
+    if (fichierAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
+    {
+        if (m_localDebug) qDebug() << "Appui sur le bouton annuler";
+        return;
+    }
+    else
+    {
+        if (m_localDebug) qDebug() << fichierAbe;
+    }
+    // Ok j'ai le chemin de mon .abe
+
+    // Le dezipper dans un fichier temp
+    AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
+    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
+
+    QDir *temp = new QDir(destinationIdUnique);
+    if (m_localDebug) qDebug() << destinationIdUnique;
+    m_abuledufilev1->abeFileOpen(fichierAbe,temp);
+    // Et les exercices doivent pouvoir aller le chercher =)
 }
