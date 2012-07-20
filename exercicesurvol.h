@@ -55,8 +55,8 @@ private:
     QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
 
     QPair<int, int> plusPetiteDivision(int monChiffre); // Pour le choix du découpage de l'image par rapport au nb de masques interactifs choisis
-    qreal nbMasquesLargeur;
-    qreal nbMasquesHauteur;
+    float nbMasquesLargeur;
+    float nbMasquesHauteur;
 
     QList<masqueDeplaceSouris *> m_listeMasquesFixes;
     masqueDeplaceSouris *m_masque;

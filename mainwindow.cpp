@@ -126,7 +126,7 @@ void MainWindow::exerciceExited()
 
 void MainWindow::on_action_Survol_triggered()
 {
-    abeLanceExo(1);
+    abeLanceExo(0);
 }
 
 void MainWindow::on_actionEditeur_triggered()

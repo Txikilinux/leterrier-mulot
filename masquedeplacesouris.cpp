@@ -52,7 +52,9 @@ void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsIte
     QPainterPath zoneDessin;
     zoneDessin.addRect(boundingRect());
     painter->setBrush(QBrush(m_couleur));
+//    painter->setPen(Qt::NoPen);
     painter->drawRect(m_taille);
+
 }
 
 QRectF masqueDeplaceSouris::boundingRect() const

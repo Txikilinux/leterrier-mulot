@@ -205,8 +205,8 @@ void ExerciceSurvol::slotInitQuestionEntered()
         getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(m_numQuestion);
 
         //--------- Calcul de la taille des masques
-        qreal largeurMasque = 0.00;
-        qreal hauteurMasque = 0.00;
+        float largeurMasque = 0.00;
+        float hauteurMasque = 0.00;
 
         if (m_localDebug)
         {
@@ -214,35 +214,36 @@ void ExerciceSurvol::slotInitQuestionEntered()
             qDebug() << "nb masques hauteur :" << nbMasquesHauteur ;
         }
 
-        largeurMasque =  qreal(gv_AireDeJeu->width() / nbMasquesLargeur);
-        hauteurMasque = qreal(gv_AireDeJeu->height() / nbMasquesHauteur);
+        float largeurAireJeu = static_cast<float>(gv_AireDeJeu->width())-1;
+        float hauteurAireJeu = static_cast<float>(gv_AireDeJeu->height())-1;
+
+        largeurMasque = largeurAireJeu / nbMasquesLargeur;
+        hauteurMasque = hauteurAireJeu / nbMasquesHauteur;
 
         int nbMasques = nbMasquesLargeur * nbMasquesHauteur;
         qreal xMasque = 0.00;
         qreal yMasque = 0.00;
 
         qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
-        for (int i =0; i<nbMasquesHauteur; i++)
+
+        for (float i=0; i<nbMasquesHauteur;i++)
         {
-            int j = 0;
-            while (j < nbMasquesLargeur)
+
+            for (int j =0; j < nbMasquesLargeur;j++)
             {
                 m_masque = new masqueDeplaceSouris();
                 m_masque->setSize(largeurMasque, hauteurMasque);
                 m_masque->setPos(xMasque, yMasque);
-                j++;
-                xMasque += largeurMasque;
                 m_masque->setColor(QColor::fromRgb(255,255,255));
                 m_masque->setHideOnMouseOver(false);
 
+                xMasque+=largeurMasque;
                 gv_AireDeJeu->scene()->addItem(m_masque);
                 m_listeMasquesFixes << m_masque;
-                qDebug()<< "masque ajoute";
             }
-            xMasque = 0.00;
+            xMasque = 0,00;
             yMasque += hauteurMasque;
         }
-        // Pour la prochaine question, on rajoute 2 masques dans la largeur et 1 dans la hauteur
         nbMasquesLargeur += 2;
         nbMasquesHauteur += 1;
     }
