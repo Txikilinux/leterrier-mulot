@@ -51,6 +51,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     m_nbMasquesInteractifs = 0;
     nbMasquesLargeur = 0;
     nbMasquesHauteur = 0;
+    onPeutMettreEnPause = false;
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -220,6 +221,8 @@ void ExerciceSurvol::slotInitQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotInitQuestionEntered()";
 
+    onPeutMettreEnPause = false;
+
     if(m_listeImage.count() <= 0) {
         return;
     }
@@ -326,7 +329,12 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     if (m_exerciceEnCours)
     {
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
-        QTimer::singleShot(opt_timerSuivant ,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
+//        QTimer::singleShot(opt_timerSuivant ,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
+        m_timer = new QTimer(this);
+        m_timer->setInterval(opt_timerSuivant);
+        m_timer->setSingleShot(true);
+        connect(m_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()));
+        m_timer->start();
     }
 }
 
@@ -519,7 +527,7 @@ void ExerciceSurvol::redimensionnerImage2()
 void ExerciceSurvol::slotCacheMasque()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotCacheMasque : " << m_nbMasquesInteractifs;
-    m_nbMasquesInteractifs--;
+    m_nbMasquesInteractifs --;
 
     if(m_nbMasquesInteractifs == 0)
     {
@@ -528,6 +536,9 @@ void ExerciceSurvol::slotCacheMasque()
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
         }
+
+        // On peut mettre en pause
+        onPeutMettreEnPause = true;
 
         // Appui sur le bouton vérifier
         if (m_localDebug) qDebug() << "Appui sur le bouton Verifier " << opt_timerVerifier ;
@@ -652,4 +663,31 @@ QPair<int, int> ExerciceSurvol::plusPetiteDivision(int monChiffre)
     }
     if(m_localDebug) qDebug()<<paire;
     return paire;
+}
+
+bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
+{
+    if(event->type() == QEvent::KeyRelease && onPeutMettreEnPause)
+    {
+        // Appelle ton signal puis :
+        QKeyEvent *c = dynamic_cast<QKeyEvent *>(event);
+
+        if(c && c->key() == Qt::Key_Space )
+        {
+            if (m_timer->isActive())
+            {
+                m_timer->stop();
+                qDebug() << "Le timer est actif est vient d'etre stoppé";
+
+            }
+            else
+            {
+                m_timer->start();
+                qDebug() << "Le timer repart   ";
+            }
+
+            qDebug() << "Pause !";
+        }
+    }
+    return false;
 }

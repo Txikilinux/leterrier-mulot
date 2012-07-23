@@ -36,6 +36,9 @@ public:
     ExerciceSurvol(QWidget *parent = 0, QString theme ="");
     ~ExerciceSurvol();
 
+protected:
+    bool eventFilter(QObject *obj, QEvent *ev);
+
 private:
 
     AbulEduEtiquettesV1 *gv_AireDeJeu;  //mon AbulEduEtiquettes afin d'avoir une graphicView et tt ce qui va avec
@@ -85,6 +88,10 @@ private:
     void redimensionnerImage2();
     void chargerOption();
 
+
+    QTimer *m_timer;
+    bool onPeutMettreEnPause;
+
 private slots:
     void slotSequenceEntered();
     void slotPresenteSequenceEntered();
@@ -108,6 +115,9 @@ private slots:
     void slotCacheMasque();
     void slotAppuiAutoSuivant();
     void slotAppuiAutoVerifier();
+
+
+//    void keyPressEvent(QKeyEvent *ev);
 
 
 signals:

@@ -117,6 +117,7 @@ void MainWindow::abeLanceExo(int numero)
             setFixedSize(this->width(), this->height()); // redimensionnement interdit
             // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
             connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+            installEventFilter(s);
         }
     }
         m_exerciceEnCours = true;
