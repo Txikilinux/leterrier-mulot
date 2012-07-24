@@ -32,9 +32,10 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     m_exerciceEnCours = false;
 
     m_parent = parent;
+    m_theme = theme;
+
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
 
-    m_theme = theme;
     //Création de l'aire de travail + propriétés
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
 
@@ -52,6 +53,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     nbMasquesLargeur = 0;
     nbMasquesHauteur = 0;
     onPeutMettreEnPause = false;
+    m_labelPause =  new QLabel(m_parent);
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -67,7 +69,6 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
 
     // Demarrage de la machine à états
     sequenceMachine->start();
-
     // Assignation des propriétés de la télécommande
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
@@ -88,8 +89,12 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
     connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()));
 
-    qDebug() << "Chemin du conf" << cheminConf;
-    qDebug() << "Chemin Image" << cheminImage;
+    if (m_localDebug)
+    {
+        qDebug() << "Chemin du fichier de configuration" << cheminConf;
+        qDebug() << "Chemin des fichiers images" << cheminImage;
+    }
+
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -150,6 +155,7 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 /** Mettre tout ce qui est commun à chaque question
   * Aller chercher le pack image
   * Choisir 5 images au hasard dans le pack
+  * Condition de garde .abe
   */
 void ExerciceSurvol::slotRealisationExerciceEntered()
 {
@@ -165,51 +171,56 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
         // aller chercher le pack image
         QDir dir(cheminImage);
         dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-        QFileInfoList list = dir.entryInfoList();
 
+        // Si la dir est vide
         if (dir.entryInfoList().count() <= 0)
         {
-
+            if (m_localDebug) qDebug() << "1. Verification des images <= 0";
             QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'excercice a rencontré un problème.")+
                                   QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
             slotQuitterAccueil();
-        }
-
-
-            for(int i = 0; i < list.count(); i++) {
-                m_listeFichiers << list.at(i).absoluteFilePath();
-            }
-
-        // Condition de garde
-        if (m_listeFichiers.size() <= 0 )
-        {
-            QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'excercice a rencontré un problème.")+
-                                  QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
-            slotQuitterAccueil();
-        }
-
-        for(int i = 0; i < m_nbImage; i++) // choisir 5 images au hasard dans le pack
-        {
-            qsrand(QDateTime::currentDateTime ().toTime_t ());
-            int n = (qrand() % (m_listeFichiers.size()));
-            QFileInfo fileInfo = m_listeFichiers.takeAt(n);
-            m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
-            m_listeImage << m_image;
-        }
-
-        AbulEduCommonStatesV1::slotRealisationExerciceEntered();
-
-
-        QPair<int, int> divisionEcran = plusPetiteDivision(opt_nbMasquesChoisis);
-        if (divisionEcran.first > divisionEcran.second)
-        {
-            nbMasquesLargeur = divisionEcran.first;
-            nbMasquesHauteur = divisionEcran.second;
+            return;
         }
         else
         {
-            nbMasquesLargeur = divisionEcran.second;
-            nbMasquesHauteur = divisionEcran.first;
+            QFileInfoList list = dir.entryInfoList();
+            for(int i = 0; i < list.count(); i++)
+            {
+                m_listeFichiers << list.at(i).absoluteFilePath();
+            }
+        }
+        // Si la liste de fichier est vide
+        if (m_listeFichiers.size() <= 0 )
+        {
+            if (m_localDebug) qDebug() << "2. Verification de listeFichiers <= 0";
+            QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'excercice a rencontré un problème.")+
+                                  QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
+            slotQuitterAccueil();
+            return;
+        }
+        else
+        {
+            for(int i = 0; i < m_nbImage; i++) // choisir 5 images au hasard dans le pack
+            {
+                qsrand(QDateTime::currentDateTime ().toTime_t ());
+                int n = (qrand() % (m_listeFichiers.size()));
+                QFileInfo fileInfo = m_listeFichiers.takeAt(n);
+                m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
+                m_listeImage << m_image;
+            }
+            AbulEduCommonStatesV1::slotRealisationExerciceEntered();
+
+            QPair<int, int> divisionEcran = plusPetiteDivision(opt_nbMasquesChoisis);
+            if (divisionEcran.first > divisionEcran.second)
+            {
+                nbMasquesLargeur = divisionEcran.first;
+                nbMasquesHauteur = divisionEcran.second;
+            }
+            else
+            {
+                nbMasquesLargeur = divisionEcran.second;
+                nbMasquesHauteur = divisionEcran.first;
+            }
         }
     }
 }
@@ -275,7 +286,7 @@ void ExerciceSurvol::slotInitQuestionEntered()
                 gv_AireDeJeu->scene()->addItem(m_masque);
                 m_listeMasquesFixes << m_masque;
             }
-            xMasque = 0,00;
+            xMasque = 0;
             yMasque += hauteurMasque;
         }
         nbMasquesLargeur += 2;
@@ -329,7 +340,7 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     if (m_exerciceEnCours)
     {
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
-//        QTimer::singleShot(opt_timerSuivant ,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
+        //        QTimer::singleShot(opt_timerSuivant ,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
         m_timer = new QTimer(this);
         m_timer->setInterval(opt_timerSuivant);
         m_timer->setSingleShot(true);
@@ -587,6 +598,9 @@ void ExerciceSurvol::slotAppuiAutoSuivant()
     emit appuiSuivant();
 }
 
+/** Cette méthode emet le signal appuiVerifier
+  * Permet donc d'activer (de simuler) l'appui sur le bouton verifier de la telecommande
+  */
 void ExerciceSurvol::slotAppuiAutoVerifier()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotAppuiAutoVerifier()";
@@ -665,10 +679,19 @@ QPair<int, int> ExerciceSurvol::plusPetiteDivision(int monChiffre)
     return paire;
 }
 
+/** Event Filter pour la pause.
+  * Capture l'appui sur la barre espace lorsque le booléen "onPeutMettreEnPause" est à "true".
+  * C'est le cas lorsque tous les masques sont découvert.
+  */
 bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
 {
+    obj = this;
     if(event->type() == QEvent::KeyRelease && onPeutMettreEnPause)
     {
+        // Pixmap pause
+        QPixmap pixmap("/home/utilisateurs/icham.sirat/Images/NounPro/noun_project_3370.svg");
+        m_labelPause->setPixmap(pixmap/*.scaled(50,50,Qt::KeepAspectRatio)*/);
+
         // Appelle ton signal puis :
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(event);
 
@@ -679,11 +702,18 @@ bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
                 m_timer->stop();
                 qDebug() << "Le timer est actif est vient d'etre stoppé";
 
+                boiteTetes->setVisible(false);
+                m_labelPause->move(boiteTetes->pos().toPoint());
+                m_labelPause->show();
+                qDebug() << m_labelPause->size();
+                qDebug() << m_labelPause->pos();
             }
             else
             {
                 m_timer->start();
                 qDebug() << "Le timer repart   ";
+                m_labelPause->setVisible(false);
+                boiteTetes->setVisible(true);
             }
 
             qDebug() << "Pause !";

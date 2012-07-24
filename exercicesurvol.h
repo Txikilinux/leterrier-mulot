@@ -36,19 +36,22 @@ public:
     ExerciceSurvol(QWidget *parent = 0, QString theme ="");
     ~ExerciceSurvol();
 
-protected:
-    bool eventFilter(QObject *obj, QEvent *ev);
-
 private:
 
     AbulEduEtiquettesV1 *gv_AireDeJeu;  //mon AbulEduEtiquettes afin d'avoir une graphicView et tt ce qui va avec
     QGraphicsProxyWidget *proxy;        // Pour stocker AbulEduLabelWidget
+    QWidget *m_parent;
+    bool m_localDebug;
+    bool m_exerciceEnCours;
 
-    // Pour l'exerciceSurvol
+    // Paramètres Editeur
     QSettings *m_parametres;
     int opt_timerSuivant;
     int opt_timerVerifier;
     int opt_nbMasquesChoisis;
+    QString m_theme;
+    QString cheminConf;
+    QString cheminImage;
 
     QPixmap m_image;
     QGraphicsPixmapItem *m_itemImage;
@@ -66,10 +69,6 @@ private:
         masqueDeplaceSouris *m_masqueInteractif;
         QSize m_taille;
 
-    QWidget *m_parent;
-    bool m_localDebug;
-    bool m_exerciceEnCours;
-
     // Chronometre
     QTime *m_chronometre;
         float m_tempsQuestion1;
@@ -79,18 +78,15 @@ private:
         float m_tempsQuestion5;
         int m_tempsTotal;
 
-    QString m_theme;
-    QString cheminConf;
-    QString cheminImage;
+    QTimer *m_timer;
+    bool onPeutMettreEnPause;
+    QLabel *m_labelPause;
 
     void redimensionnerConsigne();
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();
     void chargerOption();
-
-
-    QTimer *m_timer;
-    bool onPeutMettreEnPause;
+    bool eventFilter(QObject *obj, QEvent *ev);
 
 private slots:
     void slotSequenceEntered();
@@ -115,10 +111,6 @@ private slots:
     void slotCacheMasque();
     void slotAppuiAutoSuivant();
     void slotAppuiAutoVerifier();
-
-
-//    void keyPressEvent(QKeyEvent *ev);
-
 
 signals:
     // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
