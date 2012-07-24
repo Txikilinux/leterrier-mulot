@@ -53,7 +53,11 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     nbMasquesLargeur = 0;
     nbMasquesHauteur = 0;
     onPeutMettreEnPause = false;
-    m_labelPause =  new QLabel(m_parent);
+
+    //pour l'affichage pause
+    m_labelImagePause =  new QLabel(m_parent);
+    m_labelTextePause = new QLabel(m_parent);
+
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -99,6 +103,8 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
 
 ExerciceSurvol::~ExerciceSurvol()
 {
+    m_labelImagePause->deleteLater();
+    m_labelTextePause->deleteLater();
     emit exerciceExited(); // Permet à la MainWindow de savoir que l'exercice est terminé
 }
 
@@ -460,8 +466,8 @@ void ExerciceSurvol::setDimensionsWidgets()
     getAbeExerciceTelecommandeV1()->move(1550*ratio, 0);
 
     // Placement de l'AireDeJeu
-    int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
+    int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
     //        gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
     gv_AireDeJeu->move(80 * ratio, 64 * ratio);
@@ -523,7 +529,7 @@ void ExerciceSurvol::redimensionnerImage()
     }
 }
 
-/** Redimmensionne l'image (2e méthode)
+/** Redimensionne l'image (2e méthode)
   */
 void ExerciceSurvol::redimensionnerImage2()
 {
@@ -688,13 +694,14 @@ bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
     obj = this;
     if(event->type() == QEvent::KeyRelease && onPeutMettreEnPause)
     {
-        // Pixmap pause
-        QPixmap pixmap("/home/utilisateurs/icham.sirat/Images/NounPro/noun_project_3370.svg");
-        m_labelPause->setPixmap(pixmap/*.scaled(50,50,Qt::KeepAspectRatio)*/);
+        QPixmap pixPause(":/bouton/pause");
+        float ratio = abeApp->getAbeApplicationDecorRatio();
+        m_labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
+        m_labelTextePause->setText(trUtf8("En Pause ..."));
+        //        m_labelImagePause->setStyleSheet("border:2px solid black");
+        //        m_labelTextePause->setStyleSheet("border:2px solid black");
 
-        // Appelle ton signal puis :
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(event);
-
         if(c && c->key() == Qt::Key_Space )
         {
             if (m_timer->isActive())
@@ -703,16 +710,24 @@ bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
                 qDebug() << "Le timer est actif est vient d'etre stoppé";
 
                 boiteTetes->setVisible(false);
-                m_labelPause->move(boiteTetes->pos().toPoint());
-                m_labelPause->show();
-                qDebug() << m_labelPause->size();
-                qDebug() << m_labelPause->pos();
+                m_labelImagePause->show();
+                m_labelTextePause->show();
+
+                int W = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
+                int w1 = m_labelImagePause->width();
+                int w2 = m_labelTextePause->width();
+                int x1 = (W-(w1+w2))/2;
+                int x2 = (W-(w2-w1))/2;
+
+                m_labelImagePause->move(x1, gv_AireDeJeu->height() + m_labelImagePause->height() - 60 *ratio);
+                m_labelTextePause->move(x2, gv_AireDeJeu->height() + m_labelImagePause->height());
             }
             else
             {
                 m_timer->start();
                 qDebug() << "Le timer repart   ";
-                m_labelPause->setVisible(false);
+                m_labelImagePause->setVisible(false);
+                m_labelTextePause->setVisible(false);
                 boiteTetes->setVisible(true);
             }
 

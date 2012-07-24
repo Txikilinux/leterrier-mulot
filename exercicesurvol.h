@@ -80,7 +80,8 @@ private:
 
     QTimer *m_timer;
     bool onPeutMettreEnPause;
-    QLabel *m_labelPause;
+    QLabel *m_labelImagePause;
+    QLabel *m_labelTextePause;
 
     void redimensionnerConsigne();
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
