@@ -9,7 +9,6 @@ QT       += core gui
 TARGET = leterrier-mulot
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     widgetchoixtheme.cpp \
@@ -32,6 +31,7 @@ FORMS    += mainwindow.ui \
     editeur.ui
 
 RESOURCES += \
+    ressources.qrc
 
 include(lib/abuleduapplicationv1/abuleduapplicationv1.pri)
 include(lib/abuleduconstantesv1/abuleduconstantesv1.pri)
