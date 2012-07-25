@@ -19,12 +19,12 @@ install/leterrier-mulot::
 	mkdir -p $(BUILDTEMP)/usr/bin/
 	mkdir -p $(BUILDTEMP)/$(EXECDEST)
 	mkdir -p $(BUILDTEMP)/$(DEST)/data
-	mkdir -p $(BUILDTEMP)/$(DEST)/lib
+#	mkdir -p $(BUILDTEMP)/$(DEST)/conf
 	mkdir -p $(BUILDTEMP)/usr/share/applications
 	cp -a $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/leterrier-mulot
 	cp -a $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
 	cp -a $(CURDIR)/data/* $(BUILDTEMP)/$(DEST)/data
-	cp -a $(CURDIR)/lib/* $(BUILDTEMP)/$(DEST)/lib
+#	cp -a $(CURDIR)/conf/* $(BUILDTEMP)/$(DEST)/conf
 	cp -a $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
 
 	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
