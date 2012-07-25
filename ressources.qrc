@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/bouton">
         <file alias="pause">data/picto/pause.png</file>
-        <file alias="play">data/picto/play.png</file>
     </qresource>
 </RCC>
