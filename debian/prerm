@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+xdg-desktop-menu uninstall /usr/share/applications/leterrier-mulot.desktop
+
+#DEBHELPER#

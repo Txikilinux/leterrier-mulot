@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/qmake.mk
+
+QMAKE=qmake-qt4 #pour jaunty
+QTDIR=/usr
+QTPLUGINS=/usr/lib/qt4/plugins
+#QMAKE=qmake-qt4 #apres jaunty
+CFLAGS=-O3
+CXXFLAGS=-O3
+DEST=/usr/share/leterrier-mulot
+EXECDEST=/usr/lib/leterrier-mulot
+BUILDTEMP=$(CURDIR)/debian/leterrier-mulot
+
+MANPAGES := $(CURDIR)/debian/leterrier-mulot.1
+
+install/leterrier-mulot::
+	mkdir -p $(BUILDTEMP)/usr/bin/
+	mkdir -p $(BUILDTEMP)/$(EXECDEST)
+	mkdir -p $(BUILDTEMP)/$(DEST)/data
+	mkdir -p $(BUILDTEMP)/$(DEST)/conf
+	mkdir -p $(BUILDTEMP)/usr/share/applications
+	cp -a $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/leterrier-mulot
+	cp -a $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
+	cp -a $(CURDIR)/data/* $(BUILDTEMP)/$(DEST)/data
+	cp -a $(CURDIR)/conf/* $(BUILDTEMP)/$(DEST)/conf
+	cp -a $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
+
+	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+	install -D --mode=0755 $(QTDIR)/lib/libQtXml.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+	install -D --mode=0755 $(QTDIR)/lib/libQtNetwork.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+	install -D --mode=0755 $(QTDIR)/lib/libQtGui.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+	install -D --mode=0755 $(QTDIR)/lib/libQtScript.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+	install -D --mode=0755 $(QTDIR)/lib/libQtDesigner.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+	install -D --mode=0755 $(QTDIR)/lib/libQtSvg.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+
+	#and plugins (phonon backend, jpeg and co)
+	cp -a $(QTPLUGINS)/imageformats $(BUILDTEMP)/$(EXECDEST)/
+	mkdir -p $(BUILDTEMP)/$(EXECDEST)/phonon_backend
+

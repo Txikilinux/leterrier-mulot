@@ -1,0 +1,6 @@
+#!/bin/bash
+# application launcher
+(
+    cd /usr/share/leterrier-mulot
+    exec /usr/lib/leterrier-mulot/leterrier-mulot $@
+)

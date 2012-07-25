@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+xdg-desktop-menu install  --novendor --mode system /usr/share/applications/leterrier-mulot.desktop
+
+
+
+#DEBHELPER#

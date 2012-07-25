@@ -1,0 +1,13 @@
+Source: leterrier-mulot
+Section: misc
+Priority: extra
+Maintainer: Icham Sirat <icham.sirat@ryxeo.com>
+Build-Depends: debhelper, cdbs, qt4-qmake, libqt4-dev, libhunspell-dev
+Standards-Version: 3.8.3
+Homepage: http://www.abuledu.org/leterrier/
+
+Package: leterrier-mulot
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-xml
+Description: Logiciel d'apprentissage de la souris et de langage
+ Ce logiciel fait partie du Terrier d'AbulEdu
