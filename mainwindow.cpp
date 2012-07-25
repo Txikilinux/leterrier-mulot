@@ -25,6 +25,7 @@
 
 #include "editeur.h"
 #include "exercicesurvol.h"
+#include "exerciceparcours.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -98,7 +99,7 @@ void MainWindow::abeLanceExo(int numero)
 
     switch (numero)
     {
-    case 0:
+    case 0: // ExerciceSurvol
         if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Survol";
     {
         if (m_theme.isEmpty())
@@ -118,6 +119,31 @@ void MainWindow::abeLanceExo(int numero)
             // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
             connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
             installEventFilter(s);
+        }
+    }
+        m_exerciceEnCours = true;
+        break;
+
+    case 3: //ExerciceParcours
+        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Parcours";
+    {
+        if (m_theme.isEmpty())
+        {
+            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Parcours"),
+                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
+            return;
+        }
+        else
+        {
+            ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_theme);
+            connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+            m_exerciceEnCours = true;
+            setFixedSize(this->width(), this->height()); // redimensionnement interdit
+            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+            connect(p->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+            installEventFilter(p);
         }
     }
         m_exerciceEnCours = true;

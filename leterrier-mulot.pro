@@ -15,7 +15,8 @@ SOURCES += main.cpp\
     masquedeplacesouris.cpp \
     exercicesurvol.cpp \
     editeur.cpp \
-    visionneuseimage.cpp
+    visionneuseimage.cpp \
+    exerciceparcours.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
@@ -23,7 +24,8 @@ HEADERS  += mainwindow.h \
     masquedeplacesouris.h \
     exercicesurvol.h \
     editeur.h \
-    visionneuseimage.h
+    visionneuseimage.h \
+    exerciceparcours.h
 
 FORMS    += mainwindow.ui \
     widgetchoixtheme.ui \

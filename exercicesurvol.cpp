@@ -182,7 +182,7 @@ void ExerciceSurvol::slotRealisationExerciceEntered()
         if (dir.entryInfoList().count() <= 0)
         {
             if (m_localDebug) qDebug() << "1. Verification des images <= 0";
-            QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'excercice a rencontré un problème.")+
+            QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'exercice a rencontré un problème.")+
                                   QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
             slotQuitterAccueil();
             return;
