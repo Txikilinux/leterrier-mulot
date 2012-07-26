@@ -48,6 +48,8 @@ private:
 
 signals:
         void signalCacheMasque();
+        void signalReinitialisationMasque();
+        void signalSauvegarderParcours();
 
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

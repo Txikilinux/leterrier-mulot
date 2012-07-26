@@ -529,14 +529,33 @@ void Editeur::remplirGvParcours()
             m_masque->setHideOnMouseOver(false);
             m_masque->setIsEditable(true);
 
+            connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours())); // Reinitialisation
+            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));  // Sauvegarde du parcours
+
             xMasque+=largeurMasque;
             gv_AireParcours->scene()->addItem(m_masque);
-            //            m_listeMasquesFixes << m_masque;
+            m_listeMasques << m_masque;
             numeroMasque++;
         }
         xMasque = 0;
         yMasque += hauteurMasque;
     }
+}
+
+void Editeur::sauvegarderParcours()
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::sauvegarderParcours()";
+}
+
+void Editeur::reinitialiserGvParcours()
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::reinitialiserGvParcours()";
+    for (int i = 0; i < m_listeMasques.count(); i++)
+    {
+        m_listeMasques.at(i)->setColor(QColor(Qt::white));
+        m_listeMasques.at(i)->update();
+    }
+    gv_AireParcours->update();
 }
 
 void Editeur::on_btnParcours1_clicked()

@@ -70,6 +70,9 @@ private slots:
 
     void on_btnParcours1_clicked();
 
+    void reinitialiserGvParcours();
+    void sauvegarderParcours();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -98,6 +101,7 @@ private:
     AbulEduEtiquettesV1 *gv_AireParcours;
     void remplirGvParcours();
     masqueDeplaceSouris *m_masque;
+    QList<masqueDeplaceSouris *> m_listeMasques;
 
 };
 
