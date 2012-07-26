@@ -35,7 +35,6 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_isEditable = false;
     m_numero = numero;
     setAcceptsHoverEvents(true);
-
 }
 
 void masqueDeplaceSouris::setSize(float width, float height)
@@ -86,24 +85,53 @@ void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
     }
 }
 
-//void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
-//{
-//    qDebug() << "Je passe sur cette Item";
-//    this->acceptedMouseButtons();
-//    qDebug() << this->getNumero();
-//}
-
 void masqueDeplaceSouris::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     if (m_isEditable)
     {
         QMenu *menu = new QMenu;
-        menu->addAction("Action 1");
-        menu->addAction("Action 2");
+        menu->addAction(trUtf8("Depart"),this,SLOT(on_action_Depart()));
+        menu->addAction(trUtf8("Arrivée"),this, SLOT(on_action_Arrivee()));
+        menu->addAction(trUtf8("Parcours"), this, SLOT(on_action_Parcours()));
+        menu->addSeparator();
+        menu->addAction(trUtf8("Enlever"), this, SLOT(on_action_Enlever()));
+        menu->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
+        menu->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
         menu->popup(event->screenPos());
-        qDebug() << this->getNumero();
 
         connect(menu, SIGNAL(triggered(QAction *)),
             this, SLOT(triggered(QAction *)));
     }
 }
+
+void masqueDeplaceSouris::on_action_Depart()
+{
+    qDebug() << "APPUI Menu Depart sur le n° " << this->getNumero();
+}
+
+void masqueDeplaceSouris::on_action_Arrivee()
+{
+    qDebug() << "APPUI Menu Arrivee sur le n° " << this->getNumero();
+}
+
+void masqueDeplaceSouris::on_action_Parcours()
+{
+    qDebug() << "APPUI Menu Parcours sur le n° " << this->getNumero();
+}
+
+void masqueDeplaceSouris::on_action_Enlever()
+{
+    qDebug() << "APPUI Menu Enlever sur le n° " << this->getNumero();
+}
+
+void masqueDeplaceSouris::on_action_Reinitialiser()
+{
+    qDebug() << "APPUI Menu Reinitialiser sur le n° " << this->getNumero();
+}
+
+void masqueDeplaceSouris::on_action_Sauvegarder()
+{
+    qDebug() << "APPUI Menu Sauvegarder sur le n° " << this->getNumero();
+}
+
+

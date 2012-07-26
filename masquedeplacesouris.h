@@ -52,6 +52,14 @@ signals:
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+
+private slots:
+    void on_action_Depart();
+    void on_action_Arrivee();
+    void on_action_Parcours();
+    void on_action_Enlever();
+    void on_action_Reinitialiser();
+    void on_action_Sauvegarder();
 };
 
 #endif // MASQUEDEPLACESOURIS_H
