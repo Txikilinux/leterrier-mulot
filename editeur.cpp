@@ -528,9 +528,14 @@ void Editeur::remplirGvParcours()
             m_masque->setColor(QColor::fromRgb(255,255,255));
             m_masque->setHideOnMouseOver(false);
             m_masque->setIsEditable(true);
+            m_masque->setProperty("Role", "Fixe");
 
-            connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours())); // Reinitialisation
-            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));  // Sauvegarde du parcours
+            connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours()));                       // Reinitialisation
+            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));                              // Sauvegarde du parcours
+            connect(m_masque,SIGNAL(signalMasqueDepart(masqueDeplaceSouris*)), this, SLOT(masqueDepart(masqueDeplaceSouris*)));     // Masque de depart = vert
+            connect(m_masque, SIGNAL(signalMasqueArrivee(masqueDeplaceSouris*)), this, SLOT(masqueArrivee(masqueDeplaceSouris*)));  // Masque Arrivee = rouge
+            connect(m_masque, SIGNAL(signalMasqueParcours(masqueDeplaceSouris*)), this, SLOT(masqueParcours(masqueDeplaceSouris*)));// Masque Pärcours = noir
+            connect(m_masque, SIGNAL(signalMasqueEnlever(masqueDeplaceSouris*)), this, SLOT(masqueEnlever(masqueDeplaceSouris*)));  // Masque Enlever = Fixe = blanc
 
             xMasque+=largeurMasque;
             gv_AireParcours->scene()->addItem(m_masque);
@@ -545,6 +550,36 @@ void Editeur::remplirGvParcours()
 void Editeur::sauvegarderParcours()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::sauvegarderParcours()";
+    for (int i = 0; i<m_listeMasques.count() ; i++)
+    {
+        qDebug() << trUtf8("masque n° ") << m_listeMasques.at(i)->getNumero()  <<  "Propriete" << m_listeMasques.at(i)->property("Role");
+    }
+}
+
+void Editeur::masqueDepart(masqueDeplaceSouris* masque)
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::masqueDepart()";
+
+    qDebug() << masque->getNumero();
+
+//    this->setColor(QColor(Qt::green));
+//        this->setProperty("Role", "Depart");
+//        this->update();
+}
+
+void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::masqueArrivee()";
+}
+
+void Editeur::masqueParcours(masqueDeplaceSouris *masque)
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::masqueParcours()";
+}
+
+void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::masqueEnlever()";
 }
 
 void Editeur::reinitialiserGvParcours()
@@ -561,6 +596,7 @@ void Editeur::reinitialiserGvParcours()
 void Editeur::on_btnParcours1_clicked()
 {
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours->setWindowTitle("Parcours 1");
     remplirGvParcours();
     gv_AireParcours->show();
 }

@@ -50,6 +50,10 @@ signals:
         void signalCacheMasque();
         void signalReinitialisationMasque();
         void signalSauvegarderParcours();
+        void signalMasqueDepart(masqueDeplaceSouris*);
+        void signalMasqueArrivee();
+        void signalMasqueParcours();
+        void signalMasqueEnlever();
 
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

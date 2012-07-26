@@ -72,6 +72,10 @@ private slots:
 
     void reinitialiserGvParcours();
     void sauvegarderParcours();
+    void masqueDepart(masqueDeplaceSouris *masque);
+    void masqueArrivee(masqueDeplaceSouris *masque);
+    void masqueParcours(masqueDeplaceSouris *masque);
+    void masqueEnlever(masqueDeplaceSouris *masque);
 
 private:
     Ui::Editeur *ui;

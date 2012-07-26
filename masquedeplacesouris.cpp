@@ -107,29 +107,37 @@ void masqueDeplaceSouris::contextMenuEvent(QGraphicsSceneContextMenuEvent *event
 void masqueDeplaceSouris::on_action_Depart()
 {
     qDebug() << "APPUI Menu Depart sur le n° " << this->getNumero();
-    this->setColor(QColor(Qt::green));
-    this->update();
+//    this->setColor(QColor(Qt::green));
+//    this->setProperty("Role", "Depart");
+//    this->update();
+    emit signalMasqueDepart(this);
 }
 
 void masqueDeplaceSouris::on_action_Arrivee()
 {
     qDebug() << "APPUI Menu Arrivee sur le n° " << this->getNumero();
-    this->setColor(QColor(Qt::red));
-    this->update();
+//    this->setColor(QColor(Qt::red));
+//    this->setProperty("Role", "Arrivee");
+//    this->update();
+    emit signalMasqueArrivee();
 }
 
 void masqueDeplaceSouris::on_action_Parcours()
 {
     qDebug() << "APPUI Menu Parcours sur le n° " << this->getNumero();
-    this->setColor(QColor(Qt::black));
-    this->update();
+//    this->setColor(QColor(Qt::black));
+//    this->setProperty("Role", "Chemin");
+//    this->update();
+    emit signalMasqueParcours();
 }
 
 void masqueDeplaceSouris::on_action_Enlever()
 {
     qDebug() << "APPUI Menu Enlever sur le n° " << this->getNumero();
-    this->setColor(QColor(Qt::white));
-    this->update();
+//    this->setColor(QColor(Qt::white));
+//    this->setProperty("Role", "Fixe");
+//    this->update();
+    emit signalMasqueEnlever();
 }
 
 void masqueDeplaceSouris::on_action_Reinitialiser()
