@@ -315,6 +315,31 @@ void ExerciceParcours::slotQuestionEntered()
 //            m_nbMasquesInteractifs++;
 //            if (m_localDebug) qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
 //        }
+
+//        // Choisir le premier masque de départ
+//        int alea = (qrand() % (m_listeMasquesFixes.count()));
+//        m_masqueDepart = m_listeMasquesFixes.takeAt(alea);
+//        m_masqueDepart->setHideOnMouseOver(false);
+//        m_masqueDepart->setColor(QColor(Qt::green));
+//////        qDebug() << "masque depart" << alea;
+//        m_nbMasquesInteractifs++;
+
+//        while (m_nbMasquesInteractifs < opt_nbMasquesChoisis)
+
+//        {
+////            alea ++;
+//            m_masqueParcours = m_listeMasquesFixes.takeAt(alea);
+//            m_masqueParcours->setHideOnMouseOver(false);
+//            m_masqueParcours->setColor(QColor(Qt::black));
+//            m_nbMasquesInteractifs++;
+
+//        }
+
+
+//        qDebug() << m_listeMasquesFixes.count();
+
+
+
     }
     m_exerciceEnCours = true;
 }

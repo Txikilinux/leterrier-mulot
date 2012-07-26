@@ -279,7 +279,6 @@ void ExerciceSurvol::slotInitQuestionEntered()
 
         for (float i=0; i<nbMasquesHauteur;i++)
         {
-
             for (int j =0; j < nbMasquesLargeur;j++)
             {
                 m_masque = new masqueDeplaceSouris();
@@ -298,8 +297,6 @@ void ExerciceSurvol::slotInitQuestionEntered()
         nbMasquesLargeur += 2;
         nbMasquesHauteur += 1;
     }
-
-
 }
 
 /** Choix aléatoire du positionnement des masques interactifs
