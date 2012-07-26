@@ -21,15 +21,21 @@
 
 
 #include "masquedeplacesouris.h"
+#include <QDebug>
+#include <QMenu>
+#include <QGraphicsSceneContextMenuEvent>
 
-masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent) :
+masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     QGraphicsObject(parent)
 {
     //Une taille par défaut de 50x50
     m_taille = QRectF(0,0,50,50);
     m_couleur = QColor(Qt::black);
     m_hideOnMouseOver = true;
+    m_isEditable = false;
+    m_numero = numero;
     setAcceptsHoverEvents(true);
+
 }
 
 void masqueDeplaceSouris::setSize(float width, float height)
@@ -45,6 +51,16 @@ void masqueDeplaceSouris::setColor(QColor couleur)
 void masqueDeplaceSouris::setHideOnMouseOver(bool hide)
 {
     m_hideOnMouseOver = hide;
+}
+
+void masqueDeplaceSouris::setIsEditable(bool isEditable)
+{
+    m_isEditable = isEditable;
+}
+
+int masqueDeplaceSouris::getNumero()
+{
+    return m_numero;
 }
 
 void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -67,5 +83,27 @@ void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
     if(m_hideOnMouseOver) {
         setVisible(false);
         emit signalCacheMasque();
+    }
+}
+
+//void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
+//{
+//    qDebug() << "Je passe sur cette Item";
+//    this->acceptedMouseButtons();
+//    qDebug() << this->getNumero();
+//}
+
+void masqueDeplaceSouris::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+    if (m_isEditable)
+    {
+        QMenu *menu = new QMenu;
+        menu->addAction("Action 1");
+        menu->addAction("Action 2");
+        menu->popup(event->screenPos());
+        qDebug() << this->getNumero();
+
+        connect(menu, SIGNAL(triggered(QAction *)),
+            this, SLOT(triggered(QAction *)));
     }
 }
