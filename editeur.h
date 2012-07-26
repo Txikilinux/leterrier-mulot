@@ -34,6 +34,8 @@
 #include <QLabel>
 #include "abuledufilev1.h"
 #include "visionneuseimage.h"
+#include "masquedeplacesouris.h"
+#include "abuleduetiquettesv1.h"
 
 
 namespace Ui {
@@ -66,6 +68,8 @@ private slots:
     void on_btSelection_clicked();
     void on_btnCreerTheme_clicked();
 
+    void on_btnParcours1_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -89,6 +93,12 @@ private:
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
     bool supprimerDir(const QString& dirPath);
     QStringList parcoursRecursif(QString dossier);
+
+    // Parcours
+    AbulEduEtiquettesV1 *gv_AireParcours;
+    void remplirGvParcours();
+    masqueDeplaceSouris *m_masque;
+
 };
 
 #endif // EDITEUR_H

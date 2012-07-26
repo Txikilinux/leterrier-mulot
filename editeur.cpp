@@ -22,12 +22,13 @@
 #include "editeur.h"
 #include "ui_editeur.h"
 
+
 Editeur::Editeur(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-//    ui->widget->abeSetSource("data");
+    //    ui->widget->abeSetSource("data");
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_localDebug = true;
@@ -62,6 +63,7 @@ Editeur::Editeur(QWidget *parent) :
 
     actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
     m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
+
 }
 
 Editeur::~Editeur()
@@ -296,11 +298,11 @@ void Editeur::on_btnCreerTheme_clicked()
     arborescenceConf = QString("conf");
     cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
 
-//    qDebug() << "destinationIdUnique " << destinationIdUnique;
-//    qDebug() << "arborescenceImage " << arborescenceImage;
-//    qDebug() << "cheminImage " << cheminImage;
-//    qDebug() << "arborescenceConf" << arborescenceConf;
-//    qDebug() << "cheminConf" << cheminConf;
+    //    qDebug() << "destinationIdUnique " << destinationIdUnique;
+    //    qDebug() << "arborescenceImage " << arborescenceImage;
+    //    qDebug() << "cheminImage " << cheminImage;
+    //    qDebug() << "arborescenceConf" << arborescenceConf;
+    //    qDebug() << "cheminConf" << cheminConf;
 
     // Condition de garde si le nom du theme est vide
     if (ui->lineEditNomTheme->text().isEmpty())
@@ -493,3 +495,54 @@ QStringList Editeur::parcoursRecursif(QString dossier)
     }
     return resultat;
 }
+
+void Editeur::remplirGvParcours()
+{
+    int opt_nbMasquesChoisis = 7;
+    int opt_nbMasquesLargeur = 10;
+    int opt_nbMasquesHauteur = 5;
+
+    float largeurMasque = 0.00;
+    float hauteurMasque = 0.00;
+
+    float largeurGv = static_cast<float>(gv_AireParcours->width())-1;
+    float hauteurGv = static_cast<float>(gv_AireParcours->height())-1;
+
+    largeurMasque = largeurGv / opt_nbMasquesLargeur;
+    hauteurMasque = hauteurGv / opt_nbMasquesHauteur;
+
+    int nbMasques = opt_nbMasquesLargeur * opt_nbMasquesHauteur;
+    qreal xMasque = 0.00;
+    qreal yMasque = 0.00;
+
+    qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
+
+    int numeroMasque = 0;
+    for (float i=0; i<opt_nbMasquesHauteur;i++)
+    {
+        for (int j =0; j < opt_nbMasquesLargeur;j++)
+        {
+            m_masque = new masqueDeplaceSouris(0, numeroMasque);
+            m_masque->setSize(largeurMasque, hauteurMasque);
+            m_masque->setPos(xMasque, yMasque);
+            m_masque->setColor(QColor::fromRgb(255,255,255));
+            m_masque->setHideOnMouseOver(false);
+            m_masque->setIsEditable(true);
+
+            xMasque+=largeurMasque;
+            gv_AireParcours->scene()->addItem(m_masque);
+            //            m_listeMasquesFixes << m_masque;
+            numeroMasque++;
+        }
+        xMasque = 0;
+        yMasque += hauteurMasque;
+    }
+}
+
+void Editeur::on_btnParcours1_clicked()
+{
+    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    remplirGvParcours();
+    gv_AireParcours->show();
+}
+
