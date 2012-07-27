@@ -498,7 +498,7 @@ QStringList Editeur::parcoursRecursif(QString dossier)
 
 void Editeur::remplirGvParcours()
 {
-    int opt_nbMasquesChoisis = 7;
+//    int opt_nbMasquesChoisis = 7;
     int opt_nbMasquesLargeur = 10;
     int opt_nbMasquesHauteur = 5;
 
@@ -531,8 +531,11 @@ void Editeur::remplirGvParcours()
             m_masque->setProperty("Role", "Fixe");
 
             connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours()));                       // Reinitialisation
-            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));                              // Sauvegarde du parcours
-            connect(m_masque,SIGNAL(signalMasqueDepart(masqueDeplaceSouris*)), this, SLOT(masqueDepart(masqueDeplaceSouris*)));     // Masque de depart = vert
+            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));  // Sauvegarde du parcours
+            if(!controlePropertyDepart(m_listeMasques))
+            {
+                connect(m_masque,SIGNAL(signalMasqueDepart(masqueDeplaceSouris*)), this, SLOT(masqueDepart(masqueDeplaceSouris*)));     // Masque de depart = vert
+            }
             connect(m_masque, SIGNAL(signalMasqueArrivee(masqueDeplaceSouris*)), this, SLOT(masqueArrivee(masqueDeplaceSouris*)));  // Masque Arrivee = rouge
             connect(m_masque, SIGNAL(signalMasqueParcours(masqueDeplaceSouris*)), this, SLOT(masqueParcours(masqueDeplaceSouris*)));// Masque Pärcours = noir
             connect(m_masque, SIGNAL(signalMasqueEnlever(masqueDeplaceSouris*)), this, SLOT(masqueEnlever(masqueDeplaceSouris*)));  // Masque Enlever = Fixe = blanc
@@ -547,24 +550,58 @@ void Editeur::remplirGvParcours()
     }
 }
 
-void Editeur::sauvegarderParcours()
+void Editeur::on_btnParcours1_clicked()
 {
-    if (m_localDebug) qDebug() << "##########################  Editeur::sauvegarderParcours()";
-    for (int i = 0; i<m_listeMasques.count() ; i++)
-    {
-        qDebug() << trUtf8("masque n° ") << m_listeMasques.at(i)->getNumero()  <<  "Propriete" << m_listeMasques.at(i)->property("Role");
-    }
+    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours->setWindowTitle("Parcours 1");
+//    gv_AireParcours->setGeometry(0,0,800,600);
+
+    //On centre la fenetre sur l'ecran de l'utilisateur
+    QDesktopWidget *widget = QApplication::desktop();
+    int desktop_width = widget->width();
+    int desktop_height = widget->height();
+    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
+
+    remplirGvParcours();
+    gv_AireParcours->show();
 }
 
+/** Definit le masque comme masque de départ
+  */
 void Editeur::masqueDepart(masqueDeplaceSouris* masque)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::masqueDepart()";
 
     qDebug() << masque->getNumero();
 
-//    this->setColor(QColor(Qt::green));
-//        this->setProperty("Role", "Depart");
-//        this->update();
+    if (!controlePropertyDepart(m_listeMasques))
+    {
+        masque->setColor(QColor(Qt::green));
+        masque->setProperty("Role", "Depart");
+        masque->setMenuDepartEnabled(false);
+        foreach(masqueDeplaceSouris* masque,m_listeMasques)
+        {
+            masque->setMenuDepartEnabled(false);
+        }
+        masque->update();
+    }
+}
+
+/** Controle si un masque depart est deja present
+  */
+bool Editeur::controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques)
+{
+    bool dejaDepart = false;
+    int i = 0;
+    while (i < maListeMasques.count() && !dejaDepart)
+    {
+        if (maListeMasques.at(i)->property("Role") == QString("Depart"))
+        {
+            dejaDepart = true;
+        }
+        i++;
+    }
+    return dejaDepart;
 }
 
 void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
@@ -585,19 +622,44 @@ void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
 void Editeur::reinitialiserGvParcours()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::reinitialiserGvParcours()";
+
     for (int i = 0; i < m_listeMasques.count(); i++)
     {
         m_listeMasques.at(i)->setColor(QColor(Qt::white));
+        m_listeMasques.at(i)->setProperty("Role", "Fixe");
         m_listeMasques.at(i)->update();
+        m_listeMasques.at(i)->setMenuDepartEnabled(true);
+        qDebug() << m_listeMasques.at(i)->getNumero() <<" "<<m_listeMasques.at(i)->property("Role");
     }
     gv_AireParcours->update();
 }
 
-void Editeur::on_btnParcours1_clicked()
+void Editeur::sauvegarderParcours()
 {
-    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
-    gv_AireParcours->setWindowTitle("Parcours 1");
-    remplirGvParcours();
-    gv_AireParcours->show();
+    if (m_localDebug) qDebug() << "##########################  Editeur::sauvegarderParcours()";
+    for (int i = 0; i<m_listeMasques.count() ; i++)
+    {
+        qDebug() << trUtf8("masque n° ") << m_listeMasques.at(i)->getNumero()  <<  "Propriete" << m_listeMasques.at(i)->property("Role");
+    }
 }
 
+
+bool Editeur::controleVoisinMasque(masqueDeplaceSouris *masque)
+{
+//    int numeroMasque = masque->getNumero();
+
+//    foreach (masqueDeplaceSouris monMasque, m_listeMasques) {
+
+//    }
+
+//    foreach(QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+//        if(fileInfo.isDir()) {
+//            //C'est ici que le parcours est récursif
+//            resultat << parcoursRecursif(fileInfo.absoluteFilePath());
+//        }
+//        else {
+//            resultat << fileInfo.absoluteFilePath();
+//        }
+//    }
+
+}

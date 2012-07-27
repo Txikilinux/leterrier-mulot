@@ -36,6 +36,7 @@ public:
     void setHideOnMouseOver(bool hide);
     void setIsEditable(bool isEditable);
     int getNumero();
+    void setMenuDepartEnabled(bool yesNo);
 
 private:
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -45,6 +46,7 @@ private:
         bool   m_hideOnMouseOver;
         bool   m_isEditable;
         int m_numero;
+        QMenu *m_menuMasque;
 
 signals:
         void signalCacheMasque();

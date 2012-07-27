@@ -32,6 +32,8 @@
 #include <QMessageBox>
 #include <QIcon>
 #include <QLabel>
+#include <QDesktopWidget>
+
 #include "abuledufilev1.h"
 #include "visionneuseimage.h"
 #include "masquedeplacesouris.h"
@@ -68,6 +70,7 @@ private slots:
     void on_btSelection_clicked();
     void on_btnCreerTheme_clicked();
 
+    // Edition Parcours
     void on_btnParcours1_clicked();
 
     void reinitialiserGvParcours();
@@ -76,6 +79,8 @@ private slots:
     void masqueArrivee(masqueDeplaceSouris *masque);
     void masqueParcours(masqueDeplaceSouris *masque);
     void masqueEnlever(masqueDeplaceSouris *masque);
+    bool controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques);
+
 
 private:
     Ui::Editeur *ui;
@@ -102,10 +107,13 @@ private:
     QStringList parcoursRecursif(QString dossier);
 
     // Parcours
-    AbulEduEtiquettesV1 *gv_AireParcours;
-    void remplirGvParcours();
     masqueDeplaceSouris *m_masque;
     QList<masqueDeplaceSouris *> m_listeMasques;
+    AbulEduEtiquettesV1 *gv_AireParcours;
+    void remplirGvParcours();
+    bool controleVoisinMasque(masqueDeplaceSouris *masque);
+
+
 
 };
 
