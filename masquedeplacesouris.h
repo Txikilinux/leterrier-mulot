@@ -37,6 +37,7 @@ public:
     void setIsEditable(bool isEditable);
     int getNumero();
     void setMenuDepartEnabled(bool yesNo);
+    void setMenuArriveeEnabled(bool yesNo);
 
 private:
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -53,7 +54,7 @@ signals:
         void signalReinitialisationMasque();
         void signalSauvegarderParcours();
         void signalMasqueDepart(masqueDeplaceSouris*);
-        void signalMasqueArrivee();
+        void signalMasqueArrivee(masqueDeplaceSouris*);
         void signalMasqueParcours();
         void signalMasqueEnlever();
 

@@ -45,8 +45,7 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_menuMasque->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
     m_menuMasque->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
 
-    connect(m_menuMasque, SIGNAL(triggered(QAction *)),
-            this, SLOT(triggered(QAction *)));
+    connect(m_menuMasque, SIGNAL(triggered(QAction *)), this, SLOT(triggered(QAction *)));
 }
 
 void masqueDeplaceSouris::setSize(float width, float height)
@@ -81,7 +80,6 @@ void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->setBrush(QBrush(m_couleur));
     //    painter->setPen(Qt::NoPen);
     painter->drawRect(m_taille);
-
 }
 
 QRectF masqueDeplaceSouris::boundingRect() const
@@ -112,7 +110,7 @@ void masqueDeplaceSouris::on_action_Depart()
 
 void masqueDeplaceSouris::on_action_Arrivee()
 {
-    emit signalMasqueArrivee();
+    emit signalMasqueArrivee(this);
 }
 
 void masqueDeplaceSouris::on_action_Parcours()
@@ -135,20 +133,39 @@ void masqueDeplaceSouris::on_action_Sauvegarder()
     emit signalSauvegarderParcours();
 }
 
-/** Permet d'activer ou de désactiver le l'entrée "Départ" du menu du masque
+/** Permet d'activer ou de désactiver l'entrée "Départ" du menu du masque
   */
 void masqueDeplaceSouris::setMenuDepartEnabled(bool yesNo)
 {
-    // Chercher l'action Depart et la desactiver
+    // Chercher l'action Depart
     for (int i =0; i < m_menuMasque->actions().count(); i++)
     {
-        if (m_menuMasque->actions().at(i)->iconText() == "Depart")
+        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Depart"))
         {
-            if(!yesNo)
+            if(!yesNo) // si false = desactivation
             {
                 m_menuMasque->actions().at(i)->setEnabled(false);
             }
-            else
+            else  // si true = activation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(true);
+            }
+        }
+    }
+}
+
+void masqueDeplaceSouris::setMenuArriveeEnabled(bool yesNo)
+{
+    // Chercher l'action Arrivee
+    for (int i =0; i < m_menuMasque->actions().count(); i++)
+    {
+        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Arrivée"))
+        {
+            if(!yesNo) // si false = desactivation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(false);
+            }
+            else // si true = activation
             {
                 m_menuMasque->actions().at(i)->setEnabled(true);
             }

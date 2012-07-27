@@ -123,7 +123,7 @@ void Editeur::on_btnImporterDossierImage_clicked()
     {
         if (m_listeDossiers.contains(m_dir->absolutePath()))
         {
-            qDebug() << "Ce dossier est déjà présent";
+            qDebug() << trUtf8("Ce dossier est déjà présent");
         }
         else
         {
@@ -528,7 +528,7 @@ void Editeur::remplirGvParcours()
             m_masque->setColor(QColor::fromRgb(255,255,255));
             m_masque->setHideOnMouseOver(false);
             m_masque->setIsEditable(true);
-            m_masque->setProperty("Role", "Fixe");
+            m_masque->setProperty("Role", trUtf8("Fixe"));
 
             connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours()));                       // Reinitialisation
             connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));  // Sauvegarde du parcours
@@ -553,9 +553,8 @@ void Editeur::remplirGvParcours()
 void Editeur::on_btnParcours1_clicked()
 {
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
-    gv_AireParcours->setWindowTitle("Parcours 1");
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
 //    gv_AireParcours->setGeometry(0,0,800,600);
-
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
@@ -577,7 +576,7 @@ void Editeur::masqueDepart(masqueDeplaceSouris* masque)
     if (!controlePropertyDepart(m_listeMasques))
     {
         masque->setColor(QColor(Qt::green));
-        masque->setProperty("Role", "Depart");
+        masque->setProperty("Role", trUtf8("Depart"));
         masque->setMenuDepartEnabled(false);
         foreach(masqueDeplaceSouris* masque,m_listeMasques)
         {
@@ -595,7 +594,7 @@ bool Editeur::controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques
     int i = 0;
     while (i < maListeMasques.count() && !dejaDepart)
     {
-        if (maListeMasques.at(i)->property("Role") == QString("Depart"))
+        if (maListeMasques.at(i)->property("Role") == trUtf8("Depart"))
         {
             dejaDepart = true;
         }
@@ -607,6 +606,35 @@ bool Editeur::controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques
 void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::masqueArrivee()";
+    qDebug() << masque->getNumero();
+
+    if (!controlePropertyArrivee(m_listeMasques))
+    {
+        masque->setColor(QColor(Qt::red));
+        masque->setProperty("Role", trUtf8("Arrivée"));
+        masque->setMenuArriveeEnabled(false);
+
+        foreach(masqueDeplaceSouris* masque,m_listeMasques)
+        {
+            masque->setMenuArriveeEnabled(false);
+        }
+        masque->update();
+    }
+}
+
+bool Editeur::controlePropertyArrivee(QList<masqueDeplaceSouris *> maListeMasques)
+{
+    bool dejaArrivee = false;
+    int i = 0;
+    while (i < maListeMasques.count() && !dejaArrivee)
+    {
+        if (maListeMasques.at(i)->property("Role") == trUtf8("Arrivée"))
+        {
+            dejaArrivee = true;
+        }
+        i++;
+    }
+    return dejaArrivee;
 }
 
 void Editeur::masqueParcours(masqueDeplaceSouris *masque)
@@ -626,9 +654,10 @@ void Editeur::reinitialiserGvParcours()
     for (int i = 0; i < m_listeMasques.count(); i++)
     {
         m_listeMasques.at(i)->setColor(QColor(Qt::white));
-        m_listeMasques.at(i)->setProperty("Role", "Fixe");
+        m_listeMasques.at(i)->setProperty("Role", trUtf8("Fixe"));
         m_listeMasques.at(i)->update();
         m_listeMasques.at(i)->setMenuDepartEnabled(true);
+        m_listeMasques.at(i)->setMenuArriveeEnabled(true);
         qDebug() << m_listeMasques.at(i)->getNumero() <<" "<<m_listeMasques.at(i)->property("Role");
     }
     gv_AireParcours->update();

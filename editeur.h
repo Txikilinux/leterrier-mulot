@@ -80,6 +80,7 @@ private slots:
     void masqueParcours(masqueDeplaceSouris *masque);
     void masqueEnlever(masqueDeplaceSouris *masque);
     bool controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques);
+    bool controlePropertyArrivee(QList<masqueDeplaceSouris *> maListeMasques);
 
 
 private:
