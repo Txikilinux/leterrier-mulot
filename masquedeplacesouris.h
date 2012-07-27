@@ -38,6 +38,11 @@ public:
     int getNumero();
     void setMenuDepartEnabled(bool yesNo);
     void setMenuArriveeEnabled(bool yesNo);
+    void setMenuParcoursEnabled(bool yesNo);
+    void setMenuSauvegarderEnabled(bool yesNo);
+    void setMenuEnleverEnabled(bool yesNo);
+
+
 
 private:
         void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -55,8 +60,8 @@ signals:
         void signalSauvegarderParcours();
         void signalMasqueDepart(masqueDeplaceSouris*);
         void signalMasqueArrivee(masqueDeplaceSouris*);
-        void signalMasqueParcours();
-        void signalMasqueEnlever();
+        void signalMasqueParcours(masqueDeplaceSouris*);
+        void signalMasqueEnlever(masqueDeplaceSouris*);
 
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

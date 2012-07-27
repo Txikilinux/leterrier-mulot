@@ -64,6 +64,15 @@ Editeur::Editeur(QWidget *parent) :
     actionsMenuListWidgetSelection << /*a_nouveau << a_renommer <<*/ a_supprimer2;
     m_menuListWidgetSelection->addActions(actionsMenuListWidgetSelection);
 
+    opt_nbMasquesChoisisParcours = 0;
+    opt_nbMasquesLargeur = 0;
+    opt_nbMasquesHauteur = 0;
+    m_numeroParcours = 0;
+
+    m_listeMasques.clear();
+    m_listeMasquesParcours.clear();
+    m_parametresParcours1.clear();
+
 }
 
 Editeur::~Editeur()
@@ -498,9 +507,9 @@ QStringList Editeur::parcoursRecursif(QString dossier)
 
 void Editeur::remplirGvParcours()
 {
-//    int opt_nbMasquesChoisis = 7;
-    int opt_nbMasquesLargeur = 10;
-    int opt_nbMasquesHauteur = 5;
+    opt_nbMasquesChoisisParcours = ui->spinBoxParcoursMasque->value();
+    opt_nbMasquesLargeur = ui->spinBoxParcoursMasquesLargeur->value();
+    opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
 
     float largeurMasque = 0.00;
     float hauteurMasque = 0.00;
@@ -531,11 +540,8 @@ void Editeur::remplirGvParcours()
             m_masque->setProperty("Role", trUtf8("Fixe"));
 
             connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours()));                       // Reinitialisation
-            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));  // Sauvegarde du parcours
-            if(!controlePropertyDepart(m_listeMasques))
-            {
-                connect(m_masque,SIGNAL(signalMasqueDepart(masqueDeplaceSouris*)), this, SLOT(masqueDepart(masqueDeplaceSouris*)));     // Masque de depart = vert
-            }
+            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));                              // Sauvegarde du parcours
+            connect(m_masque,SIGNAL(signalMasqueDepart(masqueDeplaceSouris*)), this, SLOT(masqueDepart(masqueDeplaceSouris*)));     // Masque de depart = vert
             connect(m_masque, SIGNAL(signalMasqueArrivee(masqueDeplaceSouris*)), this, SLOT(masqueArrivee(masqueDeplaceSouris*)));  // Masque Arrivee = rouge
             connect(m_masque, SIGNAL(signalMasqueParcours(masqueDeplaceSouris*)), this, SLOT(masqueParcours(masqueDeplaceSouris*)));// Masque Pärcours = noir
             connect(m_masque, SIGNAL(signalMasqueEnlever(masqueDeplaceSouris*)), this, SLOT(masqueEnlever(masqueDeplaceSouris*)));  // Masque Enlever = Fixe = blanc
@@ -552,9 +558,10 @@ void Editeur::remplirGvParcours()
 
 void Editeur::on_btnParcours1_clicked()
 {
+    m_numeroParcours = 1;
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
-//    gv_AireParcours->setGeometry(0,0,800,600);
+    //    gv_AireParcours->setGeometry(0,0,800,600);
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
@@ -563,6 +570,15 @@ void Editeur::on_btnParcours1_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
+
+    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
+    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+    {
+        var_masque->setMenuArriveeEnabled(false);
+        var_masque->setMenuParcoursEnabled(false);
+        var_masque->setMenuSauvegarderEnabled(false);
+        var_masque->setMenuEnleverEnabled(false);
+    }
 }
 
 /** Definit le masque comme masque de départ
@@ -571,110 +587,193 @@ void Editeur::masqueDepart(masqueDeplaceSouris* masque)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::masqueDepart()";
 
-    qDebug() << masque->getNumero();
-
-    if (!controlePropertyDepart(m_listeMasques))
+    if (!m_listeMasquesParcours.isEmpty())
+    {
+        qDebug() << "la listeMasquesParcours contient qqchose !, impossible de mettre un départ";
+    }
+    else // ma liste est vide, je mets ce masque en depart et je le range ds listeMasquesParcours
     {
         masque->setColor(QColor(Qt::green));
         masque->setProperty("Role", trUtf8("Depart"));
         masque->setMenuDepartEnabled(false);
-        foreach(masqueDeplaceSouris* masque,m_listeMasques)
-        {
-            masque->setMenuDepartEnabled(false);
-        }
+        masque->setMenuEnleverEnabled(true); // on peut enlever que les masques ayant un role
         masque->update();
+        m_listeMasquesParcours << masque;
+
+        // et je desactive le menu Depart pour les autres & j'active le menu parcours, enlever
+        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+        {
+            var_masque->setMenuDepartEnabled(false);
+            var_masque->setMenuParcoursEnabled(true);
+        }
     }
 }
 
-/** Controle si un masque depart est deja present
+/** Definit le masque comme masque de parcours
   */
-bool Editeur::controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques)
-{
-    bool dejaDepart = false;
-    int i = 0;
-    while (i < maListeMasques.count() && !dejaDepart)
-    {
-        if (maListeMasques.at(i)->property("Role") == trUtf8("Depart"))
-        {
-            dejaDepart = true;
-        }
-        i++;
-    }
-    return dejaDepart;
-}
-
-void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
-{
-    if (m_localDebug) qDebug() << "##########################  Editeur::masqueArrivee()";
-    qDebug() << masque->getNumero();
-
-    if (!controlePropertyArrivee(m_listeMasques))
-    {
-        masque->setColor(QColor(Qt::red));
-        masque->setProperty("Role", trUtf8("Arrivée"));
-        masque->setMenuArriveeEnabled(false);
-
-        foreach(masqueDeplaceSouris* masque,m_listeMasques)
-        {
-            masque->setMenuArriveeEnabled(false);
-        }
-        masque->update();
-    }
-}
-
-bool Editeur::controlePropertyArrivee(QList<masqueDeplaceSouris *> maListeMasques)
-{
-    bool dejaArrivee = false;
-    int i = 0;
-    while (i < maListeMasques.count() && !dejaArrivee)
-    {
-        if (maListeMasques.at(i)->property("Role") == trUtf8("Arrivée"))
-        {
-            dejaArrivee = true;
-        }
-        i++;
-    }
-    return dejaArrivee;
-}
-
 void Editeur::masqueParcours(masqueDeplaceSouris *masque)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::masqueParcours()";
+
+    // Controle de la listeMasquesParcours et verifier qu'il y a un masque de départ
+    foreach(masqueDeplaceSouris* var_masque, m_listeMasquesParcours)
+    {
+        if (var_masque->property("Role") == trUtf8("Depart"))
+            // ok on peut creer des masques de parcours
+            // dans la limite du nbre de masques choisis -2 (depart & arrivee)
+        {
+            if(m_listeMasquesParcours.count() < (opt_nbMasquesChoisisParcours-1)) // -1 car dans ma liste, à ce moment j'ai deja un masque (depart)
+            {
+                masque->setColor(QColor(Qt::black));
+                masque->setProperty("Role", trUtf8("Parcours"));
+                masque->setMenuParcoursEnabled(false);
+                masque->setMenuEnleverEnabled(true); // on peut enlever que les masques ayant un role
+                masque->update();
+                m_listeMasquesParcours << masque;
+            }
+
+        }
+    }
+    if (m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
+    {
+        qDebug() << "Masque Parcours OK, mise en place du menu Arrivee";
+        // Ici je desactive le menu parcours pour tous les masques & j'active le menu arrivee
+        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+        {
+            var_masque->setMenuParcoursEnabled(false);
+            var_masque->setMenuArriveeEnabled(true);
+        }
+    }
+}
+
+/** Definit le masque comme masque de parcours
+  */
+void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
+{
+    if (m_localDebug) qDebug() << "##########################  Editeur::masqueArrivee()";
+
+    //controle de la listeMAsquesParcours et verifier qu'elle est égale au nb de masques choisis -1
+    if (m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
+    {
+        //OK je peux
+        masque->setColor(QColor(Qt::red));
+        masque->setProperty("Role", trUtf8("Arrivee"));
+        masque->setMenuArriveeEnabled(false);
+        masque->setMenuEnleverEnabled(true); // on peut enlever que les masques ayant un role
+        masque->update();
+        m_listeMasquesParcours << masque;
+
+        // m_listeMasquesParcours est égale au nb de masque choisi
+        // je desactive le menu Arrivee
+        // et j'active le menu sauvegarde
+        if (m_listeMasquesParcours.count() == opt_nbMasquesChoisisParcours)
+        {
+            foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+            {
+                var_masque->setMenuArriveeEnabled(false);
+                var_masque->setMenuSauvegarderEnabled(true);
+            }
+        }
+    }
 }
 
 void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::masqueEnlever()";
+
+    qDebug() << "ma liste avant";
+    for (int i = 0; i < m_listeMasquesParcours.count(); i++)
+    {
+        qDebug() << m_listeMasquesParcours.at(i)->property("Role");
+    }
+        if (masque->property("Role") == "Depart")
+        {
+            qDebug() << "Masque de Depart";
+        }
+        else if (masque->property("Role") == trUtf8("Arrivee"))
+        {
+            qDebug() << "Masque d'Arrivee";
+        }
+        else if (masque->property("Role") == "Parcours")
+        {
+            qDebug() << "Masque de Parcours";
+            // Remise à défaut
+            masque->setProperty("Role", trUtf8("Fixe"));
+            masque->setColor(QColor(Qt::white));
+
+
+            // Reactiver le menu Parcours
+            masque->setMenuParcoursEnabled(true);
+
+            //enlever ce masque de la m_listeMasquesParcours
+            m_listeMasquesParcours.removeOne(masque);
+            masque->update();
+        }
+        qDebug() << "ma liste après";
+        for (int i = 0; i < m_listeMasquesParcours.count(); i++)
+        {
+            qDebug() << m_listeMasquesParcours.at(i)->property("Role");
+        }
 }
 
 void Editeur::reinitialiserGvParcours()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::reinitialiserGvParcours()";
 
+    // Remettre tout mes masques d'origine !
     for (int i = 0; i < m_listeMasques.count(); i++)
     {
         m_listeMasques.at(i)->setColor(QColor(Qt::white));
         m_listeMasques.at(i)->setProperty("Role", trUtf8("Fixe"));
-        m_listeMasques.at(i)->update();
+
+        // Reactiver que le menu depart
         m_listeMasques.at(i)->setMenuDepartEnabled(true);
-        m_listeMasques.at(i)->setMenuArriveeEnabled(true);
+        m_listeMasques.at(i)->setMenuArriveeEnabled(false);
+        m_listeMasques.at(i)->setMenuParcoursEnabled(false);
+        m_listeMasques.at(i)->setMenuSauvegarderEnabled(false);
+        m_listeMasques.at(i)->setMenuEnleverEnabled(false);
+
+        m_listeMasques.at(i)->update();
         qDebug() << m_listeMasques.at(i)->getNumero() <<" "<<m_listeMasques.at(i)->property("Role");
     }
+    // vider ma listeMasquesParcours
+    m_listeMasquesParcours.clear();
     gv_AireParcours->update();
 }
 
 void Editeur::sauvegarderParcours()
 {
+    qDebug() << "Numero de parcours :" << m_numeroParcours;
     if (m_localDebug) qDebug() << "##########################  Editeur::sauvegarderParcours()";
-    for (int i = 0; i<m_listeMasques.count() ; i++)
+
+    switch (m_numeroParcours)
     {
-        qDebug() << trUtf8("masque n° ") << m_listeMasques.at(i)->getNumero()  <<  "Propriete" << m_listeMasques.at(i)->property("Role");
+        case 1: // c'est le parcours 1
+            // Recuperer toutes les variables et les inserer dans m_parametreParcours1
+            qDebug() << m_numeroParcours;
+            m_parametresParcours1.insert("NumeroParcours", m_numeroParcours);
+            m_parametresParcours1.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
+            m_parametresParcours1.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
+            m_parametresParcours1.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
+            m_parametresParcours1.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
+            m_parametresParcours1.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
+            break;
+    default:
+        return;
+
     }
+
+    for (int i = 0; i < m_listeMasquesParcours.count();i++)    {
+        qDebug() << m_listeMasquesParcours.at(i)->property("Role") << " " << m_listeMasquesParcours.at(i)->getNumero();
+    }
+
+    qDebug() << m_parametresParcours1;
+
 }
 
 
-bool Editeur::controleVoisinMasque(masqueDeplaceSouris *masque)
-{
+//bool Editeur::controleVoisinMasque(masqueDeplaceSouris *masque)
+//{
 //    int numeroMasque = masque->getNumero();
 
 //    foreach (masqueDeplaceSouris monMasque, m_listeMasques) {
@@ -691,4 +790,4 @@ bool Editeur::controleVoisinMasque(masqueDeplaceSouris *masque)
 //        }
 //    }
 
-}
+//}

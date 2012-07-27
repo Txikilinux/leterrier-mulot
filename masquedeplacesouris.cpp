@@ -115,12 +115,12 @@ void masqueDeplaceSouris::on_action_Arrivee()
 
 void masqueDeplaceSouris::on_action_Parcours()
 {
-    emit signalMasqueParcours();
+    emit signalMasqueParcours(this);
 }
 
 void masqueDeplaceSouris::on_action_Enlever()
 {
-    emit signalMasqueEnlever();
+    emit signalMasqueEnlever(this);
 }
 
 void masqueDeplaceSouris::on_action_Reinitialiser()
@@ -154,12 +154,77 @@ void masqueDeplaceSouris::setMenuDepartEnabled(bool yesNo)
     }
 }
 
+/** Permet d'activer ou de désactiver l'entrée "Arrivée" du menu du masque
+  */
 void masqueDeplaceSouris::setMenuArriveeEnabled(bool yesNo)
 {
     // Chercher l'action Arrivee
     for (int i =0; i < m_menuMasque->actions().count(); i++)
     {
         if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Arrivée"))
+        {
+            if(!yesNo) // si false = desactivation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(false);
+            }
+            else // si true = activation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(true);
+            }
+        }
+    }
+}
+
+/** Permet d'activer ou de désactiver l'entrée "Parcours" du menu du masque
+  */
+void masqueDeplaceSouris::setMenuParcoursEnabled(bool yesNo)
+{
+    // Chercher l'action Parcours
+    for (int i =0; i < m_menuMasque->actions().count(); i++)
+    {
+        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Parcours"))
+        {
+            if(!yesNo) // si false = desactivation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(false);
+            }
+            else // si true = activation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(true);
+            }
+        }
+    }
+}
+
+/** Permet d'activer ou de désactiver l'entrée "Sauvegarder" du menu du masque
+  */
+void masqueDeplaceSouris::setMenuSauvegarderEnabled(bool yesNo)
+{
+    // Chercher l'action Sauvegarder
+    for (int i =0; i < m_menuMasque->actions().count(); i++)
+    {
+        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Sauvegarder"))
+        {
+            if(!yesNo) // si false = desactivation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(false);
+            }
+            else // si true = activation
+            {
+                m_menuMasque->actions().at(i)->setEnabled(true);
+            }
+        }
+    }
+}
+
+/** Permet d'activer ou de désactiver l'entrée "Enlever" du menu du masque
+  */
+void masqueDeplaceSouris::setMenuEnleverEnabled(bool yesNo)
+{
+    // Chercher l'action Enlever
+    for (int i =0; i < m_menuMasque->actions().count(); i++)
+    {
+        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Enlever"))
         {
             if(!yesNo) // si false = desactivation
             {

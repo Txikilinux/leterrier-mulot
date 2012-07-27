@@ -79,9 +79,6 @@ private slots:
     void masqueArrivee(masqueDeplaceSouris *masque);
     void masqueParcours(masqueDeplaceSouris *masque);
     void masqueEnlever(masqueDeplaceSouris *masque);
-    bool controlePropertyDepart(QList<masqueDeplaceSouris *> maListeMasques);
-    bool controlePropertyArrivee(QList<masqueDeplaceSouris *> maListeMasques);
-
 
 private:
     Ui::Editeur *ui;
@@ -110,9 +107,17 @@ private:
     // Parcours
     masqueDeplaceSouris *m_masque;
     QList<masqueDeplaceSouris *> m_listeMasques;
+    QList<masqueDeplaceSouris *> m_listeMasquesParcours;
     AbulEduEtiquettesV1 *gv_AireParcours;
     void remplirGvParcours();
     bool controleVoisinMasque(masqueDeplaceSouris *masque);
+    int opt_nbMasquesChoisisParcours;
+    int opt_nbMasquesLargeur;
+    int opt_nbMasquesHauteur;
+    int m_numeroParcours;
+//    QStringList m_parametreParcours1;
+    QMap<QString, QVariant> m_parametresParcours1;
+    //    int m_nbMasqueParcours; // Pour le menu parcours (desactiver qd on a assez de masques)
 
 
 
