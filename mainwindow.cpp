@@ -82,7 +82,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotDemo()
 {
-    qDebug() << " On passe en mode démo ...";
+//    qDebug() << " On passe en mode démo ...";
 }
 
 void MainWindow::abeLanceExo(int numero)
