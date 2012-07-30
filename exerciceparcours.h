@@ -62,24 +62,31 @@ private:
     int m_nbMasquesInteractifs;         // = à 7
     QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
 
-//    QPair<int, int> plusPetiteDivision(int monChiffre); // Pour le choix du découpage de l'image par rapport au nb de masques interactifs choisis
+    //    QPair<int, int> plusPetiteDivision(int monChiffre); // Pour le choix du découpage de l'image par rapport au nb de masques interactifs choisis
 
 
     QList<masqueDeplaceSouris *> m_listeMasquesFixes;
-        masqueDeplaceSouris *m_masqueDepart;
-        masqueDeplaceSouris *m_masqueArrivee;
-        masqueDeplaceSouris *m_masqueParcours;
-        masqueDeplaceSouris *m_masque;
-        QSize m_taille;
+    QList<masqueDeplaceSouris *> m_listeMasquesParcours;
+    masqueDeplaceSouris *m_masqueDepart;
+    masqueDeplaceSouris *m_masqueArrivee;
+    masqueDeplaceSouris *m_masqueParcours;
+    masqueDeplaceSouris *m_masque;
+    QSize m_taille;
+
+    QList<int> positionMasquesParcours1;
+    QList<int> positionMasquesParcours2;
+    QList<int> positionMasquesParcours3;
+    QList<int> positionMasquesParcours4;
+    QList<int> positionMasquesParcours5;
 
     // Chronometre
-//    QTime *m_chronometre;
-//        float m_tempsQuestion1;
-//        float m_tempsQuestion2;
-//        float m_tempsQuestion3;
-//        float m_tempsQuestion4;
-//        float m_tempsQuestion5;
-//        int m_tempsTotal;
+    //    QTime *m_chronometre;
+    //        float m_tempsQuestion1;
+    //        float m_tempsQuestion2;
+    //        float m_tempsQuestion3;
+    //        float m_tempsQuestion4;
+    //        float m_tempsQuestion5;
+    //        int m_tempsTotal;
 
     QTimer *m_timer;
     bool onPeutMettreEnPause;
@@ -90,7 +97,7 @@ private:
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();
     void chargerOption();
-//    bool eventFilter(QObject *obj, QEvent *ev);
+    //    bool eventFilter(QObject *obj, QEvent *ev);
 
 private slots:
     void slotSequenceEntered();
@@ -99,20 +106,20 @@ private slots:
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
     void slotQuestionEntered();
-//    void slotFinQuestionEntered();
-//    void slotFinVerificationQuestionEntered();
-//    void slotAfficheVerificationQuestionEntered();
+    //    void slotFinQuestionEntered();
+    //    void slotFinVerificationQuestionEntered();
+    //    void slotAfficheVerificationQuestionEntered();
     //    void slotVerificationQuestionEntered();
     //    void slotQuestionExited();
-//    void slotBilanExerciceEntered();
+    //    void slotBilanExerciceEntered();
     //    void slotBilanSequenceEntered();
     //    void slotBilanSequenceExited();
     void slotQuitter();
 
     void setDimensionsWidgets();
 
-//    // ExerciceSurvol
-//    void slotCacheMasque();
+
+    void slotCacheMasque();
     void slotAppuiAutoSuivant();
     void slotAppuiAutoVerifier();
 

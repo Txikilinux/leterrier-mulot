@@ -406,7 +406,7 @@ void Editeur::on_btnCreerTheme_clicked()
          i.next();
          parametres.setValue("Parcours1/"+ i.key(), i.value());
      }
-     /// OK, reste que les 4 autres apres test de récupération dans la classe Parcours
+     /// 4 autres Parcours
 
     //------------------------ Création du .abe
     //--------------------------------------------------------
@@ -913,7 +913,7 @@ void Editeur::sauvegarderParcours()
     {
     case 1: // c'est le parcours 1
         // Recuperer toutes les variables et les inserer dans m_parametreParcours1
-        m_parametresParcours1.insert("NumeroParcours", m_numeroParcours);
+//        m_parametresParcours1.insert("NumeroParcours", m_numeroParcours);
 //        m_parametresParcours1.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
 //        m_parametresParcours1.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
 //        m_parametresParcours1.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());

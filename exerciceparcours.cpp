@@ -22,17 +22,22 @@ ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     // Instanciation des variables membres
     m_listeImage.clear();
     m_listeFichiers.clear();
-//    m_listeMasquesFixes.clear();
+    m_listeMasquesFixes.clear();
+    m_listeMasquesParcours.clear();
     m_nbImage = 0;
     m_nbMasquesInteractifs = 0;
     opt_nbMasquesLargeur = 0;
     opt_nbMasquesHauteur = 0;
     onPeutMettreEnPause = false;
+    positionMasquesParcours1.clear();
+    positionMasquesParcours2.clear();
+    positionMasquesParcours3.clear();
+    positionMasquesParcours4.clear();
+    positionMasquesParcours5.clear();
 
     //pour l'affichage pause
     m_labelImagePause = new QLabel(m_parent);
     m_labelTextePause = new QLabel(m_parent);
-
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -86,22 +91,30 @@ void ExerciceParcours::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceParcours::chargerOption()";
 
-//    QSettings parametres(cheminConf, QSettings::IniFormat);
-//    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
-//    opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
-//    opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
+    QSettings parametres(cheminConf, QSettings::IniFormat);
+    opt_timerSuivant     = parametres.value("Parcours/timerSuivant", 7000).toInt();
+    opt_timerVerifier    = parametres.value("Parcours/timerVerifier", 2000).toInt();
+    opt_nbMasquesLargeur = parametres.value("Parcours/nbMasquesLargeur", 10).toInt();
+    opt_nbMasquesHauteur = parametres.value("Parcours/nbMasquesHauteur", 5).toInt();
+    opt_nbMasquesChoisis = parametres.value("Parcours/nbMasquesChoisis", 7).toInt();
 
-//    if (m_localDebug)
-//    {
-//        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-//                 << "Timer Verifier     :"   << opt_timerVerifier << "\n"
-//                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
-//    }
-        opt_timerSuivant     = 1000;
-        opt_timerVerifier    = 1000;
-        opt_nbMasquesChoisis = 7;
-        opt_nbMasquesLargeur = 10;
-        opt_nbMasquesHauteur = 5;
+    // aller dans le groupe Parcours1, et tout récupérer
+    parametres.beginGroup("Parcours1");
+    qDebug() << parametres.childKeys(); //retourne ("MasqueArrivee","MasqueDepart","MasqueParcours0","MasqueParcours1","MasqueParcours2","MasqueParcours3","MasqueParcours4")
+
+    for (int i =0 ; i < parametres.childKeys().count(); i++)
+    {
+        positionMasquesParcours1 << parametres.value(parametres.childKeys().at(i)).toInt();
+    }
+    /// Ok les positions de parcours 1 sont dans ma liste
+
+    if (m_localDebug)
+    {
+        qDebug() << positionMasquesParcours1;
+        //        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
+        //                 << "Timer Verifier     :"   << opt_timerVerifier << "\n"
+        //                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
+    }
 }
 
 void ExerciceParcours::slotSequenceEntered() // en cours
@@ -262,12 +275,13 @@ void ExerciceParcours::slotInitQuestionEntered()
 
         qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
 
+        int numeroMasque = 0;
         for (float i=0; i<opt_nbMasquesHauteur;i++)
         {
 
             for (int j =0; j < opt_nbMasquesLargeur;j++)
             {
-                m_masque = new masqueDeplaceSouris();
+                m_masque = new masqueDeplaceSouris(0, numeroMasque);
                 m_masque->setSize(largeurMasque, hauteurMasque);
                 m_masque->setPos(xMasque, yMasque);
                 m_masque->setColor(QColor::fromRgb(255,255,255));
@@ -276,12 +290,13 @@ void ExerciceParcours::slotInitQuestionEntered()
                 xMasque+=largeurMasque;
                 gv_AireDeJeu->scene()->addItem(m_masque);
                 m_listeMasquesFixes << m_masque;
+                numeroMasque ++;
             }
             xMasque = 0;
             yMasque += hauteurMasque;
         }
-//        nbMasquesLargeur += 2;
-//        nbMasquesHauteur += 1;
+        //        nbMasquesLargeur += 2;
+        //        nbMasquesHauteur += 1;
     }
 }
 
@@ -293,53 +308,49 @@ void ExerciceParcours::slotQuestionEntered()
     if (m_localDebug) qDebug()<<"##########################  ExerciceParcours::slotQuestionEntered()";
 
     // Instanciation & Demarrage du chronometre
-//    m_chronometre = new QTime();
-//    m_chronometre->start();
+    //    m_chronometre = new QTime();
+    //    m_chronometre->start();
 
     AbulEduCommonStatesV1::slotQuestionEntered();
 
     if (!m_exerciceEnCours)
     {
-        m_nbMasquesInteractifs = 0;
+        //        m_nbMasquesInteractifs = 0;
         if (m_localDebug) qDebug()<<"*******************//   Boucle des Survolables ";
 
-//        while (m_nbMasquesInteractifs < opt_nbMasquesChoisis)
-//        {
-//            int alea = (qrand() % (m_listeMasquesFixes.count()));
-//            if (m_localDebug) qDebug() << "alea = " << alea;
-//            m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
-//            connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-//            m_masqueInteractif->setHideOnMouseOver(true);
-//            m_masqueInteractif->setColor(QColor::fromRgb(0,0,0));
+        //placer le l'arrivee et le depart (les deux premiers de la liste)
+        // Controle de la liste
+        if (positionMasquesParcours1.isEmpty() && positionMasquesParcours1.count() != opt_nbMasquesChoisis)
+        {
+            qDebug() << "PROBLEME Liste parcours 1";
+            return;
+        }
 
-//            m_nbMasquesInteractifs++;
-//            if (m_localDebug) qDebug()<< "Nombre de masques survolables : " << m_nbMasquesInteractifs;
-//        }
+        /// Masque arrivee (1 de la liste positionMasque)
+        m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
+        m_masqueArrivee->setColor(QColor(Qt::red));
+        connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+//        m_masqueArrivee->setHideOnMouseOver(true);
 
-//        // Choisir le premier masque de départ
-//        int alea = (qrand() % (m_listeMasquesFixes.count()));
-//        m_masqueDepart = m_listeMasquesFixes.takeAt(alea);
-//        m_masqueDepart->setHideOnMouseOver(false);
-//        m_masqueDepart->setColor(QColor(Qt::green));
-//////        qDebug() << "masque depart" << alea;
-//        m_nbMasquesInteractifs++;
+        /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
+        m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
+        m_masqueDepart->setColor(QColor(Qt::green));
+        connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+        m_masqueDepart->setHideOnMouseOver(true);
 
-//        while (m_nbMasquesInteractifs < opt_nbMasquesChoisis)
+        m_listeMasquesParcours << m_masqueDepart; // en premier
 
-//        {
-////            alea ++;
-//            m_masqueParcours = m_listeMasquesFixes.takeAt(alea);
-//            m_masqueParcours->setHideOnMouseOver(false);
-//            m_masqueParcours->setColor(QColor(Qt::black));
-//            m_nbMasquesInteractifs++;
+        /// Masque parcours (le reste de la liste)
+        while (!positionMasquesParcours1.isEmpty())
+        {
+            m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
+            m_masqueParcours->setColor(QColor(Qt::black));
+            connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+//            m_masqueParcours->setHideOnMouseOver(true);
+            m_listeMasquesParcours << m_masqueParcours;
+        }
 
-//        }
-
-
-//        qDebug() << m_listeMasquesFixes.count();
-
-
-
+        m_listeMasquesParcours << m_masqueArrivee; // en dernier
     }
     m_exerciceEnCours = true;
 }
@@ -417,4 +428,25 @@ void ExerciceParcours::setDimensionsWidgets()
     //  redimensionnerConsigne();
     AbulEduCommonStatesV1::setDimensionsWidgets();
     if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::setDimensionsWidgets()---end";
+}
+
+void ExerciceParcours::slotCacheMasque()
+{
+    if (m_localDebug) qDebug() << "##########################  ExerciceParcours::slotCacheMasque : " << m_nbMasquesInteractifs;
+
+    //j'enleve le premier masque de la ma liste de parcours
+    if(!m_listeMasquesParcours.isEmpty())
+    {
+        m_listeMasquesParcours.removeFirst();
+        if (m_listeMasquesParcours.count() != 0)
+            m_listeMasquesParcours.first()->setHideOnMouseOver(true);
+    }
+
+    if (m_listeMasquesParcours.isEmpty())
+    {
+        qDebug() << "Je n'ai plus de masque !!";
+        foreach (masqueDeplaceSouris* var_masque, m_listeMasquesFixes) {
+            var_masque->setVisible(false);
+        }
+    }
 }
