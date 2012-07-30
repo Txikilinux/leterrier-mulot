@@ -80,6 +80,9 @@ private slots:
     void masqueParcours(masqueDeplaceSouris *masque);
     void masqueEnlever(masqueDeplaceSouris *masque);
 
+    QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
+
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
