@@ -35,6 +35,7 @@ public:
     void setColor(QColor couleur);
     void setHideOnMouseOver(bool hide);
     void setIsEditable(bool isEditable);
+    QColor getColor();
     int getNumero();
     void setMenuDepartEnabled(bool yesNo);
     void setMenuArriveeEnabled(bool yesNo);

@@ -68,6 +68,11 @@ void masqueDeplaceSouris::setIsEditable(bool isEditable)
     m_isEditable = isEditable;
 }
 
+QColor masqueDeplaceSouris::getColor()
+{
+    return m_couleur;
+}
+
 int masqueDeplaceSouris::getNumero()
 {
     return m_numero;
