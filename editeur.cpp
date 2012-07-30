@@ -394,6 +394,19 @@ void Editeur::on_btnCreerTheme_clicked()
     parametres.setValue("Double-Clic/timerSuivant", (ui->spinBoxDoubleClicSuivant->value()*1000));
     parametres.setValue("Double-Clic/timerVerifier", (ui->spinBoxDoubleClicVerifier->value()*1000));
     parametres.setValue("Double-Clic/nbMasquesChoisis", (ui->spinBoxDoubleClicMasque->value()));
+    // Parametres Parcours
+    parametres.setValue("Parcours/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+    parametres.setValue("Parcours/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
+    parametres.setValue("Parcours/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+    parametres.setValue("Parcours/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+    parametres.setValue("Parcours/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+        // Parcours 1
+    QMapIterator<QString, QVariant> i(m_parametresParcours1);
+     while (i.hasNext()) {
+         i.next();
+         parametres.setValue("Parcours1/"+ i.key(), i.value());
+     }
+     /// OK, reste que les 4 autres apres test de récupération dans la classe Parcours
 
     //------------------------ Création du .abe
     //--------------------------------------------------------
@@ -901,11 +914,11 @@ void Editeur::sauvegarderParcours()
     case 1: // c'est le parcours 1
         // Recuperer toutes les variables et les inserer dans m_parametreParcours1
         m_parametresParcours1.insert("NumeroParcours", m_numeroParcours);
-        m_parametresParcours1.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
-        m_parametresParcours1.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
-        m_parametresParcours1.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
-        m_parametresParcours1.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
-        m_parametresParcours1.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
+//        m_parametresParcours1.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
+//        m_parametresParcours1.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
+//        m_parametresParcours1.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
+//        m_parametresParcours1.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
+//        m_parametresParcours1.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
         // Enregistrement des différents masques de parcours
         // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
         m_parametresParcours1.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
