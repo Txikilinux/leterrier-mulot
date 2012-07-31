@@ -34,6 +34,7 @@ public:
     void setSize(float width,float height);
     void setColor(QColor couleur);
     void setHideOnMouseOver(bool hide);
+    void setHideOnClick(bool hide);
     void setIsEditable(bool isEditable);
     QColor getColor();
     int getNumero();
@@ -51,9 +52,10 @@ private:
         QRectF boundingRect() const;
         QColor m_couleur;
         bool   m_hideOnMouseOver;
+        bool   m_hideOnClick;
         bool   m_isEditable;
-        int m_numero;
-        QMenu *m_menuMasque;
+        int    m_numero;
+        QMenu  *m_menuMasque;
 
 signals:
         void signalCacheMasque();
@@ -67,6 +69,7 @@ signals:
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private slots:
     void on_action_Depart();

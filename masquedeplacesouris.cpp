@@ -32,6 +32,7 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_taille = QRectF(0,0,50,50); //Une taille par défaut de 50x50
     m_couleur = QColor(Qt::black);
     m_hideOnMouseOver = true;
+    m_hideOnClick = false;
     m_isEditable = false;
     m_numero = numero;
     setAcceptsHoverEvents(true);
@@ -61,6 +62,11 @@ void masqueDeplaceSouris::setColor(QColor couleur)
 void masqueDeplaceSouris::setHideOnMouseOver(bool hide)
 {
     m_hideOnMouseOver = hide;
+}
+
+void masqueDeplaceSouris::setHideOnClick(bool hide)
+{
+    m_hideOnClick = hide;
 }
 
 void masqueDeplaceSouris::setIsEditable(bool isEditable)
@@ -94,12 +100,25 @@ QRectF masqueDeplaceSouris::boundingRect() const
 
 void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
-    if(m_hideOnMouseOver) {
+    if(m_hideOnMouseOver)
+    {
         setVisible(false);
         emit signalCacheMasque();
     }
 }
 
+void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(m_hideOnClick)
+    {
+        event->accept();
+        setVisible(false);
+        emit signalCacheMasque();
+    }
+}
+
+/** Permet d'afficher le menu au clic droit sur le masque
+  */
 void masqueDeplaceSouris::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
     if (m_isEditable)

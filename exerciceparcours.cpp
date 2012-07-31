@@ -329,14 +329,16 @@ void ExerciceParcours::slotQuestionEntered()
         /// Masque arrivee (1 de la liste positionMasque)
         m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
         m_masqueArrivee->setColor(QColor(Qt::red));
+;
         connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-//        m_masqueArrivee->setHideOnMouseOver(true);
 
         /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
         m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
         m_masqueDepart->setColor(QColor(Qt::green));
         connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-        m_masqueDepart->setHideOnMouseOver(true);
+
+        m_masqueDepart->setHideOnMouseOver(false);
+        m_masqueDepart->setHideOnClick(true);
 
         m_listeMasquesParcours << m_masqueDepart; // en premier
 
@@ -346,7 +348,6 @@ void ExerciceParcours::slotQuestionEntered()
             m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
             m_masqueParcours->setColor(QColor(Qt::black));
             connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
-//            m_masqueParcours->setHideOnMouseOver(true);
             m_listeMasquesParcours << m_masqueParcours;
         }
 
@@ -439,12 +440,16 @@ void ExerciceParcours::slotCacheMasque()
     {
         m_listeMasquesParcours.removeFirst();
         if (m_listeMasquesParcours.count() != 0)
-            m_listeMasquesParcours.first()->setHideOnMouseOver(true);
+        {
+            if (m_listeMasquesParcours.count() == 1)
+                m_listeMasquesParcours.first()->setHideOnClick(true);
+            else
+                m_listeMasquesParcours.first()->setHideOnMouseOver(true);
+        }
     }
 
     if (m_listeMasquesParcours.isEmpty())
     {
-        qDebug() << "Je n'ai plus de masque !!";
         foreach (masqueDeplaceSouris* var_masque, m_listeMasquesFixes) {
             var_masque->setVisible(false);
         }
