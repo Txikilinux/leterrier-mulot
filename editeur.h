@@ -83,6 +83,14 @@ private slots:
     QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
 
 
+    void on_btnParcours2_clicked();
+
+    void on_btnParcours3_clicked();
+
+    void on_btnParcours4_clicked();
+
+    void on_btnParcours5_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -120,6 +128,10 @@ private:
     int m_numeroParcours;
 //    QStringList m_parametreParcours1;
     QMap<QString, QVariant> m_parametresParcours1;
+    QMap<QString, QVariant> m_parametresParcours2;
+    QMap<QString, QVariant> m_parametresParcours3;
+    QMap<QString, QVariant> m_parametresParcours4;
+    QMap<QString, QVariant> m_parametresParcours5;
     //    int m_nbMasqueParcours; // Pour le menu parcours (desactiver qd on a assez de masques)
 
 

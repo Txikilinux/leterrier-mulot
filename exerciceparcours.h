@@ -80,13 +80,13 @@ private:
     QList<int> positionMasquesParcours5;
 
     // Chronometre
-    //    QTime *m_chronometre;
-    //        float m_tempsQuestion1;
-    //        float m_tempsQuestion2;
-    //        float m_tempsQuestion3;
-    //        float m_tempsQuestion4;
-    //        float m_tempsQuestion5;
-    //        int m_tempsTotal;
+    QTime *m_chronometre;
+        float m_tempsQuestion1;
+        float m_tempsQuestion2;
+        float m_tempsQuestion3;
+        float m_tempsQuestion4;
+        float m_tempsQuestion5;
+        int m_tempsTotal;
 
     QTimer *m_timer;
     bool onPeutMettreEnPause;
@@ -97,7 +97,8 @@ private:
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();
     void chargerOption();
-    //    bool eventFilter(QObject *obj, QEvent *ev);
+    void chargerPositionMasque(int numeroQuestion);
+    bool eventFilter(QObject *obj, QEvent *ev);
 
 private slots:
     void slotSequenceEntered();
@@ -106,12 +107,12 @@ private slots:
     void slotRealisationExerciceEntered();
     void slotInitQuestionEntered();
     void slotQuestionEntered();
-    //    void slotFinQuestionEntered();
-    //    void slotFinVerificationQuestionEntered();
-    //    void slotAfficheVerificationQuestionEntered();
+    void slotFinQuestionEntered();
+    void slotFinVerificationQuestionEntered();
+    void slotAfficheVerificationQuestionEntered();
     //    void slotVerificationQuestionEntered();
     //    void slotQuestionExited();
-    //    void slotBilanExerciceEntered();
+    void slotBilanExerciceEntered();
     //    void slotBilanSequenceEntered();
     //    void slotBilanSequenceExited();
     void slotQuitter();

@@ -72,6 +72,10 @@ Editeur::Editeur(QWidget *parent) :
     m_listeMasques.clear();
     m_listeMasquesParcours.clear();
     m_parametresParcours1.clear();
+    m_parametresParcours2.clear();
+    m_parametresParcours3.clear();
+    m_parametresParcours4.clear();
+    m_parametresParcours5.clear();
 
 }
 
@@ -382,31 +386,78 @@ void Editeur::on_btnCreerTheme_clicked()
 
     // Creation fichier Conf (note les timers sont convertis en millisecondes)
     QSettings parametres(cheminConf +QDir::separator()+"parametres.conf", QSettings::IniFormat);
-    // Parametres Survol
+    /// Parametres Survol
     parametres.setValue("Survol/timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
     parametres.setValue("Survol/timerVerifier", (ui->spinBoxSurvolVerifier->value()*1000));
     parametres.setValue("Survol/nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
-    // Parametres Clic
+    /// Parametres Clic
     parametres.setValue("Clic/timerSuivant", (ui->spinBoxClicSuivant->value()*1000));
     parametres.setValue("Clic/timerVerifier", (ui->spinBoxClicVerifier->value()*1000));
     parametres.setValue("Clic/nbMasquesChoisis", (ui->spinBoxClicMasque->value()));
-    // Parametres Double-Clic
+    /// Parametres Double-Clic
     parametres.setValue("Double-Clic/timerSuivant", (ui->spinBoxDoubleClicSuivant->value()*1000));
     parametres.setValue("Double-Clic/timerVerifier", (ui->spinBoxDoubleClicVerifier->value()*1000));
     parametres.setValue("Double-Clic/nbMasquesChoisis", (ui->spinBoxDoubleClicMasque->value()));
-    // Parametres Parcours
-    parametres.setValue("Parcours/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
-    parametres.setValue("Parcours/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-    parametres.setValue("Parcours/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-    parametres.setValue("Parcours/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
-        // Parcours 1
+    /// Parametres Parcours1
+    parametres.setValue("Parcours1/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+    parametres.setValue("Parcours1/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
+    parametres.setValue("Parcours1/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+    parametres.setValue("Parcours1/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+    parametres.setValue("Parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+    // Parcours
     QMapIterator<QString, QVariant> i(m_parametresParcours1);
-     while (i.hasNext()) {
-         i.next();
-         parametres.setValue("Parcours1/"+ i.key(), i.value());
-     }
-     /// 4 autres Parcours
+    while (i.hasNext()) {
+        i.next();
+        parametres.setValue("position1/"+ i.key(), i.value());
+    }
+    /// Parametres Parcours2
+    parametres.setValue("Parcours2/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+    parametres.setValue("Parcours2/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
+    parametres.setValue("Parcours2/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+    parametres.setValue("Parcours2/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+    parametres.setValue("Parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+    // Parcours
+    QMapIterator<QString, QVariant> j(m_parametresParcours2);
+    while (j.hasNext()) {
+        j.next();
+        parametres.setValue("position2/"+ j.key(), j.value());
+    }
+    /// Parametres Parcours3
+    parametres.setValue("Parcours3/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+    parametres.setValue("Parcours3/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
+    parametres.setValue("Parcours3/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+    parametres.setValue("Parcours3/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+    parametres.setValue("Parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+    // Parcours
+    QMapIterator<QString, QVariant> k(m_parametresParcours3);
+    while (k.hasNext()) {
+        k.next();
+        parametres.setValue("position3/"+ k.key(), k.value());
+    }
+    /// Parametres Parcours4
+    parametres.setValue("Parcours4/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+    parametres.setValue("Parcours4/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
+    parametres.setValue("Parcours4/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+    parametres.setValue("Parcours4/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+    parametres.setValue("Parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+    // Parcours
+    QMapIterator<QString, QVariant> l(m_parametresParcours4);
+    while (l.hasNext()) {
+        l.next();
+        parametres.setValue("position4/"+ l.key(), l.value());
+    }
+    /// Parametres Parcours5
+    parametres.setValue("Parcours5/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+    parametres.setValue("Parcours5/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
+    parametres.setValue("Parcours5/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+    parametres.setValue("Parcours5/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+    parametres.setValue("Parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+    // Parcours
+    QMapIterator<QString, QVariant> m(m_parametresParcours5);
+    while (m.hasNext()) {
+        m.next();
+        parametres.setValue("position5/"+ m.key(), m.value());
+    }
 
     //------------------------ Création du .abe
     //--------------------------------------------------------
@@ -574,6 +625,33 @@ void Editeur::on_btnParcours1_clicked()
     m_numeroParcours = 1;
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
+    //    gv_AireParcours->setGeometry(0,0,800,600);
+    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
+
+    //On centre la fenetre sur l'ecran de l'utilisateur
+    QDesktopWidget *widget = QApplication::desktop();
+    int desktop_width = widget->width();
+    int desktop_height = widget->height();
+    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
+
+    remplirGvParcours();
+    gv_AireParcours->show();
+
+    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
+    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+    {
+        var_masque->setMenuArriveeEnabled(false);
+        var_masque->setMenuParcoursEnabled(false);
+        var_masque->setMenuSauvegarderEnabled(false);
+        var_masque->setMenuEnleverEnabled(false);
+    }
+}
+
+void Editeur::on_btnParcours2_clicked()
+{
+    m_numeroParcours = 2;
+    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours 2"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
@@ -930,19 +1008,92 @@ void Editeur::sauvegarderParcours()
             m_parametresParcours1.insert("MasqueParcours"+ QString::number(i) , m_listeMasquesParcours.at(i)->getNumero());
         }
         break;
+    case 2: // c'est le parcours 2
+        // Recuperer toutes les variables et les inserer dans m_parametreParcours1
+//        m_parametresParcours2.insert("NumeroParcours", m_numeroParcours);
+//        m_parametresParcours2.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
+//        m_parametresParcours2.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
+//        m_parametresParcours2.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
+//        m_parametresParcours2.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
+//        m_parametresParcours2.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
+        // Enregistrement des différents masques de parcours
+        // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
+        m_parametresParcours2.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        m_parametresParcours2.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        // Il reste que des masques "Parcours" dans la liste
+        qDebug() << m_listeMasquesParcours.count();
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
+        {
+            m_parametresParcours2.insert("MasqueParcours"+ QString::number(i) , m_listeMasquesParcours.at(i)->getNumero());
+        }
+        break;
+    case 3: // c'est le parcours 3
+        // Recuperer toutes les variables et les inserer dans m_parametreParcours1
+//        m_parametresParcours3.insert("NumeroParcours", m_numeroParcours);
+//        m_parametresParcours3.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
+//        m_parametresParcours3.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
+//        m_parametresParcours3.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
+//        m_parametresParcours3.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
+//        m_parametresParcours3.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
+        // Enregistrement des différents masques de parcours
+        // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
+        m_parametresParcours3.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        m_parametresParcours3.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        // Il reste que des masques "Parcours" dans la liste
+        qDebug() << m_listeMasquesParcours.count();
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
+        {
+            m_parametresParcours3.insert("MasqueParcours"+ QString::number(i) , m_listeMasquesParcours.at(i)->getNumero());
+        }
+        break;
+    case 4: // c'est le parcours 4
+        // Recuperer toutes les variables et les inserer dans m_parametreParcours1
+//        m_parametresParcours4.insert("NumeroParcours", m_numeroParcours);
+//        m_parametresParcours4.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
+//        m_parametresParcours4.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
+//        m_parametresParcours4.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
+//        m_parametresParcours4.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
+//        m_parametresParcours4.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
+        // Enregistrement des différents masques de parcours
+        // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
+        m_parametresParcours4.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        m_parametresParcours4.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        // Il reste que des masques "Parcours" dans la liste
+        qDebug() << m_listeMasquesParcours.count();
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
+        {
+            m_parametresParcours4.insert("MasqueParcours"+ QString::number(i) , m_listeMasquesParcours.at(i)->getNumero());
+        }
+        break;
+    case 5: // c'est le parcours 5
+        // Recuperer toutes les variables et les inserer dans m_parametreParcours1
+//        m_parametresParcours5.insert("NumeroParcours", m_numeroParcours);
+//        m_parametresParcours5.insert("TimerSuivant", ui->spinBoxParcoursSuivant->value());
+//        m_parametresParcours5.insert("TimerVerifier", ui->spinBoxParcoursVerifier->value());
+//        m_parametresParcours5.insert("NbMasquesParcours", ui->spinBoxParcoursMasque->value());
+//        m_parametresParcours5.insert("NbMasquesLargeur", ui->spinBoxParcoursMasquesLargeur->value());
+//        m_parametresParcours5.insert("NbMasquesHauteur", ui->spinBoxParcoursMasqueHauteur->value());
+        // Enregistrement des différents masques de parcours
+        // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
+        m_parametresParcours5.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        m_parametresParcours5.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        // Il reste que des masques "Parcours" dans la liste
+        qDebug() << m_listeMasquesParcours.count();
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
+        {
+            m_parametresParcours5.insert("MasqueParcours"+ QString::number(i) , m_listeMasquesParcours.at(i)->getNumero());
+        }
+        break;
     default:
         return;
 
     }
-    // Debug des parametres de Parcours
-    if (m_localDebug) qDebug() << m_parametresParcours1.keys();
 
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
     QMessageBox::information(this,"Editeur de Parcours", trUtf8("Le parcours a bien été sauvegardé"),0,0);
 
     gv_AireParcours->close();
-
 }
 
 /** Retourne la liste des voisins possibles d'un masque
@@ -985,4 +1136,86 @@ QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
         voisinsMasques << bas;
 
     return voisinsMasques;
+}
+
+
+void Editeur::on_btnParcours3_clicked()
+{
+    m_numeroParcours = 3;
+    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours 3"));
+    //    gv_AireParcours->setGeometry(0,0,800,600);
+    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
+
+    //On centre la fenetre sur l'ecran de l'utilisateur
+    QDesktopWidget *widget = QApplication::desktop();
+    int desktop_width = widget->width();
+    int desktop_height = widget->height();
+    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
+
+    remplirGvParcours();
+    gv_AireParcours->show();
+
+    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
+    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+    {
+        var_masque->setMenuArriveeEnabled(false);
+        var_masque->setMenuParcoursEnabled(false);
+        var_masque->setMenuSauvegarderEnabled(false);
+        var_masque->setMenuEnleverEnabled(false);
+    }
+}
+
+void Editeur::on_btnParcours4_clicked()
+{
+    m_numeroParcours = 4;
+    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours 4"));
+    //    gv_AireParcours->setGeometry(0,0,800,600);
+    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
+
+    //On centre la fenetre sur l'ecran de l'utilisateur
+    QDesktopWidget *widget = QApplication::desktop();
+    int desktop_width = widget->width();
+    int desktop_height = widget->height();
+    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
+
+    remplirGvParcours();
+    gv_AireParcours->show();
+
+    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
+    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+    {
+        var_masque->setMenuArriveeEnabled(false);
+        var_masque->setMenuParcoursEnabled(false);
+        var_masque->setMenuSauvegarderEnabled(false);
+        var_masque->setMenuEnleverEnabled(false);
+    }
+}
+
+void Editeur::on_btnParcours5_clicked()
+{
+    m_numeroParcours = 5;
+    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
+    //    gv_AireParcours->setGeometry(0,0,800,600);
+    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
+
+    //On centre la fenetre sur l'ecran de l'utilisateur
+    QDesktopWidget *widget = QApplication::desktop();
+    int desktop_width = widget->width();
+    int desktop_height = widget->height();
+    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
+
+    remplirGvParcours();
+    gv_AireParcours->show();
+
+    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
+    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+    {
+        var_masque->setMenuArriveeEnabled(false);
+        var_masque->setMenuParcoursEnabled(false);
+        var_masque->setMenuSauvegarderEnabled(false);
+        var_masque->setMenuEnleverEnabled(false);
+    }
 }
