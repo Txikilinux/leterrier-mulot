@@ -124,25 +124,9 @@ void ExerciceParcours::chargerOption()
         opt_nbMasquesLargeur = parametres.value("Parcours1/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours1/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours1/nbMasquesChoisis", 7).toInt();
-
-        //        // aller dans le groupe Parcours1, et tout récupérer
-        //        parametres.beginGroup("position1");
-        //        qDebug() << parametres.childKeys(); //retourne ("MasqueArrivee","MasqueDepart","MasqueParcours0","MasqueParcours1","MasqueParcours2","MasqueParcours3","MasqueParcours4")
-
-        //        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        //        {
-        //            positionMasquesParcours1 << parametres.value(parametres.childKeys().at(i)).toInt();
-        //        }
-        /// Ok les positions de parcours 1 sont dans ma liste
-        if (m_localDebug)
-        {
-            qDebug() << positionMasquesParcours1;
-            qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                     << "Timer Verifier     :"   << opt_timerVerifier << "\n"
-                     << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
-        }
-        break;
     }
+        break;
+
     case 2:
     {
         QSettings parametres(cheminConf, QSettings::IniFormat);
@@ -151,26 +135,41 @@ void ExerciceParcours::chargerOption()
         opt_nbMasquesLargeur = parametres.value("Parcours2/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours2/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours2/nbMasquesChoisis", 7).toInt();
-
-        //        // aller dans le groupe Parcours1, et tout récupérer
-        //        parametres.beginGroup("position2");
-        //        qDebug() << parametres.childKeys(); //retourne ("MasqueArrivee","MasqueDepart","MasqueParcours0","MasqueParcours1","MasqueParcours2","MasqueParcours3","MasqueParcours4")
-
-        //        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        //        {
-        //            positionMasquesParcours1 << parametres.value(parametres.childKeys().at(i)).toInt();
-        //        }
-        /// Ok les positions de parcours 1 sont dans ma liste
-        if (m_localDebug)
-        {
-            qDebug() << positionMasquesParcours1;
-            qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                     << "Timer Verifier     :"   << opt_timerVerifier << "\n"
-                     << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
-        }
-        break;
     }
-
+        break;
+    case 3:
+    {
+        QSettings parametres(cheminConf, QSettings::IniFormat);
+        opt_timerSuivant     = parametres.value("Parcours3/timerSuivant", 7000).toInt();
+        opt_timerVerifier    = parametres.value("Parcours3/timerVerifier", 2000).toInt();
+        opt_nbMasquesLargeur = parametres.value("Parcours3/nbMasquesLargeur", 10).toInt();
+        opt_nbMasquesHauteur = parametres.value("Parcours3/nbMasquesHauteur", 5).toInt();
+        opt_nbMasquesChoisis = parametres.value("Parcours3/nbMasquesChoisis", 7).toInt();
+    }
+        break;
+    case 4:
+    {
+        QSettings parametres(cheminConf, QSettings::IniFormat);
+        opt_timerSuivant     = parametres.value("Parcours4/timerSuivant", 7000).toInt();
+        opt_timerVerifier    = parametres.value("Parcours4/timerVerifier", 2000).toInt();
+        opt_nbMasquesLargeur = parametres.value("Parcours4/nbMasquesLargeur", 10).toInt();
+        opt_nbMasquesHauteur = parametres.value("Parcours4/nbMasquesHauteur", 5).toInt();
+        opt_nbMasquesChoisis = parametres.value("Parcours4/nbMasquesChoisis", 7).toInt();
+    }
+        break;
+    case 5:
+    {
+        QSettings parametres(cheminConf, QSettings::IniFormat);
+        opt_timerSuivant     = parametres.value("Parcours5/timerSuivant", 7000).toInt();
+        opt_timerVerifier    = parametres.value("Parcours5/timerVerifier", 2000).toInt();
+        opt_nbMasquesLargeur = parametres.value("Parcours5/nbMasquesLargeur", 10).toInt();
+        opt_nbMasquesHauteur = parametres.value("Parcours5/nbMasquesHauteur", 5).toInt();
+        opt_nbMasquesChoisis = parametres.value("Parcours5/nbMasquesChoisis", 7).toInt();
+    }
+        break;
+    default:
+        return;
+        break;
     } // fin switch
 }
 
@@ -181,7 +180,6 @@ void ExerciceParcours::chargerPositionMasque(int numeroQuestion)
     {
         // aller dans le groupe Parcours1, et tout récupérer
         parametres.beginGroup("position1");
-//        qDebug() << parametres.childKeys(); //retourne ("MasqueArrivee","MasqueDepart","MasqueParcours0","MasqueParcours1","MasqueParcours2","MasqueParcours3","MasqueParcours4")
         for (int i =0 ; i < parametres.childKeys().count(); i++)
         {
             positionMasquesParcours1 << parametres.value(parametres.childKeys().at(i)).toInt();
@@ -332,7 +330,6 @@ void ExerciceParcours::slotRealisationExerciceEntered()
                 m_listeImage << m_image;
             }
             AbulEduCommonStatesV1::slotRealisationExerciceEntered();
-
         }
     }
 }
@@ -403,8 +400,6 @@ void ExerciceParcours::slotInitQuestionEntered()
             xMasque = 0;
             yMasque += hauteurMasque;
         }
-        //        nbMasquesLargeur += 2;
-        //        nbMasquesHauteur += 1;
     }
 }
 
@@ -892,4 +887,3 @@ bool ExerciceParcours::eventFilter(QObject *obj, QEvent *event)
     }
     return false;
 }
-
