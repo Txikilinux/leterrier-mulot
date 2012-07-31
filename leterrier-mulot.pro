@@ -49,4 +49,5 @@ include(lib/abuledulabelv1/abuledulabelv1.pri)
 include(lib/maia/maia.pri)
 include(lib/abuleduetiquettesv1/abuleduetiquettesv1.pri)
 include(lib/abuledufilev1/abuledufilev1.pri)
+include(lib/abuledumessageboxv1/abuledumessageboxv1.pri)
 
