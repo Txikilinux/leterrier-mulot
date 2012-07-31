@@ -66,7 +66,7 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
 
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
-    cheminConf = m_theme + QDir::separator()+QString("conf")+QDir::separator() + QString("parametres.conf");
+    cheminConf  = m_theme + QDir::separator()+QString("conf")+QDir::separator() + QString("parametres.conf");
     cheminImage = m_theme + QDir::separator() + QString("data") +QDir::separator() + QString("images") + QDir::separator()  ;
 
     chargerOption();
@@ -106,6 +106,25 @@ ExerciceSurvol::~ExerciceSurvol()
     m_labelImagePause->deleteLater();
     m_labelTextePause->deleteLater();
     emit exerciceExited(); // Permet à la MainWindow de savoir que l'exercice est terminé
+}
+
+/** Charge les options contenues dans le fichier de configuration (parametres.ini)
+  */
+void ExerciceSurvol::chargerOption()
+{
+    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
+
+    QSettings parametres(cheminConf, QSettings::IniFormat);
+    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
+    opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
+    opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
+
+    if (m_localDebug)
+    {
+        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
+                 << "Timer Verifier     :"   << opt_timerVerifier << "\n"
+                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
+    }
 }
 
 void ExerciceSurvol::slotSequenceEntered() // en cours
@@ -343,7 +362,6 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     if (m_exerciceEnCours)
     {
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
-        //        QTimer::singleShot(opt_timerSuivant ,this,SLOT(slotAppuiAutoSuivant()));     // Click auto du bouton suivant avec un timer
         m_timer = new QTimer(this);
         m_timer->setInterval(opt_timerSuivant);
         m_timer->setSingleShot(true);
@@ -608,26 +626,6 @@ void ExerciceSurvol::slotAppuiAutoVerifier()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::slotAppuiAutoVerifier()";
     emit appuiVerifier();
-}
-
-/** Charge les options contenues dans le fichier de configuration (parametres.ini)
-  */
-void ExerciceSurvol::chargerOption()
-{
-    if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
-
-    QSettings parametres(cheminConf, QSettings::IniFormat);
-    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
-    opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
-    opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
-
-    if (m_localDebug)
-    {
-        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                 << "Timer Verifier     :"   << opt_timerVerifier << "\n"
-                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
-    }
-
 }
 
 /** Cette méthode retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
