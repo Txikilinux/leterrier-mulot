@@ -69,6 +69,7 @@ private slots:
 
     void on_actionEditeur_triggered();
     void on_actionDefinirTheme_triggered();
+    void on_action_Parcours_triggered();
 };
 
 #endif // MAINWINDOW_H

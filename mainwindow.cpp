@@ -166,6 +166,11 @@ void MainWindow::on_action_Survol_triggered()
     abeLanceExo(0);
 }
 
+void MainWindow::on_action_Parcours_triggered()
+{
+    abeLanceExo(3);
+}
+
 void MainWindow::on_actionEditeur_triggered()
 {
     if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
@@ -223,3 +228,4 @@ QString MainWindow::getThemeCourant()
 {
     return m_theme;
 }
+
