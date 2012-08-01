@@ -36,9 +36,8 @@ Editeur::Editeur(QWidget *parent) :
     ui->treeWidget->setAlternatingRowColors(true);
     ui->treeWidget->setColumnCount(1);
 
-    // ------- Action Menu Contextuel Tree Widget ------------------------------------------------------------
+    /// Action Menu Contextuel Tree Widget
     QList<QAction *> actionsMenuTreeWidget;
-
     m_menuTreeWidget = new QMenu(ui->treeWidget);
 
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer..."),m_menuTreeWidget);
@@ -51,9 +50,8 @@ Editeur::Editeur(QWidget *parent) :
     actionsMenuTreeWidget << a_supprimer /*a_nouveau << a_renommer <<*/ ;
     m_menuTreeWidget->addActions(actionsMenuTreeWidget);
 
-    // ------- Action Menu Contextuel Liste Widget Selection ---------------------------------------------------
+    /// Action Menu Contextuel Liste Widget Selection
     QList<QAction *> actionsMenuListWidgetSelection;
-
     m_menuListWidgetSelection = new QMenu(ui->listWidgetSelection);
 
     QAction *a_supprimer2 = new QAction(trUtf8("&Supprimer..."),m_menuListWidgetSelection);
@@ -243,7 +241,6 @@ void Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item) // Ouvertur
     if (m_localDebug) qDebug() << "##########################  Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item)";
 
     item = ui->listWidget->currentItem();
-    if (m_localDebug) qDebug() << "Ouverture de l'image";
     m_visionneuseImage = new VisionneuseImage(this);
     m_visionneuseImage->ouvrirFicher(item->data(4).toString());
     m_visionneuseImage->setWindowModality(Qt::WindowModal);
@@ -320,8 +317,8 @@ void Editeur::on_btnCreerTheme_clicked()
         QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez remplir le champs \"Nom du thème\" "));
         return;
     }
-    /** Aller chercher les images et les enregistrer dans le fichier temporaire */
 
+    /// Aller chercher les images et les enregistrer dans le fichier temporaire
     // Condition de garde = listeWidgetSelection est inferieur à 5
     if (ui->listWidgetSelection->count() < 5)
     {
@@ -329,7 +326,7 @@ void Editeur::on_btnCreerTheme_clicked()
         return;
     }
 
-    // Choix destination .abe
+    /// Choix destination .abe
     QString destAbe = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (m_localDebug)   qDebug() << destAbe;
     if (destAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
@@ -351,7 +348,7 @@ void Editeur::on_btnCreerTheme_clicked()
         }
         else { return; } // si echec pas la peine d'aller plus loin
 
-        // Copie des images selectionnées dans le fichier temporaire
+        /// Copie des images selectionnées dans le fichier temporaire
         for (int i =0; i< ui->listWidgetSelection->count(); i++)
         {
             QFileInfo originale(ui->listWidgetSelection->item(i)->data(4).toString());
@@ -373,7 +370,8 @@ void Editeur::on_btnCreerTheme_clicked()
         ui->listWidgetSelection->clear();
         if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
     }
-    /** Aller chercher le fichier conf*/
+
+    /// Aller chercher le fichier conf
     QDir confDir(cheminConf);//creation dossier temporaire pour .ini
     if(confDir.mkpath(cheminConf)) // tentative de création
     {
@@ -381,7 +379,7 @@ void Editeur::on_btnCreerTheme_clicked()
         else { return; } // si echec pas la peine d'aller plus loin
     }
 
-    // Creation fichier Conf (note les timers sont convertis en millisecondes)
+    /// Creation fichier Conf (note les timers sont convertis en millisecondes)
     QSettings parametres(cheminConf +QDir::separator()+"parametres.conf", QSettings::IniFormat);
     /// Parametres Survol
     parametres.setValue("Survol/timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
@@ -456,9 +454,7 @@ void Editeur::on_btnCreerTheme_clicked()
         parametres.setValue("position5/"+ m.key(), m.value());
     }
 
-    //------------------------ Création du .abe
-    //--------------------------------------------------------
-    // remplir ma liste de fichiers (parcours recursif)
+    /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
 
     if (m_localDebug) qDebug() << destinationIdUnique<< " " << parametres.fileName();
@@ -472,11 +468,11 @@ void Editeur::on_btnCreerTheme_clicked()
     m_abuledufilev1->abeFileSave(destination, parcoursRecursif(destinationIdUnique), m_fileBase, "abe");
     if (m_localDebug) qDebug() << "Création abe OK";
 
-    /** Supprimer le dossier temporaire*/
+    /// Supprimer le dossier temporaire
     if(supprimerDir(temp.absolutePath())) qDebug() << "Effacement dossier temp ok";
     else qDebug() << "Suppression impossible";
 
-    // Arrangement graphique
+    /// Arrangement graphique
     ui->lineEditNomTheme->clear();
     ui->listWidget->clear();
     ui->listWidgetSelection->clear();
@@ -581,7 +577,8 @@ void Editeur::remplirGvParcours()
     qreal xMasque = 0.00;
     qreal yMasque = 0.00;
 
-    qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
+    if (m_localDebug)
+        qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
 
     int numeroMasque = 0;
     for (float i=0; i<opt_nbMasquesHauteur;i++)
@@ -709,8 +706,6 @@ void Editeur::masqueParcours(masqueDeplaceSouris *masque)
     m_listeMasquesParcours << masque;
     masque->setMenuEnleverEnabled(true); // on peut enlever que les masques ayant un role
 
-    /// jusqu'ici je suis OK
-
     // Mise en place du menu Arrivee
     if (m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
     {
@@ -756,7 +751,7 @@ void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
             }
         }
 
-        // PRopriete Arrivee
+        // Propriete Arrivee
         masque->setColor(QColor(Qt::red));
         masque->setProperty("Role", trUtf8("Arrivee"));
         masque->setMenuArriveeEnabled(false);
@@ -770,7 +765,6 @@ void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
         m_listeMasquesParcours << masque;
         masque->setMenuEnleverEnabled(true); // on peut enlever que le dernier masque mis
         masque->update();
-
 
         // m_listeMasquesParcours est égale au nb de masque choisi
         // je desactive le menu Arrivee
@@ -786,6 +780,9 @@ void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
     }
 }
 
+/** Enleve un pmasque précedemment défini comme faisant parti du parcours
+  * Redéfinit les menus et propriété des masques en fonction du masque enlevé
+  */
 void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::masqueEnlever()";
@@ -866,7 +863,7 @@ void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
             }
         }
 
-        // Reaffichage des masques possibles par rapport au dernier masque de ma listeParcours
+        /// Reaffichage des masques possibles par rapport au dernier masque de ma listeParcours
         QList<int> voisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
         foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
         {
@@ -894,6 +891,10 @@ void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
     }
 }
 
+/** Réinitialise l'éditeur de Parcours.
+  * Redéfinit tous les masques comme fixe, et la couleur à blanc
+  * (à l'appui sur le menu contextuel Reinitialiser)
+  */
 void Editeur::reinitialiserGvParcours()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::reinitialiserGvParcours()";
@@ -918,6 +919,8 @@ void Editeur::reinitialiserGvParcours()
     gv_AireParcours->update();
 }
 
+/** Sauvegarde le parcours (à l'appui sur le menu contextuel Sauvegarde)
+  */
 void Editeur::sauvegarderParcours()
 {
     qDebug() << "Numero de parcours :" << m_numeroParcours;
