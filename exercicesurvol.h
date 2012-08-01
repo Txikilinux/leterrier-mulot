@@ -47,7 +47,6 @@ private:
     // Paramètres Editeur
     QSettings *m_parametres;
     int opt_timerSuivant;
-    int opt_timerVerifier;
     int opt_nbMasquesChoisis;
     QString m_theme;
     QString cheminConf;

@@ -318,26 +318,13 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="labelDoubleClicVerifier">
+           <widget class="QLabel" name="labelDoubleClicNbMasques">
             <property name="text">
-             <string>Timer Vérifier</string>
+             <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxDoubleClicVerifier">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="suffix">
-             <string>s</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
            <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -350,13 +337,6 @@
             </property>
             <property name="value">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelDoubleClicNbMasques">
-            <property name="text">
-             <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
@@ -406,20 +386,13 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="labelClicVerifier">
-            <property name="text">
-             <string>Timer Vérifier</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
            <widget class="QLabel" name="labelClicNbMasques">
             <property name="text">
              <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="1" column="1">
            <widget class="QSpinBox" name="spinBoxClicMasque">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -432,19 +405,6 @@
             </property>
             <property name="value">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxClicVerifier">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="suffix">
-             <string>s</string>
             </property>
            </widget>
           </item>
@@ -494,29 +454,13 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="labelSurvolVerifier">
+           <widget class="QLabel" name="labelSurvolNbMasques">
             <property name="text">
-             <string>Timer Vérifier</string>
+             <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolVerifier">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="suffix">
-             <string>s</string>
-            </property>
-            <property name="value">
-             <number>0</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
            <widget class="QSpinBox" name="spinBoxSurvolMasque">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -529,13 +473,6 @@
             </property>
             <property name="value">
              <number>7</number>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelSurvolNbMasques">
-            <property name="text">
-             <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
@@ -572,6 +509,9 @@
         <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
           <layout class="QFormLayout" name="formLayout">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
            <item row="0" column="0">
             <widget class="QLabel" name="labelParcoursSuivant">
              <property name="text">
@@ -599,33 +539,13 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QLabel" name="labelParcoursVerifier">
-             <property name="text">
-              <string>Timer Vérifier</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QSpinBox" name="spinBoxParcoursVerifier">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="suffix">
-              <string>s</string>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
             <widget class="QLabel" name="labelParcoursNbMasques">
              <property name="text">
               <string>Nombre Masques Parcours</string>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
+           <item row="1" column="1">
             <widget class="QSpinBox" name="spinBoxParcoursMasque">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -644,14 +564,14 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
+           <item row="2" column="0">
             <widget class="QLabel" name="labelParcoursMasqueLargeur">
              <property name="text">
               <string>Nombre Masques Largeur</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
+           <item row="2" column="1">
             <widget class="QSpinBox" name="spinBoxParcoursMasquesLargeur">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -667,14 +587,14 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="3" column="0">
             <widget class="QLabel" name="labelDoubleClicVerifier_4">
              <property name="text">
               <string>Nombre Masques Hauteur</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="3" column="1">
             <widget class="QSpinBox" name="spinBoxParcoursMasqueHauteur">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">

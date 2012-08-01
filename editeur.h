@@ -72,24 +72,16 @@ private slots:
 
     // Edition Parcours
     void on_btnParcours1_clicked();
+    void on_btnParcours2_clicked();
+    void on_btnParcours3_clicked();
+    void on_btnParcours4_clicked();
+    void on_btnParcours5_clicked();
 
     void reinitialiserGvParcours();
     void sauvegarderParcours();
-    void masqueDepart(masqueDeplaceSouris *masque);
-    void masqueArrivee(masqueDeplaceSouris *masque);
-    void masqueParcours(masqueDeplaceSouris *masque);
-    void masqueEnlever(masqueDeplaceSouris *masque);
+    void masquePoseParcours(masqueDeplaceSouris*);
 
     QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
-
-
-    void on_btnParcours2_clicked();
-
-    void on_btnParcours3_clicked();
-
-    void on_btnParcours4_clicked();
-
-    void on_btnParcours5_clicked();
 
 private:
     Ui::Editeur *ui;

@@ -38,11 +38,7 @@ public:
     void setIsEditable(bool isEditable);
     QColor getColor();
     int getNumero();
-    void setMenuDepartEnabled(bool yesNo);
-    void setMenuArriveeEnabled(bool yesNo);
-    void setMenuParcoursEnabled(bool yesNo);
     void setMenuSauvegarderEnabled(bool yesNo);
-    void setMenuEnleverEnabled(bool yesNo);
 
 
 
@@ -61,21 +57,13 @@ signals:
         void signalCacheMasque();
         void signalReinitialisationMasque();
         void signalSauvegarderParcours();
-        void signalMasqueDepart(masqueDeplaceSouris*);
-        void signalMasqueArrivee(masqueDeplaceSouris*);
-        void signalMasqueParcours(masqueDeplaceSouris*);
-        void signalMasqueEnlever(masqueDeplaceSouris*);
+        void signalPoseSurParcours(masqueDeplaceSouris*);
 
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void contextMenuEvent(QGraphicsSceneContextMenuEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
 
 private slots:
-    void on_action_Depart();
-    void on_action_Arrivee();
-    void on_action_Parcours();
-    void on_action_Enlever();
     void on_action_Reinitialiser();
     void on_action_Sauvegarder();
 };

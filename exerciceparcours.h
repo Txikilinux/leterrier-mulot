@@ -46,7 +46,6 @@ private:
     // Paramètres Editeur
     QSettings *m_parametres;
     int opt_timerSuivant;
-    int opt_timerVerifier;
     int opt_nbMasquesChoisis;
     float opt_nbMasquesLargeur;
     float opt_nbMasquesHauteur;

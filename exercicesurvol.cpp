@@ -116,13 +116,11 @@ void ExerciceSurvol::chargerOption()
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
     opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
-    opt_timerVerifier    = parametres.value("Survol/timerVerifier", 2000).toInt();
     opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
 
     if (m_localDebug)
     {
         qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                 << "Timer Verifier     :"   << opt_timerVerifier << "\n"
                  << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
     }
 }
@@ -573,8 +571,7 @@ void ExerciceSurvol::slotCacheMasque()
         onPeutMettreEnPause = true;
 
         // Appui sur le bouton vérifier
-        if (m_localDebug) qDebug() << "Appui sur le bouton Verifier " << opt_timerVerifier ;
-        QTimer::singleShot(opt_timerVerifier,this,SLOT(slotAppuiAutoVerifier()));
+        QTimer::singleShot(0, this, SLOT(slotAppuiAutoVerifier()));
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();

@@ -120,7 +120,6 @@ void ExerciceParcours::chargerOption()
     {
         QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours1/timerSuivant", 7000).toInt();
-        opt_timerVerifier    = parametres.value("Parcours1/timerVerifier", 2000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours1/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours1/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours1/nbMasquesChoisis", 7).toInt();
@@ -131,7 +130,6 @@ void ExerciceParcours::chargerOption()
     {
         QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours2/timerSuivant", 7000).toInt();
-        opt_timerVerifier    = parametres.value("Parcours2/timerVerifier", 2000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours2/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours2/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours2/nbMasquesChoisis", 7).toInt();
@@ -141,7 +139,6 @@ void ExerciceParcours::chargerOption()
     {
         QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours3/timerSuivant", 7000).toInt();
-        opt_timerVerifier    = parametres.value("Parcours3/timerVerifier", 2000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours3/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours3/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours3/nbMasquesChoisis", 7).toInt();
@@ -151,7 +148,6 @@ void ExerciceParcours::chargerOption()
     {
         QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours4/timerSuivant", 7000).toInt();
-        opt_timerVerifier    = parametres.value("Parcours4/timerVerifier", 2000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours4/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours4/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours4/nbMasquesChoisis", 7).toInt();
@@ -161,7 +157,6 @@ void ExerciceParcours::chargerOption()
     {
         QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours5/timerSuivant", 7000).toInt();
-        opt_timerVerifier    = parametres.value("Parcours5/timerVerifier", 2000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours5/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours5/nbMasquesHauteur", 5).toInt();
         opt_nbMasquesChoisis = parametres.value("Parcours5/nbMasquesChoisis", 7).toInt();
@@ -799,8 +794,7 @@ void ExerciceParcours::slotCacheMasque()
         onPeutMettreEnPause = true;
 
         // Appui sur le bouton vérifier
-        if (m_localDebug) qDebug() << "Appui sur le bouton Verifier " << opt_timerVerifier ;
-        QTimer::singleShot(opt_timerVerifier,this,SLOT(slotAppuiAutoVerifier()));
+        QTimer::singleShot(0,this,SLOT(slotAppuiAutoVerifier()));
 
         boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
         m_listeMasquesFixes.clear();

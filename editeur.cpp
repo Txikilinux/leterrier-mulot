@@ -383,19 +383,15 @@ void Editeur::on_btnCreerTheme_clicked()
     QSettings parametres(cheminConf +QDir::separator()+"parametres.conf", QSettings::IniFormat);
     /// Parametres Survol
     parametres.setValue("Survol/timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
-    parametres.setValue("Survol/timerVerifier", (ui->spinBoxSurvolVerifier->value()*1000));
     parametres.setValue("Survol/nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     /// Parametres Clic
     parametres.setValue("Clic/timerSuivant", (ui->spinBoxClicSuivant->value()*1000));
-    parametres.setValue("Clic/timerVerifier", (ui->spinBoxClicVerifier->value()*1000));
     parametres.setValue("Clic/nbMasquesChoisis", (ui->spinBoxClicMasque->value()));
     /// Parametres Double-Clic
     parametres.setValue("Double-Clic/timerSuivant", (ui->spinBoxDoubleClicSuivant->value()*1000));
-    parametres.setValue("Double-Clic/timerVerifier", (ui->spinBoxDoubleClicVerifier->value()*1000));
     parametres.setValue("Double-Clic/nbMasquesChoisis", (ui->spinBoxDoubleClicMasque->value()));
     /// Parametres Parcours1
     parametres.setValue("Parcours1/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours1/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
     parametres.setValue("Parcours1/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
     parametres.setValue("Parcours1/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
     parametres.setValue("Parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
@@ -407,7 +403,6 @@ void Editeur::on_btnCreerTheme_clicked()
     }
     /// Parametres Parcours2
     parametres.setValue("Parcours2/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours2/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
     parametres.setValue("Parcours2/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
     parametres.setValue("Parcours2/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
     parametres.setValue("Parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
@@ -419,7 +414,6 @@ void Editeur::on_btnCreerTheme_clicked()
     }
     /// Parametres Parcours3
     parametres.setValue("Parcours3/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours3/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
     parametres.setValue("Parcours3/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
     parametres.setValue("Parcours3/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
     parametres.setValue("Parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
@@ -431,7 +425,6 @@ void Editeur::on_btnCreerTheme_clicked()
     }
     /// Parametres Parcours4
     parametres.setValue("Parcours4/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours4/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
     parametres.setValue("Parcours4/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
     parametres.setValue("Parcours4/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
     parametres.setValue("Parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
@@ -443,7 +436,6 @@ void Editeur::on_btnCreerTheme_clicked()
     }
     /// Parametres Parcours5
     parametres.setValue("Parcours5/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours5/timerVerifier", (ui->spinBoxParcoursVerifier->value()*1000));
     parametres.setValue("Parcours5/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
     parametres.setValue("Parcours5/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
     parametres.setValue("Parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
@@ -595,12 +587,11 @@ void Editeur::remplirGvParcours()
 
             connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours()));                       // Reinitialisation
             connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));                              // Sauvegarde du parcours
-            connect(m_masque,SIGNAL(signalMasqueDepart(masqueDeplaceSouris*)), this, SLOT(masqueDepart(masqueDeplaceSouris*)));     // Masque de depart = vert
-            connect(m_masque, SIGNAL(signalMasqueArrivee(masqueDeplaceSouris*)), this, SLOT(masqueArrivee(masqueDeplaceSouris*)));  // Masque Arrivee = rouge
-            connect(m_masque, SIGNAL(signalMasqueParcours(masqueDeplaceSouris*)), this, SLOT(masqueParcours(masqueDeplaceSouris*)));// Masque Pärcours = noir
-            connect(m_masque, SIGNAL(signalMasqueEnlever(masqueDeplaceSouris*)), this, SLOT(masqueEnlever(masqueDeplaceSouris*)));  // Masque Enlever = Fixe = blanc
+            connect(m_masque, SIGNAL(signalPoseSurParcours(masqueDeplaceSouris*)), this, SLOT(masquePoseParcours(masqueDeplaceSouris*)));
 
             xMasque+=largeurMasque;
+
+            m_masque->setMenuSauvegarderEnabled(false);
             gv_AireParcours->scene()->addItem(m_masque);
             m_listeMasques << m_masque;
             numeroMasque++;
@@ -610,285 +601,145 @@ void Editeur::remplirGvParcours()
     }
 }
 
-/** Definit le masque comme masque de départ
-  */
-void Editeur::masqueDepart(masqueDeplaceSouris* masque)
+void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
 {
-    if (m_localDebug) qDebug() << "##########################  Editeur::masqueDepart()";
+    if (m_localDebug) qDebug() << "##########################  Editeur::masquePoseParcours(masqueDeplaceSouris* masque)";
 
-    if (!m_listeMasquesParcours.isEmpty())
+    QList<int> listeVoisins;
+
+    /// Si mon masque n'a pas de role (= Fixe) = création de masque
+    if (masque->property("Role") == "Fixe")
     {
-        qDebug() << "la listeMasquesParcours contient qqchose !, impossible de mettre un départ";
-    }
-    else // ma liste est vide, je mets ce masque en depart et je le range ds listeMasquesParcours
-    {
-        masque->setColor(QColor(Qt::green));
-        masque->setProperty("Role", trUtf8("Depart"));
-        masque->setMenuDepartEnabled(false);
-        masque->setMenuEnleverEnabled(true); // on peut enlever que les masques ayant un role
-        masque->update();
-        m_listeMasquesParcours << masque;
-
-        // et je desactive le menu Depart pour les autres
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+        /// Liste Vide = Depart
+        if (m_listeMasquesParcours.isEmpty())
         {
-            var_masque->setMenuDepartEnabled(false);
-            //            var_masque->setMenuParcoursEnabled(true);
-        }
+            masque->setColor(QColor(Qt::green));
+            masque->setProperty("Role", trUtf8("Depart"));
+            masque->update();
+            m_listeMasquesParcours << masque;
 
-        // ...& j'active le menu parcours, enlever pour les masques voisins seulement
-        QList<int> voisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-        {
-            for (int i =0 ; i < voisins.count(); i++)
+            // ...& je coloris en gris les voisins
+            listeVoisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
             {
-                if(var_masque->getNumero() == voisins.at(i))
+                for (int i =0 ; i < listeVoisins.count(); i++)
                 {
-                    var_masque->setColor(QColor(Qt::gray)); // je coloris les voisins en gris
-                    var_masque->setMenuParcoursEnabled(true); // j'active le menu parcours
-                    var_masque->update();
-                }
-            }
-        }
-    }
-}
-
-/** Definit le masque comme masque de parcours
-  */
-void Editeur::masqueParcours(masqueDeplaceSouris *masque)
-{
-    if (m_localDebug) qDebug() << "##########################  Editeur::masqueParcours()";
-
-    // S'il y a des masques de couleur grise... les remettre en blanc
-    foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-    {
-        if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
-        {
-            var_masque->setColor(QColor(Qt::white));
-            var_masque->update();
-            var_masque->setMenuParcoursEnabled(false); // et desactiver "Parcours" pour les autres
-        }
-    }
-
-    if( m_listeMasquesParcours.count() < (opt_nbMasquesChoisisParcours-1) ) // -1 car dans ma liste, à ce moment j'ai deja un masque (depart)
-    {
-        masque->setColor(QColor(Qt::black));
-        masque->setProperty("Role", trUtf8("Parcours"));
-        masque->setMenuParcoursEnabled(false);
-        masque->update();
-    }
-
-    // ...& j'active le menu parcours, enlever pour les masques voisins seulement
-    QList<int> voisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
-
-    foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-    {
-        for (int i =0 ; i < voisins.count(); i++)
-        {
-            if(var_masque->getNumero() == voisins.at(i))
-            {
-                if(var_masque->property("Role") == "Fixe") // sauf mes masques deja mis
-                {
-                    var_masque->setColor(QColor(Qt::gray)); // je coloris les voisins en gris
-                    var_masque->setMenuParcoursEnabled(true); // j'active le menu parcours
-                    var_masque->update();
-                }
-            }
-        }
-    }
-
-    // je desactive le menu "Enlever" pour les masques de parcours d'avant, on enleve les masques que dans l'ordre opposé à leur placement
-    foreach (masqueDeplaceSouris* var_masque , m_listeMasquesParcours)
-    {
-        var_masque->setMenuEnleverEnabled(false);
-    }
-
-    m_listeMasquesParcours << masque;
-    masque->setMenuEnleverEnabled(true); // on peut enlever que les masques ayant un role
-
-    // Mise en place du menu Arrivee
-    if (m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
-    {
-        // J'active le menu arrivee que pour les voisins du dernier masque de parcours
-        QList<int> voisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
-
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-        {
-            for (int i =0 ; i < voisins.count(); i++)
-            {
-                if(var_masque->getNumero() == voisins.at(i))
-                {
-                    if(var_masque->property("Role") == "Fixe") // sauf mes masques deja mis
+                    if(var_masque->getNumero() == listeVoisins.at(i))
                     {
                         var_masque->setColor(QColor(Qt::gray)); // je coloris les voisins en gris
-                        var_masque->setMenuArriveeEnabled(true); // j'active le menu "arrivee"
-                        var_masque->setMenuParcoursEnabled(false);
                         var_masque->update();
                     }
                 }
             }
         }
-    }
-}
-
-/** Definit le masque comme masque d'Arrivee
-  */
-void Editeur::masqueArrivee(masqueDeplaceSouris *masque)
-{
-    if (m_localDebug) qDebug() << "##########################  Editeur::masqueArrivee()";
-
-    //controle de la listeMAsquesParcours et verifier qu'elle est égale au nb de masques choisis -1
-    if (m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
-    {
-        // S'il y a des masques de couleur grise... les remettre en blanc
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+        /// Liste avec un masque = Parcours
+        else if(m_listeMasquesParcours.count() < (opt_nbMasquesChoisisParcours - 1))
         {
-            if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
+            listeVoisins.clear();
+            // Je vais chercher les voisins du dernier masque posé
+            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+
+            if (listeVoisins.contains(masque->getNumero())) // Si le numero de ce masque est contenu ds mas liste de voisins = Ok
             {
-                var_masque->setColor(QColor(Qt::white));
-                var_masque->update();
-                var_masque->setMenuParcoursEnabled(false); // et desactiver "Parcours" pour les autres
+                // S'il y a des masques de couleur grise... les remettre en blanc
+                foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+                {
+                    if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
+                    {
+                        var_masque->setColor(QColor(Qt::white));
+                        var_masque->update();
+                    }
+                }
+
+                masque->setColor(QColor(Qt::black));
+                masque->setProperty("Role", trUtf8("Parcours"));
+                masque->update();
+                m_listeMasquesParcours << masque;
+
+                // ...& je coloris en gris les voisins
+                listeVoisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+                foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+                {
+                    for (int i =0 ; i < listeVoisins.count(); i++)
+                    {
+                        if((var_masque->getNumero() == listeVoisins.at(i)) && (var_masque->property("Role") == "Fixe"))
+                        {
+                            var_masque->setColor(QColor(Qt::gray)); // je coloris les voisins en gris
+                            var_masque->update();
+                        }
+                    }
+                }
             }
         }
-
-        // Propriete Arrivee
-        masque->setColor(QColor(Qt::red));
-        masque->setProperty("Role", trUtf8("Arrivee"));
-        masque->setMenuArriveeEnabled(false);
-
-        // je desactive le menu "Enlever" pour les masques de parcours d'avant, on enleve les masques que dans l'ordre opposé à leur placement
-        foreach (masqueDeplaceSouris* var_masque , m_listeMasquesParcours)
+        else if ( m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
         {
-            var_masque->setMenuEnleverEnabled(false);
-        }
-
-        m_listeMasquesParcours << masque;
-        masque->setMenuEnleverEnabled(true); // on peut enlever que le dernier masque mis
-        masque->update();
-
-        // m_listeMasquesParcours est égale au nb de masque choisi
-        // je desactive le menu Arrivee
-        // et j'active le menu sauvegarde
-        if (m_listeMasquesParcours.count() == opt_nbMasquesChoisisParcours)
-        {
+            masque->setColor(QColor(Qt::red));
+            masque->setProperty("Role", trUtf8("Arrivee"));
+            masque->update();
+            m_listeMasquesParcours << masque;
+            // S'il y a des masques de couleur grise... les remettre en blanc
             foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
             {
-                var_masque->setMenuArriveeEnabled(false);
+                if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
+                {
+                    var_masque->setColor(QColor(Qt::white));
+                    var_masque->update();
+                }
+            }
+            // Et j'active le menu Sauvegarder
+            foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+            {
                 var_masque->setMenuSauvegarderEnabled(true);
+                var_masque->update();
             }
         }
-    }
-}
-
-/** Enleve un pmasque précedemment défini comme faisant parti du parcours
-  * Redéfinit les menus et propriété des masques en fonction du masque enlevé
-  */
-void Editeur::masqueEnlever(masqueDeplaceSouris *masque)
-{
-    if (m_localDebug) qDebug() << "##########################  Editeur::masqueEnlever()";
-
-    qDebug() << "ma liste avant";
-    for (int i = 0; i < m_listeMasquesParcours.count(); i++)
-    {
-        qDebug() << m_listeMasquesParcours.at(i)->property("Role");
-    }
-
-    // Je n'enleve que le dernier masque posé
-    m_listeMasquesParcours.removeLast();
-
-    /// Masque Depart
-    if (masque->property("Role") == "Depart")
-    {
-        reinitialiserGvParcours();
-    }
-
-    /// Masque Parcours
-    if (masque->property("Role") == "Parcours")
+    } // Fin si mon masque n'a pas de role = creation de masque
+    /// Si mon masque à un role (different de Fixe) = destruction du masque
+    // Je n'enleve que le dernier masque
+    else if (masque->getNumero() == m_listeMasquesParcours.back()->getNumero())
     {
         // Remise à défaut
         masque->setProperty("Role", trUtf8("Fixe"));
         masque->setColor(QColor(Qt::white));
         masque->update();
 
-        // S'il y a des masques de couleur grise... les remettre en blanc
+        // je remets les masques blanc
         foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
         {
             if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
             {
                 var_masque->setColor(QColor(Qt::white));
                 var_masque->update();
-                var_masque->setMenuParcoursEnabled(false); // et desactiver "Parcours" pour les autres
             }
         }
-
-        // Reaffichage des masques possibles par rapport au dernier masque de ma listeParcours
-        QList<int> voisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+        // Et je desactive le menu Sauvegarder
         foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
         {
-            for (int i =0 ; i < voisins.count(); i++)
+            var_masque->setMenuSauvegarderEnabled(false);
+            var_masque->update();
+        }
+        // et j'enleve ce masque de ma liste parcours
+        m_listeMasquesParcours.removeLast();
+        // Remise des masques gris pour les voisins du dernier masque (je viens d'enlever CE masque juste avant)
+        // ...& je coloris en gris les voisins sauf si j'enleve depart donc pas de colriage en gris
+        if (!m_listeMasquesParcours.isEmpty())
+        {
+            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
             {
-                if(var_masque->getNumero() == voisins.at(i))
+                for (int i =0 ; i < listeVoisins.count(); i++)
                 {
-                    if(var_masque->property("Role") == "Fixe") // sauf mes masques deja mis
+                    if((var_masque->getNumero() == listeVoisins.at(i)) && (var_masque->property("Role") == "Fixe"))
                     {
                         var_masque->setColor(QColor(Qt::gray)); // je coloris les voisins en gris
-                        //                       var_masque->setMenuArriveeEnabled(false); // j'active le menu "arrivee"
-                        var_masque->setMenuParcoursEnabled(true);
                         var_masque->update();
                     }
                 }
             }
         }
-        // Remise du menu "Enlever" au dernier masque de ma liste
-        m_listeMasquesParcours.back()->setMenuEnleverEnabled(true);
 
     }
-
-    /// Masque Arrivee
-    if (masque->property("Role") == "Arrivee")
-    {
-        // Remise à défaut
-        masque->setProperty("Role", trUtf8("Fixe"));
-        masque->setColor(QColor(Qt::white));
-        masque->update();
-
-        // S'il y a des masques de couleur grise... les remettre en blanc
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-        {
-            if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
-            {
-                var_masque->setColor(QColor(Qt::white));
-                var_masque->update();
-                var_masque->setMenuParcoursEnabled(false); // et desactiver "Parcours" pour les autres
-            }
-        }
-
-        /// Reaffichage des masques possibles par rapport au dernier masque de ma listeParcours
-        QList<int> voisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-        {
-            for (int i =0 ; i < voisins.count(); i++)
-            {
-                if(var_masque->getNumero() == voisins.at(i))
-                {
-                    if(var_masque->property("Role") == "Fixe") // sauf mes masques deja mis
-                    {
-                        var_masque->setColor(QColor(Qt::gray)); // je coloris les voisins en gris
-                        var_masque->setMenuArriveeEnabled(true); // j'active le menu "arrivee"
-                        var_masque->update();
-                    }
-                }
-            }
-        }
-        // Remise du menu "Enlever" au dernier masque de ma liste
-        m_listeMasquesParcours.back()->setMenuEnleverEnabled(true);
-    }
-
-    if (m_localDebug) qDebug() << "ma liste apres";
-    for (int i = 0; i < m_listeMasquesParcours.count(); i++)
-    {
-        if(m_localDebug) qDebug() << m_listeMasquesParcours.at(i)->property("Role");
-    }
+    qDebug() << m_listeMasquesParcours.count();
 }
 
 /** Réinitialise l'éditeur de Parcours.
@@ -904,14 +755,6 @@ void Editeur::reinitialiserGvParcours()
     {
         m_listeMasques.at(i)->setColor(QColor(Qt::white));
         m_listeMasques.at(i)->setProperty("Role", trUtf8("Fixe"));
-
-        // Reactiver que le menu depart
-        m_listeMasques.at(i)->setMenuDepartEnabled(true);
-        m_listeMasques.at(i)->setMenuArriveeEnabled(false);
-        m_listeMasques.at(i)->setMenuParcoursEnabled(false);
-        m_listeMasques.at(i)->setMenuSauvegarderEnabled(false);
-        m_listeMasques.at(i)->setMenuEnleverEnabled(false);
-
         m_listeMasques.at(i)->update();
     }
     // vider ma listeMasquesParcours
@@ -935,7 +778,7 @@ void Editeur::sauvegarderParcours()
         // Il reste que des masques "Parcours" dans la liste
         qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-        {            
+        {
             m_parametresParcours1.insert("MasqueParcours" + QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours1->setStyleSheet("color : green;");
@@ -1067,15 +910,6 @@ void Editeur::on_btnParcours1_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
-
-    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
-    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
-    {
-        var_masque->setMenuArriveeEnabled(false);
-        var_masque->setMenuParcoursEnabled(false);
-        var_masque->setMenuSauvegarderEnabled(false);
-        var_masque->setMenuEnleverEnabled(false);
-    }
 }
 
 void Editeur::on_btnParcours2_clicked()
@@ -1104,15 +938,6 @@ void Editeur::on_btnParcours2_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
-
-    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
-    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
-    {
-        var_masque->setMenuArriveeEnabled(false);
-        var_masque->setMenuParcoursEnabled(false);
-        var_masque->setMenuSauvegarderEnabled(false);
-        var_masque->setMenuEnleverEnabled(false);
-    }
 }
 
 void Editeur::on_btnParcours3_clicked()
@@ -1141,15 +966,6 @@ void Editeur::on_btnParcours3_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
-
-    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
-    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
-    {
-        var_masque->setMenuArriveeEnabled(false);
-        var_masque->setMenuParcoursEnabled(false);
-        var_masque->setMenuSauvegarderEnabled(false);
-        var_masque->setMenuEnleverEnabled(false);
-    }
 }
 
 void Editeur::on_btnParcours4_clicked()
@@ -1178,15 +994,6 @@ void Editeur::on_btnParcours4_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
-
-    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
-    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
-    {
-        var_masque->setMenuArriveeEnabled(false);
-        var_masque->setMenuParcoursEnabled(false);
-        var_masque->setMenuSauvegarderEnabled(false);
-        var_masque->setMenuEnleverEnabled(false);
-    }
 }
 
 void Editeur::on_btnParcours5_clicked()
@@ -1215,13 +1022,4 @@ void Editeur::on_btnParcours5_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
-
-    // Desactivation des menus parcours et arrivee tant qu'il n'y a pas de départ et du menu sauvegarde
-    foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
-    {
-        var_masque->setMenuArriveeEnabled(false);
-        var_masque->setMenuParcoursEnabled(false);
-        var_masque->setMenuSauvegarderEnabled(false);
-        var_masque->setMenuEnleverEnabled(false);
-    }
 }
