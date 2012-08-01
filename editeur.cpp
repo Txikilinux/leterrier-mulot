@@ -935,6 +935,7 @@ void Editeur::sauvegarderParcours()
         {            
             m_parametresParcours1.insert("MasqueParcours" + QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
         }
+        ui->btnParcours1->setStyleSheet("color : green;");
         break;
     case 2: // c'est le parcours 2
         // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
@@ -946,6 +947,7 @@ void Editeur::sauvegarderParcours()
         {
             m_parametresParcours2.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
         }
+        ui->btnParcours2->setStyleSheet("color : green;");
         break;
     case 3: // c'est le parcours 3
         // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
@@ -957,6 +959,7 @@ void Editeur::sauvegarderParcours()
         {
             m_parametresParcours3.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
         }
+        ui->btnParcours3->setStyleSheet("color : green;");
         break;
     case 4: // c'est le parcours 4
         // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
@@ -968,6 +971,7 @@ void Editeur::sauvegarderParcours()
         {
             m_parametresParcours4.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
         }
+        ui->btnParcours4->setStyleSheet("color : green;");
         break;
     case 5: // c'est le parcours 5
         // Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste
@@ -979,6 +983,7 @@ void Editeur::sauvegarderParcours()
         {
             m_parametresParcours5.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
         }
+        ui->btnParcours5->setStyleSheet("color : green;");
         break;
     default:
         return;
@@ -1145,7 +1150,7 @@ void Editeur::on_btnParcours5_clicked()
 {
     m_numeroParcours = 5;
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
-    gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours 5"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
