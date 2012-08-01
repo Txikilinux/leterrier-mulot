@@ -1070,6 +1070,8 @@ void Editeur::on_btnParcours1_clicked()
 void Editeur::on_btnParcours2_clicked()
 {
     m_numeroParcours = 2;
+    m_listeMasquesParcours.clear();
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 2"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
@@ -1097,6 +1099,8 @@ void Editeur::on_btnParcours2_clicked()
 void Editeur::on_btnParcours3_clicked()
 {
     m_numeroParcours = 3;
+    m_listeMasquesParcours.clear();
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 3"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
@@ -1124,6 +1128,8 @@ void Editeur::on_btnParcours3_clicked()
 void Editeur::on_btnParcours4_clicked()
 {
     m_numeroParcours = 4;
+    m_listeMasquesParcours.clear();
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 4"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
@@ -1151,6 +1157,8 @@ void Editeur::on_btnParcours4_clicked()
 void Editeur::on_btnParcours5_clicked()
 {
     m_numeroParcours = 5;
+    m_listeMasquesParcours.clear();
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 5"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
