@@ -1041,6 +1041,8 @@ QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
 void Editeur::on_btnParcours1_clicked()
 {
     m_numeroParcours = 1;
+    m_listeMasquesParcours.clear();
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
