@@ -42,7 +42,7 @@
      <property name="title">
       <string>Gestion des Images</string>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -345,6 +345,9 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="minimum">
+             <number>7</number>
+            </property>
             <property name="value">
              <number>7</number>
             </property>
@@ -423,6 +426,9 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimum">
+             <number>7</number>
             </property>
             <property name="value">
              <number>7</number>
@@ -517,6 +523,9 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="minimum">
+             <number>7</number>
             </property>
             <property name="value">
              <number>7</number>
@@ -623,6 +632,12 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="minimum">
+              <number>3</number>
+             </property>
+             <property name="maximum">
+              <number>99</number>
              </property>
              <property name="value">
               <number>7</number>

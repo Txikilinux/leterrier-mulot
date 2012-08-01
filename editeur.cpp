@@ -1046,6 +1046,14 @@ void Editeur::on_btnParcours1_clicked()
     m_numeroParcours = 1;
     m_listeMasquesParcours.clear();
 
+    //Verification du nombre de masque
+    if (ui->spinBoxParcoursMasque->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
+    {
+        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
+                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        return;
+    }
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
@@ -1074,6 +1082,14 @@ void Editeur::on_btnParcours2_clicked()
 {
     m_numeroParcours = 2;
     m_listeMasquesParcours.clear();
+
+    //Verification du nombre de masque
+    if (ui->spinBoxParcoursMasque->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
+    {
+        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
+                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        return;
+    }
 
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 2"));
@@ -1104,6 +1120,14 @@ void Editeur::on_btnParcours3_clicked()
     m_numeroParcours = 3;
     m_listeMasquesParcours.clear();
 
+    //Verification du nombre de masque
+    if (ui->spinBoxParcoursMasque->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
+    {
+        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
+                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        return;
+    }
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 3"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
@@ -1133,6 +1157,14 @@ void Editeur::on_btnParcours4_clicked()
     m_numeroParcours = 4;
     m_listeMasquesParcours.clear();
 
+    //Verification du nombre de masque
+    if (ui->spinBoxParcoursMasque->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
+    {
+        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
+                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        return;
+    }
+
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 4"));
     //    gv_AireParcours->setGeometry(0,0,800,600);
@@ -1161,6 +1193,14 @@ void Editeur::on_btnParcours5_clicked()
 {
     m_numeroParcours = 5;
     m_listeMasquesParcours.clear();
+
+    //Verification du nombre de masque
+    if (ui->spinBoxParcoursMasque->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
+    {
+        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
+                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        return;
+    }
 
     gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 5"));
