@@ -184,16 +184,11 @@ void Editeur::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
     m_dir->refresh();
     m_dir->setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
 
-    QFileInfoList listeFichiers = m_dir->entryInfoList();
-    for(int i = 0; i < listeFichiers.count(); i++)
-    {
-        rafraichirListeImages();
-    }
+    rafraichirListeImages(item);
 }
 
-void Editeur::rafraichirListeImages()
+void Editeur::rafraichirListeImages(QTreeWidgetItem *item)
 {
-    QTreeWidgetItem *item = ui->treeWidget->currentItem();
     ui->listWidget->clear();
     m_dir = new QDir(item->data(1,0).toString());
 

@@ -102,7 +102,7 @@ private:
     QString arborescenceConf;
     QString cheminConf;
 
-    void rafraichirListeImages();
+    void rafraichirListeImages(QTreeWidgetItem *item);
     bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
     bool supprimerDir(const QString& dirPath);
     QStringList parcoursRecursif(QString dossier);
