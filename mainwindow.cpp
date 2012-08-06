@@ -27,6 +27,7 @@
 #include "exercicesurvol.h"
 #include "exerciceparcours.h"
 #include "exerciceclic.h"
+#include "exercicedoubleclic.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -174,6 +175,31 @@ void MainWindow::abeLanceExo(int numero)
     }
         m_exerciceEnCours = true;
         break;
+
+    case 4: //ExerciceDoubleClic
+        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" DoubleClic";
+    {
+        if (m_theme.isEmpty())
+        {
+            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Parcours"),
+                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
+            return;
+        }
+        else
+        {
+            ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_theme);
+            connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+            m_exerciceEnCours = true;
+            setFixedSize(this->width(), this->height()); // redimensionnement interdit
+            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+            connect(d->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+            installEventFilter(d);
+        }
+    }
+        m_exerciceEnCours = true;
+        break;
     }
 }
 
@@ -200,6 +226,11 @@ void MainWindow::on_action_Parcours_triggered()
 void MainWindow::on_actionClic_triggered()
 {
     abeLanceExo(1);
+}
+
+void MainWindow::on_action_Double_Clic_triggered()
+{
+    abeLanceExo(4);
 }
 
 void MainWindow::on_actionEditeur_triggered()
@@ -259,5 +290,3 @@ QString MainWindow::getThemeCourant()
 {
     return m_theme;
 }
-
-

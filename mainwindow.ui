@@ -57,6 +57,7 @@
     <addaction name="action_Survol"/>
     <addaction name="action_Parcours"/>
     <addaction name="actionClic"/>
+    <addaction name="action_Double_Clic"/>
    </widget>
    <widget class="QMenu" name="menuChoix_Th_mes">
     <property name="title">
@@ -114,6 +115,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+3</string>
+   </property>
+  </action>
+  <action name="action_Double_Clic">
+   <property name="text">
+    <string>&amp;Double Clic</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+4</string>
    </property>
   </action>
  </widget>

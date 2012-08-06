@@ -71,6 +71,7 @@ private slots:
     void on_actionDefinirTheme_triggered();
     void on_action_Parcours_triggered();
     void on_actionClic_triggered();
+    void on_action_Double_Clic_triggered();
 };
 
 #endif // MAINWINDOW_H
