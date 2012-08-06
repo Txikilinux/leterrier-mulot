@@ -31,7 +31,7 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
 {
     m_taille = QRectF(0,0,50,50); //Une taille par défaut de 50x50
     m_couleur = QColor(Qt::black);
-    m_hideOnMouseOver = true;
+    m_hideOnMouseOver = false;
     m_hideOnClick = false;
     m_isEditable = false;
     m_numero = numero;
