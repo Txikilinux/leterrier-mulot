@@ -27,15 +27,15 @@ install/leterrier-mulot::
 #	cp -a $(CURDIR)/conf/* $(BUILDTEMP)/$(DEST)/conf
 	cp -a $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
 
-	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-	install -D --mode=0755 $(QTDIR)/lib/libQtXml.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-	install -D --mode=0755 $(QTDIR)/lib/libQtNetwork.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-	install -D --mode=0755 $(QTDIR)/lib/libQtGui.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-	install -D --mode=0755 $(QTDIR)/lib/libQtScript.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-	install -D --mode=0755 $(QTDIR)/lib/libQtDesigner.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-	install -D --mode=0755 $(QTDIR)/lib/libQtSvg.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtXml.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtNetwork.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtGui.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtScript.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtDesigner.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
+#	install -D --mode=0755 $(QTDIR)/lib/libQtSvg.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
 
 	#and plugins (phonon backend, jpeg and co)
-	cp -a $(QTPLUGINS)/imageformats $(BUILDTEMP)/$(EXECDEST)/
-	mkdir -p $(BUILDTEMP)/$(EXECDEST)/phonon_backend
+#	cp -a $(QTPLUGINS)/imageformats $(BUILDTEMP)/$(EXECDEST)/
+#	mkdir -p $(BUILDTEMP)/$(EXECDEST)/phonon_backend
 
