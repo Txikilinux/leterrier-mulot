@@ -25,6 +25,11 @@
 
 #include <QGraphicsObject>
 #include <QPainter>
+#include <QDebug>
+#include <QMenu>
+#include <QGraphicsSceneContextMenuEvent>
+#include <QApplication>
+#include <QTime>
 
 class masqueDeplaceSouris : public QGraphicsObject
 {
@@ -35,6 +40,7 @@ public:
     void setColor(QColor couleur);
     void setHideOnMouseOver(bool hide);
     void setHideOnClick(bool hide);
+    void setHideOnDoubleClick(bool hide);
     void setIsEditable(bool isEditable);
     QColor getColor();
     int getNumero();
@@ -49,9 +55,13 @@ private:
         QColor m_couleur;
         bool   m_hideOnMouseOver;
         bool   m_hideOnClick;
+        bool   m_hideOnDoubleClick;
         bool   m_isEditable;
         int    m_numero;
         QMenu  *m_menuMasque;
+
+        int cptClic;
+        QTime timerDoubleClic;
 
 signals:
         void signalCacheMasque();
@@ -62,6 +72,8 @@ signals:
 public slots:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseDoubleClickEvent(QGraphicsSceneEvent *event);
+//    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private slots:
     void on_action_Reinitialiser();

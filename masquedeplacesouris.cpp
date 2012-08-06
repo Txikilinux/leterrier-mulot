@@ -20,11 +20,7 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-
 #include "masquedeplacesouris.h"
-#include <QDebug>
-#include <QMenu>
-#include <QGraphicsSceneContextMenuEvent>
 
 masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     QGraphicsObject(parent)
@@ -33,6 +29,7 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_couleur = QColor(Qt::black);
     m_hideOnMouseOver = false;
     m_hideOnClick = false;
+    m_hideOnDoubleClick = false;
     m_isEditable = false;
     m_numero = numero;
     setAcceptsHoverEvents(true);
@@ -40,8 +37,10 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_menuMasque = new QMenu();
     m_menuMasque->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
     m_menuMasque->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
-
     connect(m_menuMasque, SIGNAL(triggered(QAction *)), this, SLOT(triggered(QAction *)));
+
+    cptClic = 0;
+    QApplication::setDoubleClickInterval(1000);
 }
 
 void masqueDeplaceSouris::setSize(float width, float height)
@@ -62,6 +61,11 @@ void masqueDeplaceSouris::setHideOnMouseOver(bool hide)
 void masqueDeplaceSouris::setHideOnClick(bool hide)
 {
     m_hideOnClick = hide;
+}
+
+void masqueDeplaceSouris::setHideOnDoubleClick(bool hide)
+{
+    m_hideOnDoubleClick = hide;
 }
 
 void masqueDeplaceSouris::setIsEditable(bool isEditable)
@@ -119,6 +123,28 @@ void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
             qDebug() << "Click gauche masque";
             emit signalPoseSurParcours(this);
         }
+        else if (m_hideOnDoubleClick)
+        {
+            if (cptClic == 0)
+            {
+                timerDoubleClic.start();
+                cptClic ++;
+            }
+            else if (cptClic == 1)
+            {
+                if (timerDoubleClic.elapsed() < QApplication::doubleClickInterval() )
+                {
+                    qDebug() << "Double Clic evenement";
+                    event->accept();
+                    setVisible(false);
+                    emit signalCacheMasque();
+
+                    cptClic = 0;
+                }
+                else
+                    cptClic =0;
+            }
+        }
     }
     else if (event->buttons() == Qt::RightButton)
     {
@@ -127,6 +153,19 @@ void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
         {
             m_menuMasque->popup(event->screenPos());
         }
+    }
+}
+
+void masqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
+{
+    qDebug()<< __FUNCTION__;
+
+    if(m_hideOnDoubleClick)
+    {
+        qDebug() << "DOUBLE CLIC";
+        event->accept();
+        setVisible(false);
+        emit signalCacheMasque();
     }
 }
 
