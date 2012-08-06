@@ -26,6 +26,7 @@
 #include "editeur.h"
 #include "exercicesurvol.h"
 #include "exerciceparcours.h"
+#include "exerciceclic.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -63,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
-    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
+//    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
 
     m_theme = "";
@@ -124,6 +125,31 @@ void MainWindow::abeLanceExo(int numero)
         m_exerciceEnCours = true;
         break;
 
+    case 1: // ExerciceClic
+        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Clic";
+    {
+        if (m_theme.isEmpty())
+        {
+            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Clic"),
+                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
+            return;
+        }
+        else
+        {
+            ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_theme);
+            connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+            m_exerciceEnCours = true;
+            setFixedSize(this->width(), this->height()); // redimensionnement interdit
+            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+            connect(c->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+            installEventFilter(c);
+        }
+    }
+        m_exerciceEnCours = true;
+        break;
+
     case 3: //ExerciceParcours
         if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Parcours";
     {
@@ -169,6 +195,11 @@ void MainWindow::on_action_Survol_triggered()
 void MainWindow::on_action_Parcours_triggered()
 {
     abeLanceExo(3);
+}
+
+void MainWindow::on_actionClic_triggered()
+{
+    abeLanceExo(1);
 }
 
 void MainWindow::on_actionEditeur_triggered()
@@ -228,4 +259,5 @@ QString MainWindow::getThemeCourant()
 {
     return m_theme;
 }
+
 
