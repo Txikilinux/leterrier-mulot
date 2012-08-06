@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     editeur.cpp \
     visionneuseimage.cpp \
     exerciceparcours.cpp \
-    exerciceclic.cpp
+    exerciceclic.cpp \
+    exercicedoubleclic.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     editeur.h \
     visionneuseimage.h \
     exerciceparcours.h \
-    exerciceclic.h
+    exerciceclic.h \
+    exercicedoubleclic.h
 
 FORMS    += mainwindow.ui \
     widgetchoixtheme.ui \
