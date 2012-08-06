@@ -33,6 +33,7 @@
 #include <QIcon>
 #include <QLabel>
 #include <QDesktopWidget>
+#include <QFileSystemModel>
 
 #include "abuledufilev1.h"
 #include "visionneuseimage.h"
@@ -54,20 +55,9 @@ public:
 
 private slots:
 
-    // actions menu TreeWidet
-    void on_action_Supprimer_dossier_triggered();
-    void on_treeWidget_customContextMenuRequested(const QPoint &pos);
-    void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
-
-    // actions list Widget
-    void on_action_Supprimer_photo_triggered();
-    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
-
-    // actions list Widget Selection
-    void on_listWidgetSelection_customContextMenuRequested(const QPoint &pos);
-
-    void on_btnImporterDossierImage_clicked();
-    void on_btSelection_clicked();
+    void slotMenuContextuel(const QPoint&);
+    void slotSupprimerImage();
+    void slotResizeColumn(const QModelIndex& index);
     void on_btnCreerTheme_clicked();
 
     // Edition Parcours
@@ -83,18 +73,33 @@ private slots:
 
     QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
 
+    void on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos);
+    void on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item);
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
 
-    QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
+//    QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
     QStringList m_listeDossiers; // la liste des dossiers ouverts
+
+    int opt_nbMasquesChoisisParcours;
+    int opt_nbMasquesLargeur;
+    int opt_nbMasquesHauteur;
+    int m_numeroParcours;
+
+    QMap<QString, QVariant> m_parametresParcours1;
+    QMap<QString, QVariant> m_parametresParcours2;
+    QMap<QString, QVariant> m_parametresParcours3;
+    QMap<QString, QVariant> m_parametresParcours4;
+    QMap<QString, QVariant> m_parametresParcours5;
+
     QDir *m_dir;
     QDir *m_dirAbe;
-    QMenu *m_menuTreeWidget;
-    QMenu *m_menuListWidgetSelection;
     VisionneuseImage *m_visionneuseImage;
 
+    QList<QString> m_listeFichiersImages;      // pour ranger chaque chemin d'images
+    QMenu *m_menuListWidget;   // menu contextuel listWidget
 //---------------Chemin temp
     QString destinationIdUnique;
     QString arborescenceImage;
@@ -102,8 +107,10 @@ private:
     QString arborescenceConf;
     QString cheminConf;
 
-    void rafraichirListeImages(QTreeWidgetItem *item);
-    bool controleDoublonsSelection(QListWidget *listWidget, QString dataItem);
+    //Gestion des images
+    void remplirArborescence();
+    void creationMenu();
+
     bool supprimerDir(const QString& dirPath);
     QStringList parcoursRecursif(QString dossier);
 
@@ -114,20 +121,6 @@ private:
     AbulEduEtiquettesV1 *gv_AireParcours;
     void remplirGvParcours();
     bool controleVoisinMasque(masqueDeplaceSouris *masque);
-    int opt_nbMasquesChoisisParcours;
-    int opt_nbMasquesLargeur;
-    int opt_nbMasquesHauteur;
-    int m_numeroParcours;
-//    QStringList m_parametreParcours1;
-    QMap<QString, QVariant> m_parametresParcours1;
-    QMap<QString, QVariant> m_parametresParcours2;
-    QMap<QString, QVariant> m_parametresParcours3;
-    QMap<QString, QVariant> m_parametresParcours4;
-    QMap<QString, QVariant> m_parametresParcours5;
-    //    int m_nbMasqueParcours; // Pour le menu parcours (desactiver qd on a assez de masques)
-
-
-
 };
 
 #endif // EDITEUR_H
