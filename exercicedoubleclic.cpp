@@ -400,11 +400,11 @@ void ExerciceDoubleClic::slotBilanExerciceEntered() // todo boucle pour les têt
 {
     if (m_localDebug)qDebug()<< "##########################  ExerciceDoubleClic::slotBilanExerciceEntered()";
 
-    gv_AireDeJeu->scene()->removeItem(m_itemImage);
+//    gv_AireDeJeu->scene()->removeItem(m_itemImage);
 
-    gv_AireDeJeu->scene()->clear();
-    gv_AireDeJeu->show();
-    m_listeImage.clear();
+//    gv_AireDeJeu->scene()->clear();
+//    gv_AireDeJeu->show();
+//    m_listeImage.clear();
 
     // Variables locales
     int m_minute;
