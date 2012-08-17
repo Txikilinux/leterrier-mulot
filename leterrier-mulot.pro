@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+system(ccache -V):QMAKE_CXX = ccache g++
 
 TARGET = leterrier-mulot
 TEMPLATE = app
