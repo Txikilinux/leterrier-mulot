@@ -421,7 +421,7 @@ void ExerciceDoubleClic::slotBilanExerciceEntered() // todo boucle pour les têt
     AbulEduCommonStatesV1::slotBilanExerciceEntered();
 
     getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Bilan");
-    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Clic"));
+    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Double Clic"));
 
     debutTableau = "<tr>";
     imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
