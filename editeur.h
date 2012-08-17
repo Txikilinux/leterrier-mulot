@@ -76,6 +76,9 @@ private slots:
     void on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos);
     void on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item);
 
+    void ajouterImage(QFileInfo monFichier);
+    void slotImportImageMediatheque();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -101,6 +104,9 @@ private:
     QList<QString> m_listeFichiersImages;      // pour ranger chaque chemin d'images
     QMenu *m_menuListWidget;   // menu contextuel listWidget
 //---------------Chemin temp
+    AbulEduFileV1 *m_abuledufilev1;
+    QDir *destImage;
+
     QString destinationIdUnique;
     QString arborescenceImage;
     QString cheminImage;
@@ -110,6 +116,7 @@ private:
     //Gestion des images
     void remplirArborescence();
     void creationMenu();
+    void copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination);
 
     bool supprimerDir(const QString& dirPath);
     QStringList parcoursRecursif(QString dossier);

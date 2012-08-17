@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1016</width>
-    <height>535</height>
+    <width>1222</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -75,6 +75,16 @@
             </property>
             <property name="sortingEnabled">
              <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="AbulEduMediathequeGet" name="abuleduMediathequeGet" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>200</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -553,6 +563,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>AbulEduMediathequeGet</class>
+   <extends>QWidget</extends>
+   <header>abuledumediathequeget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

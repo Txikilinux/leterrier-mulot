@@ -28,7 +28,22 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-    //        ui->widget->abeSetSource("data");
+
+    ui->abuleduMediathequeGet->abeSetSource("data");
+    ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
+    ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
+    ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
+
+    // Initialisation des chemins temporaires
+    m_abuledufilev1 = new AbulEduFileV1();
+    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
+    arborescenceImage = QString("data") + QDir::separator() + QString("images");
+    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
+    arborescenceConf = QString("conf");
+    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
+
+    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()));
+
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_localDebug = true;
@@ -49,6 +64,18 @@ Editeur::Editeur(QWidget *parent) :
     m_listeFichiersImages.clear();
 
     remplirArborescence();
+
+    destImage = new QDir(cheminImage); // creation dossier temporaire pour les images
+    if(destImage->mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
+    {
+        if (m_localDebug)
+        {
+            qDebug() << "Creation ok "
+                     << destImage->absolutePath();
+        }
+        else { return; } // si echec pas la peine d'aller plus loin
+    }
+
 }
 
 Editeur::~Editeur()
@@ -137,31 +164,17 @@ void Editeur::slotMenuContextuel(const QPoint&)
     {
         QFileSystemModel *monModel;
         monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
-        QFileInfo *monFichier;
-        monFichier = new QFileInfo(monModel->filePath(listeSelection.at(i)));
+        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
 
-        if (monFichier->isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
+        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
         {
             qDebug() << "c'est un dossier";
         }
-        else if (monFichier->isFile())
+        else if (monFichier.isFile())
         {
-            qDebug() << "Chemin de mon fichier selectionné" << monFichier->absoluteFilePath();
-            if (m_listeFichiersImages.contains(monFichier->absoluteFilePath())) // Controle des insertions (éviter les doublons)
-            {
-                qDebug() << "Fichier deja présent";
-            }
-            else
-            {
-                m_listeFichiersImages << monFichier->absoluteFilePath(); // je range le chemin dans ma liste
-                // Insertion dans mon ListView
-                QListWidgetItem *item = new QListWidgetItem();
-                QIcon icone(monFichier->absoluteFilePath());//pour la mettre  à coté de l'item
-                item->setIcon(icone); // ajout de la petite icone sur l'item
-                item->setText(monFichier->fileName());
-                item->setData(4, monFichier->absoluteFilePath());
-                ui->listWidgetImagesSelection->insertItem(0, item);
-            }
+            /// Factoriser et utiliser pour abulEduMediatheque
+            ajouterImage(monFichier);
+
         }
     }
     selection->clearSelection(); //nettoyage de la selection
@@ -172,6 +185,53 @@ void Editeur::slotMenuContextuel(const QPoint&)
         qDebug() << i <<" "<<m_listeFichiersImages.at(i);
     }
 }
+
+void Editeur::ajouterImage(QFileInfo monFichier)
+{
+    qDebug() << "Chemin de mon fichier selectionné" << monFichier.absoluteFilePath();
+    if (m_listeFichiersImages.contains(monFichier.absoluteFilePath())) // Controle des insertions (éviter les doublons)
+    {
+        qDebug() << "Fichier deja présent";
+    }
+    else
+    {
+        m_listeFichiersImages << monFichier.absoluteFilePath(); // je range le chemin dans ma liste
+        // Insertion dans mon ListView
+        QListWidgetItem *item = new QListWidgetItem();
+        QIcon icone(monFichier.absoluteFilePath());//pour la mettre  à coté de l'item
+        item->setIcon(icone); // ajout de la petite icone sur l'item
+        item->setText(monFichier.fileName());
+        item->setData(4, monFichier.absoluteFilePath());
+        ui->listWidgetImagesSelection->insertItem(0, item);
+        copierImageDansTemp(monFichier, destImage->absolutePath());
+    }
+}
+
+void Editeur::slotImportImageMediatheque()
+{
+    copierImageDansTemp(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0), destImage->absolutePath());
+    ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
+}
+
+void Editeur::copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination)
+{
+//    QFileInfo cheminOriginal(m_listeFichiersImages.at(i));
+    if (m_localDebug) // Affichage chemin originale & destination des images
+    {
+        qDebug() << "Chemin de l'image a copier      " << cheminOriginal.absoluteFilePath();
+        qDebug() << "Chemin ou l'image va etre copiee" << dossierDestination + QDir::separator() + cheminOriginal.fileName();
+    }
+    if( QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()) )
+    {
+        if (m_localDebug) qDebug() << "Copie image ok";
+    }
+    else // Si la copie échoue, pas la peine d'aller plus loin
+    {
+        if (m_localDebug) qDebug() << "Copie impossible";
+        return;
+    }
+}
+
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
 {
@@ -202,14 +262,6 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 void Editeur::on_btnCreerTheme_clicked()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
-
-    AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
-    // Initialisation des chemins temporaires
-    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
-    arborescenceImage = QString("data") + QDir::separator() + QString("images");
-    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
-    arborescenceConf = QString("conf");
-    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
 
     //    qDebug() << "destinationIdUnique " << destinationIdUnique;
     //    qDebug() << "arborescenceImage " << arborescenceImage;
@@ -244,40 +296,13 @@ void Editeur::on_btnCreerTheme_clicked()
     m_dirAbe = new QDir();
     m_dirAbe->setPath(destAbe);
 
-    QDir destDir(cheminImage); // creation dossier temporaire pour les images
-    if(destDir.mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
-    {
-        if (m_localDebug)
-        {
-            qDebug() << "Creation ok "
-                     << destDir.absolutePath();
-        }
-        else { return; } // si echec pas la peine d'aller plus loin
 
-        /// Copie des images selectionnées dans le fichier temporaire
-        for (int i = 0; i < m_listeFichiersImages.count(); i++)
-        {
-            QFileInfo originale(m_listeFichiersImages.at(i));
-            if (m_localDebug) // Affichage chemin originale & destination des images
-            {
-                qDebug() << "Chemin de l'image a copier      " << originale.absoluteFilePath();
-                qDebug() << "Chemin ou l'image va etre copiee" << destDir.absolutePath() + QDir::separator() + originale.fileName();
-            }
-            if( QFile::copy(originale.absoluteFilePath(), destDir.absolutePath() + QDir::separator() + originale.fileName()) )
-            {
-                if (m_localDebug) qDebug() << "Copie image ok";
-            }
-            else // Si la copie échoue, pas la peine d'aller plus loin
-            {
-                if (m_localDebug) qDebug() << "Copie impossible";
-                return;
-            }
-        }
-        ui->listWidgetImagesSelection->clear();
+    /// TTTTTTT
+    ui->listWidgetImagesSelection->clear();
+    /// TTTTTTT
 
-
-        if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
-    }
+    if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
+    //    }
 
     /// Aller chercher le fichier conf
     QDir confDir(cheminConf);//creation dossier temporaire pour .ini
