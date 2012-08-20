@@ -116,7 +116,7 @@ private:
     //Gestion des images
     void remplirArborescence();
     void creationMenu();
-    void copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination);
+    bool copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination);
 
     bool supprimerDir(const QString& dirPath);
     QStringList parcoursRecursif(QString dossier);

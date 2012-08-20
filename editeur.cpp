@@ -70,8 +70,7 @@ Editeur::Editeur(QWidget *parent) :
     {
         if (m_localDebug)
         {
-            qDebug() << "Creation ok "
-                     << destImage->absolutePath();
+            qDebug() << "Creation ok : " << destImage->absolutePath();
         }
         else { return; } // si echec pas la peine d'aller plus loin
     }
@@ -172,12 +171,11 @@ void Editeur::slotMenuContextuel(const QPoint&)
         }
         else if (monFichier.isFile())
         {
-            /// Factoriser et utiliser pour abulEduMediatheque
             ajouterImage(monFichier);
-
         }
     }
     selection->clearSelection(); //nettoyage de la selection
+
     /// QDebug de ma liste
     qDebug() << "Ma liste d'Images en sortie";
     for (int i = 0; i < m_listeFichiersImages.count(); i++)
@@ -186,50 +184,57 @@ void Editeur::slotMenuContextuel(const QPoint&)
     }
 }
 
-void Editeur::ajouterImage(QFileInfo monFichier)
+void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant de mediathequeGet
 {
-    qDebug() << "Chemin de mon fichier selectionné" << monFichier.absoluteFilePath();
-    if (m_listeFichiersImages.contains(monFichier.absoluteFilePath())) // Controle des insertions (éviter les doublons)
+    qDebug() << "ajouterImage -> Chemin du fichier selectionné : " << monFichier.absoluteFilePath() <<" Nom du fichier : " << monFichier.fileName();
+
+    if (m_listeFichiersImages.contains(monFichier.fileName())) // Controle des insertions (éviter les doublons)
     {
         qDebug() << "Fichier deja présent";
     }
     else
     {
-        m_listeFichiersImages << monFichier.absoluteFilePath(); // je range le chemin dans ma liste
         // Insertion dans mon ListView
-        QListWidgetItem *item = new QListWidgetItem();
-        QIcon icone(monFichier.absoluteFilePath());//pour la mettre  à coté de l'item
-        item->setIcon(icone); // ajout de la petite icone sur l'item
-        item->setText(monFichier.fileName());
-        item->setData(4, monFichier.absoluteFilePath());
-        ui->listWidgetImagesSelection->insertItem(0, item);
-        copierImageDansTemp(monFichier, destImage->absolutePath());
+
+
+        if(copierImageDansTemp(monFichier, destImage->absolutePath())) // Si cette fonction a fonctionnée
+        {
+            m_listeFichiersImages << destImage->absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
+            // Insertion dans mon listWidget
+            QListWidgetItem *item = new QListWidgetItem();
+            QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+            item->setIcon(icone); // ajout de la petite icone sur l'item
+            item->setText(monFichier.fileName());
+            item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+            ui->listWidgetImagesSelection->insertItem(0, item);
+        }
     }
 }
 
 void Editeur::slotImportImageMediatheque()
 {
-    copierImageDansTemp(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0), destImage->absolutePath());
+    //    copierImageDansTemp(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0), destImage->absolutePath());
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
 }
 
-void Editeur::copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination)
+bool Editeur::copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination)
 {
-//    QFileInfo cheminOriginal(m_listeFichiersImages.at(i));
     if (m_localDebug) // Affichage chemin originale & destination des images
     {
         qDebug() << "Chemin de l'image a copier      " << cheminOriginal.absoluteFilePath();
         qDebug() << "Chemin ou l'image va etre copiee" << dossierDestination + QDir::separator() + cheminOriginal.fileName();
     }
-    if( QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()) )
+    if(QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()))
     {
         if (m_localDebug) qDebug() << "Copie image ok";
+        return true;
     }
     else // Si la copie échoue, pas la peine d'aller plus loin
     {
         if (m_localDebug) qDebug() << "Copie impossible";
-        return;
+        return false;
     }
+    return false;
 }
 
 
