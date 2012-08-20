@@ -132,6 +132,7 @@ void Editeur::creationMenu()
 void Editeur::slotResizeColumn(const QModelIndex& index)
 {
     ui->treeViewArborescence->resizeColumnToContents(index.column());
+    ui->treeViewArborescence->model()->sort(0, Qt::AscendingOrder);
 }
 
 void Editeur::slotSupprimerImage()// Test OK
