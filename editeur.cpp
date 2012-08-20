@@ -45,6 +45,7 @@ Editeur::Editeur(QWidget *parent) :
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()));
 
     setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_ShowModal);
 
     m_localDebug = true;
 
@@ -137,15 +138,33 @@ void Editeur::slotSupprimerImage()// Test OK
 {
     if (m_listeFichiersImages.isEmpty()) // condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =)
     {return;}
+
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()) // Garde
     { return;}
+
+    qDebug() << "Suppression ItemImage -> liste images avant : ";
+    for (int i = 0; i < m_listeFichiersImages.count(); i++)
+    {
+        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+    }
+
     for (int i = 0; i < ui->listWidgetImagesSelection->selectedItems().count(); i++)// Suppression de ma liste d'images
     {
         m_listeFichiersImages.removeOne(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString());
+        // suppression du fichier image dans temp
+        if (QFile::remove(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString()))
+            qDebug() << "suppression image du fichier temp ok";
     }
+
     foreach(QListWidgetItem *i, ui->listWidgetImagesSelection->selectedItems())// Suppression des items selectionné
     {
         delete i;
+    }
+
+    qDebug() << "Suppression ItemImage -> liste images apres : ";
+    for (int i = 0; i < m_listeFichiersImages.count(); i++)
+    {
+        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
     }
 }
 
@@ -194,9 +213,6 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
     }
     else
     {
-        // Insertion dans mon ListView
-
-
         if(copierImageDansTemp(monFichier, destImage->absolutePath())) // Si cette fonction a fonctionnée
         {
             m_listeFichiersImages << destImage->absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
