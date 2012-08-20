@@ -559,24 +559,30 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
         }
         else if ( m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
         {
-            masque->setColor(QColor(Qt::red));
-            masque->setProperty("Role", trUtf8("Arrivee"));
-            masque->update();
-            m_listeMasquesParcours << masque;
-            // S'il y a des masques de couleur grise... les remettre en blanc
-            foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+
+            if (listeVoisins.contains(masque->getNumero())) // Si le numero de ce masque est contenu ds mas liste de voisins = Ok
             {
-                if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
+                masque->setColor(QColor(Qt::red));
+                masque->setProperty("Role", trUtf8("Arrivee"));
+                masque->update();
+                m_listeMasquesParcours << masque;
+                // S'il y a des masques de couleur grise... les remettre en blanc
+                foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
                 {
-                    var_masque->setColor(QColor(Qt::white));
+                    if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
+                    {
+                        var_masque->setColor(QColor(Qt::white));
+                        var_masque->update();
+                    }
+                }
+                // Et j'active le menu Sauvegarder
+                foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+                {
+                    var_masque->setMenuSauvegarderEnabled(true);
                     var_masque->update();
                 }
-            }
-            // Et j'active le menu Sauvegarder
-            foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-            {
-                var_masque->setMenuSauvegarderEnabled(true);
-                var_masque->update();
+
             }
         }
     } // Fin si mon masque n'a pas de role = creation de masque
