@@ -123,37 +123,31 @@
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QGroupBox" name="groupBoxDoubleClic">
+      <widget class="QGroupBox" name="groupBoxSurvol">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
          <height>150</height>
         </size>
        </property>
-       <property name="baseSize">
-        <size>
-         <width>0</width>
-         <height>0</height>
-        </size>
-       </property>
        <property name="title">
-        <string>Double-Clic</string>
+        <string>Survol</string>
        </property>
-       <layout class="QGridLayout" name="gridLayout_3">
+       <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
-         <layout class="QFormLayout" name="formLayoutDoubleClic">
+         <layout class="QFormLayout" name="formLayoutSurvol">
           <property name="fieldGrowthPolicy">
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="0" column="0">
-           <widget class="QLabel" name="labelDoubleClicSuivant">
+           <widget class="QLabel" name="labelSurvolSuivant">
             <property name="text">
              <string>TImer Suivant</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxDoubleClicSuivant">
+           <widget class="QSpinBox" name="spinBoxSurvolSuivant">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -163,23 +157,20 @@
             <property name="suffix">
              <string>s</string>
             </property>
-            <property name="maximum">
-             <number>99</number>
-            </property>
             <property name="value">
              <number>7</number>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="labelDoubleClicNbMasques">
+           <widget class="QLabel" name="labelSurvolNbMasques">
             <property name="text">
              <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
+           <widget class="QSpinBox" name="spinBoxSurvolMasque">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -268,31 +259,37 @@
       </widget>
      </item>
      <item>
-      <widget class="QGroupBox" name="groupBoxSurvol">
+      <widget class="QGroupBox" name="groupBoxDoubleClic">
        <property name="maximumSize">
         <size>
          <width>16777215</width>
          <height>150</height>
         </size>
        </property>
-       <property name="title">
-        <string>Survol</string>
+       <property name="baseSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
        </property>
-       <layout class="QGridLayout" name="gridLayout_5">
+       <property name="title">
+        <string>Double-Clic</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <layout class="QFormLayout" name="formLayoutSurvol">
+         <layout class="QFormLayout" name="formLayoutDoubleClic">
           <property name="fieldGrowthPolicy">
            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
           </property>
           <item row="0" column="0">
-           <widget class="QLabel" name="labelSurvolSuivant">
+           <widget class="QLabel" name="labelDoubleClicSuivant">
             <property name="text">
              <string>TImer Suivant</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolSuivant">
+           <widget class="QSpinBox" name="spinBoxDoubleClicSuivant">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -302,20 +299,23 @@
             <property name="suffix">
              <string>s</string>
             </property>
+            <property name="maximum">
+             <number>99</number>
+            </property>
             <property name="value">
              <number>7</number>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="labelSurvolNbMasques">
+           <widget class="QLabel" name="labelDoubleClicNbMasques">
             <property name="text">
              <string>Nombre Masques</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="spinBoxSurvolMasque">
+           <widget class="QSpinBox" name="spinBoxDoubleClicMasque">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
               <horstretch>0</horstretch>
