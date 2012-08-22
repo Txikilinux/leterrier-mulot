@@ -59,15 +59,8 @@
     <addaction name="actionClic"/>
     <addaction name="action_Double_Clic"/>
    </widget>
-   <widget class="QMenu" name="menuChoix_Th_mes">
-    <property name="title">
-     <string>&amp;Choix Thème</string>
-    </property>
-    <addaction name="actionDefinirTheme"/>
-   </widget>
    <addaction name="menu_Fichier"/>
    <addaction name="menuExercice"/>
-   <addaction name="menuChoix_Th_mes"/>
   </widget>
   <action name="action_Quitter">
    <property name="text">
@@ -91,14 +84,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+1</string>
-   </property>
-  </action>
-  <action name="actionDefinirTheme">
-   <property name="text">
-    <string>&amp;Définir le thème</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+7</string>
    </property>
   </action>
   <action name="action_Parcours">

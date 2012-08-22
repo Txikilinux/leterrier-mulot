@@ -28,6 +28,7 @@
 #include "exerciceparcours.h"
 #include "exerciceclic.h"
 #include "exercicedoubleclic.h"
+#include "abuleduboxfilemanagerv1.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -42,9 +43,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
-    //    m_widgetChoixTheme = new widgetChoixTheme(ui->centralWidget);
-    //    m_widgetChoixTheme->show();
-
     //Mettez ce qu'il faut en fonction de votre menu d'accueil
     m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol ..."));
@@ -53,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_texteBulles.insert(3, trUtf8("Parcours ..."));
     m_texteBulles.insert(4, trUtf8("Double clic..."));
 
-    QSettings *m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
+    m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
     m_abuleduaccueil = new AbulEduPageAccueilV1(m_config, &m_texteBulles, ui->fr_principale);
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)));
 
@@ -65,10 +63,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
-//    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
+    //    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
 
-    m_theme = "";
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
+
+    m_abuleduFile = new AbulEduFileV1(this);
+    m_numberExoCalled = -1;
+    m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
+    if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -80,126 +84,122 @@ MainWindow::~MainWindow()
 {
     if (m_localDebug) qDebug() << "##########################  MainWindow::~MainWindow()";
     delete ui;
+    delete m_config;
+    //    cleanDirectory(m_tempDir->absolutePath(),m_tempDir->absolutePath());
+    //    bool exitSucceded = QDir().rmdir(m_tempDir->absolutePath());
+    //    if (m_localDebug) qDebug()<<"Destruction du repertoire temporaire reussie : "<<exitSucceded;
+}
+
+void MainWindow::slotOpenFile()
+{
+    if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+    m_abuleduFile = m_abuleduFileManager->abeGetFile();
+    m_abuleduFileManager->hide();
+    abeAiguillage();
 }
 
 void MainWindow::slotDemo()
 {
-//    qDebug() << " On passe en mode démo ...";
+    //    qDebug() << " On passe en mode démo ...";
+}
+
+void MainWindow::on_action_Ouvrir_triggered()
+{
+    btnBoxClicked();
+}
+
+void MainWindow::btnBoxClicked()
+{
+    if (m_localDebug) qDebug()<<"Bouton Box Clicked";
+    m_abuleduFileManager->abeSetFile(m_abuleduFile);
+    m_abuleduFileManager->show();
 }
 
 void MainWindow::abeLanceExo(int numero)
 {
-    //si un exercice est en cours -> on ignore
-    if(m_exerciceEnCours)
+    if(m_exerciceEnCours){return;}
+
+    m_numberExoCalled = numero;
+    if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty())
     {
+        on_action_Ouvrir_triggered();
         return;
     }
+    else
+        abeAiguillage();
+}
 
-    // todo histoire des modules !
-    setWindowTitle(abeApp->getAbeApplicationLongName()+"--"+m_texteBulles[numero]);
+void MainWindow::abeAiguillage()
+{
+    setFixedSize(this->width(), this->height());
+    setWindowTitle(abeApp->getAbeApplicationLongName() +" -- "+m_texteBulles[m_numberExoCalled]);
+    ui->statusBar->showMessage(trUtf8(" Nom du fichier .abe selectionné : ")+ m_abuleduFile->abeFileGetFileName().fileName());
     show();
 
-    switch (numero)
+    switch (m_numberExoCalled)
     {
-    case 0: // ExerciceSurvol
-        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Survol";
+    case 0:
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
     {
-        if (m_theme.isEmpty())
-        {
-            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Survol"),
-                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
-            return;
-        }
-        else
-        {
-            ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_theme);
-            connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-            m_exerciceEnCours = true;
-            setFixedSize(this->width(), this->height()); // redimensionnement interdit
-            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-            connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
-            installEventFilter(s);
-        }
+        ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+        m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_exerciceEnCours = true;
+        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+        connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+        installEventFilter(s);
+    }
+        m_exerciceEnCours = true;
+        break;
+    case 1:
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Clic";
+    {
+        ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+        m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_exerciceEnCours = true;
+        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+        connect(c->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+        installEventFilter(c);
+    }
+        m_exerciceEnCours = true;
+        break;
+    case 3:
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Parcours";
+    {
+        ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+        m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_exerciceEnCours = true;
+        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+        connect(p->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+        installEventFilter(p);
+    }
+        m_exerciceEnCours = true;
+        break;
+    case 4:
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
+    {
+        ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
+        m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_exerciceEnCours = true;
+        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
+        connect(d->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
+        installEventFilter(d);
     }
         m_exerciceEnCours = true;
         break;
 
-    case 1: // ExerciceClic
-        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Clic";
-    {
-        if (m_theme.isEmpty())
-        {
-            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Clic"),
-                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
-            return;
-        }
-        else
-        {
-            ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_theme);
-            connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-            m_exerciceEnCours = true;
-            setFixedSize(this->width(), this->height()); // redimensionnement interdit
-            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-            connect(c->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
-            installEventFilter(c);
-        }
-    }
-        m_exerciceEnCours = true;
-        break;
 
-    case 3: //ExerciceParcours
-        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" Parcours";
-    {
-        if (m_theme.isEmpty())
-        {
-            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Parcours"),
-                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
-            return;
-        }
-        else
-        {
-            ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_theme);
-            connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-            m_exerciceEnCours = true;
-            setFixedSize(this->width(), this->height()); // redimensionnement interdit
-            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-            connect(p->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
-            installEventFilter(p);
-        }
-    }
-        m_exerciceEnCours = true;
-        break;
-
-    case 4: //ExerciceDoubleClic
-        if (m_localDebug) qDebug()<<"Exercice No :"<< numero<<" DoubleClic";
-    {
-        if (m_theme.isEmpty())
-        {
-            QMessageBox::critical(this,trUtf8("Lancement de l'Exercice Parcours"),
-                                  trUtf8("Veuillez selectionner un thème avant de lancer un exercice\n menu Choix Thème ou Editeur"),0,0);
-            return;
-        }
-        else
-        {
-            ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_theme);
-            connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()));
-            m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-            m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
-            m_exerciceEnCours = true;
-            setFixedSize(this->width(), this->height()); // redimensionnement interdit
-            // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-            connect(d->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
-            installEventFilter(d);
-        }
-    }
-        m_exerciceEnCours = true;
-        break;
     }
 }
 
@@ -247,46 +247,46 @@ void MainWindow::on_actionEditeur_triggered()
     }
 }
 
-void MainWindow::on_actionDefinirTheme_triggered()
-{
-    if (!m_exerciceEnCours)
-    {
-        // Aller chercher un .abe
-        QString destinationIdUnique;
-        QFileInfo fichierAbe = QFileDialog::getOpenFileName(this, "Ouvrir un .abe", QString(), "Abe(*.abe)");
+//void MainWindow::on_actionDefinirTheme_triggered()
+//{
+//    if (!m_exerciceEnCours)
+//    {
+//        // Aller chercher un .abe
+//        QString destinationIdUnique;
+//        QFileInfo fichierAbe = QFileDialog::getOpenFileName(this, "Ouvrir un .abe", QString(), "Abe(*.abe)");
 
-        if (fichierAbe.absolutePath().isEmpty()) // dossier est nul, donc pas la peine d'aller plus loin
-        {
-            if (m_localDebug) qDebug() << "Appui sur le bouton annuler";
-            return;
-        }
-        else
-        {
-            if (m_localDebug) qDebug() << fichierAbe.absolutePath();
-        }
-        // Ok j'ai le chemin de mon .abe
+//        if (fichierAbe.absolutePath().isEmpty()) // dossier est nul, donc pas la peine d'aller plus loin
+//        {
+//            if (m_localDebug) qDebug() << "Appui sur le bouton annuler";
+//            return;
+//        }
+//        else
+//        {
+//            if (m_localDebug) qDebug() << fichierAbe.absolutePath();
+//        }
+//        // Ok j'ai le chemin de mon .abe
 
-        // Le dezipper dans un fichier temp
-        AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
-        destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
+//        // Le dezipper dans un fichier temp
+//        AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
+//        destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
 
-        QDir *temp = new QDir(destinationIdUnique);
-        if (m_localDebug) qDebug() << destinationIdUnique;
+//        QDir *temp = new QDir(destinationIdUnique);
+//        if (m_localDebug) qDebug() << destinationIdUnique;
 
-        m_abuledufilev1->abeFileOpen(fichierAbe.absoluteFilePath(),temp);
+//        m_abuledufilev1->abeFileOpen(fichierAbe.absoluteFilePath(),temp);
 
-        m_theme = destinationIdUnique;
+//        m_theme = destinationIdUnique;
 
-        // Petit message =)
-        QMessageBox::information(this,trUtf8("Choix thème"), trUtf8("Le thème est ") + QString("<strong>"+fichierAbe.fileName()+"</strong>") ,0,0);
-    }
-    else
-    {
-        QMessageBox::critical(this,trUtf8("Choix thème"), trUtf8("Veuillez quitter l'exercice avant de choisir un thème"),0,0);
-    }
-}
+//        // Petit message =)
+//        QMessageBox::information(this,trUtf8("Choix thème"), trUtf8("Le thème est ") + QString("<strong>"+fichierAbe.fileName()+"</strong>") ,0,0);
+//    }
+//    else
+//    {
+//        QMessageBox::critical(this,trUtf8("Choix thème"), trUtf8("Veuillez quitter l'exercice avant de choisir un thème"),0,0);
+//    }
+//}
 
-QString MainWindow::getThemeCourant()
-{
-    return m_theme;
-}
+//QString MainWindow::getThemeCourant()
+//{
+//    return m_theme;
+//}

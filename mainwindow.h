@@ -26,9 +26,10 @@
 
 #include <QDesktopWidget>
 #include <QMainWindow>
-#include "widgetchoixtheme.h"
 #include "abuledupageaccueilv1.h"
 #include "abuledufilev1.h"
+#include "abuleduboxfilemanagerv1.h"
+
 
 namespace Ui {
     class MainWindow;
@@ -43,7 +44,7 @@ public:
     void resizeEvent(QResizeEvent *);
     ~MainWindow();
 
-    QString getThemeCourant();
+//    QString getThemeCourant();
 
 public slots:
     void slotDemo();
@@ -54,24 +55,33 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    widgetChoixTheme *m_widgetChoixTheme;
+//    widgetChoixTheme *m_widgetChoixTheme;
     AbulEduPageAccueilV1 *m_abuleduaccueil;
     QMap<int, QString>m_texteBulles;
     // booléen qui indique si un exercice est en cours (cf abeLanceExo)
     bool m_exerciceEnCours;
 
     bool m_localDebug;
-    QString m_theme; // le path du theme choisi
+//    QString m_theme; // le path du theme choisi
+    QSettings *m_config;
+    AbulEduFileV1 *m_abuleduFile;
+    AbulEduBoxFileManagerV1 *m_abuleduFileManager;
+    QDir *m_tempDir;
+    int m_numberExoCalled;
+    void abeAiguillage();
 
 private slots:
     void abeLanceExo(int numero);
     void exerciceExited();
 
     void on_actionEditeur_triggered();
-    void on_actionDefinirTheme_triggered();
     void on_action_Parcours_triggered();
     void on_actionClic_triggered();
     void on_action_Double_Clic_triggered();
+    void on_action_Ouvrir_triggered();
+    void btnBoxClicked();
+
+    void slotOpenFile();
 };
 
 #endif // MAINWINDOW_H
