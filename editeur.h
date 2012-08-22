@@ -55,7 +55,7 @@ public:
 
 private slots:
 
-    void slotMenuContextuel(const QPoint&);
+//    void slotMenuContextuel(const QPoint&);
     void slotSupprimerImage();
     void slotResizeColumn(const QModelIndex& index);
     void on_btnCreerTheme_clicked();
@@ -78,6 +78,8 @@ private slots:
 
     void ajouterImage(QFileInfo monFichier);
     void slotImportImageMediatheque();
+
+    void on_treeViewArborescence_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::Editeur *ui;

@@ -98,7 +98,7 @@ void Editeur::remplirArborescence()
     model->setNameFilters(filters); //Filtrage des photos
 
     connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
-    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
+//    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
 
     ui->treeViewArborescence->hideColumn(1);
     ui->treeViewArborescence->hideColumn(2);
@@ -169,40 +169,40 @@ void Editeur::slotSupprimerImage()// Test OK
     }
 }
 
-/** Ce slot appelle le menu contextuel seulement si des fichiers sont selectionnés
-  * et que ces fichiers soient des images
-  */
-void Editeur::slotMenuContextuel(const QPoint&)
-{
-    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
-    QModelIndexList listeSelection;
-    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
+///** Ce slot appelle le menu contextuel seulement si des fichiers sont selectionnés
+//  * et que ces fichiers soient des images
+//  */
+//void Editeur::slotMenuContextuel(const QPoint&)
+//{
+//    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
+//    QModelIndexList listeSelection;
+//    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
 
-    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
-    for (int i = 0; i < listeSelection.count(); i++)
-    {
-        QFileSystemModel *monModel;
-        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
-        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
+//    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
+//    for (int i = 0; i < listeSelection.count(); i++)
+//    {
+//        QFileSystemModel *monModel;
+//        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
+//        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
 
-        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
-        {
-            qDebug() << "c'est un dossier";
-        }
-        else if (monFichier.isFile())
-        {
-            ajouterImage(monFichier);
-        }
-    }
-    selection->clearSelection(); //nettoyage de la selection
+//        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
+//        {
+//            qDebug() << "c'est un dossier";
+//        }
+//        else if (monFichier.isFile())
+//        {
+//            ajouterImage(monFichier);
+//        }
+//    }
+//    selection->clearSelection(); //nettoyage de la selection
 
-    /// QDebug de ma liste
-    qDebug() << "Ma liste d'Images en sortie";
-    for (int i = 0; i < m_listeFichiersImages.count(); i++)
-    {
-        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
-    }
-}
+//    /// QDebug de ma liste
+//    qDebug() << "Ma liste d'Images en sortie";
+//    for (int i = 0; i < m_listeFichiersImages.count(); i++)
+//    {
+//        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+//    }
+//}
 
 void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant de mediathequeGet
 {
@@ -961,4 +961,37 @@ void Editeur::on_btnParcours5_clicked()
 
     remplirGvParcours();
     gv_AireParcours->show();
+}
+
+void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
+{
+    qDebug() << "DOUBLE CLIC";
+    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
+    QModelIndexList listeSelection;
+    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
+
+    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
+    for (int i = 0; i < listeSelection.count(); i++)
+    {
+        QFileSystemModel *monModel;
+        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
+        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
+
+        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
+        {
+            qDebug() << "c'est un dossier";
+        }
+        else if (monFichier.isFile())
+        {
+            ajouterImage(monFichier);
+        }
+    }
+    selection->clearSelection(); //nettoyage de la selection
+
+    /// QDebug de ma liste
+    qDebug() << "Ma liste d'Images en sortie";
+    for (int i = 0; i < m_listeFichiersImages.count(); i++)
+    {
+        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+    }
 }
