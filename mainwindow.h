@@ -44,8 +44,6 @@ public:
     void resizeEvent(QResizeEvent *);
     ~MainWindow();
 
-//    QString getThemeCourant();
-
 public slots:
     void slotDemo();
 
@@ -55,15 +53,14 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-//    widgetChoixTheme *m_widgetChoixTheme;
     AbulEduPageAccueilV1 *m_abuleduaccueil;
-    QMap<int, QString>m_texteBulles;
-    // booléen qui indique si un exercice est en cours (cf abeLanceExo)
-    bool m_exerciceEnCours;
+    QMap<int, QString> m_texteBulles;
 
+    bool m_exerciceEnCours;
     bool m_localDebug;
-//    QString m_theme; // le path du theme choisi
+
     QSettings *m_config;
+
     AbulEduFileV1 *m_abuleduFile;
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
     QDir *m_tempDir;
@@ -79,8 +76,8 @@ private slots:
     void on_actionClic_triggered();
     void on_action_Double_Clic_triggered();
     void on_action_Ouvrir_triggered();
-    void btnBoxClicked();
 
+    void btnBoxClicked();
     void slotOpenFile();
 };
 

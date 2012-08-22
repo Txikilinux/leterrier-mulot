@@ -198,8 +198,6 @@ void MainWindow::abeAiguillage()
     }
         m_exerciceEnCours = true;
         break;
-
-
     }
 }
 
@@ -218,14 +216,14 @@ void MainWindow::on_action_Survol_triggered()
     abeLanceExo(0);
 }
 
-void MainWindow::on_action_Parcours_triggered()
-{
-    abeLanceExo(3);
-}
-
 void MainWindow::on_actionClic_triggered()
 {
     abeLanceExo(1);
+}
+
+void MainWindow::on_action_Parcours_triggered()
+{
+    abeLanceExo(3);
 }
 
 void MainWindow::on_action_Double_Clic_triggered()
@@ -246,47 +244,3 @@ void MainWindow::on_actionEditeur_triggered()
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
 }
-
-//void MainWindow::on_actionDefinirTheme_triggered()
-//{
-//    if (!m_exerciceEnCours)
-//    {
-//        // Aller chercher un .abe
-//        QString destinationIdUnique;
-//        QFileInfo fichierAbe = QFileDialog::getOpenFileName(this, "Ouvrir un .abe", QString(), "Abe(*.abe)");
-
-//        if (fichierAbe.absolutePath().isEmpty()) // dossier est nul, donc pas la peine d'aller plus loin
-//        {
-//            if (m_localDebug) qDebug() << "Appui sur le bouton annuler";
-//            return;
-//        }
-//        else
-//        {
-//            if (m_localDebug) qDebug() << fichierAbe.absolutePath();
-//        }
-//        // Ok j'ai le chemin de mon .abe
-
-//        // Le dezipper dans un fichier temp
-//        AbulEduFileV1 *m_abuledufilev1 = new AbulEduFileV1();
-//        destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
-
-//        QDir *temp = new QDir(destinationIdUnique);
-//        if (m_localDebug) qDebug() << destinationIdUnique;
-
-//        m_abuledufilev1->abeFileOpen(fichierAbe.absoluteFilePath(),temp);
-
-//        m_theme = destinationIdUnique;
-
-//        // Petit message =)
-//        QMessageBox::information(this,trUtf8("Choix thème"), trUtf8("Le thème est ") + QString("<strong>"+fichierAbe.fileName()+"</strong>") ,0,0);
-//    }
-//    else
-//    {
-//        QMessageBox::critical(this,trUtf8("Choix thème"), trUtf8("Veuillez quitter l'exercice avant de choisir un thème"),0,0);
-//    }
-//}
-
-//QString MainWindow::getThemeCourant()
-//{
-//    return m_theme;
-//}
