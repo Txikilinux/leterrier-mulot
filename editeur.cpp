@@ -1028,6 +1028,10 @@ void Editeur::majBarreNavigation(int numPage)
         {
             ui->btnSuivant->setText(trUtf8("Terminer"));
         }
+        else if (numPage !=3)
+        {
+            ui->btnSuivant->setText(trUtf8("Suivant"));
+        }
     }
 
 }
