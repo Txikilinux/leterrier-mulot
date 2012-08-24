@@ -76,6 +76,8 @@ Editeur::Editeur(QWidget *parent) :
         else { return; } // si echec pas la peine d'aller plus loin
     }
 
+    connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
+    majBarreNavigation(0);
 }
 
 Editeur::~Editeur()
@@ -89,6 +91,7 @@ void Editeur::remplirArborescence()
     QFileSystemModel *model = new QFileSystemModel;
     model->setRootPath(QDir::homePath());
 
+
     QStringList filters;
     QDir dir;
     filters << "*.jpg" << "*.bmp"<< "*.png" << "*.svg"; //Choix des extensions
@@ -100,6 +103,7 @@ void Editeur::remplirArborescence()
     connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
 //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
 
+    ui->treeViewArborescence->setHeaderHidden(true);
     ui->treeViewArborescence->hideColumn(1);
     ui->treeViewArborescence->hideColumn(2);
     ui->treeViewArborescence->hideColumn(3);
@@ -994,4 +998,43 @@ void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
     {
         qDebug() << i <<" "<<m_listeFichiersImages.at(i);
     }
+}
+
+void Editeur::on_btnPrecedent_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() - 1);
+}
+
+void Editeur::on_btnSuivant_clicked()
+{
+    ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
+}
+
+
+void Editeur::majBarreNavigation(int numPage)
+{
+    qDebug() << "Index de la page courante" << ui->stackedWidget->currentIndex();
+
+    if (numPage == 0) // page d'accueil
+    {
+        // On cache le bouton précèdent
+        ui->btnPrecedent->setVisible(false);
+    }
+    else if(numPage != 0)
+    {
+        ui->btnPrecedent->setVisible(true);
+
+        if (numPage == 3) // derniere page
+        {
+            ui->btnSuivant->setText(trUtf8("Terminer"));
+        }
+    }
+
+}
+
+void Editeur::on_btnQuitter_clicked()
+{
+    qDebug() << __PRETTY_FUNCTION__ ;
+    // Controle que l'utilisateur veut quitter sans sauvegarder
+    this->close();
 }

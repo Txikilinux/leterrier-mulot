@@ -81,6 +81,15 @@ private slots:
 
     void on_treeViewArborescence_doubleClicked(const QModelIndex &index);
 
+
+    void on_btnPrecedent_clicked();
+
+    void on_btnSuivant_clicked();
+
+    void majBarreNavigation(int numPage);
+
+    void on_btnQuitter_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;

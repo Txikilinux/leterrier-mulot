@@ -237,7 +237,8 @@ void MainWindow::on_actionEditeur_triggered()
     {
         Editeur *monEditeur = new Editeur(this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
-        monEditeur->showMaximized();
+//        monEditeur->showMaximized();
+        monEditeur->show();
     }
     else // On affiche un petit message...
     {
