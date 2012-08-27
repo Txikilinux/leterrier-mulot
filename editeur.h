@@ -39,6 +39,8 @@
 #include "visionneuseimage.h"
 #include "masquedeplacesouris.h"
 #include "abuleduetiquettesv1.h"
+#include "abuleduboxfilemanagerv1.h"
+
 
 
 namespace Ui {
@@ -55,7 +57,6 @@ public:
 
 private slots:
 
-//    void slotMenuContextuel(const QPoint&);
     void slotSupprimerImage();
     void slotResizeColumn(const QModelIndex& index);
     void on_btnCreerTheme_clicked();
@@ -83,12 +84,14 @@ private slots:
 
 
     void on_btnPrecedent_clicked();
-
     void on_btnSuivant_clicked();
-
     void majBarreNavigation(int numPage);
-
     void on_btnQuitter_clicked();
+
+    void on_btnCreationAbe_clicked();
+
+    void on_btnModificationAbe_clicked();
+    void slotOpenFile();
 
 private:
     Ui::Editeur *ui;
@@ -117,6 +120,7 @@ private:
 //---------------Chemin temp
     AbulEduFileV1 *m_abuledufilev1;
     QDir *destImage;
+    QDir *destImageABE;
 
     QString destinationIdUnique;
     QString arborescenceImage;
@@ -139,6 +143,21 @@ private:
     AbulEduEtiquettesV1 *gv_AireParcours;
     void remplirGvParcours();
     bool controleVoisinMasque(masqueDeplaceSouris *masque);
+
+    // Mode d'édition
+    bool modeModificationAbe; // ce booleen permet de definir si on est en creation ou en modification d'un .abe
+    void setModeModificationAbe(bool yesNo);
+    AbulEduBoxFileManagerV1 *m_abuleduFileManager;
+    void initCheminTemp();
+
+    void dropEvent(QDropEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
+//    void dragLeaveEvent(QDragLeaveEvent *event);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *ev);
+
 };
 
 #endif // EDITEUR_H

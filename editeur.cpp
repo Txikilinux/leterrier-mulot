@@ -34,13 +34,6 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
 
-    // Initialisation des chemins temporaires
-    m_abuledufilev1 = new AbulEduFileV1();
-    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
-    arborescenceImage = QString("data") + QDir::separator() + QString("images");
-    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
-    arborescenceConf = QString("conf");
-    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()));
 
@@ -66,6 +59,28 @@ Editeur::Editeur(QWidget *parent) :
 
     remplirArborescence();
 
+    connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
+
+    ui->stackedWidget->setCurrentIndex(0);
+    majBarreNavigation(0);
+
+    ui->listWidgetImagesSelection->installEventFilter(this);
+    setAcceptDrops(true);
+}
+
+void Editeur::initCheminTemp()
+{
+    // Initialisation des chemins temporaires Mode Création
+    m_abuledufilev1 = new AbulEduFileV1();
+    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
+    qDebug() << destinationIdUnique;
+    arborescenceImage = QString("data") + QDir::separator() + QString("images");
+    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
+    arborescenceConf = QString("conf");
+    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
+
+    qDebug() << "Dossier Temporaire de l'Editeur (doit etre celui de la MWindow" << m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
+
     destImage = new QDir(cheminImage); // creation dossier temporaire pour les images
     if(destImage->mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
     {
@@ -75,9 +90,6 @@ Editeur::Editeur(QWidget *parent) :
         }
         else { return; } // si echec pas la peine d'aller plus loin
     }
-
-    connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
-    majBarreNavigation(0);
 }
 
 Editeur::~Editeur()
@@ -101,7 +113,7 @@ void Editeur::remplirArborescence()
     model->setNameFilters(filters); //Filtrage des photos
 
     connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
-//    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
+    //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
 
     ui->treeViewArborescence->setHeaderHidden(true);
     ui->treeViewArborescence->hideColumn(1);
@@ -173,41 +185,6 @@ void Editeur::slotSupprimerImage()// Test OK
     }
 }
 
-///** Ce slot appelle le menu contextuel seulement si des fichiers sont selectionnés
-//  * et que ces fichiers soient des images
-//  */
-//void Editeur::slotMenuContextuel(const QPoint&)
-//{
-//    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
-//    QModelIndexList listeSelection;
-//    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
-
-//    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
-//    for (int i = 0; i < listeSelection.count(); i++)
-//    {
-//        QFileSystemModel *monModel;
-//        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
-//        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
-
-//        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
-//        {
-//            qDebug() << "c'est un dossier";
-//        }
-//        else if (monFichier.isFile())
-//        {
-//            ajouterImage(monFichier);
-//        }
-//    }
-//    selection->clearSelection(); //nettoyage de la selection
-
-//    /// QDebug de ma liste
-//    qDebug() << "Ma liste d'Images en sortie";
-//    for (int i = 0; i < m_listeFichiersImages.count(); i++)
-//    {
-//        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
-//    }
-//}
-
 void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant de mediathequeGet
 {
     qDebug() << "ajouterImage -> Chemin du fichier selectionné : " << monFichier.absoluteFilePath() <<" Nom du fichier : " << monFichier.fileName();
@@ -232,9 +209,7 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
     }
 }
 
-void Editeur::slotImportImageMediatheque()
-{
-    //    copierImageDansTemp(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0), destImage->absolutePath());
+void Editeur::slotImportImageMediatheque(){
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
 }
 
@@ -258,7 +233,6 @@ bool Editeur::copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDesti
     return false;
 }
 
-
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
 {
     if (ui->listWidgetImagesSelection->itemAt(pos) != NULL) // j'ai un item à cet endroit, j'appelle mon menu
@@ -271,8 +245,7 @@ void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoi
     }
 }
 
-void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item)
-{
+void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item){
     if (m_localDebug) qDebug() << "##########################  Editeur::on_listWidget_itemDoubleClicked(QListWidgetItem *item)";
 
     item = ui->listWidgetImagesSelection->currentItem();
@@ -486,6 +459,11 @@ QStringList Editeur::parcoursRecursif(QString dossier)
     }
     return resultat;
 }
+
+
+/// **********************************************************************************************************************************************************
+///                             PARCOURS
+/// **********************************************************************************************************************************************************
 
 void Editeur::remplirGvParcours()
 {
@@ -1000,6 +978,96 @@ void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
     }
 }
 
+
+/// **********************************************************************************************************************************************************
+///                             GESTION MODE MODIFIER ABE
+/// **********************************************************************************************************************************************************
+
+/** TODO : Gestion des chemins lors d'une modification abe
+    Focus OK
+    Problème de récupération du chemin de dezippage de l'abe choisi getFile ne renvoie pas le bon -> OK
+  */
+void Editeur::setModeModificationAbe(bool yesNo)
+{
+    modeModificationAbe = yesNo;
+}
+
+void Editeur::on_btnCreationAbe_clicked()
+{
+    m_listeDossiers.clear();
+    m_listeFichiersImages.clear();
+    m_listeMasquesParcours.clear();
+    m_listeMasques.clear();
+    ui->listWidgetImagesSelection->clear();
+    initCheminTemp();
+
+    qDebug() << trUtf8("Mode Création sélectionné");
+    setModeModificationAbe(false);
+    qDebug() << modeModificationAbe;
+
+
+
+    ui->btnSuivant->click(); // Clic sur le bouton suivant
+}
+
+void Editeur::on_btnModificationAbe_clicked()
+{
+    m_listeDossiers.clear();
+    m_listeFichiersImages.clear();
+    m_listeMasquesParcours.clear();
+    m_listeMasques.clear();
+    ui->listWidgetImagesSelection->clear();
+    initCheminTemp();
+
+    qDebug() << trUtf8("Mode Modification sélectionné");
+    setModeModificationAbe(true);
+    qDebug() << modeModificationAbe;
+
+    //Récupération de l'abe à modifier
+    m_abuledufilev1 = new AbulEduFileV1();
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    m_abuleduFileManager->abeSetFile(m_abuledufilev1);
+
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
+    m_abuleduFileManager->show();
+
+    ui->btnSuivant->click(); // Clic sur le bouton suivant
+}
+
+void Editeur::slotOpenFile()
+{
+    if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+    m_abuledufilev1 = m_abuleduFileManager->abeGetFile();
+
+    qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
+    m_abuleduFileManager->hide();
+
+    destImageABE = new QDir(m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + arborescenceImage) ;
+
+    qDebug() << "CHEMIN IMAGE " << destImageABE->absolutePath();
+    // Jusqu'ici ok pour les images
+
+    /// OK
+    // Copier les images dans un dossier temporaire
+    // les mettre dans le listeWidget de Selection
+    //    destImageABE->setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    //    QFileInfoList list = destImageABE->entryInfoList();
+    //    for(int i = 0; i < list.count(); i++)
+    //    {
+    //        qDebug() << "Liste du dossier image " << QString::number(i)+" "+ list.at(i).absoluteFilePath();
+    //        ajouterImage(list.at(i));
+    //    }
+
+    /// Autre approche -> copier tous le dossier dezipper dans le fichier temporaire
+
+
+}
+
+
+/// **********************************************************************************************************************************************************
+///                             WIDGET BARRE NAVIGATION
+/// **********************************************************************************************************************************************************
+
 void Editeur::on_btnPrecedent_clicked()
 {
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() - 1);
@@ -1010,6 +1078,12 @@ void Editeur::on_btnSuivant_clicked()
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
+void Editeur::on_btnQuitter_clicked()
+{
+    qDebug() << __PRETTY_FUNCTION__ ;
+    // Controle que l'utilisateur veut quitter sans sauvegarder
+    this->close();
+}
 
 void Editeur::majBarreNavigation(int numPage)
 {
@@ -1019,10 +1093,12 @@ void Editeur::majBarreNavigation(int numPage)
     {
         // On cache le bouton précèdent
         ui->btnPrecedent->setVisible(false);
+        ui->btnSuivant->setVisible(false);
     }
     else if(numPage != 0)
     {
         ui->btnPrecedent->setVisible(true);
+        ui->btnSuivant->setVisible(true);
 
         if (numPage == 3) // derniere page
         {
@@ -1036,9 +1112,61 @@ void Editeur::majBarreNavigation(int numPage)
 
 }
 
-void Editeur::on_btnQuitter_clicked()
+void Editeur::dropEvent(QDropEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__ ;
-    // Controle que l'utilisateur veut quitter sans sauvegarder
-    this->close();
+    event->setDropAction(Qt::MoveAction);
+    event->accept();
+
+    qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
+
+
+}
+
+void Editeur::dragEnterEvent(QDragEnterEvent *event)
+{
+    qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
+    event->accept();
+
+//    if (event->mimeData()->hasImage())
+//        event->acceptProposedAction();
+
+//    if (obj->objectName() == ui->listWidgetImagesSelection->objectName())
+//    {
+//        qDebug() << "OK";
+//    }
+}
+
+bool Editeur::eventFilter(QObject *obj, QEvent *ev)
+{
+    //    qDebug() << "** " << ev->type();
+
+    QDragEnterEvent *event = static_cast<QDragEnterEvent*>(ev);
+    if(event->type() == QEvent::Drop /*&& obj == ui->listWidgetImagesSelection*/) {
+        qDebug() << "======ENTER ======================";
+        qDebug() << obj->objectName();
+        qDebug() << "============================";
+//        event->accept();
+
+    }
+    //    if(ev->type() == QEvent::DragLeave && obj == ui->listWidgetImagesSelection) {
+    //        qDebug() << "============DROP ================";
+    //        qDebug() << obj->objectName();
+    //        qDebug() << "============================";
+    //        QDropEvent *event = static_cast<QDropEvent*>(ev);
+    //        event->acceptProposedAction();
+    //    }
+    //    if(ev->type() == MouseEvent::MouseButtonRelease)
+    //    {
+    //        qDebug() << "QMouseEvent::Release";
+    //    }
+}
+
+void Editeur::mouseReleaseEvent(QMouseEvent *event)
+{
+    qDebug() << __FUNCTION__;
+
+//    if(event->DragLeave)
+//    {
+//        qDebug() << "DRAG";
+//    }
 }
