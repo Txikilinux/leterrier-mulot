@@ -128,8 +128,11 @@ p, li { white-space: pre-wrap; }
           </item>
           <item row="1" column="0">
            <widget class="QToolBox" name="toolBox">
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="page_1">
              <property name="geometry">
@@ -140,6 +143,10 @@ p, li { white-space: pre-wrap; }
                <height>375</height>
               </rect>
              </property>
+             <attribute name="icon">
+              <iconset>
+               <normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2686.svg</normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2686.svg</iconset>
+             </attribute>
              <attribute name="label">
               <string>Disque Local</string>
              </attribute>
@@ -189,6 +196,10 @@ p, li { white-space: pre-wrap; }
                <height>375</height>
               </rect>
              </property>
+             <attribute name="icon">
+              <iconset>
+               <normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2786.svg</normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2786.svg</iconset>
+             </attribute>
              <attribute name="label">
               <string>Mediatheque</string>
              </attribute>
