@@ -73,6 +73,17 @@ MainWindow::MainWindow(QWidget *parent) :
     m_numberExoCalled = -1;
     m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
     if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
+
+    qDebug() << "demarrage du thread";
+    rechercheImagesSurPC(QDir::homePath());
+}
+
+void MainWindow::rechercheImagesSurPC(QString dossierDepart)
+{
+    m_threadRecherche = new Thread(dossierDepart);
+//    toto->start(QThread::IdlePriority); // idle = qd aucun autre thread ne tourne
+    m_threadRecherche->start(QThread::HighPriority);   // ça va bcp plus vite
+    QObject::connect(m_threadRecherche, SIGNAL(finished()), m_threadRecherche, SLOT(slotFinished()));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)

@@ -1,16 +1,18 @@
 #include "thread.h"
 
+
 Thread::Thread(QString cheminRecherche, QObject *parent) :
     QThread(parent)
 {
     m_cheminRecherche = cheminRecherche;
+//    m_listeFichiers.clear();
 }
 
 void Thread::run()
 {
     qDebug() << "Demarrage de la recherche d'images....";
 
-    QStringList listeFichiers;
+//    QStringList listeFichiers;
 
     QString sPath = m_cheminRecherche;  //"/"; /*QDir::homePath()*/;
     QStringList nameFilters;
@@ -25,7 +27,7 @@ void Thread::run()
 
         if(!it.fileInfo().isDir())
         {
-            listeFichiers << it.filePath();
+            m_listeFichiers << it.filePath();
 
 //            QListWidgetItem *item = new QListWidgetItem();
 
@@ -42,5 +44,9 @@ void Thread::run()
 void Thread::slotFinished()
 {
     qDebug() << "Thread fini";
+}
 
+QStringList Thread::getListeFichiers()
+{
+    return m_listeFichiers;
 }

@@ -11,11 +11,14 @@ class Thread : public QThread
     Q_OBJECT
 public:
     explicit Thread(QString cheminRecherche, QObject *parent = 0);
-    
+
+    QStringList getListeFichiers();
+
 private:
     virtual void run();
 
     QString m_cheminRecherche;
+    QStringList m_listeFichiers;
 
 signals:
     

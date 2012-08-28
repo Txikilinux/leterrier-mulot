@@ -21,6 +21,7 @@
 
 #include "editeur.h"
 #include "ui_editeur.h"
+#include "thread.h"
 
 
 /// **********************************************************************************************************************************************************
@@ -63,7 +64,7 @@ Editeur::Editeur(QWidget *parent) :
 
     m_listeFichiersImages.clear();
 
-//    remplirArborescence();
+    remplirArborescence();
 
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
 
@@ -145,6 +146,12 @@ void Editeur::remplirArborescence()
 //    ThreadRechercheImage *toto;
 //    toto = new ThreadRechercheImage();
 //    toto->run(ui->listWidgetImagesSelection);
+//    QStringList listeFichiersThread;
+
+//    if (toto->getListeFichiers().count() < 0)
+//    {
+//        qDebug() << "OK pour la liste";
+//    }
 
 }
 

@@ -29,7 +29,7 @@
 #include "abuledupageaccueilv1.h"
 #include "abuledufilev1.h"
 #include "abuleduboxfilemanagerv1.h"
-
+#include "thread.h"
 
 namespace Ui {
     class MainWindow;
@@ -66,6 +66,9 @@ private:
     QDir *m_tempDir;
     int m_numberExoCalled;
     void abeAiguillage();
+
+    void rechercheImagesSurPC(QString dossierDepart);
+    Thread *m_threadRecherche;
 
 private slots:
     void abeLanceExo(int numero);
