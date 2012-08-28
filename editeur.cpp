@@ -66,6 +66,10 @@ Editeur::Editeur(QWidget *parent) :
 
     ui->listWidgetImagesSelection->installEventFilter(this);
     setAcceptDrops(true);
+
+    //    ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
+    ui->abuleduMediathequeGet->abeHideInfoPanel(true);
+    ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGet::abeMediathequeThumbnails);
 }
 
 void Editeur::initCheminTemp()
@@ -1114,6 +1118,10 @@ void Editeur::majBarreNavigation(int numPage)
 
 void Editeur::dropEvent(QDropEvent *event)
 {
+    if(ui->listWidgetImagesSelection->geometry().contains(event->pos()))
+    {
+                ui->abuleduMediathequeGet->abeStartDownload();
+    }
     event->setDropAction(Qt::MoveAction);
     event->accept();
 
@@ -1127,13 +1135,13 @@ void Editeur::dragEnterEvent(QDragEnterEvent *event)
     qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
     event->accept();
 
-//    if (event->mimeData()->hasImage())
-//        event->acceptProposedAction();
+    //    if (event->mimeData()->hasImage())
+    //        event->acceptProposedAction();
 
-//    if (obj->objectName() == ui->listWidgetImagesSelection->objectName())
-//    {
-//        qDebug() << "OK";
-//    }
+    //    if (obj->objectName() == ui->listWidgetImagesSelection->objectName())
+    //    {
+    //        qDebug() << "OK";
+    //    }
 }
 
 bool Editeur::eventFilter(QObject *obj, QEvent *ev)
@@ -1145,7 +1153,7 @@ bool Editeur::eventFilter(QObject *obj, QEvent *ev)
         qDebug() << "======ENTER ======================";
         qDebug() << obj->objectName();
         qDebug() << "============================";
-//        event->accept();
+        //        event->accept();
 
     }
     //    if(ev->type() == QEvent::DragLeave && obj == ui->listWidgetImagesSelection) {
@@ -1165,8 +1173,8 @@ void Editeur::mouseReleaseEvent(QMouseEvent *event)
 {
     qDebug() << __FUNCTION__;
 
-//    if(event->DragLeave)
-//    {
-//        qDebug() << "DRAG";
-//    }
+    //    if(event->DragLeave)
+    //    {
+    //        qDebug() << "DRAG";
+    //    }
 }
