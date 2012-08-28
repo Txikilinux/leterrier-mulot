@@ -1124,11 +1124,11 @@ void Editeur::majBarreNavigation(int numPage)
 
         if (numPage == 3) // derniere page
         {
-            ui->btnSuivant->setText(trUtf8("Terminer"));
+//            ui->btnSuivant->setText(trUtf8("Terminer"));
         }
         else if (numPage !=3)
         {
-            ui->btnSuivant->setText(trUtf8("Suivant"));
+//            ui->btnSuivant->setText(trUtf8("Suivant"));
         }
     }
 

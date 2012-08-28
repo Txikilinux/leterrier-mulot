@@ -132,7 +132,7 @@ p, li { white-space: pre-wrap; }
              <enum>QFrame::NoFrame</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="page_1">
              <property name="geometry">
@@ -140,12 +140,12 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>763</width>
-               <height>375</height>
+               <height>344</height>
               </rect>
              </property>
              <attribute name="icon">
-              <iconset>
-               <normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2686.svg</normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2686.svg</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/bouton/disque</normaloff>:/bouton/disque</iconset>
              </attribute>
              <attribute name="label">
               <string>Disque Local</string>
@@ -193,12 +193,12 @@ p, li { white-space: pre-wrap; }
                <x>0</x>
                <y>0</y>
                <width>763</width>
-               <height>375</height>
+               <height>344</height>
               </rect>
              </property>
              <attribute name="icon">
-              <iconset>
-               <normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2786.svg</normaloff>../../../../utilisateurs/icham.sirat/Images/NounPro/noun_project_2786.svg</iconset>
+              <iconset resource="ressources.qrc">
+               <normaloff>:/bouton/cloud</normaloff>:/bouton/cloud</iconset>
              </attribute>
              <attribute name="label">
               <string>Mediatheque</string>
@@ -718,7 +718,17 @@ p, li { white-space: pre-wrap; }
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
-         <string>Quitter</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ressources.qrc">
+          <normaloff>:/bouton/quitter</normaloff>:/bouton/quitter</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>48</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -741,7 +751,17 @@ p, li { white-space: pre-wrap; }
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
-         <string>Précédent</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ressources.qrc">
+          <normaloff>:/bouton/flecheG</normaloff>:/bouton/flecheG</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>48</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -751,7 +771,17 @@ p, li { white-space: pre-wrap; }
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="text">
-         <string>Suivant</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="ressources.qrc">
+          <normaloff>:/bouton/flecheD</normaloff>:/bouton/flecheD</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>48</width>
+          <height>48</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -768,6 +798,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
  <connections/>
 </ui>

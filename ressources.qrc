@@ -1,5 +1,10 @@
 <RCC>
     <qresource prefix="/bouton">
         <file alias="pause">data/picto/pause.png</file>
+        <file alias="cloud">data/picto/cloud.svg</file>
+        <file alias="disque">data/picto/disque.svg</file>
+        <file alias="flecheD">data/picto/flecheD.svg</file>
+        <file alias="flecheG">data/picto/flecheG.svg</file>
+        <file alias="quitter">data/picto/quitter.svg</file>
     </qresource>
 </RCC>
