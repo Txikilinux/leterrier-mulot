@@ -23,6 +23,12 @@
 #include "ui_editeur.h"
 
 
+/// **********************************************************************************************************************************************************
+///                                             EDITEUR
+///
+/// **********************************************************************************************************************************************************
+
+
 Editeur::Editeur(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editeur)
@@ -57,7 +63,7 @@ Editeur::Editeur(QWidget *parent) :
 
     m_listeFichiersImages.clear();
 
-    remplirArborescence();
+//    remplirArborescence();
 
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
 
@@ -102,34 +108,44 @@ Editeur::~Editeur()
     delete ui;
 }
 
+
 void Editeur::remplirArborescence()
 {
-    QFileSystemModel *model = new QFileSystemModel;
-    model->setRootPath(QDir::homePath());
+
+    /// Ce qui marche est commenté
+    //    QFileSystemModel *model = new QFileSystemModel;
+    //    model->setRootPath(QDir::homePath());
 
 
-    QStringList filters;
-    QDir dir;
-    filters << "*.jpg" << "*.bmp"<< "*.png" << "*.svg"; //Choix des extensions
-    dir.setNameFilters(filters);
+    //    QStringList filters;
+    //    QDir dir;
+    //    filters << "*.jpg" << "*.bmp"<< "*.png" << "*.svg"; //Choix des extensions
+    //    dir.setNameFilters(filters);
 
-    ui->treeViewArborescence->setModel(model);
-    model->setNameFilters(filters); //Filtrage des photos
+    //    ui->treeViewArborescence->setModel(model);
+    //    model->setNameFilters(filters); //Filtrage des photos
 
-    connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
-    //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
+    //    connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
+    //    //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
 
-    ui->treeViewArborescence->setHeaderHidden(true);
-    ui->treeViewArborescence->hideColumn(1);
-    ui->treeViewArborescence->hideColumn(2);
-    ui->treeViewArborescence->hideColumn(3);
+    //    ui->treeViewArborescence->setHeaderHidden(true);
+    //    ui->treeViewArborescence->hideColumn(1);
+    //    ui->treeViewArborescence->hideColumn(2);
+    //    ui->treeViewArborescence->hideColumn(3);
 
-    ui->treeViewArborescence->setUniformRowHeights(true); // met toutes les lignes à la meme taille, ce qui permet d'optimiser le temps de réponse (ne recalcule pas la taille de chaque ligne)
-    ui->treeViewArborescence->setAnimated(true);          // a mettre a false pour les petites configurations (hein JLF !)
-    ui->treeViewArborescence->setSortingEnabled(true);
-    ui->listWidgetImagesSelection->setIconSize(QSize(50, 50));
+    //    ui->treeViewArborescence->setUniformRowHeights(true); // met toutes les lignes à la meme taille, ce qui permet d'optimiser le temps de réponse (ne recalcule pas la taille de chaque ligne)
+    //    ui->treeViewArborescence->setAnimated(true);          // a mettre a false pour les petites configurations (hein JLF !)
+    //    ui->treeViewArborescence->setSortingEnabled(true);
+    //    ui->listWidgetImagesSelection->setIconSize(QSize(50, 50));
 
-    creationMenu();
+    //    creationMenu();
+
+    /// Tentative d'une nouvelle facon
+
+//    ThreadRechercheImage *toto;
+//    toto = new ThreadRechercheImage();
+//    toto->run(ui->listWidgetImagesSelection);
+
 }
 
 void Editeur::creationMenu()
@@ -998,6 +1014,8 @@ void Editeur::setModeModificationAbe(bool yesNo)
 
 void Editeur::on_btnCreationAbe_clicked()
 {
+//    remplirArborescence();
+
     m_listeDossiers.clear();
     m_listeFichiersImages.clear();
     m_listeMasquesParcours.clear();
@@ -1116,17 +1134,33 @@ void Editeur::majBarreNavigation(int numPage)
 
 }
 
+/// **********************************************************************************************************************************************************
+///                             GESTION DRAG & DROP
+/// **********************************************************************************************************************************************************
+
 void Editeur::dropEvent(QDropEvent *event)
 {
-    if(ui->listWidgetImagesSelection->geometry().contains(event->pos()))
-    {
-                ui->abuleduMediathequeGet->abeStartDownload();
-    }
-    event->setDropAction(Qt::MoveAction);
-    event->accept();
+
 
     qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
 
+    if (event->source()->objectName() == "treeViewArborescence" && ui->listWidgetImagesSelection->geometry().contains(event->pos()))
+    {
+        qDebug() << "SOURCE == treeViewArbo";
+        // Controle que c'est bien une image
+        if(event->mimeData()->hasImage())
+        {
+            qDebug() << "C'est une image";
+        }
+    }
+    else if(event->source()->objectName() == "lwSimple" && ui->listWidgetImagesSelection->geometry().contains(event->pos()))
+    {
+        qDebug() << "SOURCE == mediathequeGet";
+
+        ui->abuleduMediathequeGet->abeStartDownload();
+        event->setDropAction(Qt::MoveAction);
+        event->accept();
+    }
 
 }
 
@@ -1144,37 +1178,27 @@ void Editeur::dragEnterEvent(QDragEnterEvent *event)
     //    }
 }
 
-bool Editeur::eventFilter(QObject *obj, QEvent *ev)
-{
-    //    qDebug() << "** " << ev->type();
+//bool Editeur::eventFilter(QObject *obj, QEvent *ev)
+//{
+//    //    qDebug() << "** " << ev->type();
 
-    QDragEnterEvent *event = static_cast<QDragEnterEvent*>(ev);
-    if(event->type() == QEvent::Drop /*&& obj == ui->listWidgetImagesSelection*/) {
-        qDebug() << "======ENTER ======================";
-        qDebug() << obj->objectName();
-        qDebug() << "============================";
-        //        event->accept();
+//    QDragEnterEvent *event = static_cast<QDragEnterEvent*>(ev);
+//    if(event->type() == QEvent::Drop /*&& obj == ui->listWidgetImagesSelection*/) {
+//        qDebug() << "======ENTER ======================";
+//        qDebug() << obj->objectName();
+//        qDebug() << "============================";
+//        //        event->accept();
 
-    }
-    //    if(ev->type() == QEvent::DragLeave && obj == ui->listWidgetImagesSelection) {
-    //        qDebug() << "============DROP ================";
-    //        qDebug() << obj->objectName();
-    //        qDebug() << "============================";
-    //        QDropEvent *event = static_cast<QDropEvent*>(ev);
-    //        event->acceptProposedAction();
-    //    }
-    //    if(ev->type() == MouseEvent::MouseButtonRelease)
-    //    {
-    //        qDebug() << "QMouseEvent::Release";
-    //    }
-}
-
-void Editeur::mouseReleaseEvent(QMouseEvent *event)
-{
-    qDebug() << __FUNCTION__;
-
-    //    if(event->DragLeave)
-    //    {
-    //        qDebug() << "DRAG";
-    //    }
-}
+//    }
+//    if(ev->type() == QEvent::DragLeave && obj == ui->listWidgetImagesSelection) {
+//        qDebug() << "============DROP ================";
+//        qDebug() << obj->objectName();
+//        qDebug() << "============================";
+//        QDropEvent *event = static_cast<QDropEvent*>(ev);
+//        event->acceptProposedAction();
+//    }
+//    if(ev->type() == MouseEvent::MouseButtonRelease)
+//    {
+//        qDebug() << "QMouseEvent::Release";
+//    }
+//}

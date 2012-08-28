@@ -151,12 +151,10 @@ private:
     void initCheminTemp();
 
     void dropEvent(QDropEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
-//    void dragLeaveEvent(QDragLeaveEvent *event);
 
-protected:
-    bool eventFilter(QObject *obj, QEvent *ev);
+//protected:
+//    bool eventFilter(QObject *obj, QEvent *ev);
 
 };
 

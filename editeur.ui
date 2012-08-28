@@ -129,7 +129,7 @@ p, li { white-space: pre-wrap; }
           <item row="1" column="0">
            <widget class="QToolBox" name="toolBox">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="page_1">
              <property name="geometry">
@@ -144,7 +144,7 @@ p, li { white-space: pre-wrap; }
               <string>Disque Local</string>
              </attribute>
              <layout class="QGridLayout" name="gridLayout">
-              <item row="0" column="0">
+              <item row="1" column="0">
                <widget class="QTreeView" name="treeViewArborescence">
                 <property name="minimumSize">
                  <size>
@@ -157,6 +157,9 @@ p, li { white-space: pre-wrap; }
                 </property>
                 <property name="autoScroll">
                  <bool>false</bool>
+                </property>
+                <property name="dragEnabled">
+                 <bool>true</bool>
                 </property>
                 <property name="selectionMode">
                  <enum>QAbstractItemView::ExtendedSelection</enum>
@@ -171,6 +174,9 @@ p, li { white-space: pre-wrap; }
                  <bool>true</bool>
                 </property>
                </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QListWidget" name="listWidgetImage"/>
               </item>
              </layout>
             </widget>
