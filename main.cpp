@@ -23,6 +23,7 @@
 #include "activityfilter.h"
 #include "version.h"
 #include "mainwindow.h"
+#include "thread.h"
 
 int main(int argc, char *argv[])
 {
@@ -74,5 +75,12 @@ int main(int argc, char *argv[])
 
     w->show();
 
+    qDebug() << "demarrage du thread";
+
+    Thread *toto;
+    toto = new Thread(QDir::homePath());
+//    toto->start(QThread::IdlePriority); // idle = qd aucun autre thread ne tourne
+    toto->start(QThread::HighPriority);   // ça va bcp plus vite
+    QObject::connect(toto, SIGNAL(finished()), toto, SLOT(slotFinished()));
     return a.exec();
 }

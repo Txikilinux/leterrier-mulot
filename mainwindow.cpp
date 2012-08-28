@@ -245,3 +245,4 @@ void MainWindow::on_actionEditeur_triggered()
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
 }
+
