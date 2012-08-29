@@ -30,12 +30,28 @@
 /// **********************************************************************************************************************************************************
 
 
-Editeur::Editeur(QWidget *parent) :
+Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
+    //    threadRechercheImage->moveToThread(m_threadRechercheImages);
 
+    //     m_threadRechercheImages->moveToThread(QApplication::instance()->thread());
+    //    m_threadRechercheImages->moveToThread(threadRechercheImage);
+    m_threadRechercheImages = threadRechercheImage;
+    connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
+    /// Cela fonctionne, mais si l'éditeur est appelé et que le thread est fini, on a pas de signal =)
+    /// autre test
+    //        connect(m_threadRechercheImages, SIGNAL(terminated()), this, SLOT(testThread())); //Ca marche pas
+
+
+
+    if(m_threadRechercheImages->isRechercheTerminee())
+    {
+        qDebug() << "RECHERCHE TERMINE";
+        testThread();
+    }
     ui->abuleduMediathequeGet->abeSetSource("data");
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
@@ -61,22 +77,30 @@ Editeur::Editeur(QWidget *parent) :
     m_parametresParcours3.clear();
     m_parametresParcours4.clear();
     m_parametresParcours5.clear();
-
     m_listeFichiersImages.clear();
-
-    remplirArborescence();
 
     connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
 
     ui->stackedWidget->setCurrentIndex(0);
     majBarreNavigation(0);
+    remplirArborescence();
 
-    ui->listWidgetImagesSelection->installEventFilter(this);
+    //    ui->listWidgetImagesSelection->installEventFilter(this);
     setAcceptDrops(true);
 
     //    ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGet::abeMediathequeThumbnails);
+
+    creationMenu();
+
+    // Affichage de la mediatheque par defaut
+    ui->toolBoxImages->setCurrentWidget(ui->pageMediatheque);
+
+    //    ui->listWidgetImage->setVisible(false);
+    ui->treeViewArborescence->setVisible(false);
+    //    ui->pageDisqueLocal->setVisible(false);
+
 }
 
 void Editeur::initCheminTemp()
@@ -143,15 +167,15 @@ void Editeur::remplirArborescence()
 
     /// Tentative d'une nouvelle facon
 
-//    ThreadRechercheImage *toto;
-//    toto = new ThreadRechercheImage();
-//    toto->run(ui->listWidgetImagesSelection);
-//    QStringList listeFichiersThread;
+    //    ThreadRechercheImage *toto;
+    //    toto = new ThreadRechercheImage();
+    //    toto->run(ui->listWidgetImagesSelection);
+    //    QStringList listeFichiersThread;
 
-//    if (toto->getListeFichiers().count() < 0)
-//    {
-//        qDebug() << "OK pour la liste";
-//    }
+    //    if (toto->getListeFichiers().count() < 0)
+    //    {
+    //        qDebug() << "OK pour la liste";
+    //    }
 
 }
 
@@ -1011,8 +1035,8 @@ void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
 /// **********************************************************************************************************************************************************
 
 /** TODO : Gestion des chemins lors d'une modification abe
-    Focus OK
-    Problème de récupération du chemin de dezippage de l'abe choisi getFile ne renvoie pas le bon -> OK
+  * Focus OK
+  * Problème de récupération du chemin de dezippage de l'abe choisi getFile ne renvoie pas le bon -> OK
   */
 void Editeur::setModeModificationAbe(bool yesNo)
 {
@@ -1021,7 +1045,7 @@ void Editeur::setModeModificationAbe(bool yesNo)
 
 void Editeur::on_btnCreationAbe_clicked()
 {
-//    remplirArborescence();
+    //    remplirArborescence();
 
     m_listeDossiers.clear();
     m_listeFichiersImages.clear();
@@ -1033,8 +1057,6 @@ void Editeur::on_btnCreationAbe_clicked()
     qDebug() << trUtf8("Mode Création sélectionné");
     setModeModificationAbe(false);
     qDebug() << modeModificationAbe;
-
-
 
     ui->btnSuivant->click(); // Clic sur le bouton suivant
 }
@@ -1063,6 +1085,9 @@ void Editeur::on_btnModificationAbe_clicked()
     ui->btnSuivant->click(); // Clic sur le bouton suivant
 }
 
+/** Lors de la modification d'un .abe, permet de le choisir et de faire ce qui faut en conséquence
+  * C'est encore en construction...
+  */
 void Editeur::slotOpenFile()
 {
     if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
@@ -1088,8 +1113,44 @@ void Editeur::slotOpenFile()
     //    }
 
     /// Autre approche -> copier tous le dossier dezipper dans le fichier temporaire
+    /// TODO -> Comment rassembler des fichiers LOMFr et tout ce qui suit ?
 
+}
 
+void Editeur::testThread()
+{
+    qDebug() << __PRETTY_FUNCTION__ << " L'editeur vient de voir que la recherche est terminé";
+    // Recupération de la liste des fichiers listee par le thread
+    qDebug() << ui->listWidgetImage->item(0)->text();
+    ui->listWidgetImage->removeItemWidget(ui->listWidgetImage->item(0));
+    ui->listWidgetImage->item(0)->setText("OK");
+    QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
+    qDebug() << m_fichiersImagesLocales.count();
+
+//    Thread *toto;
+//    toto = new Thread("",0,1,ui->listWidgetImage,m_fichiersImagesLocales);
+//    toto->start(QThread::HighPriority);
+    ui->listWidgetImage->show();
+
+    for (int i =0; i < 500/*m_fichiersImagesLocales.count()*/; i++)
+    {
+        QListWidgetItem *item = new QListWidgetItem();
+        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
+        item->setIcon(icone); // ajout de la petite icone sur l'item
+        item->setText(m_fichiersImagesLocales.at(i));
+//        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+        ui->listWidgetImage->insertItem(0, item);
+        ui->listWidgetImage->show();
+    }
+
+//    ui->listWidgetImage->show();
+    qDebug() << "Item Terminer";
+//    QListWidgetItem *item = new QListWidgetItem();
+//    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+//    item->setIcon(icone); // ajout de la petite icone sur l'item
+//    item->setText(monFichier.fileName());
+//    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+//    ui->listWidgetImagesSelection->insertItem(0, item);
 }
 
 
@@ -1131,11 +1192,11 @@ void Editeur::majBarreNavigation(int numPage)
 
         if (numPage == 3) // derniere page
         {
-//            ui->btnSuivant->setText(trUtf8("Terminer"));
+            //            ui->btnSuivant->setText(trUtf8("Terminer"));
         }
         else if (numPage !=3)
         {
-//            ui->btnSuivant->setText(trUtf8("Suivant"));
+            //            ui->btnSuivant->setText(trUtf8("Suivant"));
         }
     }
 

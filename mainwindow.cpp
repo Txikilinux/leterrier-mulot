@@ -246,7 +246,7 @@ void MainWindow::on_actionEditeur_triggered()
 {
     if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
     {
-        Editeur *monEditeur = new Editeur(this);
+        Editeur *monEditeur = new Editeur(m_threadRecherche, this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
 //        monEditeur->showMaximized();
         monEditeur->show();

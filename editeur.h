@@ -40,6 +40,7 @@
 #include "masquedeplacesouris.h"
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
+#include "thread.h"
 
 
 
@@ -52,7 +53,7 @@ class Editeur : public QDialog
     Q_OBJECT
     
 public:
-    explicit Editeur(QWidget *parent = 0);
+    explicit Editeur(Thread *threadRechercheImage, QWidget *parent = 0);
     ~Editeur();
 
 private slots:
@@ -92,6 +93,8 @@ private slots:
 
     void on_btnModificationAbe_clicked();
     void slotOpenFile();
+
+    void testThread();
 
 private:
     Ui::Editeur *ui;
@@ -152,6 +155,10 @@ private:
 
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
+
+    Thread *m_threadRechercheImages;
+
+
 
 //protected:
 //    bool eventFilter(QObject *obj, QEvent *ev);
