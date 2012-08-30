@@ -22,6 +22,8 @@
 #include "editeur.h"
 #include "ui_editeur.h"
 #include "thread.h"
+#include "QImageReader"
+
 
 
 /// **********************************************************************************************************************************************************
@@ -35,16 +37,11 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-    //    threadRechercheImage->moveToThread(m_threadRechercheImages);
 
-    //     m_threadRechercheImages->moveToThread(QApplication::instance()->thread());
-    //    m_threadRechercheImages->moveToThread(threadRechercheImage);
     m_threadRechercheImages = threadRechercheImage;
     connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
+    connect(m_threadRechercheImages, SIGNAL(signalFichierTrouve(QString, QString)), this, SLOT(slotTestImportImage(QString, QString)));
     /// Cela fonctionne, mais si l'éditeur est appelé et que le thread est fini, on a pas de signal =)
-    /// autre test
-    //        connect(m_threadRechercheImages, SIGNAL(terminated()), this, SLOT(testThread())); //Ca marche pas
-
 
 
     if(m_threadRechercheImages->isRechercheTerminee())
@@ -52,6 +49,7 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
         qDebug() << "RECHERCHE TERMINE";
         testThread();
     }
+
     ui->abuleduMediathequeGet->abeSetSource("data");
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
@@ -97,7 +95,7 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
     // Affichage de la mediatheque par defaut
     ui->toolBoxImages->setCurrentWidget(ui->pageMediatheque);
 
-    //    ui->listWidgetImage->setVisible(false);
+    ui->listWidgetImage->setVisible(false);
     ui->treeViewArborescence->setVisible(false);
     //    ui->pageDisqueLocal->setVisible(false);
 
@@ -823,7 +821,7 @@ void Editeur::sauvegarderParcours()
 QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
 {
     QList<int> voisinsMasques;
-    int nbTotal = largeur * hauteur; // donc 50
+    int nbTotal = largeur * hauteur;
 
     int gauche;
     int droite;
@@ -1127,30 +1125,36 @@ void Editeur::testThread()
     QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
     qDebug() << m_fichiersImagesLocales.count();
 
-//    Thread *toto;
-//    toto = new Thread("",0,1,ui->listWidgetImage,m_fichiersImagesLocales);
-//    toto->start(QThread::HighPriority);
-    ui->listWidgetImage->show();
-
-    for (int i =0; i < 500/*m_fichiersImagesLocales.count()*/; i++)
+    for (int i =0; i < 1000/*m_fichiersImagesLocales.count()*/; i++)
     {
-        QListWidgetItem *item = new QListWidgetItem();
-        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
-        item->setIcon(icone); // ajout de la petite icone sur l'item
-        item->setText(m_fichiersImagesLocales.at(i));
-//        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
-        ui->listWidgetImage->insertItem(0, item);
-        ui->listWidgetImage->show();
+        //        QListWidgetItem *item = new QListWidgetItem();
+        //        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
+        //        item->setIcon(icone); // ajout de la petite icone sur l'item
+        //        item->setText(m_fichiersImagesLocales.at(i));
+        ////        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+        //        ui->listWidgetImage->insertItem(0, item);
+        //        ui->listWidgetImage->show();
     }
 
-//    ui->listWidgetImage->show();
+    //    ui->listWidgetImage->show();
     qDebug() << "Item Terminer";
-//    QListWidgetItem *item = new QListWidgetItem();
-//    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
-//    item->setIcon(icone); // ajout de la petite icone sur l'item
-//    item->setText(monFichier.fileName());
-//    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
-//    ui->listWidgetImagesSelection->insertItem(0, item);
+    //    QListWidgetItem *item = new QListWidgetItem();
+    //    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+    //    item->setIcon(icone); // ajout de la petite icone sur l'item
+    //    item->setText(monFichier.fileName());
+    //    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+    //    ui->listWidgetImagesSelection->insertItem(0, item);
+}
+
+void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
+{
+    qDebug() << "Fichier Recu" << cheminFichier <<" "<< nomFichier;
+
+    /// La creation d'item pose probleme
+
+
+
+
 }
 
 

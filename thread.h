@@ -11,7 +11,7 @@ class Thread : public QThread
 {
     Q_OBJECT
 public:
-    explicit Thread(QString cheminRecherche = 0, QObject *parent = 0, int mode = 0, QStringList *listeFichiersPourItem = 0);
+    explicit Thread(QString cheminRecherche = 0, QObject *parent = 0, QStringList *listeFichiersPourItem = 0);
 
     QStringList getListeFichiers();
     bool isRechercheTerminee();
@@ -23,12 +23,12 @@ private:
     QStringList m_listeFichiers;
 
     bool m_rechercheTerminee;
-    int m_mode;
     QStringList *m_listeFichiersPourItem;
     QList<QListWidgetItem> m_listeWidgetItem;
 
 signals:
-    
+    void signalFichierTrouve(QString cheminFichier, QString nomFichier);
+
 public slots:
     void slotFinished();
 };

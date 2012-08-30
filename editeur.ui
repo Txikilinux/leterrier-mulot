@@ -119,7 +119,7 @@
    <item row="1" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout_11">
@@ -201,7 +201,7 @@ p, li { white-space: pre-wrap; }
              <enum>QFrame::NoFrame</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="pageDisqueLocal">
              <property name="geometry">

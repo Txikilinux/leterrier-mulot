@@ -95,6 +95,7 @@ private slots:
     void slotOpenFile();
 
     void testThread();
+    void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
 private:
     Ui::Editeur *ui;
