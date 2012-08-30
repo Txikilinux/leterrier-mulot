@@ -1122,11 +1122,11 @@ void Editeur::testThread()
     qDebug() << ui->listWidgetImage->item(0)->text();
     ui->listWidgetImage->removeItemWidget(ui->listWidgetImage->item(0));
     ui->listWidgetImage->item(0)->setText("OK");
-    QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
-    qDebug() << m_fichiersImagesLocales.count();
+//    QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
+//    qDebug() << m_fichiersImagesLocales.count();
 
-    for (int i =0; i < 1000/*m_fichiersImagesLocales.count()*/; i++)
-    {
+//    for (int i =0; i < 1000/*m_fichiersImagesLocales.count()*/; i++)
+//    {
         //        QListWidgetItem *item = new QListWidgetItem();
         //        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
         //        item->setIcon(icone); // ajout de la petite icone sur l'item
@@ -1134,16 +1134,18 @@ void Editeur::testThread()
         ////        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
         //        ui->listWidgetImage->insertItem(0, item);
         //        ui->listWidgetImage->show();
-    }
+//    }
 
     //    ui->listWidgetImage->show();
-    qDebug() << "Item Terminer";
+//    qDebug() << "Item Terminer";
     //    QListWidgetItem *item = new QListWidgetItem();
     //    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
     //    item->setIcon(icone); // ajout de la petite icone sur l'item
     //    item->setText(monFichier.fileName());
     //    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
     //    ui->listWidgetImagesSelection->insertItem(0, item);
+
+    ui->widgetDisqueLocal->setListeFichiers(m_threadRechercheImages->getListeFichiers());
 }
 
 void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
