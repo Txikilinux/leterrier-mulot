@@ -26,6 +26,8 @@ private:
     QStringList *m_listeFichiersPourItem;
     QList<QListWidgetItem> m_listeWidgetItem;
 
+    void creerThumbs(QFileInfo cheminImage, QString cheminSauvegardeThumbs);
+
 signals:
     void signalFichierTrouve(QString cheminFichier, QString nomFichier);
 
