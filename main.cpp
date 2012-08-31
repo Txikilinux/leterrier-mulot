@@ -23,6 +23,7 @@
 #include "activityfilter.h"
 #include "version.h"
 #include "mainwindow.h"
+#include "abuleduvirtualkeyboardv1.h"
 
 int main(int argc, char *argv[])
 {
@@ -70,6 +71,15 @@ int main(int argc, char *argv[])
 
     QObject::connect(ef, SIGNAL( userInactive() ),
                      w,  SLOT( slotDemo() ));
+
+    //Gestion de la ligne de commande pour activer ou pas le clavier virtuel
+//    if(abeApp->arguments().size() > 1)
+//    {
+//        if(abeApp->arguments().contains("--virtualkeyboard")) {
+            AbulEduVirtualKeyboardV1 *ic = new AbulEduVirtualKeyboardV1();
+            a.setInputContext(ic);
+//        }
+//    }
 
 
     w->show();

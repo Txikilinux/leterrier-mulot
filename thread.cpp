@@ -51,7 +51,7 @@ void Thread::run()
     {
         i++;
         it.next();
-        qDebug() << "Parcours de  : " << i << " "<< it.filePath() ;
+//        qDebug() << "Parcours de  : " << i << " "<< it.filePath() ;
 
         if(!it.fileInfo().isDir())
         {
@@ -82,19 +82,19 @@ void Thread::creerThumbs(QFileInfo cheminImage, QString cheminSauvegardeThumbs)
     /** Recuperation du MD5Sum */
     QByteArray nomFichier = QString("file://%1").arg(cheminImage.absoluteFilePath()).toAscii();
     QByteArray hashData = QCryptographicHash::hash(nomFichier,QCryptographicHash::Md5);
-    qDebug() <<"nomFichier" << nomFichier;
-    qDebug() <<"HASH "<< hashData.toHex() +"." +cheminImage.suffix();
+//    qDebug() <<"nomFichier" << nomFichier;
+//    qDebug() <<"HASH "<< hashData.toHex() +"." +cheminImage.suffix();
 
     QFileInfo fComparaison(cheminSauvegardeThumbs + QDir::separator() + hashData.toHex() +"." +cheminImage.suffix());
     qDebug() << fComparaison.absoluteFilePath();
 
     if (fComparaison.exists())
     {
-        qDebug() << trUtf8("Le thumbs existe déjà");
+//        qDebug() << trUtf8("Le thumbs existe déjà");
         // Si le fichier existe -> comparaison
         if (cheminImage.lastRead() > fComparaison.lastRead())
         {
-            qDebug() << "Mon thumbs est trop vieux";
+//            qDebug() << "Mon thumbs est trop vieux";
 
             // Recreation du thumbs
             /** Creation QImage */

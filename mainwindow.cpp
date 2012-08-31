@@ -29,6 +29,7 @@
 #include "exerciceclic.h"
 #include "exercicedoubleclic.h"
 #include "abuleduboxfilemanagerv1.h"
+#include "abuleduvirtualkeyboardguiv1.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -66,16 +67,21 @@ MainWindow::MainWindow(QWidget *parent) :
     //    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
 
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    m_abuleduFile = new AbulEduFileV1(this);
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1(m_abuleduFile);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
-    m_abuleduFile = new AbulEduFileV1(this);
+
     m_numberExoCalled = -1;
     m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
     if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
 
     qDebug() << "demarrage du thread";
-    rechercheImagesSurPC(QDir::homePath());
+    rechercheImagesSurPC("/tmp");
+
+//    AbulEduVirtualKeyboardGuiV1 *keyboard;
+//    keyboard = new AbulEduVirtualKeyboardGuiV1(0);
+//    keyboard->show();
 }
 
 void MainWindow::rechercheImagesSurPC(QString dossierDepart)

@@ -1074,7 +1074,7 @@ void Editeur::on_btnModificationAbe_clicked()
 
     //Récupération de l'abe à modifier
     m_abuledufilev1 = new AbulEduFileV1();
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1(m_abuledufilev1);
     m_abuleduFileManager->abeSetFile(m_abuledufilev1);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
