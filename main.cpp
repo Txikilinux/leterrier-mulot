@@ -29,11 +29,13 @@ int main(int argc, char *argv[])
 {
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, "leterrier");
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
-
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    QApplication::setStyle("plastique");
+#endif
 
     // ================== splashscreen
-//    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1();
-//    splash->show();
+    //    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1();
+    //    splash->show();
 
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
@@ -51,7 +53,7 @@ int main(int argc, char *argv[])
         if(i == 1) {
             w = new MainWindow(0);
         }
-//        splash->showMessage(QObject::trUtf8("Chargement en cours, merci de patienter ... %1%").arg(QString::number(i*20)), Qt::AlignBottom | Qt::AlignHCenter, Qt::black);
+        //        splash->showMessage(QObject::trUtf8("Chargement en cours, merci de patienter ... %1%").arg(QString::number(i*20)), Qt::AlignBottom | Qt::AlignHCenter, Qt::black);
         //tres important si vous voulez que le splash s'affiche !
         qApp->processEvents();
         //Pour les developpeurs presses
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
         //Quand on passe en production
         //AbulEduSleeperThread::msleep(1000);
     }
-//    splash->deleteLater();
+    //    splash->deleteLater();
     // ================== splashscreen end
 
 
@@ -73,16 +75,19 @@ int main(int argc, char *argv[])
                      w,  SLOT( slotDemo() ));
 
     //Gestion de la ligne de commande pour activer ou pas le clavier virtuel
-//    if(abeApp->arguments().size() > 1)
-//    {
-//        if(abeApp->arguments().contains("--virtualkeyboard")) {
-            AbulEduVirtualKeyboardV1 *ic = new AbulEduVirtualKeyboardV1();
-            a.setInputContext(ic);
-//        }
-//    }
+    //    if(abeApp->arguments().size() > 1)
+    //    {
+    //        if(abeApp->arguments().contains("--virtualkeyboard")) {
+    AbulEduVirtualKeyboardV1 *ic = new AbulEduVirtualKeyboardV1();
+    a.setInputContext(ic);
+    //        }
+    //    }
 
-
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    w->showFullScreen();
+#else
     w->show();
+#endif
 
     return a.exec();
 }

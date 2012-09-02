@@ -68,7 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(abeApp->getAbeApplicationLongName());
 
     m_abuleduFile = new AbulEduFileV1(this);
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1(m_abuleduFile);
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1(0, m_abuleduFile);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
 
@@ -78,10 +78,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     qDebug() << "demarrage du thread";
     rechercheImagesSurPC("/tmp");
-
-//    AbulEduVirtualKeyboardGuiV1 *keyboard;
-//    keyboard = new AbulEduVirtualKeyboardGuiV1(0);
-//    keyboard->show();
 }
 
 void MainWindow::rechercheImagesSurPC(QString dossierDepart)
@@ -129,7 +125,11 @@ void MainWindow::btnBoxClicked()
 {
     if (m_localDebug) qDebug()<<"Bouton Box Clicked";
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    m_abuleduFileManager->showFullScreen();
+#else
     m_abuleduFileManager->show();
+#endif
 }
 
 void MainWindow::abeLanceExo(int numero)
@@ -151,7 +151,13 @@ void MainWindow::abeAiguillage()
     setFixedSize(this->width(), this->height());
     setWindowTitle(abeApp->getAbeApplicationLongName() +" -- "+m_texteBulles[m_numberExoCalled]);
     ui->statusBar->showMessage(trUtf8(" Nom du fichier .abe selectionné : ")+ m_abuleduFile->abeFileGetFileName().fileName());
+
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    showFullScreen();
+#else
     show();
+#endif
+
 
     switch (m_numberExoCalled)
     {
@@ -225,7 +231,11 @@ void MainWindow::exerciceExited()
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     m_exerciceEnCours = false;
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    showFullScreen();
+#else
     show();
+#endif
 }
 
 void MainWindow::on_action_Survol_triggered()
@@ -254,12 +264,14 @@ void MainWindow::on_actionEditeur_triggered()
     {
         Editeur *monEditeur = new Editeur(m_threadRecherche, this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
-//        monEditeur->showMaximized();
-        monEditeur->show();
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    monEditeur->showFullScreen();
+#else
+    monEditeur->show();
+#endif
     }
     else // On affiche un petit message...
     {
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
 }
-

@@ -7,6 +7,9 @@
 QT       += core gui
 system(ccache -V):QMAKE_CXX = ccache g++
 
+#a activer ou pas si on souhaite compiler pour tablette
+#DEFINES += __ABULEDUTABLETTEV1__MODE__=1
+
 TARGET = leterrier-mulot
 TEMPLATE = app
 

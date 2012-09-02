@@ -301,7 +301,11 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     m_visionneuseImage = new VisionneuseImage(this);
     m_visionneuseImage->ouvrirFicher(item->data(4).toString());
     m_visionneuseImage->setWindowModality(Qt::WindowModal);
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    m_visionneuseImage->showFullScreen();
+#else
     m_visionneuseImage->show();
+#endif
 }
 
 /**
@@ -1074,12 +1078,15 @@ void Editeur::on_btnModificationAbe_clicked()
 
     //Récupération de l'abe à modifier
     m_abuledufilev1 = new AbulEduFileV1();
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1(m_abuledufilev1);
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
     m_abuleduFileManager->abeSetFile(m_abuledufilev1);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    m_abuleduFileManager->showFullScreen();
+#else
     m_abuleduFileManager->show();
-
+#endif
     ui->btnSuivant->click(); // Clic sur le bouton suivant
 }
 
