@@ -85,8 +85,10 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
-    presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
-    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
+
+    // jlf 2012/09/29 Réactivation du bouton commencer
+    presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true);
+    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true);
 
     // Pour les appuis automatiques sur les touches
     connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
@@ -138,7 +140,9 @@ void ExerciceClic::slotSequenceEntered() // en cours
         setAbeNbTotalQuestions(5); // a instancier avant appel du slot SequenceEntered !
 
         AbulEduCommonStatesV1::slotSequenceEntered();
-        presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
+
+        // 2012/09/29 Réactivation du bouton commencer jlf
+        presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true);
 
         setAbeLevel("1"); // a instancier après le slot sinon niveau 0 par def.
     }
