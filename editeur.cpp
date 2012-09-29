@@ -88,7 +88,7 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
 
     //    ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
-    ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGet::abeMediathequeThumbnails);
+    ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
     creationMenu();
 

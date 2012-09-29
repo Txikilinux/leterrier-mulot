@@ -170,8 +170,6 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
-        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-        connect(s->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
         installEventFilter(s);
     }
         m_exerciceEnCours = true;
@@ -185,8 +183,6 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
-        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-        connect(c->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
         installEventFilter(c);
     }
         m_exerciceEnCours = true;
@@ -200,8 +196,6 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
-        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-        connect(p->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
         installEventFilter(p);
     }
         m_exerciceEnCours = true;
@@ -215,8 +209,6 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
-        // Appel du destructeur de la MainWindow lors de l'appui sur le bouton Quitter de la télécommande
-        connect(d->getAbeExerciceTelecommandeV1()->ui->btnQuitterQuitter, SIGNAL(clicked()), this, SLOT(close()));
         installEventFilter(d);
     }
         m_exerciceEnCours = true;

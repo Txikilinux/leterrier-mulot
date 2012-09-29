@@ -286,7 +286,7 @@ p, li { white-space: pre-wrap; }
              </attribute>
              <layout class="QGridLayout" name="gridLayout_9">
               <item row="0" column="0">
-               <widget class="AbulEduMediathequeGet" name="abuleduMediathequeGet" native="true">
+               <widget class="AbulEduMediathequeGetV1" name="abuleduMediathequeGet" native="true">
                 <property name="minimumSize">
                  <size>
                   <width>500</width>
@@ -806,9 +806,9 @@ p, li { white-space: pre-wrap; }
  </widget>
  <customwidgets>
   <customwidget>
-   <class>AbulEduMediathequeGet</class>
+   <class>AbulEduMediathequeGetV1</class>
    <extends>QWidget</extends>
-   <header>abuledumediathequeget.h</header>
+   <header>abuledumediathequegetv1.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
