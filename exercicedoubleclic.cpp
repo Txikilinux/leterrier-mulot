@@ -63,6 +63,8 @@ ExerciceDoubleClic::ExerciceDoubleClic(QWidget *parent, QString theme):
     gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)"); // Fond transparent
     gv_AireDeJeu->setFrameShape(QFrame::NoFrame);
 
+    // 2012/09/29
+    m_tailleAireDejeu = QSize(0,0);
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
     cheminConf  = m_theme + QDir::separator()+QString("conf")+QDir::separator() + QString("parametres.conf");
@@ -479,6 +481,8 @@ void ExerciceDoubleClic::setDimensionsWidgets()
     int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
     //        gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
+
+    m_tailleAireDejeu = gv_AireDeJeu->size();
     gv_AireDeJeu->move(80 * ratio, 64 * ratio);
 
     // Placement des têtes
@@ -542,7 +546,14 @@ void ExerciceDoubleClic::redimensionnerImage()
   */
 void ExerciceDoubleClic::redimensionnerImage2()
 {
-    m_itemImage->setPixmap(m_itemImage->pixmap().scaled(gv_AireDeJeu->maximumViewportSize(), Qt::IgnoreAspectRatio));
+    m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio));
+    gv_AireDeJeu->setFixedSize(m_itemImage->boundingRect().size().toSize());
+    /** @todo positionner l'aire de jeu au centre */
+    float ratio = abeApp->getAbeApplicationDecorRatio();
+    gv_AireDeJeu->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()
+                        -gv_AireDeJeu->width())/2 + 40 * ratio,
+                       (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()
+                        - 60 * ratio -gv_AireDeJeu->height())/2 + 32 * ratio);
 }
 
 /** A chaque passsage sur un masque interactif, on décremente le nombre de masques interactifs.

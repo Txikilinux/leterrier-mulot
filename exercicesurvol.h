@@ -82,6 +82,11 @@ private:
     QLabel *m_labelImagePause;
     QLabel *m_labelTextePause;
 
+    // jlf 2012/09/29
+
+    // DImensions de l'aire de jeu
+    QSize m_tailleAireDejeu;
+
     void redimensionnerConsigne();
     void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
     void redimensionnerImage2();

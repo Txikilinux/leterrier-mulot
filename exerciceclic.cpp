@@ -550,7 +550,7 @@ void ExerciceClic::redimensionnerImage2()
 {
     m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio));
     gv_AireDeJeu->setFixedSize(m_itemImage->boundingRect().size().toSize());
-    /** @todo positionner l'aire de jeu au centre */
+    // positionner l'aire de jeu au centre */
     float ratio = abeApp->getAbeApplicationDecorRatio();
     gv_AireDeJeu->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()
                         -gv_AireDeJeu->width())/2 + 40 * ratio,
