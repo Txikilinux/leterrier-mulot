@@ -86,7 +86,9 @@ int main(int argc, char *argv[])
 #ifdef __ABULEDUTABLETTEV1__MODE__
     w->showFullScreen();
 #else
-    w->show();
+
+    // jlf 2012/09/29 Fenetre maximisée par défaut
+    w->showMaximized();
 #endif
 
     return a.exec();
