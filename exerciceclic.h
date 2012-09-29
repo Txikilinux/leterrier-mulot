@@ -87,6 +87,11 @@ private:
     void chargerOption();
     bool eventFilter(QObject *obj, QEvent *ev);
 
+    // jlf 2012/09/29
+
+    // DImensions de l'aire de jeu
+    QSize m_tailleAireDejeu;
+
 private slots:
     void slotSequenceEntered();
     void slotPresenteSequenceEntered();
