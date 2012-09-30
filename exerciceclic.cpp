@@ -165,7 +165,7 @@ void ExerciceClic::slotPresenteSequenceEntered() //todo
 
     QString debutTableau = "<tr>";
     QString imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
-    QString consigne = "<td> " + QString("Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement") +" </td>" ;
+    QString consigne = "<td> " + trUtf8("Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement") +" </td>" ;
     QString finTableau = "</tr>";
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
@@ -440,15 +440,15 @@ void ExerciceClic::slotBilanExerciceEntered() // todo boucle pour les têtes
     //-------------------------------------------
     if (m_tempsTotal <= 59) // Affichage en secondes
     {
-        consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_tempsTotal) +" secondes" +" </td>" ;
+        consigne = "<td> " + trUtf8("Tu as fini l'exercice en %1 secondes.").arg( QString::number(m_tempsTotal)) +" </td>" ;
     }
     else if((m_tempsTotal%60) == 0) // Affichage que en minutes (pas besoin d'afficher "en 0 secondes" :p)
     {
-        consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_minute) +" minute(s)" +" </td>" ;
+        consigne = "<td> " + trUtf8("Tu as fini l'exercice en %1 minute(s).").arg(QString::number(m_minute))+" </td>" ;
     }
     else if (m_tempsTotal > 59) // Affichage en minutes et secondes
     {
-        consigne = "<td> " + QString("Tu as fini l'exercice en ") + QString::number(m_minute) +" minute(s)" + " et "+ QString::number(m_seconde) +" secondes" + " </td>" ;
+        consigne = "<td> " + trUtf8("Tu as fini l'exercice en %1 minute(s) et %2 secondes").arg(QString::number(m_minute)).arg(QString::number(m_seconde)) + " </td>" ;
     }
     finTableau = "</tr>";
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
