@@ -78,8 +78,8 @@ int main(int argc, char *argv[])
     //    if(abeApp->arguments().size() > 1)
     //    {
     //        if(abeApp->arguments().contains("--virtualkeyboard")) {
-    AbulEduVirtualKeyboardV1 *ic = new AbulEduVirtualKeyboardV1();
-    a.setInputContext(ic);
+    //AbulEduVirtualKeyboardV1 *ic = new AbulEduVirtualKeyboardV1();
+    //a.setInputContext(ic);
     //        }
     //    }
 
