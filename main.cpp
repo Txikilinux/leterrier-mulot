@@ -25,8 +25,32 @@
 #include "mainwindow.h"
 #include "abuleduvirtualkeyboardv1.h"
 
+
+void debugOutput(QtMsgType type, const char *msg)
+ {
+     switch (type) {
+     case QtDebugMsg:
+#ifdef QT_NO_DEBUG_OUTPUT
+         fprintf(stderr, "Debug: %s\n", msg);
+#endif
+         break;
+     case QtWarningMsg:
+#ifdef QT_NO_WARNING_OUTPUT
+         fprintf(stderr, "Warning: %s\n", msg);
+#endif
+         break;
+     case QtCriticalMsg:
+         fprintf(stderr, "Critical: %s\n", msg);
+         break;
+     case QtFatalMsg:
+         fprintf(stderr, "Fatal: %s\n", msg);
+         abort();
+     }
+ }
+
 int main(int argc, char *argv[])
 {
+    qInstallMsgHandler(debugOutput);
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, "leterrier");
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
 #ifdef __ABULEDUTABLETTEV1__MODE__

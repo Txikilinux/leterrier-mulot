@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol ..."));
     m_texteBulles.insert(1, trUtf8("Clic ..."));
-    m_texteBulles.insert(2, trUtf8("L'ami molette ..."));
+    m_texteBulles.insert(2, trUtf8("Molette ..."));
     m_texteBulles.insert(3, trUtf8("Parcours ..."));
     m_texteBulles.insert(4, trUtf8("Double clic..."));
 
