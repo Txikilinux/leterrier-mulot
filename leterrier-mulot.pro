@@ -59,6 +59,10 @@ include(lib/abuledufilev1/abuledufilev1.pri)
 include(lib/abuledumessageboxv1/abuledumessageboxv1.pri)
 include(lib/abuleduvirtualkeyboardv1/abuleduvirtualkeyboardv1.pri)
 
+#AbulEduLangV1
+include(lib/abuledulangv1/abuledulangv1.pri)
+include(lang/lang.pri)
+
 win32 {
     DEFINES      += __WINDOWS__=1
     INCLUDEPATH  += $$quote(C:/msys/1.0/local/include)
