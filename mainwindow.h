@@ -70,6 +70,9 @@ private:
     void rechercheImagesSurPC(QString dossierDepart);
     Thread *m_threadRecherche;
 
+    QTranslator qtTranslator;
+    QTranslator myappTranslator;
+
 private slots:
     void abeLanceExo(int numero);
     void exerciceExited();

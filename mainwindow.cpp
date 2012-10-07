@@ -38,7 +38,22 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_localDebug = true;
 
+    //Langue
+    QString locale = QLocale::system().name().section('_', 0, 0);
+
+    //Un 1er qtranslator pour prendre les traductions QT Systeme
+    //c'est d'ailleur grace a ca qu'on est en RTL
+    qtTranslator.load("qt_" + locale,
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qApp->installTranslator(&qtTranslator);
+
+    //Et un second qtranslator pour les traductions specifiques du
+    //logiciel
+    myappTranslator.load("mulot_" + locale, "lang");
+    qApp->installTranslator(&myappTranslator);
     ui->setupUi(this);
+    move(QApplication::desktop()->screen()->rect().center()-this->rect().center());
+
     setAttribute( Qt::WA_DeleteOnClose );
     m_exerciceEnCours = false;
 

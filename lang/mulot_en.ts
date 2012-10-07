@@ -5,58 +5,106 @@
     <name>AbulEduApplicationV1</name>
     <message utf8="true">
         <source>AbulEduApplicationV1:: Attention: applicationName ou applicationVersion non défini !!!</source>
-        <translation>AbulEduApplicationV1:: Warning: applicationName or applicationVersion not defined !!!</translation>
+        <translation type="unfinished">AbulEduApplicationV1:: Warning: applicationName or applicationVersion not defined !!!</translation>
     </message>
 </context>
 <context>
     <name>AbulEduBoxFileManagerV1</name>
     <message utf8="true">
         <source>Gestionnaire de fichiers AbulÉduBox</source>
-        <translation>AbulÉduBox file manager</translation>
+        <translation type="unfinished">AbulÉduBox file manager</translation>
     </message>
     <message utf8="true">
         <source>Médiathèque</source>
-        <translation>Library</translation>
+        <translation type="unfinished">Library</translation>
     </message>
     <message>
         <source>Personnelle</source>
-        <translation>Private</translation>
+        <translation type="unfinished">Private</translation>
     </message>
     <message utf8="true">
         <source>Partagée</source>
-        <translation>Shared</translation>
+        <translation type="unfinished">Shared</translation>
     </message>
     <message>
         <source>Menu simple</source>
-        <translation>Simple menu</translation>
+        <translation type="unfinished">Simple menu</translation>
     </message>
     <message>
         <source>Ouvrir</source>
-        <translation>Open</translation>
+        <translation type="unfinished">Open</translation>
     </message>
     <message>
         <source>Coller</source>
-        <translation>Paste</translation>
+        <translation type="unfinished">Paste</translation>
     </message>
     <message>
         <source>Suppr.</source>
-        <translation>Del.</translation>
+        <translation type="unfinished">Del.</translation>
     </message>
     <message>
         <source>Ordinateur</source>
-        <translation>Computer</translation>
+        <translation type="unfinished">Computer</translation>
     </message>
     <message>
         <source>Ajout</source>
-        <translation>Add</translation>
+        <translation type="unfinished">Add</translation>
     </message>
     <message>
         <source>Copier</source>
-        <translation>Copy</translation>
+        <translation type="unfinished">Copy</translation>
     </message>
     <message>
         <source>Fermer</source>
-        <translation>Close</translation>
+        <translation type="unfinished">Close</translation>
+    </message>
+    <message>
+        <source>Taille</source>
+        <translation type="unfinished">Size</translation>
+    </message>
+    <message>
+        <source>Date</source>
+        <translation type="unfinished">Date</translation>
+    </message>
+    <message>
+        <source>Nom du fichier ou du dossier</source>
+        <translation type="unfinished">File name or directory name</translation>
+    </message>
+    <message>
+        <source>&amp;Enregistrer</source>
+        <translation type="unfinished">&amp;Save</translation>
+    </message>
+    <message utf8="true">
+        <source>Nom du fichier à sauvegarder :</source>
+        <translation type="unfinished">File name to save :</translation>
+    </message>
+    <message>
+        <source>Box perso</source>
+        <translation type="unfinished">Personnal Box</translation>
+    </message>
+    <message utf8="true">
+        <source>Box partagée</source>
+        <translation type="unfinished">Shared Box</translation>
+    </message>
+    <message>
+        <source>Mon ordinateur</source>
+        <translation type="unfinished">My Computer</translation>
+    </message>
+    <message>
+        <source>Menu complet</source>
+        <translation type="unfinished">Full menu</translation>
+    </message>
+    <message utf8="true">
+        <source>Détails de la réponse rpcFileUpload:</source>
+        <translation type="unfinished">rpcFileUpload reply:</translation>
+    </message>
+    <message>
+        <source>Supprimer un fichier</source>
+        <translation type="unfinished">Delete file</translation>
+    </message>
+    <message utf8="true">
+        <source>Êtes vous sûr de vouloir supprimer ce fichier ?</source>
+        <translation type="unfinished">Do you really want to delete this file ?</translation>
     </message>
     <message>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -64,71 +112,27 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Rendez-vous sur la &lt;/span&gt;&lt;a href=&quot;https://www.ryxeo.com/boutique/fr/16-espace-de-stockage&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600; text-decoration: underline; color:#0000ff;&quot;&gt;boutique en ligne&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt; pour acheter votre espace de stockage.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taille</source>
-        <translation>Size</translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation>Date</translation>
-    </message>
-    <message>
-        <source>Nom du fichier ou du dossier</source>
-        <translation>File name or directory name</translation>
-    </message>
-    <message>
-        <source>&amp;Enregistrer</source>
-        <translation>&amp;Save</translation>
-    </message>
-    <message utf8="true">
-        <source>Nom du fichier à sauvegarder :</source>
-        <translation>File name to save :</translation>
-    </message>
-    <message>
-        <source>Box perso</source>
-        <translation>Personnal Box</translation>
-    </message>
-    <message utf8="true">
-        <source>Box partagée</source>
-        <translation>Shared Box</translation>
-    </message>
-    <message>
-        <source>Mon ordinateur</source>
-        <translation>My Computer</translation>
-    </message>
-    <message>
-        <source>Menu complet</source>
-        <translation>Full menu</translation>
-    </message>
-    <message utf8="true">
-        <source>Détails de la réponse rpcFileUpload:</source>
-        <translation>rpcFileUpload reply:</translation>
-    </message>
-    <message>
-        <source>Supprimer un fichier</source>
-        <translation>Delete file</translation>
-    </message>
-    <message utf8="true">
-        <source>Êtes vous sûr de vouloir supprimer ce fichier ?</source>
-        <translation>Do you really want to delete this file ?</translation>
+        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;Go on &lt;/span&gt;&lt;a href=&quot;https://www.ryxeo.com/boutique/fr/16-espace-de-stockage&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600; text-decoration: underline; color:#0000ff;&quot;&gt;this page&lt;/span&gt;&lt;/a&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt; to buy online (cloud) space.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message utf8="true">
         <source>Gestionnaire de fichiers AbulÉdu : Mode Sauvegarde</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AbulÉdu file manager :: save mode</translation>
     </message>
     <message utf8="true">
         <source>Gestionnaire de fichiers AbulÉdu : Mode Ouverture</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">AbulÉdu file manager :: open mode</translation>
     </message>
     <message>
         <source>Confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Confirm</translation>
     </message>
     <message utf8="true">
         <source>Êtes-vous certain de vouloir remplacer le fichier %1 ?</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Do you really want to delete this file : %1 ?</translation>
     </message>
 </context>
 <context>
@@ -146,53 +150,65 @@ p, li { white-space: pre-wrap; }
     <name>AbulEduDownloadProgressBar</name>
     <message utf8="true">
         <source>Téléchargement en cours ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Download in progress ...</translation>
     </message>
     <message>
         <source>Temps restant : 5 minutes -- 23 sur 25 Mo (1,2 Mo/s)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Progress : 5 min. - 23 of 25 Mb (1.2 Mb/s)</translation>
     </message>
     <message>
         <source>&amp;Annuler</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Cancel</translation>
     </message>
     <message>
         <source>Ko</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kb</translation>
     </message>
     <message>
         <source>secondes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">seconds</translation>
     </message>
     <message>
         <source>minutes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">minutes</translation>
     </message>
     <message>
         <source>Temps restant : %1 %2 -- %3 sur %4 %5 (%6 Ko/s)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Downloading: %1 %2 - %3 of %4 %5 (%6 Kb/s)</translation>
     </message>
     <message utf8="true">
         <source>Téléchargement en cours : %1 Ko/s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Download in progress : %1 Kb/s</translation>
     </message>
 </context>
 <context>
     <name>AbulEduExerciceV1</name>
     <message>
         <source>Exercice absent du module</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">This exercise does not exist</translation>
     </message>
     <message>
         <source>Ce module ne contient aucun exercice de type </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">This module does not purpose this exercise</translation>
     </message>
 </context>
 <context>
     <name>AbulEduExerciceWidgetAireDeTravailV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
+    </message>
+    <message>
+        <source>Suite</source>
+        <translation type="unfinished">Next</translation>
+    </message>
+    <message utf8="true">
+        <source>Démonstration</source>
+        <translation type="unfinished">Demo</translation>
+    </message>
+    <message>
+        <source>Quitter</source>
+        <translation type="unfinished">Quit</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -202,130 +218,118 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Amis développeurs, oyez oyez, lisez la doc de abuleduExerciceV1 qui se trouve ici: &lt;a href=&quot;https://redmine.ryxeo.com/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://redmine.ryxeo.com/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Suite</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <source>Démonstration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Quitter</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AbulEduExerciceWidgetMessageV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Mon Joli Titre</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Title</translation>
     </message>
     <message>
         <source>Balise image : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Picture : </translation>
     </message>
     <message utf8="true">
         <source>Balise image modifiée : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Updated picture : </translation>
     </message>
 </context>
 <context>
     <name>AbulEduExerciceWidgetTelecommandeV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Annuler</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Cancel</translation>
     </message>
     <message>
         <source>Difficile</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Hard</translation>
     </message>
     <message>
         <source>Moyen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Medium</translation>
     </message>
     <message>
         <source>Facile</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Easy</translation>
     </message>
     <message>
         <source>Fermer</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Close</translation>
     </message>
     <message utf8="true">
         <source>Vérifier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Check</translation>
     </message>
     <message>
         <source>Quitter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Quit</translation>
     </message>
     <message>
         <source>Niveau</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Level</translation>
     </message>
     <message>
         <source>Aide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Help</translation>
     </message>
     <message>
         <source>Exercice %v sur %m</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise %v on %m</translation>
     </message>
     <message>
         <source>Question %v sur %m</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Question %v on %m</translation>
     </message>
     <message>
         <source>Refaire</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Redo</translation>
     </message>
     <message>
         <source>Suivant</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Next</translation>
     </message>
     <message>
         <source>Solution</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solution</translation>
     </message>
 </context>
 <context>
     <name>AbulEduFileAboutV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message utf8="true">
         <source>Généralités</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">General</translation>
     </message>
     <message>
         <source>PushButton</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">PushButton</translation>
     </message>
     <message>
         <source>LomFR</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LomFR</translation>
     </message>
     <message>
         <source>ScoLOMFr</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ScoLOMFr</translation>
     </message>
     <message>
         <source>LOM (1)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LOM (1)</translation>
     </message>
     <message>
         <source>LOM (2)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">LOM (2)</translation>
     </message>
 </context>
 <context>
@@ -358,7 +362,7 @@ Nom du fichier:
     </message>
     <message>
         <source>Aide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Help</translation>
     </message>
     <message>
         <source>La box</source>
@@ -465,12 +469,20 @@ paramètres</source>
 <context>
     <name>AbulEduMediathequeGetV1</name>
     <message>
+        <source>Date</source>
+        <translation type="unfinished">Date</translation>
+    </message>
+    <message>
+        <source>Taille</source>
+        <translation type="unfinished">Size</translation>
+    </message>
+    <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>&amp;Rechercher</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Search</translation>
     </message>
     <message>
         <source>...</source>
@@ -498,14 +510,6 @@ paramètres</source>
     </message>
     <message>
         <source>Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taille</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -834,7 +838,7 @@ Vérifiez à l&apos;aide de la recherche...</source>
     <name>AbulEduVirtualKeyboardGuiV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Tab</source>
@@ -894,7 +898,7 @@ Vérifiez à l&apos;aide de la recherche...</source>
     </message>
     <message>
         <source>s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">s</translation>
     </message>
     <message>
         <source>d</source>
@@ -1208,20 +1212,24 @@ Vérifiez à l&apos;aide de la recherche...</source>
 <context>
     <name>AbulEduVisionneuseImageV1</name>
     <message>
+        <source>&amp;Quitter</source>
+        <translation type="unfinished">&amp;Quit</translation>
+    </message>
+    <message>
         <source>Visionneuse Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Picture viewer</translation>
     </message>
     <message>
         <source>Ouvrir fichier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open file</translation>
     </message>
     <message>
         <source>Impossible d&apos;ouvrir %1.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error opening %1</translation>
     </message>
     <message>
         <source>A Propos</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">About</translation>
     </message>
     <message utf8="true">
         <source>&lt;p&gt;&lt;b&gt;La Visionneuse d&apos;Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Permet d&apos;afficher une image, de zoomer, d&apos;ajuster la taille de l&apos;image à la fenetre et d&apos;imprimer (pdf). &lt;/p&gt;</source>
@@ -1229,75 +1237,71 @@ Vérifiez à l&apos;aide de la recherche...</source>
     </message>
     <message>
         <source>&amp;Ouvrir...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Open</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+O</translation>
     </message>
     <message>
         <source>&amp;Imprimer...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Print...</translation>
     </message>
     <message>
         <source>Ctrl+P</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Quitter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+P</translation>
     </message>
     <message>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Q</translation>
     </message>
     <message>
         <source>Zoom &amp;In (25%)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom &amp;In (25%)</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl++</translation>
     </message>
     <message>
         <source>Zoom &amp;Out (25%)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom &amp;Out (25%)</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+-</translation>
     </message>
     <message>
         <source>&amp;Taille Normale</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Normal size</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+S</translation>
     </message>
     <message>
         <source>&amp;Ajuster a la fenetre</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Adjust window</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+F</translation>
     </message>
     <message>
         <source>&amp;A propos</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;About</translation>
     </message>
     <message>
         <source>&amp;Fichier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;File</translation>
     </message>
     <message>
         <source>&amp;Vue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;View</translation>
     </message>
     <message>
         <source>&amp;Aide</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Help</translation>
     </message>
 </context>
 <context>
@@ -1331,7 +1335,7 @@ Vérifiez à l&apos;aide de la recherche...</source>
     <name>AbulEduWidgetLOMFrV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Indexation LOMFR</source>
@@ -1396,7 +1400,7 @@ p, li { white-space: pre-wrap; }
     <name>AbulEduWidgetLOMSuiteV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Indexation LOM (2/2)</source>
@@ -1487,7 +1491,7 @@ p, li { white-space: pre-wrap; }
     <name>AbulEduWidgetLOMV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Indexation LOM (1/2)</source>
@@ -1515,7 +1519,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Ko</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kb</translation>
     </message>
     <message utf8="true">
         <source>4.7 Durée</source>
@@ -1534,7 +1538,7 @@ p, li { white-space: pre-wrap; }
     <name>AbulEduWidgetSCOLOMFrV1</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>Indexation ScoLOMFR</source>
@@ -1617,7 +1621,7 @@ La saisie des informations ci-dessus permet l&apos;indexation de ce module dans 
     <name>Editeur</name>
     <message>
         <source>Editeur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Editor</translation>
     </message>
     <message utf8="true">
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -1637,453 +1641,461 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;étape 2: Gestion des paramètres d&apos;exercices&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;étape 3: Enregistrement du fichier abe créé&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Sans&apos;; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/abuleduboxfilemanagerv1/hibou-48&quot; /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Welcome on MULOT editor.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;3 steps to make your own modules.&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <source>Creation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create</translation>
     </message>
     <message>
         <source>Modification</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Update (not yet available)</translation>
     </message>
     <message>
         <source>Gestion des Images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pictures management</translation>
     </message>
     <message utf8="true">
         <source>Liste des images sélectionnées</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pictures list</translation>
     </message>
     <message>
         <source>Disque Local</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Local hard disk</translation>
     </message>
     <message>
         <source>Indexation en cours... Veuillez patienter.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Indexing in progress, please wait</translation>
     </message>
     <message>
         <source>Mediatheque</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Media center</translation>
     </message>
     <message>
         <source>Parcours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track</translation>
     </message>
     <message>
         <source>Parametres </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Parameters</translation>
     </message>
     <message>
         <source>TImer Suivant</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Next Timer</translation>
     </message>
     <message>
         <source>s</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">s</translation>
     </message>
     <message>
         <source>Nombre Masques Parcours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Masks number</translation>
     </message>
     <message>
         <source>Nombre Masques Largeur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Masks width</translation>
     </message>
     <message>
         <source>Nombre Masques Hauteur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Masks height</translation>
     </message>
     <message>
         <source>Parcours 1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track #1</translation>
     </message>
     <message>
         <source>Parcours 2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track #2</translation>
     </message>
     <message>
         <source>Parcours 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track #3</translation>
     </message>
     <message>
         <source>Parcours 4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track #4</translation>
     </message>
     <message>
         <source>Parcours 5</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track #5</translation>
     </message>
     <message>
         <source>Survol</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mouse over</translation>
     </message>
     <message>
         <source>Nombre Masques</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Masks number</translation>
     </message>
     <message>
         <source>Clic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Click</translation>
     </message>
     <message>
         <source>Double-Clic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Double Click</translation>
     </message>
     <message utf8="true">
         <source>Nom du thème</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Theme name</translation>
     </message>
     <message utf8="true">
         <source>Créer Thème</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create Theme</translation>
     </message>
     <message>
         <source>Importer l&apos;image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Import picture</translation>
     </message>
     <message>
         <source>&amp;Supprimer de la selection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Delete from selection</translation>
     </message>
     <message utf8="true">
         <source>Sauvegarder Thème</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save this theme</translation>
     </message>
     <message utf8="true">
         <source>Veuillez remplir le champs &quot;Nom du thème&quot; </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please give a theme name</translation>
     </message>
     <message utf8="true">
         <source>Veuillez sélectionner au minimum 5 images</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please choose 5 pictures at less</translation>
     </message>
     <message utf8="true">
         <source>Ouvrir un répertoire</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open a directory</translation>
     </message>
     <message utf8="true">
         <source>Veuillez choisir un emplacement de destination pour le thème</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please choose a target to save this theme</translation>
     </message>
     <message utf8="true">
         <source>Le theme a été sauvegardé avec succès</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Theme successfull saved</translation>
     </message>
     <message>
         <source>Fixe</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Absolute</translation>
     </message>
     <message>
         <source>Depart</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Start</translation>
     </message>
     <message>
         <source>Arrivee</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">End</translation>
     </message>
     <message utf8="true">
         <source>Le parcours a bien été sauvegardé</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track is saved</translation>
     </message>
     <message>
         <source>Nombre masques Parcours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Masks numbers for this track</translation>
     </message>
     <message utf8="true">
         <source>Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Masks numbers for tracks must be less or equal than masks with * masks height</translation>
     </message>
     <message utf8="true">
         <source>Mode Création sélectionné</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Create is selected</translation>
     </message>
     <message utf8="true">
         <source>Mode Modification sélectionné</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Update mode selected</translation>
     </message>
     <message utf8="true">
         <source>Nom du fichier passé :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">File name :</translation>
     </message>
     <message utf8="true">
         <source>Fichier temporaire de dézippage de l&apos;ABE choisi</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Temporary file and unzip of ABE file</translation>
     </message>
 </context>
 <context>
     <name>ExerciceClic</name>
     <message>
         <source>Clic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Click</translation>
     </message>
     <message>
         <source>Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Informations about this sequence</translation>
     </message>
     <message>
         <source>Erreur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error</translation>
     </message>
     <message utf8="true">
         <source>L&apos;exercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message utf8="true">
         <source>Veuillez vérifier votre fichier thème (.abe)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please check this abe file</translation>
     </message>
     <message utf8="true">
         <source>L&apos;excercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 secondes.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 seconds.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s) et %2 secondes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes and %2 seconds.</translation>
     </message>
     <message>
         <source>En Pause ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pause...</translation>
     </message>
 </context>
 <context>
     <name>ExerciceDoubleClic</name>
     <message>
         <source>Double Clic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Double click</translation>
     </message>
     <message>
         <source>Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Informations about this sequence</translation>
     </message>
     <message>
         <source>Erreur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error</translation>
     </message>
     <message utf8="true">
         <source>L&apos;exercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message utf8="true">
         <source>Veuillez vérifier votre fichier thème (.abe)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please check this abe file</translation>
     </message>
     <message utf8="true">
         <source>L&apos;excercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 secondes.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 seconds.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s) et %2 secondes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes and %2 seconds.</translation>
     </message>
     <message>
         <source>En Pause ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pause...</translation>
     </message>
 </context>
 <context>
     <name>ExerciceParcours</name>
     <message>
         <source>Parcours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track</translation>
     </message>
     <message>
         <source>Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Informations about this sequence</translation>
     </message>
     <message>
         <source>Erreur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error</translation>
     </message>
     <message utf8="true">
         <source>L&apos;exercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message utf8="true">
         <source>Veuillez vérifier votre fichier thème (.abe)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please check this abe file</translation>
     </message>
     <message utf8="true">
         <source>L&apos;excercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message>
         <source>Survol</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mouse over</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 secondes.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 seconds.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s) et %2 secondes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes and %2 seconds.</translation>
     </message>
     <message>
         <source>En Pause ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pause...</translation>
     </message>
 </context>
 <context>
     <name>ExerciceSurvol</name>
     <message>
         <source>Survol</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mouse over</translation>
     </message>
     <message>
         <source>Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Informations about this sequence</translation>
     </message>
     <message>
         <source>Erreur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error</translation>
     </message>
     <message utf8="true">
         <source>L&apos;exercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message utf8="true">
         <source>Veuillez vérifier votre fichier thème (.abe)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please check this abe file</translation>
     </message>
     <message utf8="true">
         <source>L&apos;excercice a rencontré un problème.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error on this exercise.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 secondes.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 seconds.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s).</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes.</translation>
     </message>
     <message>
         <source>Tu as fini l&apos;exercice en %1 minute(s) et %2 secondes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Exercise compleate in %1 minutes and %2 seconds.</translation>
     </message>
     <message>
         <source>En Pause ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pause...</translation>
     </message>
 </context>
 <context>
     <name>MaiaObject</name>
     <message>
         <source>parse error: invalid xml-rpc. not conforming to spec.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">parse error: invalid xml-rpc. not conforming to spec.</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <source>&amp;Fichier</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Exercices</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Quitter</source>
         <translation type="unfinished">&amp;Quit</translation>
     </message>
     <message>
+        <source>&amp;Fichier</source>
+        <translation type="unfinished">&amp;File</translation>
+    </message>
+    <message>
+        <source>&amp;Exercices</source>
+        <translation type="unfinished">&amp;Exercise</translation>
+    </message>
+    <message>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Q</translation>
     </message>
     <message>
         <source>&amp;Editeur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Editor</translation>
     </message>
     <message>
         <source>Ctrl+E</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+E</translation>
     </message>
     <message>
         <source>&amp;Survol</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Mouse over</translation>
     </message>
     <message>
         <source>Ctrl+1</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+1</translation>
     </message>
     <message>
         <source>&amp;Parcours</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Track</translation>
     </message>
     <message>
         <source>Ctrl+2</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+2</translation>
     </message>
     <message>
         <source>&amp;Clic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Click</translation>
     </message>
     <message>
         <source>Ctrl+3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+3</translation>
     </message>
     <message>
         <source>&amp;Double Clic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Double click</translation>
     </message>
     <message>
         <source>Ctrl+4</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+4</translation>
     </message>
     <message>
         <source>Survol ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Mouse over ...</translation>
     </message>
     <message>
         <source>Clic ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Click ...</translation>
     </message>
     <message>
         <source>Molette ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Rule ...</translation>
     </message>
     <message>
         <source>Parcours ...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Tracks ...</translation>
     </message>
     <message>
         <source>Double clic...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Double click ...</translation>
     </message>
     <message utf8="true">
         <source>Nom du fichier passé :</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">File name :</translation>
     </message>
     <message utf8="true">
         <source> Nom du fichier .abe selectionné : </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ABE file selected :</translation>
     </message>
     <message utf8="true">
         <source>Veuillez quitter l&apos;exercice avant d&apos;ouvrir l&apos;éditeur</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Please quit exercise before open editor</translation>
     </message>
 </context>
 <context>
@@ -2154,7 +2166,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Moyen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Medium</translation>
     </message>
     <message>
         <source>Insuffisant</source>
@@ -3461,98 +3473,98 @@ p, li { white-space: pre-wrap; }
     <name>VisionneuseImage</name>
     <message>
         <source>Visionneuse Image</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Picture viewer</translation>
     </message>
     <message>
         <source>Ouvrir fichier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open file</translation>
     </message>
     <message>
         <source>Impossible d&apos;ouvrir %1.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Error opening %1</translation>
     </message>
     <message>
         <source>A Propos</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <source>&lt;p&gt;&lt;b&gt;La Visionneuse d&apos;Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Permet d&apos;afficher une image, de zoomer, d&apos;ajuster la taille de l&apos;image à la fenetre et d&apos;imprimer (pdf). &lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">About</translation>
     </message>
     <message>
         <source>&amp;Ouvrir...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Open</translation>
     </message>
     <message>
         <source>Ctrl+O</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+O</translation>
     </message>
     <message>
         <source>&amp;Imprimer...</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Print...</translation>
     </message>
     <message>
         <source>Ctrl+P</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+P</translation>
     </message>
     <message>
         <source>&amp;Quitter</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Quit</translation>
     </message>
     <message>
         <source>Ctrl+Q</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+Q</translation>
     </message>
     <message>
         <source>Zoom &amp;In (25%)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom &amp;In (25%)</translation>
     </message>
     <message>
         <source>Ctrl++</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl++</translation>
     </message>
     <message>
         <source>Zoom &amp;Out (25%)</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Zoom &amp;Out (25%)</translation>
     </message>
     <message>
         <source>Ctrl+-</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+-</translation>
     </message>
     <message>
         <source>&amp;Taille Normale</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Normal size</translation>
     </message>
     <message>
         <source>Ctrl+S</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+S</translation>
     </message>
     <message>
         <source>&amp;Ajuster a la fenetre</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Adjust window</translation>
     </message>
     <message>
         <source>Ctrl+F</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ctrl+F</translation>
     </message>
     <message>
         <source>&amp;A propos</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;About</translation>
     </message>
     <message>
         <source>A propos &amp;Qt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">About &amp;Qt</translation>
     </message>
     <message>
         <source>&amp;Fichier</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;File</translation>
     </message>
     <message>
         <source>&amp;Vue</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;View</translation>
     </message>
     <message>
         <source>&amp;Aide</source>
+        <translation type="unfinished">&amp;Help</translation>
+    </message>
+    <message utf8="true">
+        <source>&lt;p&gt;&lt;b&gt;La Visionneuse d&apos;Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Permet d&apos;afficher une image, de zoomer, d&apos;ajuster la taille de l&apos;image à la fenetre et d&apos;imprimer (pdf). &lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3560,29 +3572,29 @@ p, li { white-space: pre-wrap; }
     <name>frmDisqueLocal</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
     <message>
         <source>&amp;Rechercher</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&amp;Search</translation>
     </message>
 </context>
 <context>
     <name>masqueDeplaceSouris</name>
     <message utf8="true">
         <source>Réinitialiser</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Restart</translation>
     </message>
     <message>
         <source>Sauvegarder</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Save</translation>
     </message>
 </context>
 <context>
     <name>widgetDeplaceSouris</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Form</translation>
     </message>
 </context>
 </TS>

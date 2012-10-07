@@ -1,3 +1,9 @@
+leterrier-mulot (10.0.1~ryxeo1) lucid; urgency=low
+
+  * version 10.0.1 pour etre > la version tcl/tk
+
+ -- Eric Seigne <eric.seigne@ryxeo.com>  Sun, 07 Oct 2012 21:33:59 +0200
+
 leterrier-mulot (0.99.1beta1~lucid1~ryxeo1) lucid; urgency=low
 
   * Premiere version testable, Editeur et Survol
