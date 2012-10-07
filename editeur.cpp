@@ -136,44 +136,44 @@ void Editeur::remplirArborescence()
 {
 
     /// Ce qui marche est commenté
-    //    QFileSystemModel *model = new QFileSystemModel;
-    //    model->setRootPath(QDir::homePath());
+//        QFileSystemModel *model = new QFileSystemModel;
+//        model->setRootPath(QDir::homePath());
 
 
-    //    QStringList filters;
-    //    QDir dir;
-    //    filters << "*.jpg" << "*.bmp"<< "*.png" << "*.svg"; //Choix des extensions
-    //    dir.setNameFilters(filters);
+//        QStringList filters;
+//        QDir dir;
+//        filters << "*.jpg" << "*.bmp"<< "*.png" << "*.svg"; //Choix des extensions
+//        dir.setNameFilters(filters);
 
-    //    ui->treeViewArborescence->setModel(model);
-    //    model->setNameFilters(filters); //Filtrage des photos
+//        ui->treeViewArborescence->setModel(model);
+//        model->setNameFilters(filters); //Filtrage des photos
 
-    //    connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
-    //    //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
+//        connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
+//        //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
 
-    //    ui->treeViewArborescence->setHeaderHidden(true);
-    //    ui->treeViewArborescence->hideColumn(1);
-    //    ui->treeViewArborescence->hideColumn(2);
-    //    ui->treeViewArborescence->hideColumn(3);
+//        ui->treeViewArborescence->setHeaderHidden(true);
+//        ui->treeViewArborescence->hideColumn(1);
+//        ui->treeViewArborescence->hideColumn(2);
+//        ui->treeViewArborescence->hideColumn(3);
 
-    //    ui->treeViewArborescence->setUniformRowHeights(true); // met toutes les lignes à la meme taille, ce qui permet d'optimiser le temps de réponse (ne recalcule pas la taille de chaque ligne)
-    //    ui->treeViewArborescence->setAnimated(true);          // a mettre a false pour les petites configurations (hein JLF !)
-    //    ui->treeViewArborescence->setSortingEnabled(true);
-    //    ui->listWidgetImagesSelection->setIconSize(QSize(50, 50));
+//        ui->treeViewArborescence->setUniformRowHeights(true); // met toutes les lignes à la meme taille, ce qui permet d'optimiser le temps de réponse (ne recalcule pas la taille de chaque ligne)
+//        ui->treeViewArborescence->setAnimated(true);          // a mettre a false pour les petites configurations (hein JLF !)
+//        ui->treeViewArborescence->setSortingEnabled(true);
+//        ui->listWidgetImagesSelection->setIconSize(QSize(50, 50));
 
-    //    creationMenu();
+//        creationMenu();
 
     /// Tentative d'une nouvelle facon
 
-    //    ThreadRechercheImage *toto;
-    //    toto = new ThreadRechercheImage();
-    //    toto->run(ui->listWidgetImagesSelection);
-    //    QStringList listeFichiersThread;
+//        ThreadRechercheImage *toto;
+//        toto = new ThreadRechercheImage();
+//        toto->run(ui->listWidgetImagesSelection);
+//        QStringList listeFichiersThread;
 
-    //    if (toto->getListeFichiers().count() < 0)
-    //    {
-    //        qDebug() << "OK pour la liste";
-    //    }
+//        if (toto->getListeFichiers().count() < 0)
+//        {
+//            qDebug() << "OK pour la liste";
+//        }
 
 }
 

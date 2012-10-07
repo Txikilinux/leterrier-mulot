@@ -733,7 +733,7 @@ void ExerciceParcours::redimensionnerConsigne()
   */
 void ExerciceParcours::redimensionnerImage2()
 {
-    m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio));
+    m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     gv_AireDeJeu->setFixedSize(m_itemImage->boundingRect().size().toSize());
    // positionner l'aire de jeu au centre */
     float ratio = abeApp->getAbeApplicationDecorRatio();
