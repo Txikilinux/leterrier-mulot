@@ -134,7 +134,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>AbulEduCommonStatesV1</name>
     <message>
-        <source>BILLLAN DE L&apos;EXERCICE</source>
+        <source>BILAN DE L&apos;EXERCICE</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -485,7 +485,7 @@ paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
-        <source>Entrez le mot que vous recherchez et apuyez sur entrée ou cliquez sur le bouton Rechercher.</source>
+        <source>Entrez le mot que vous recherchez et appuyez sur entrée ou cliquez sur le bouton Rechercher.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -518,7 +518,7 @@ paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>M&apos;avertir quand des ressources correspondantes seront disponibles</source>
+        <source>Etre averti quand des ressources correspondantes seront disponibles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -809,24 +809,8 @@ Vérifiez à l&apos;aide de la recherche...</source>
         <source>En mode anonyme, un seul exercice d&apos;un type donné est possible...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message utf8="true">
-        <source>Fin de l&apos;activité&apos; !!! </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&apos;est fini, on ajoute un traitement de fin</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Un petit coup de pouce ?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Correction !!! </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message utf8="true">
-        <source>On corrige la question, fonction à surcharger dans l&apos;exercice.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
