@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AbulEduAproposV1</class>
+ <widget class="QDialog" name="AbulEduAproposV1">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>588</width>
+    <height>411</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>A Propos du logiciel</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="mouseTracking">
+      <bool>false</bool>
+     </property>
+     <property name="currentIndex">
+      <number>5</number>
+     </property>
+     <widget class="QWidget" name="tabAide">
+      <attribute name="title">
+       <string>Aide intégrée</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridAide">
+         <item row="0" column="0">
+          <widget class="QTextBrowser" name="textAide">
+           <property name="sizeIncrement">
+            <size>
+             <width>0</width>
+             <height>5</height>
+            </size>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;Aide Calculette&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;calcul_mental&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:20pt; font-weight:600; color:#005500;&quot;&gt;M&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:20pt; font-weight:600; color:#005500;&quot;&gt;ulot-1.1&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;presentation&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;P&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;résentation&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Mulot est un programme pédagogique destiné à prendre en main la souris, à favoriser le langage et l'anticipation. Grâce à des exercices simples basés sur la découverte d'images ou de photos, il permet aux utilisateurs d'acquérir une plus grande aisance du maniement de la souris.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Il fait partie des logiciels du « Terrier » d'&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;AbulÉdu&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;. Vous pouvez en retrouver la liste complète sur notre site Internet &lt;/span&gt;&lt;a href=&quot;http://www.ryxeo.com/boutique/12-le-terrier&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.ryxeo.com/boutique/12-le-terrier&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Andika Basic'; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;fonctionnalites&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;F&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;onctionnalités&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;Mulot-1.1&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; propose 4 &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;types&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; d'exercices :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;- Survol&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;- Clic&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;- Double-Clic&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;- Parcours&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Il contient naturellement un &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;éditeur&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; d'exercice.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;A partir de la fenêtre accueil du logiciel, cliquez sur une des zones sensibles (l'appui sur la&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt; barre d'espace&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; les fait apparaître) pour &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;lancer&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; un des exercices.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;utilisation&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;U&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;tilisation&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; color:#00aa7f;&quot;&gt;Exercice Survol :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Cet exercice propose de survoler des carrés (masques) de couleur noire, afin de découvrir une image. Lorsqu'un carré est survolé avec la souris, le masque noir disparait et laisse apparaitre un bout de l'image. Dès que tous les masques noires ont été survolé, l'image apparait entièrement, puis on passe à l'image suivante après un certain laps de temps (paramétrables dans l'éditeur). La difficulté est croissante, c'est-à-dire que l'image suivante comportera des carrés un peu plus petits et plus espacés.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; color:#00aa7f;&quot;&gt;Exercice Clic :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Dans cet exercice, même consigne sauf que les masques disparaissent au clic gauche de la souris.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; color:#00aa7f;&quot;&gt;Exercice Double-Clic :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Dans cet exercice, même consigne sauf que les masques disparaissent au double-clic gauche de la souris.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; color:#00aa7f;&quot;&gt;Exercice Parcours :&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Cet exercice propose un chemin sur l'image représenté par des carrés consécutifs de couleur noire, avec un départ et une arrivée matérialisés  respectivement par un carré vert et un carré rouge.&lt;br /&gt;Le but est de cliquer sur le carré de départ (le vert), de suivre le chemin (les carrés noires) jusqu'à l'arrivée, et de cliquer sur celle-ci pour indiquer qu'on est au bout du parcours.&lt;br /&gt;L'image se découvre petit à petit au parcours de l'utilisateur, les carrés laissent apparaitre un bout de l'image. Pour réussir le parcours, les carrés doivent être survolés dans l'ordre. &lt;br /&gt;Dès que l'utilisateur a réussi le parcours, l'image est découverte, et on passe à la suivante après un certain laps de temps (paramétrable dans l'éditeur).&lt;br /&gt;Il est possible de construire ses parcours en fonction de l'utilisateur (menu Editeur).&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;Les modules&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;Mulot-1.1&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; est conçu pour être utilisé au travers de &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;modules&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;. Un module contient des &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;images&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; et des &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;paramètres&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; prévus autour de ces images. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Ce logiciel est livré avec 5 modules, mais vous pouvez en &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;créer&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; de nouveaux grâce à l'&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;éditeur&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; et surtout en &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;trouver&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; sur la &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;médiathèque&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; AbulÉdu au travers de la fenêtre de l'&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;AbeBox&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;, qui s'affichera quand vous demanderez à ouvrir un document.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Le &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;référencement&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; de ces modules sur la médiathèque respecte la norme &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;ScoLOMFRv1.0&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;edition&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;angues&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Les exercices peuvent être conçus et utilisé dans n'importe quelle langue.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;ajout d'images&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;jout d'images&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Pour créer des modules, vous pourrez piocher dans la base d'images AbulÉdu-Data, qui contient des milliers d'images libres, toutes indexées au format ScoLOMFR.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="searchPaths">
+            <stringlist/>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabRessources">
+      <attribute name="title">
+       <string>Ressources</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QTextBrowser" name="textAide_2">
+           <property name="sizeIncrement">
+            <size>
+             <width>0</width>
+             <height>5</height>
+            </size>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;title&gt;Aide Calculette&lt;/title&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;Le flux RSS en provenance de libre pedagosite sera automatiquement téléchargé lors du lancement de l'application, ne touchez à rien de cette fenêtre.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;Exemple: http://libre.pedagosite.net/search/leterrier-mulot&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="searchPaths">
+            <stringlist/>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabNews">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="title">
+       <string>Nouveautés</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridNews">
+         <item row="0" column="0">
+          <widget class="QTextBrowser" name="textNews">
+           <property name="styleSheet">
+            <string notr="true">h1{color: rgb(255, 0, 0);}</string>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;Le flux RSS en provenance du redmine sera automatiquement téléchargé lors du lancement de l'application, ne touchez à rien de cette fenêtre.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;Exemple: http://redmine.ryxeo.com/projects/leterrier-mulot/news&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabForum">
+      <attribute name="title">
+       <string>Forum</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_6">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridForum">
+         <item row="0" column="0" colspan="2">
+          <widget class="QTextBrowser" name="textForum">
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;Le flux RSS en provenance du forum abuledu sera automatiquement téléchargé lors du lancement de l'application, ne touchez à rien de cette fenêtre.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'DejaVu Sans'; font-size:11pt;&quot;&gt;Exemple: http://forum.abuledu.org/rss/topic/leterrier-mulot/lang/fr&lt;/span&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="lblPosezVotreQuestion">
+           <property name="text">
+            <string>Posez votre question sur le forum des utilisateurs ...</string>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::RichText</enum>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+           <property name="textInteractionFlags">
+            <set>Qt::TextBrowserInteraction</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabTranslate">
+      <attribute name="title">
+       <string>Contribuez</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_7">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="GridTranslate">
+         <item row="0" column="0">
+          <widget class="QTextBrowser" name="textTranslate">
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Vous appréciez les logiciels d'AbulÉdu et vous souhaitez nous aider à en développer d'autres et améliorer ceux qui existent déjà ?&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;1. Achetez du service auprès de la société RyXéo qui porte le projet AbulÉdu et embauche des développeurs de logiciels libres. &lt;a href=&quot;http://ryxeo.com/boutique/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://ryxeo.com/boutique/&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;2. Faites un don à l'association abuledu-fr.org pour lui permettre de prendre en charge les frais de déplacements des bénévoles et assurer sa mission. &lt;a href=&quot;http://abuledu-fr.org/Faire-un-don-a-l-association.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://abuledu-fr.org/Faire-un-don-a-l-association.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;3. Participez au forum d'entraide en donnant un coup de pouce à ceux qui ne savent pas encore se servir aussi bien que vous des différents logiciels&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;4. Traduisez ce logiciel dans d'autres langues, pour celà proposez votre aide sur la liste dev@abuledu.org. Allez sur le site suivant pour vous y abonner: &lt;a href=&quot;http://listes.abuledu.org/wws/info/dev&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://listes.abuledu.org/wws/info/dev&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;5. Faites nous connaître auprès de vos amis, contacts et tout autour de vous, plus nous sommes nombreux et plus nos projets avanceront vite et bien.&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tabAbout">
+      <attribute name="title">
+       <string>À propos</string>
+      </attribute>
+      <layout class="QGridLayout" name="gridLayout_8">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridAbout">
+         <item row="0" column="1" rowspan="2">
+          <widget class="QTextBrowser" name="textAbout">
+           <property name="palette">
+            <palette>
+             <active>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="0">
+                 <red>239</red>
+                 <green>235</green>
+                 <blue>231</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </active>
+             <inactive>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="0">
+                 <red>239</red>
+                 <green>235</green>
+                 <blue>231</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </inactive>
+             <disabled>
+              <colorrole role="Base">
+               <brush brushstyle="SolidPattern">
+                <color alpha="255">
+                 <red>255</red>
+                 <green>255</green>
+                 <blue>255</blue>
+                </color>
+               </brush>
+              </colorrole>
+             </disabled>
+            </palette>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="midLineWidth">
+            <number>0</number>
+           </property>
+           <property name="html">
+            <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
+&lt;tr&gt;
+&lt;td style=&quot;border: none;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mulot est un logiciel libre sous licence GNU/GPL 3.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Auteurs :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - André Connes &amp;lt;andre.connes@wanadoo.fr&amp;gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Eric Seigne                &amp;lt;eric.seigne@ryxeo.com&amp;gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Icham Sirat     &amp;lt;icham.sirat@ryxeo.com&amp;gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Interface et ressources graphiques :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Arnaud Pérat &amp;lt;arnaud.perat@ryxeo.com&amp;gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Contributeurs :&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Philippe Cadaugade  &amp;lt;philippe.cadaugade@ryxeo.com&amp;gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Jean-Louis Frucot      &amp;lt;frucot.jeanlouis@free.fr&amp;gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Hayat Oufdil             &amp;lt;hayat.oufdil@ryxeo.com&amp;gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Annie Lesca              &amp;lt;als@calestampar.org&amp;gt; &lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap>data/images/will-win.png</pixmap>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="spacerRight">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonFermer">
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Fermer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="spacerLeft">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>28</width>
+         <height>24</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButtonFermer</sender>
+   <signal>clicked()</signal>
+   <receiver>AbulEduAproposV1</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>387</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>293</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
