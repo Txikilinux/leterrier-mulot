@@ -70,6 +70,11 @@ int main(int argc, char *argv[])
 
     MainWindow *w;
 
+    // 2012/10/15 Icham Gestion des variables qApp pour la boite Apropos
+    qApp->setApplicationName("Le Terrier -- Mulot");
+    qApp->setApplicationVersion("Version 1.1");
+    qApp->setOrganizationDomain("adresse du site de mon logiciel");
+
     for (int i = 1; i <= 5; i++)
     {
         //On lance le constructeur de la mainwindows en "arrière plan" lors du 1er passage

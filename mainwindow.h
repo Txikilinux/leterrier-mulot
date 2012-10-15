@@ -31,6 +31,8 @@
 #include "abuleduboxfilemanagerv1.h"
 #include "thread.h"
 
+#include "lib/abuleduaproposv1/abuleduaproposv1.h"
+
 namespace Ui {
     class MainWindow;
 }

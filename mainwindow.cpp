@@ -93,6 +93,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     qDebug() << "demarrage du thread";
     rechercheImagesSurPC("/tmp");
+
+    // Utilisation de la boite aPropos
+    AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
+    monAide->hide();
+    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
 }
 
 void MainWindow::rechercheImagesSurPC(QString dossierDepart)

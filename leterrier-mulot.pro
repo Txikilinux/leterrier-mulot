@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui script xml network
 system(ccache -V):QMAKE_CXX = ccache g++
 
 #a activer ou pas si on souhaite compiler pour tablette
@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     exerciceparcours.cpp \
     exerciceclic.cpp \
     exercicedoubleclic.cpp \
-    thread.cpp
+    thread.cpp \
+    lib/abuleduaproposv1/abuleduaproposv1.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
@@ -33,11 +34,13 @@ HEADERS  += mainwindow.h \
     exerciceparcours.h \
     exerciceclic.h \
     exercicedoubleclic.h \
-    thread.h
+    thread.h \
+    lib/abuleduaproposv1/abuleduaproposv1.h
 
 FORMS    += mainwindow.ui \
     widgetdeplacesouris.ui \
-    editeur.ui
+    editeur.ui \
+    lib/abuleduaproposv1/abuleduaproposv1.ui
 
 RESOURCES += \
     ressources.qrc
