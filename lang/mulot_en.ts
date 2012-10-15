@@ -299,7 +299,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Le site n&apos;est pas accessible</source>
-        <translation>Website is not avalaible</translation>
+        <translation>Website is not accessible</translation>
     </message>
     <message utf8="true">
         <source>Téléchargement en cours ... veuillez patienter.</source>
@@ -307,7 +307,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Le forum n&apos;est pas accessible</source>
-        <translation>Forum can&apos;t be reached</translation>
+        <translation>Forum is not accessible</translation>
     </message>
 </context>
 <context>
