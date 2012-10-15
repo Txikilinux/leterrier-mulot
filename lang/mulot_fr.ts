@@ -518,10 +518,6 @@ paramètres</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Etre averti quand des ressources correspondantes seront disponibles</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Adresse mail :</source>
         <translation type="unfinished"></translation>
     </message>
@@ -580,6 +576,10 @@ paramètres</source>
     <message utf8="true">
         <source>Attention il semblerait que cette ressource ait déjà été indexée !
 Vérifiez à l&apos;aide de la recherche...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>M&apos;avertir quand des ressources correspondantes seront disponibles</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

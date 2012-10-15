@@ -120,11 +120,11 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Gestionnaire de fichiers AbulÉdu : Mode Sauvegarde</source>
-        <translation>AbulEdu file manager : Saving Mode</translation>
+        <translation>AbulEdu file manager : Save Mode</translation>
     </message>
     <message utf8="true">
         <source>Gestionnaire de fichiers AbulÉdu : Mode Ouverture</source>
-        <translation>AbulEdu file manager : Opening Mode</translation>
+        <translation>AbulEdu file manager : Open Mode</translation>
     </message>
     <message>
         <source>Confirmation</source>
@@ -344,14 +344,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Fichier ABE non conforme</source>
-        <translation>ABE file non conform</translation>
+        <translation>ABE file not conform</translation>
     </message>
     <message>
         <source>Votre fichier abe ne respecte pas la norme, il ne contient pas de vignette.
 
 Nom du fichier:
 %1</source>
-        <translation>Your abe file is not conform, it don&apos;t include picture
+        <translation>Your abe file is not conform, picture missing.
 
 File name:
 %1</translation>
@@ -521,7 +521,7 @@ settings</translation>
     </message>
     <message>
         <source>M&apos;avertir quand des ressources correspondantes seront disponibles</source>
-        <translation type="obsolete">Inform me when matching resources will be available</translation>
+        <translation>Inform me when matching resources will be available</translation>
     </message>
     <message>
         <source>Adresse mail :</source>
@@ -545,15 +545,15 @@ settings</translation>
     </message>
     <message utf8="true">
         <source>Appréciation :</source>
-        <translation>Judgement :</translation>
+        <translation>Rating :</translation>
     </message>
     <message utf8="true">
         <source>Résumé :</source>
-        <translation>Abstract :</translation>
+        <translation>Resume :</translation>
     </message>
     <message utf8="true">
         <source>Indiquez une note entre 0(mauvais) et 5(très bien) puis cliquez sur le bouton</source>
-        <translation>Please quot between 0 (bad) and 5 (excellent), then click on button</translation>
+        <translation>Please quote between 0 (bad) and 5 (excellent), then click on button</translation>
     </message>
     <message>
         <source>Voter</source>
@@ -583,7 +583,7 @@ Check with the research...</translation>
     </message>
     <message utf8="true">
         <source>Entrez le mot que vous recherchez et appuyez sur entrée ou cliquez sur le bouton Rechercher.</source>
-        <translation>Type your research and click on Enter ou button Research.</translation>
+        <translation>Type your research and click on Enter or button Research.</translation>
     </message>
     <message>
         <source>Merci pour votre participation, vous pouvez maintenant faire une nouvelle recherche.</source>
@@ -591,7 +591,7 @@ Check with the research...</translation>
     </message>
     <message>
         <source>Etre averti quand des ressources correspondantes seront disponibles</source>
-        <translation>Be informed when matching resources will be available</translation>
+        <translation type="obsolete">Be informed when matching resources will be available</translation>
     </message>
     <message>
         <source>Custom1</source>
@@ -642,7 +642,7 @@ Check with the research...</translation>
     </message>
     <message>
         <source>3. Affectation de l&apos;URI suivante pour notre ressource: </source>
-        <translation>3. Following URI allocation for our resource: </translation>
+        <translation>3. Dispatch next URI allocation for our resource: </translation>
     </message>
     <message>
         <source>4. Sauvegarde du fichier .abb avec cette URI dans la partie LOM.</source>
@@ -654,7 +654,7 @@ Check with the research...</translation>
     </message>
     <message>
         <source>Sauvegarde du fichier avant upload.</source>
-        <translation>Saving file before upload.</translation>
+        <translation>Save file before uploading.</translation>
     </message>
     <message>
         <source>Upload du fichier en cours ...</source>
@@ -666,7 +666,7 @@ Check with the research...</translation>
     </message>
     <message utf8="true">
         <source>5. Réponse du serveur à la demande d&apos;upload</source>
-        <translation>5. Server answer for upload request</translation>
+        <translation>5. Server reply to upload request</translation>
     </message>
     <message>
         <source>Upload</source>
@@ -822,7 +822,7 @@ Check with the research...</translation>
     <name>AbulEduStateMachineV1</name>
     <message utf8="true">
         <source>En mode anonyme, un seul exercice d&apos;un type donné est possible...</source>
-        <translation>You can just reach one similar exercise without authentication...</translation>
+        <translation>Only one exercise type is possible without authentication...</translation>
     </message>
     <message utf8="true">
         <source>Fin de l&apos;activité&apos; !!! </source>
@@ -1824,7 +1824,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message utf8="true">
         <source>Mode Modification sélectionné</source>
-        <translation>Updating mode selected</translation>
+        <translation>Change mode selected</translation>
     </message>
     <message utf8="true">
         <source>Nom du fichier passé :</source>
