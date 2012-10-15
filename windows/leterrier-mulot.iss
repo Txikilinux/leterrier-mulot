@@ -8,7 +8,7 @@
 ; Exemple AppId={{62974C2F-0013-4262-AF5E-7F46C992672E}
 AppId={{7188AA57-B55B-4321-88B8-1797A5DA49F2}
 AppName=Le Terrier d'AbulEdu - Mulot
-AppVersion=1.1
+AppVersion=10.1.2
 AppPublisher=RyXéo SARL
 AppPublisherURL=http://www.abuledu.org/leterrier/
 AppSupportURL=http://www.abuledu.org/leterrier/
@@ -17,7 +17,7 @@ DefaultDirName={pf}\AbulEdu\Mulot
 DefaultGroupName=Le Terrier d'AbulEdu
 LicenseFile=../gpl-3.0.txt
 OutputDir=.
-OutputBaseFilename=leterrier-mulot-1.1-setup
+OutputBaseFilename=leterrier-mulot-10.1.2-setup
 Compression=lzma
 SolidCompression=yes
 
@@ -34,7 +34,7 @@ Source: "..\release\libexiv2-12.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
 ;Source: "..\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../lib/abuledufilev1/quazip/quazip/release/quazip.dll"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "../lang/*.qm"; DestDir: "{app}\lang"; Flags: ignoreversion
+Source: "../lang/*.qm"; DestDir: "{app}\lang"; Flags: ignoreversion
 Source: "C:/QtSDK/mingw/bin/libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/mingw/bin/mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/mingw/bin/libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
