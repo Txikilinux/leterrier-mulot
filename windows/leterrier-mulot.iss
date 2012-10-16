@@ -8,7 +8,7 @@
 ; Exemple AppId={{62974C2F-0013-4262-AF5E-7F46C992672E}
 AppId={{7188AA57-B55B-4321-88B8-1797A5DA49F2}
 AppName=Le Terrier d'AbulEdu - Mulot
-AppVersion=10.1.2
+AppVersion=10.1.3
 AppPublisher=RyXéo SARL
 AppPublisherURL=http://www.abuledu.org/leterrier/
 AppSupportURL=http://www.abuledu.org/leterrier/
@@ -17,9 +17,12 @@ DefaultDirName={pf}\AbulEdu\Mulot
 DefaultGroupName=Le Terrier d'AbulEdu
 LicenseFile=../gpl-3.0.txt
 OutputDir=.
-OutputBaseFilename=leterrier-mulot-10.1.2-setup
+OutputBaseFilename=leterrier-mulot-10.1.3-setup
 Compression=lzma
 SolidCompression=yes
+SignTool=ryxeo /d $qPackage d'installation$q $f
+SignedUninstaller=True
+SignedUninstallerDir=.
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
