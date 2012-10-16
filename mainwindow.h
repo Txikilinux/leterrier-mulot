@@ -53,6 +53,7 @@ private slots:
     /** Slot qui gère l'action de survol avec la souris */
     void on_action_Survol_triggered();
 
+
 private:
     Ui::MainWindow *ui;
     AbulEduPageAccueilV1 *m_abuleduaccueil;
@@ -75,7 +76,13 @@ private:
     QTranslator qtTranslator;
     QTranslator myappTranslator;
 
+    void creeMenuLangue();
+
+protected:
+    virtual void changeEvent(QEvent *e);
+
 private slots:
+    void slotChangeLangue();
     void abeLanceExo(int numero);
     void exerciceExited();
 

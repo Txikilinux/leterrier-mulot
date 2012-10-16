@@ -38,7 +38,7 @@
      <x>0</x>
      <y>0</y>
      <width>860</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -59,8 +59,14 @@
     <addaction name="actionClic"/>
     <addaction name="action_Double_Clic"/>
    </widget>
+   <widget class="QMenu" name="menuLangues">
+    <property name="title">
+     <string>&amp;Langues</string>
+    </property>
+   </widget>
    <addaction name="menu_Fichier"/>
    <addaction name="menuExercice"/>
+   <addaction name="menuLangues"/>
   </widget>
   <action name="action_Quitter">
    <property name="text">
