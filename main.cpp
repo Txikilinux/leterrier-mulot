@@ -50,7 +50,7 @@ void debugOutput(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-    qInstallMsgHandler(debugOutput);
+//    qInstallMsgHandler(debugOutput);
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, "leterrier");
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
 #ifdef __ABULEDUTABLETTEV1__MODE__

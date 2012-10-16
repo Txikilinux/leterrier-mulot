@@ -45,13 +45,15 @@ MainWindow::MainWindow(QWidget *parent) :
     //c'est d'ailleur grace a ca qu'on est en RTL
     qtTranslator.load("qt_" + locale,
                       QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    qApp->installTranslator(&qtTranslator);
+    abeApp->installTranslator(&qtTranslator);
 
     //Et un second qtranslator pour les traductions specifiques du
     //logiciel
     myappTranslator.load("mulot_" + locale, "lang");
-    qApp->installTranslator(&myappTranslator);
+    abeApp->installTranslator(&myappTranslator);
+
     ui->setupUi(this);
+    creeMenuLangue();
     move(QApplication::desktop()->screen()->rect().center()-this->rect().center());
 
     setAttribute( Qt::WA_DeleteOnClose );
@@ -98,6 +100,10 @@ MainWindow::MainWindow(QWidget *parent) :
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
+
+
+    //Ajout de l'anglais & français dans le menu langues
+
 }
 
 void MainWindow::rechercheImagesSurPC(QString dossierDepart)
@@ -255,6 +261,25 @@ void MainWindow::on_action_Survol_triggered()
     abeLanceExo(0);
 }
 
+void MainWindow::slotChangeLangue()
+{
+    QString lang = sender()->objectName();
+    abeApp->removeTranslator(&qtTranslator);
+    abeApp->removeTranslator(&myappTranslator);
+
+    //Un 1er qtranslator pour prendre les traductions QT Systeme
+    //c'est d'ailleur grace a ca qu'on est en RTL
+    qtTranslator.load("qt_" + lang, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    abeApp->installTranslator(&qtTranslator);
+
+    //foreach (QWidget *widget, QApplication::allWidgets()) widget->setLayoutDirection(Qt::RightToLeft);
+    //Et un second qtranslator pour les traductions specifiques du
+    //logiciel
+    myappTranslator.load("mulot_" + lang, "lang");
+    abeApp->installTranslator(&myappTranslator);
+    ui->retranslateUi(this);
+}
+
 void MainWindow::on_actionClic_triggered()
 {
     abeLanceExo(1);
@@ -285,5 +310,30 @@ void MainWindow::on_actionEditeur_triggered()
     else // On affiche un petit message...
     {
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
+    }
+}
+
+
+void MainWindow::creeMenuLangue()
+{
+    QAction* actionLangueEn = new QAction(trUtf8("English"),this);
+    actionLangueEn->setObjectName("en");
+    connect(actionLangueEn, SIGNAL(triggered()), this, SLOT(slotChangeLangue()));
+    ui->menuLangues->addAction(actionLangueEn);
+
+    QAction* actionLangueFr = new QAction(trUtf8("Français"),this);
+    actionLangueFr->setObjectName("fr");
+    connect(actionLangueFr, SIGNAL(triggered()), this, SLOT(slotChangeLangue()));
+    ui->menuLangues->addAction(actionLangueFr);
+}
+
+void MainWindow::changeEvent(QEvent *e)
+{
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
     }
 }
