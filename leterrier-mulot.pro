@@ -67,9 +67,6 @@ include(lib/abuledulangv1/abuledulangv1.pri)
 include(lang/lang.pri)
 
 win32 {
-    DEFINES      += __WINDOWS__=1
-    INCLUDEPATH  += $$quote(C:/msys/1.0/local/include)
-    LIBS         += $$quote(C:/msys/1.0/local/lib/libexiv2.dll.a)
     OTHER_FILES  += windows/windows.rc
     RC_FILE       = windows/windows.rc
 }
