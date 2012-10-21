@@ -41,8 +41,9 @@ ln -s /Applications /tmp/build-dmg-${APPNAME}/Applications
 
 #copie des donnees
 cp -a data ${APPNAME}.app/Contents/Resources/
-cp -a conf ${APPNAME}.app/Contents/Resources/
-cp -a lang ${APPNAME}.app/Contents/Resources/
+#cp -a conf ${APPNAME}.app/Contents/Resources/
+mkdir ${APPNAME}.app/Contents/Resources/lang
+cp -a lang/*.qm ${APPNAME}.app/Contents/Resources/lang/
 
 #creation du fichier dmg
 ~/create-dmg/create-dmg --window-size 415 295 --volname "${VOLNAME}" --volicon ${VOLICON} --background "macos/.background/background.png" ${APPNAME}-${APPVERSION}-osx.dmg ${APPNAME}.app
