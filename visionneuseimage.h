@@ -24,6 +24,7 @@
 
 #include <QMainWindow>
 #include <QPrinter>
+#include <QtGui>
 
 class QAction;
 class QLabel;

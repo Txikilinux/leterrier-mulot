@@ -19,8 +19,6 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include <QtGui>
-
 #include "visionneuseimage.h"
 
 VisionneuseImage::VisionneuseImage(QWidget *parent)
