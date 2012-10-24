@@ -34,6 +34,7 @@
 #include <QLabel>
 #include <QDesktopWidget>
 #include <QFileSystemModel>
+#include <QImageReader>
 
 #include "abuledufilev1.h"
 #include "visionneuseimage.h"
@@ -41,6 +42,7 @@
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "thread.h"
+#include "ui_editeur.h"
 
 
 

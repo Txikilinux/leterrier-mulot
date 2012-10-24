@@ -19,12 +19,7 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include "abuleduapplicationv1.h"
-#include "activityfilter.h"
-#include "version.h"
 #include "mainwindow.h"
-#include "abuleduvirtualkeyboardv1.h"
-
 
 void debugOutput(QtMsgType type, const char *msg)
  {

@@ -21,9 +21,6 @@
 
 #include "exercicedoubleclic.h"
 
-#include <QMessageBox>
-#include <QtCore/qmath.h>
-
 ExerciceDoubleClic::ExerciceDoubleClic(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
 {

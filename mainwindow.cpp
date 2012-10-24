@@ -19,18 +19,7 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-
-#include "editeur.h"
-#include "exercicesurvol.h"
-#include "exerciceparcours.h"
-#include "exerciceclic.h"
-#include "exercicedoubleclic.h"
-#include "abuleduboxfilemanagerv1.h"
-#include "abuleduvirtualkeyboardguiv1.h"
-
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -93,16 +82,17 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
     if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
 
+    /// Reglage et Demarrage du Thread de recherche d'images locales
     qDebug() << "demarrage du thread";
     rechercheImagesSurPC("/tmp");
 
-    // Utilisation de la boite aPropos
+    /// Utilisation de la boite aPropos
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
 
 
-    //Ajout de l'anglais & français dans le menu langues
+    /// Ajout de l'anglais & français dans le menu langues
 
 }
 
@@ -139,7 +129,11 @@ void MainWindow::slotOpenFile()
 
 void MainWindow::slotDemo()
 {
-    //    qDebug() << " On passe en mode démo ...";
+    if (!m_exerciceEnCours)
+    {
+        qDebug() << "Affichage des bulles ";
+
+    }
 }
 
 void MainWindow::on_action_Ouvrir_triggered()

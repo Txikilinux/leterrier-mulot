@@ -21,10 +21,6 @@
   */
 
 #include "thread.h"
-#include "QImageReader"
-#include "QBuffer"
-#include "QCryptographicHash"
-#include "QDateTime"
 
 Thread::Thread(QString cheminRecherche, QObject *parent, QStringList *listeFichiersPourItem) :
     QThread(parent)

@@ -26,12 +26,22 @@
 
 #include <QDesktopWidget>
 #include <QMainWindow>
+
 #include "abuledupageaccueilv1.h"
 #include "abuledufilev1.h"
+#include "abuleduapplicationv1.h"
 #include "abuleduboxfilemanagerv1.h"
+#include "activityfilter.h"
 #include "thread.h"
-
+#include "version.h"
+#include "abuleduvirtualkeyboardv1.h"
 #include "lib/abuleduaproposv1/abuleduaproposv1.h"
+#include "ui_mainwindow.h"
+#include "editeur.h"
+#include "exercicesurvol.h"
+#include "exerciceparcours.h"
+#include "exerciceclic.h"
+#include "exercicedoubleclic.h"
 
 namespace Ui {
     class MainWindow;

@@ -21,9 +21,6 @@
 
 #include "exerciceclic.h"
 
-#include <QMessageBox>
-#include <QtCore/qmath.h>
-
 ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
 {

@@ -23,6 +23,8 @@
 #define EXERCICECLIC_H
 
 #include <QGraphicsProxyWidget>
+#include <QMessageBox>
+#include <QtCore/qmath.h>
 #include "abuleduetiquettesv1.h"
 #include "abuleducommonstatesv1.h"
 #include "masquedeplacesouris.h"

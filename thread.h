@@ -27,6 +27,10 @@
 #include <QDirIterator>
 #include <QStringListModel>
 #include <QListWidget>
+#include <QImageReader>
+#include <QBuffer>
+#include <QCryptographicHash>
+#include <QDateTime>
 
 class Thread : public QThread
 {

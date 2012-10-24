@@ -21,9 +21,6 @@
 
 #include "exercicesurvol.h"
 
-#include <QMessageBox>
-#include <QtCore/qmath.h>
-
 ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
 {
