@@ -136,7 +136,7 @@ void MainWindow::slotDemo()
         m_abuleduaccueil->abePageAccueilMontreBulles(true);
         foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
         {
-            zone->abeZoneDrawRect(true/*,QColor("#dcdcdc")*/);
+            zone->abeZoneDrawRect(true,QColor("#000028"),4);
         }
         QTimer::singleShot(8000,this,SLOT(slotFinDemo()));
     }
