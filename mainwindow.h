@@ -42,6 +42,7 @@
 #include "exerciceparcours.h"
 #include "exerciceclic.h"
 #include "exercicedoubleclic.h"
+#include "abuledusplashscreenv1.h"
 
 namespace Ui {
     class MainWindow;
@@ -59,6 +60,7 @@ public:
 public slots:
     void slotDemo();
     void slotFinDemo();
+    void slotSessionAuthenticated(bool enable);
 
 private slots:
     /** Slot qui gère l'action de survol avec la souris */

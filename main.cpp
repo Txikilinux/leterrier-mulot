@@ -22,39 +22,36 @@
 #include "mainwindow.h"
 
 void debugOutput(QtMsgType type, const char *msg)
- {
-     switch (type) {
-     case QtDebugMsg:
+{
+    switch (type) {
+    case QtDebugMsg:
 #ifdef QT_NO_DEBUG_OUTPUT
-         fprintf(stderr, "Debug: %s\n", msg);
+        fprintf(stderr, "Debug: %s\n", msg);
 #endif
-         break;
-     case QtWarningMsg:
+        break;
+    case QtWarningMsg:
 #ifdef QT_NO_WARNING_OUTPUT
-         fprintf(stderr, "Warning: %s\n", msg);
+        fprintf(stderr, "Warning: %s\n", msg);
 #endif
-         break;
-     case QtCriticalMsg:
-         fprintf(stderr, "Critical: %s\n", msg);
-         break;
-     case QtFatalMsg:
-         fprintf(stderr, "Fatal: %s\n", msg);
-         abort();
-     }
- }
+        break;
+    case QtCriticalMsg:
+        fprintf(stderr, "Critical: %s\n", msg);
+        break;
+    case QtFatalMsg:
+        fprintf(stderr, "Fatal: %s\n", msg);
+        abort();
+    }
+}
 
 int main(int argc, char *argv[])
 {
-//    qInstallMsgHandler(debugOutput);
+    //    qInstallMsgHandler(debugOutput);
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, "leterrier");
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
 #ifdef __ABULEDUTABLETTEV1__MODE__
     QApplication::setStyle("plastique");
 #endif
 
-    // ================== splashscreen
-    //    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1();
-    //    splash->show();
 
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
@@ -65,29 +62,31 @@ int main(int argc, char *argv[])
 
     MainWindow *w;
 
-    // 2012/10/15 Icham Gestion des variables qApp pour la boite Apropos
-    qApp->setApplicationName("Le Terrier -- Mulot");
-    qApp->setApplicationVersion("Version 1.1");
-    qApp->setOrganizationDomain("adresse du site de mon logiciel");
-
-    for (int i = 1; i <= 5; i++)
+    /// Splashscreen
+    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0, true);
+    splash->show();
+    for (int i = 1; i <= 15; i++)
     {
         //On lance le constructeur de la mainwindows en "arrière plan" lors du 1er passage
         //ca permet d'avoir les requetes reseau en arriere plan (mise a jour etc.) c'est "cool" :)
         if(i == 1) {
             w = new MainWindow(0);
+            splash->setMainWindow(w);
         }
-        //        splash->showMessage(QObject::trUtf8("Chargement en cours, merci de patienter ... %1%").arg(QString::number(i*20)), Qt::AlignBottom | Qt::AlignHCenter, Qt::black);
+        if(i < 6) {
+            splash->showMessage(QObject::trUtf8("      Chargement en cours, merci de patienter ...... %1%").arg(QString::number(i*20)), Qt::AlignBottom | Qt::AlignHCenter, Qt::black);
+        }
+
+
         //tres important si vous voulez que le splash s'affiche !
         qApp->processEvents();
         //Pour les developpeurs presses
-        AbulEduSleeperThread::msleep(10);
+        AbulEduSleeperThread::msleep(100);
         //Quand on passe en production
         //AbulEduSleeperThread::msleep(1000);
     }
-    //    splash->deleteLater();
-    // ================== splashscreen end
-
+    splash->showButtonShop();
+    splash->finish();
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
     //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
@@ -107,13 +106,13 @@ int main(int argc, char *argv[])
     //        }
     //    }
 
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    w->showFullScreen();
-#else
-
-    // jlf 2012/09/29 Fenetre maximisée par défaut
-    w->showMaximized();
-#endif
+    /// TODO -> A mettre dans splashScreen !!
+//#ifdef __ABULEDUTABLETTEV1__MODE__
+//    w->showFullScreen();
+//#else
+//    // jlf 2012/09/29 Fenetre maximisée par défaut
+//    w->showMaximized();
+//#endif
 
     return a.exec();
 }

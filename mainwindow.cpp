@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_localDebug = true;
 
-    //Langue
+    /// Langue et Translator
     QString locale = QLocale::system().name().section('_', 0, 0);
 
     //Un 1er qtranslator pour prendre les traductions QT Systeme
@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
-    //Mettez ce qu'il faut en fonction de votre menu d'accueil
+    /// Gestion bulles page d'accueil
     m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol ..."));
     m_texteBulles.insert(1, trUtf8("Clic ..."));
@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduaccueil = new AbulEduPageAccueilV1(m_config, &m_texteBulles, ui->fr_principale);
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)));
 
-    //On centre la fenetre sur l'ecran de l'utilisateur
+    /// Centrage de la fenetre sur le bureau de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
     int desktop_height = widget->height();
@@ -77,7 +77,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduFileManager = new AbulEduBoxFileManagerV1(0, m_abuleduFile);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
-
     m_numberExoCalled = -1;
     m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
     if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
@@ -90,7 +89,6 @@ MainWindow::MainWindow(QWidget *parent) :
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
-
 
     /// Ajout de l'anglais & français dans le menu langues
 
@@ -198,7 +196,6 @@ void MainWindow::abeAiguillage()
 #else
     show();
 #endif
-
 
     switch (m_numberExoCalled)
     {
@@ -351,4 +348,20 @@ void MainWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+void MainWindow::slotSessionAuthenticated(bool enable)
+{
+    if (m_localDebug) qDebug() << "MainWindow::slotSessionAuthenticated" << enable;
+    if(enable)
+        abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
+    show();
+    //showMaximized();
+
+    activityFilter *ef;
+    ef = new activityFilter(abeApp);
+    ef->setInterval(7000);
+    abeApp->installEventFilter(ef);
+    QObject::connect(ef, SIGNAL( userInactive() ),
+                     this,  SLOT( slotDemo() ));
 }
