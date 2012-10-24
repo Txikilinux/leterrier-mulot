@@ -58,6 +58,7 @@ public:
 
 public slots:
     void slotDemo();
+    void slotFinDemo();
 
 private slots:
     /** Slot qui gère l'action de survol avec la souris */

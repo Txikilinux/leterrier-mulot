@@ -99,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::rechercheImagesSurPC(QString dossierDepart)
 {
     m_threadRecherche = new Thread(dossierDepart);
-//    toto->start(QThread::IdlePriority); // idle = qd aucun autre thread ne tourne
+    //    toto->start(QThread::IdlePriority); // idle = qd aucun autre thread ne tourne
     m_threadRecherche->start(QThread::HighPriority);   // ça va bcp plus vite
     QObject::connect(m_threadRecherche, SIGNAL(finished()), m_threadRecherche, SLOT(slotFinished()));
 }
@@ -127,13 +127,34 @@ void MainWindow::slotOpenFile()
     abeAiguillage();
 }
 
+/**
+  * Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif
+  */
 void MainWindow::slotDemo()
 {
     if (!m_exerciceEnCours)
     {
         qDebug() << "Affichage des bulles ";
-
+        m_abuleduaccueil->abePageAccueilMontreBulles(true);
+        foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
+        {
+            zone->abeZoneDrawRect(true/*,QColor("#dcdcdc")*/);
+        }
+        QTimer::singleShot(8000,this,SLOT(slotFinDemo()));
     }
+}
+
+/**
+  * Permet de cacher les zones et les bulles après l'affichage par le slotDemo()
+  */
+void MainWindow::slotFinDemo()
+{
+    m_abuleduaccueil->abePageAccueilMontreBulles(false);
+    foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
+    {
+        zone->abeZoneDrawRect(false);
+    }
+
 }
 
 void MainWindow::on_action_Ouvrir_triggered()
@@ -296,9 +317,9 @@ void MainWindow::on_actionEditeur_triggered()
         Editeur *monEditeur = new Editeur(m_threadRecherche, this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
 #ifdef __ABULEDUTABLETTEV1__MODE__
-    monEditeur->showFullScreen();
+        monEditeur->showFullScreen();
 #else
-    monEditeur->show();
+        monEditeur->show();
 #endif
     }
     else // On affiche un petit message...
