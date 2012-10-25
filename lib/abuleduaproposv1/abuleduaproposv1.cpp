@@ -2,7 +2,7 @@
  *
  * @see https://redmine.ryxeo.com/projects/leterrier-developpeu/
  * @author 2010 Jean-Louis Frucot <frucot.jeanlouis@free.fr>
- * @author 2010-2011 Eric Seigne <eric.seigne@ryxeo.com>
+ * @author 2010-2012 Eric Seigne <eric.seigne@ryxeo.com>
  * @see The GNU Public License (GPL)
  */
 
@@ -599,4 +599,17 @@ void AbulEduAproposV1::finishedSlotWPAD(QNetworkReply* reply)
         }
     }
     disconnect(m_nam,SIGNAL(finished(QNetworkReply*)),this, SLOT(finishedSlotWPAD(QNetworkReply*)));
+}
+
+void AbulEduAproposV1::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::LanguageChange) {
+        QMenu *m = w->findChild<QMenu *>("menuAide"); //On cherche si le menu aide existe
+        if(m) {
+            m->setObjectName("vieuxMenuAide");
+            m->deleteLater();
+        }
+        installeMenu(); //Installe le menu Aide dans la menuBar
+        ui->retranslateUi(this);
+    }
 }
