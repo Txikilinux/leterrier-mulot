@@ -53,7 +53,7 @@ class Editeur;
 class Editeur : public QDialog
 {
     Q_OBJECT
-    
+
 public:
     explicit Editeur(Thread *threadRechercheImage, QWidget *parent = 0);
     ~Editeur();
@@ -99,6 +99,8 @@ private slots:
     void testThread();
     void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
+    void on_btnAjouterImageQFileDialog_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -106,9 +108,9 @@ private:
 //    QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
     QStringList m_listeDossiers; // la liste des dossiers ouverts
 
-    int opt_nbMasquesChoisisParcours;
-    int opt_nbMasquesLargeur;
-    int opt_nbMasquesHauteur;
+    int m_opt_nbMasquesChoisisParcours;
+    int m_opt_nbMasquesLargeur;
+    int m_opt_nbMasquesHauteur;
     int m_numeroParcours;
 
     QMap<QString, QVariant> m_parametresParcours1;
@@ -125,14 +127,12 @@ private:
     QMenu *m_menuListWidget;   // menu contextuel listWidget
 //---------------Chemin temp
     AbulEduFileV1 *m_abuledufilev1;
-    QDir *destImage;
-    QDir *destImageABE;
+    QDir *m_destImage;
+    QDir *m_destImageABE;
 
-    QString destinationIdUnique;
-    QString arborescenceImage;
-    QString cheminImage;
-    QString arborescenceConf;
-    QString cheminConf;
+    QString m_destinationIdUnique;
+    QString m_cheminImage;
+    QString m_cheminConf;
 
     //Gestion des images
     void remplirArborescence();
@@ -151,7 +151,7 @@ private:
     bool controleVoisinMasque(masqueDeplaceSouris *masque);
 
     // Mode d'édition
-    bool modeModificationAbe; // ce booleen permet de definir si on est en creation ou en modification d'un .abe
+    bool m_modeModificationAbe; // ce booleen permet de definir si on est en creation ou en modification d'un .abe
     void setModeModificationAbe(bool yesNo);
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
     void initCheminTemp();
@@ -161,7 +161,7 @@ private:
 
     Thread *m_threadRechercheImages;
 
-
+    QString m_lastOpenDir;
 
 //protected:
 //    bool eventFilter(QObject *obj, QEvent *ev);

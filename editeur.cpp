@@ -34,6 +34,7 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    m_lastOpenDir = QDir::homePath();
     m_threadRechercheImages = threadRechercheImage;
     connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
     connect(m_threadRechercheImages, SIGNAL(signalFichierTrouve(QString, QString)), this, SLOT(slotTestImportImage(QString, QString)));
@@ -59,9 +60,9 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
 
     m_localDebug = true;
 
-    opt_nbMasquesChoisisParcours = 0;
-    opt_nbMasquesLargeur = 0;
-    opt_nbMasquesHauteur = 0;
+    m_opt_nbMasquesChoisisParcours = 0;
+    m_opt_nbMasquesLargeur = 0;
+    m_opt_nbMasquesHauteur = 0;
     m_numeroParcours = 0;
 
     m_listeMasques.clear();
@@ -101,21 +102,19 @@ void Editeur::initCheminTemp()
 {
     // Initialisation des chemins temporaires Mode Création
     m_abuledufilev1 = new AbulEduFileV1();
-    destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
-    qDebug() << destinationIdUnique;
-    arborescenceImage = QString("data") + QDir::separator() + QString("images");
-    cheminImage = destinationIdUnique + QDir::separator() + arborescenceImage ;
-    arborescenceConf = QString("conf");
-    cheminConf = destinationIdUnique + QDir::separator() + arborescenceConf;
+    m_destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
+    qDebug() << m_destinationIdUnique;
+    m_cheminImage = m_destinationIdUnique + "/data/images";
+    m_cheminConf = m_destinationIdUnique + "/conf";
 
     qDebug() << "Dossier Temporaire de l'Editeur (doit etre celui de la MWindow" << m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
 
-    destImage = new QDir(cheminImage); // creation dossier temporaire pour les images
-    if(destImage->mkpath(cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
+    m_destImage = new QDir(m_cheminImage); // creation dossier temporaire pour les images
+    if(m_destImage->mkpath(m_cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
     {
         if (m_localDebug)
         {
-            qDebug() << "Creation ok : " << destImage->absolutePath();
+            qDebug() << "Creation ok : " << m_destImage->absolutePath();
         }
         else { return; } // si echec pas la peine d'aller plus loin
     }
@@ -240,15 +239,15 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
     }
     else
     {
-        if(copierImageDansTemp(monFichier, destImage->absolutePath())) // Si cette fonction a fonctionnée
+        if(copierImageDansTemp(monFichier, m_destImage->absolutePath())) // Si cette fonction a fonctionnée
         {
-            m_listeFichiersImages << destImage->absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
+            m_listeFichiersImages << m_destImage->absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
             // Insertion dans mon listWidget
             QListWidgetItem *item = new QListWidgetItem();
-            QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+            QIcon icone(m_destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
             item->setIcon(icone); // ajout de la petite icone sur l'item
             item->setText(monFichier.fileName());
-            item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+            item->setData(4, m_destImage->absolutePath() + QDir::separator() + monFichier.fileName());
             ui->listWidgetImagesSelection->insertItem(0, item);
         }
     }
@@ -318,50 +317,43 @@ void Editeur::on_btnCreerTheme_clicked()
     //    qDebug() << "cheminConf" << cheminConf;
 
     // Condition de garde si le nom du theme est vide
-    if (ui->lineEditNomTheme->text().isEmpty())
-    {
-        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez remplir le champs \"Nom du thème\" "));
-        return;
-    }
+//    if (ui->lineEditNomTheme->text().isEmpty())
+//    {
+//        QMessageBox::warning(this, trUtf8("Sauvegarder le module"), trUtf8("Veuillez remplir le champ \"Nom du module\""));
+//        return;
+//    }
 
-    /// Aller chercher les images et les enregistrer dans le fichier temporaire
-    // Condition de garde = m_listeFichiersImages < 5
-    if ( m_listeFichiersImages.count() < 5)
-    {
-        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
-        return;
-    }
 
     /// Choix destination .abe
-    QString destAbe = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-    if (m_localDebug)   qDebug() << destAbe;
-    if (destAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
-    {
-        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez choisir un emplacement de destination pour le thème"));
-        qDebug() << "Appui sur le bouton annuler";
-        return;
-    }
-    m_dirAbe = new QDir();
-    m_dirAbe->setPath(destAbe);
+//    QString destAbe = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+//    if (m_localDebug)   qDebug() << destAbe;
+//    if (destAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
+//    {
+//        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez choisir un emplacement de destination pour le thème"));
+//        qDebug() << "Appui sur le bouton annuler";
+//        return;
+//    }
+//    m_dirAbe = new QDir();
+//    m_dirAbe->setPath(destAbe);
 
 
     /// TTTTTTT
     ui->listWidgetImagesSelection->clear();
     /// TTTTTTT
 
-    if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
+//    if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
     //    }
 
     /// Aller chercher le fichier conf
-    QDir confDir(cheminConf);//creation dossier temporaire pour .ini
-    if(confDir.mkpath(cheminConf)) // tentative de création
-    {
-        if (m_localDebug) qDebug() << "Creation fichier temp/conf ok " << confDir.absolutePath();
-        else { return; } // si echec pas la peine d'aller plus loin
-    }
+//    QDir confDir(m_cheminConf);//creation dossier temporaire pour .ini
+//    if(confDir.mkpath(m_cheminConf)) // tentative de création
+//    {
+//        if (m_localDebug) qDebug() << "Creation fichier temp/conf ok " << confDir.absolutePath();
+//        else { return; } // si echec pas la peine d'aller plus loin
+//    }
 
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
-    QSettings parametres(cheminConf +QDir::separator()+"parametres.conf", QSettings::IniFormat);
+    QSettings parametres(m_cheminConf+"/parametres.conf", QSettings::IniFormat);
     /// Parametres Survol
     parametres.setValue("Survol/timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
     parametres.setValue("Survol/nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
@@ -430,27 +422,33 @@ void Editeur::on_btnCreerTheme_clicked()
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
 
-    if (m_localDebug) qDebug() << destinationIdUnique<< " " << parametres.fileName();
-    if (m_localDebug) qDebug() << parcoursRecursif(destinationIdUnique);
+    if (m_localDebug) qDebug() << m_destinationIdUnique<< " " << parametres.fileName();
+    if (m_localDebug) qDebug() << parcoursRecursif(m_destinationIdUnique);
 
-    QString nomtheme = ui->lineEditNomTheme->text();
-    QDir temp(destinationIdUnique); // récupération du chemin du fichier temp
-    QString m_fileBase = temp.absolutePath();
+//    QString nomtheme = ui->lineEditNomTheme->text();
+//    QDir temp(m_destinationIdUnique); // récupération du chemin du fichier temp
+//    QString m_fileBase = temp.absolutePath();
 
-    QString destination = m_dirAbe->absolutePath() + QDir::separator() + nomtheme ;
-    m_abuledufilev1->abeFileSave(destination, parcoursRecursif(destinationIdUnique), m_fileBase, "abe");
+//    QString destination = m_dirAbe->absolutePath() + QDir::separator() + nomtheme ;
+    m_abuledufilev1->abeFileExportPrepare(parcoursRecursif(m_destinationIdUnique), m_destinationIdUnique, "abe");
+
+    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuledufilev1,AbulEduBoxFileManagerV1::abeSave);
+    SaveAbuleduFileManager->abeSetFile(m_abuledufilev1);
+    SaveAbuleduFileManager->show();
+
+
     if (m_localDebug) qDebug() << "Création abe OK";
 
     /// Supprimer le dossier temporaire
-    if(supprimerDir(temp.absolutePath())) qDebug() << "Effacement dossier temp ok";
-    else qDebug() << "Suppression impossible";
+//    if(supprimerDir(temp.absolutePath())) qDebug() << "Effacement dossier temp ok";
+//    else qDebug() << "Suppression impossible";
 
     /// Arrangement graphique
-    ui->lineEditNomTheme->clear();
+//    ui->lineEditNomTheme->clear();
     //    ui->listWidget->clear();
     //    ui->listWidgetSelection->clear();
     //    ui->treeWidget->clear();
-    QMessageBox::information(this, trUtf8("Sauvegarder Thème"), trUtf8("Le theme a été sauvegardé avec succès"));
+//    QMessageBox::information(this, trUtf8("Sauvegarder Thème"), trUtf8("Le theme a été sauvegardé avec succès"));
 }
 
 /** Supprime un répertoire et tout son contenu
@@ -516,9 +514,9 @@ QStringList Editeur::parcoursRecursif(QString dossier)
 
 void Editeur::remplirGvParcours()
 {
-    opt_nbMasquesChoisisParcours = ui->spinBoxParcoursMasque->value();
-    opt_nbMasquesLargeur = ui->spinBoxParcoursMasquesLargeur->value();
-    opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
+    m_opt_nbMasquesChoisisParcours = ui->spinBoxParcoursMasque->value();
+    m_opt_nbMasquesLargeur = ui->spinBoxParcoursMasquesLargeur->value();
+    m_opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
 
     float largeurMasque = 0.00;
     float hauteurMasque = 0.00;
@@ -526,10 +524,10 @@ void Editeur::remplirGvParcours()
     float largeurGv = static_cast<float>(gv_AireParcours->width())-1;
     float hauteurGv = static_cast<float>(gv_AireParcours->height())-1;
 
-    largeurMasque = largeurGv / opt_nbMasquesLargeur;
-    hauteurMasque = hauteurGv / opt_nbMasquesHauteur;
+    largeurMasque = largeurGv / m_opt_nbMasquesLargeur;
+    hauteurMasque = hauteurGv / m_opt_nbMasquesHauteur;
 
-    int nbMasques = opt_nbMasquesLargeur * opt_nbMasquesHauteur;
+    int nbMasques = m_opt_nbMasquesLargeur * m_opt_nbMasquesHauteur;
     qreal xMasque = 0.00;
     qreal yMasque = 0.00;
 
@@ -537,9 +535,9 @@ void Editeur::remplirGvParcours()
         qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
 
     int numeroMasque = 0;
-    for (float i=0; i<opt_nbMasquesHauteur;i++)
+    for (float i=0; i<m_opt_nbMasquesHauteur;i++)
     {
-        for (int j =0; j < opt_nbMasquesLargeur;j++)
+        for (int j =0; j < m_opt_nbMasquesLargeur;j++)
         {
             m_masque = new masqueDeplaceSouris(0, numeroMasque);
             m_masque->setSize(largeurMasque, hauteurMasque);
@@ -583,7 +581,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
             m_listeMasquesParcours << masque;
 
             // ...& je coloris en gris les voisins
-            listeVoisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            listeVoisins = masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
             foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
             {
                 for (int i =0 ; i < listeVoisins.count(); i++)
@@ -597,11 +595,11 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
             }
         }
         /// Liste avec un masque = Parcours
-        else if(m_listeMasquesParcours.count() < (opt_nbMasquesChoisisParcours - 1))
+        else if(m_listeMasquesParcours.count() < (m_opt_nbMasquesChoisisParcours - 1))
         {
             listeVoisins.clear();
             // Je vais chercher les voisins du dernier masque posé
-            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
 
             if (listeVoisins.contains(masque->getNumero())) // Si le numero de ce masque est contenu ds mas liste de voisins = Ok
             {
@@ -621,7 +619,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
                 m_listeMasquesParcours << masque;
 
                 // ...& je coloris en gris les voisins
-                listeVoisins = masquesVoisins(masque->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+                listeVoisins = masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
                 foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
                 {
                     for (int i =0 ; i < listeVoisins.count(); i++)
@@ -635,9 +633,9 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
                 }
             }
         }
-        else if ( m_listeMasquesParcours.count() == (opt_nbMasquesChoisisParcours-1))
+        else if ( m_listeMasquesParcours.count() == (m_opt_nbMasquesChoisisParcours-1))
         {
-            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
 
             if (listeVoisins.contains(masque->getNumero())) // Si le numero de ce masque est contenu ds mas liste de voisins = Ok
             {
@@ -694,7 +692,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
         // ...& je coloris en gris les voisins sauf si j'enleve depart donc pas de colriage en gris
         if (!m_listeMasquesParcours.isEmpty())
         {
-            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
             foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
             {
                 for (int i =0 ; i < listeVoisins.count(); i++)
@@ -1038,7 +1036,7 @@ void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
   */
 void Editeur::setModeModificationAbe(bool yesNo)
 {
-    modeModificationAbe = yesNo;
+    m_modeModificationAbe = yesNo;
 }
 
 void Editeur::on_btnCreationAbe_clicked()
@@ -1054,7 +1052,7 @@ void Editeur::on_btnCreationAbe_clicked()
 
     qDebug() << trUtf8("Mode Création sélectionné");
     setModeModificationAbe(false);
-    qDebug() << modeModificationAbe;
+    qDebug() << m_modeModificationAbe;
 
     ui->btnSuivant->click(); // Clic sur le bouton suivant
 }
@@ -1070,7 +1068,7 @@ void Editeur::on_btnModificationAbe_clicked()
 
     qDebug() << trUtf8("Mode Modification sélectionné");
     setModeModificationAbe(true);
-    qDebug() << modeModificationAbe;
+    qDebug() << m_modeModificationAbe;
 
     //Récupération de l'abe à modifier
     m_abuledufilev1 = new AbulEduFileV1();
@@ -1097,9 +1095,9 @@ void Editeur::slotOpenFile()
     qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
     m_abuleduFileManager->hide();
 
-    destImageABE = new QDir(m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + arborescenceImage) ;
+    m_destImageABE = new QDir(m_cheminImage) ;
 
-    qDebug() << "CHEMIN IMAGE " << destImageABE->absolutePath();
+    qDebug() << "CHEMIN IMAGE " << m_destImageABE->absolutePath();
     // Jusqu'ici ok pour les images
 
     /// OK
@@ -1174,6 +1172,15 @@ void Editeur::on_btnPrecedent_clicked()
 
 void Editeur::on_btnSuivant_clicked()
 {
+    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
+        /// Aller chercher les images et les enregistrer dans le fichier temporaire
+        // Condition de garde = m_listeFichiersImages < 5
+        if ( m_listeFichiersImages.count() < 5)
+        {
+            QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
+            return;
+        }
+    }
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
@@ -1279,3 +1286,14 @@ void Editeur::dragEnterEvent(QDragEnterEvent *event)
 //        qDebug() << "QMouseEvent::Release";
 //    }
 //}
+
+void Editeur::on_btnAjouterImageQFileDialog_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+         trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg)"));
+    QFileInfo fi(fileName);
+    if(fi.exists()) {
+        ajouterImage(fi.absoluteFilePath());
+        m_lastOpenDir = fi.absolutePath();
+    }
+}
