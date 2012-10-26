@@ -114,9 +114,8 @@ void Thread::creerThumbs(QFileInfo cheminImage, QString cheminSauvegardeThumbs)
             QImage thumbnail = image_reader.read();
 
             /** Sauvegarde */
-            QDir::setCurrent(cheminSauvegardeThumbs);
             QFile file;
-            file.setFileName(hashData.toHex() + ".png");
+            file.setFileName(cheminSauvegardeThumbs + "/" + hashData.toHex() + ".png");
             file.open(QIODevice::WriteOnly);
             if(thumbnail.save(&file,"PNG"))
                 qDebug() << "Ecriture du fichier OK";
@@ -149,9 +148,8 @@ void Thread::creerThumbs(QFileInfo cheminImage, QString cheminSauvegardeThumbs)
         QImage thumbnail = image_reader.read();
 
         /** Sauvegarde */
-        QDir::setCurrent(cheminSauvegardeThumbs);
         QFile file;
-        file.setFileName(hashData.toHex() + ".png");
+        file.setFileName(cheminSauvegardeThumbs + "/" + hashData.toHex() + ".png");
         file.open(QIODevice::WriteOnly);
         if(thumbnail.save(&file, "PNG"))
             qDebug() << "Ecriture du fichier OK";
