@@ -11,6 +11,9 @@
    </rect>
   </property>
   <widget class="QWidget" name="centralWidget">
+   <property name="styleSheet">
+    <string notr="true">background: #1d2d4f;</string>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="margin">
      <number>0</number>
@@ -20,6 +23,9 @@
     </property>
     <item row="0" column="0">
      <widget class="QFrame" name="fr_principale">
+      <property name="styleSheet">
+       <string notr="true">background: transparent;</string>
+      </property>
       <property name="frameShape">
        <enum>QFrame::StyledPanel</enum>
       </property>
