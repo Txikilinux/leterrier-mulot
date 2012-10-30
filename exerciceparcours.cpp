@@ -232,7 +232,6 @@ void ExerciceParcours::slotSequenceEntered() // en cours
         getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
         getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
 
-        abeEnableAnimationsConsigneBilan(false);
         setAbeNbExercices(1);      // a instancier avant appel du slot SequenceEntered !
         setAbeNbTotalQuestions(5); // a instancier avant appel du slot SequenceEntered !
 
