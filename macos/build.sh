@@ -21,9 +21,7 @@ set -e
 if [ -d /tmp/build-dmg-${APPNAME} ]; then
     rm -rf /tmp/build-dmg-${APPNAME}
 fi
-if [ -f ${APPNAME}-${APPVERSION}-osx.dmg ]; then
-    rm -f ${APPNAME}-${APPVERSION}-osx.dmg
-fi
+rm -f ${APPNAME}-*.dmg
 if [ -e ${APPNAME}.app ]; then
     rm -rf ${APPNAME}.app
 fi
@@ -36,6 +34,7 @@ if [ -f ../${APPNAME}.pro ]; then
     cd ..
 fi
 
+bzr revert
 qmake ${APPNAME}.pro -r -spec macx-g++ CONFIG+=release
 
 #compilation
@@ -56,7 +55,8 @@ if [ -d conf ]; then
 fi
 if [ -d lang ]; then
     mkdir ${APPNAME}.app/Contents/Resources/lang
-    cp -a lang/*.qm ${APPNAME}.app/Contents/Resources/lang/
+    lrelease *.pro
+    cp -a lang/*.qm ${APPNAME}.app/Contents/Resources/lang/ || true
 fi
 
 #creation du fichier dmg
