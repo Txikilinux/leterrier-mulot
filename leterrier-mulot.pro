@@ -42,6 +42,16 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     ressources.qrc
 
+win32 {
+    OTHER_FILES  += windows/windows.rc
+    RC_FILE       = windows/windows.rc
+}
+
+macx {
+ ICON = macos/icones/leterrier-mulot.icns
+}
+
+
 include(lib/abuleduapplicationv1/abuleduapplicationv1.pri)
 include(lib/abuleduconstantesv1/abuleduconstantesv1.pri)
 include(lib/abuleducommonstatesv1/abuleducommonstatesv1.pri)
@@ -64,7 +74,3 @@ include(lib/abuledusplashscreenv1/abuledusplashscreenv1.pri)
 include(lib/abuledulangv1/abuledulangv1.pri)
 include(lang/lang.pri)
 
-win32 {
-    OTHER_FILES  += windows/windows.rc
-    RC_FILE       = windows/windows.rc
-}
