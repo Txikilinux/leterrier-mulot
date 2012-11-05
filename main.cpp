@@ -62,8 +62,6 @@ int main(int argc, char *argv[])
         //Quand on passe en production
         //AbulEduSleeperThread::msleep(1000);
     }
-    splash->showButtonShop();
-    splash->finish();
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
     //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
