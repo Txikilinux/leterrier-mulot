@@ -40,28 +40,14 @@ int main(int argc, char *argv[])
     MainWindow *w;
 
     /// Splashscreen
-    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0, true);
+    // ================== splashscreen
+    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0,true);
     splash->show();
-    for (int i = 1; i <= 15; i++)
-    {
-        //On lance le constructeur de la mainwindows en "arrière plan" lors du 1er passage
-        //ca permet d'avoir les requetes reseau en arriere plan (mise a jour etc.) c'est "cool" :)
-        if(i == 1) {
-            w = new MainWindow(0);
-            splash->setMainWindow(w);
-        }
-        if(i < 6) {
-            splash->showMessage(QObject::trUtf8("      Chargement en cours, merci de patienter ...... %1%").arg(QString::number(i*20)), Qt::AlignBottom | Qt::AlignHCenter, Qt::black);
-        }
-
-
-        //tres important si vous voulez que le splash s'affiche !
-        qApp->processEvents();
-        //Pour les developpeurs presses
-        AbulEduSleeperThread::msleep(100);
-        //Quand on passe en production
-        //AbulEduSleeperThread::msleep(1000);
-    }
+    w = new MainWindow(0);
+    splash->setMainWindow(w);
+    //pour les developpeurs presses, remplacer le 1000 par 100
+    splash->launch(1000);
+    // ================== splashscreen end
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
     //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
