@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
-    //    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnOuvrirTriggered()), this, SLOT(on_action_Ouvrir_un_exercice_triggered()));
+    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_action_Ouvrir_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
 
     m_abuleduFile = new AbulEduFileV1(this);
