@@ -190,6 +190,7 @@ void MainWindow::abeAiguillage()
     setFixedSize(this->width(), this->height());
     setWindowTitle(abeApp->getAbeApplicationLongName() +" -- "+m_texteBulles[m_numberExoCalled]);
     ui->statusBar->showMessage(trUtf8(" Nom du fichier .abe selectionné : ")+ m_abuleduFile->abeFileGetFileName().fileName());
+    if (m_numberExoCalled >= 0) ui->menuBar->setEnabled(false);
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     showFullScreen();
@@ -259,6 +260,7 @@ void MainWindow::exerciceExited()
     if (m_localDebug) qDebug()<<"Exercice Exited";
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
+    ui->menuBar->setEnabled(true);
     m_exerciceEnCours = false;
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
 #ifdef __ABULEDUTABLETTEV1__MODE__
