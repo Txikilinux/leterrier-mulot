@@ -28,24 +28,24 @@
 /// **********************************************************************************************************************************************************
 
 
-Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
+Editeur::Editeur(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
 
     m_lastOpenDir = QDir::homePath();
-    m_threadRechercheImages = threadRechercheImage;
-    connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
-    connect(m_threadRechercheImages, SIGNAL(signalFichierTrouve(QString, QString)), this, SLOT(slotTestImportImage(QString, QString)));
-    /// Cela fonctionne, mais si l'éditeur est appelé et que le thread est fini, on a pas de signal =)
+//    m_threadRechercheImages = threadRechercheImage;
+//    connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
+//    connect(m_threadRechercheImages, SIGNAL(signalFichierTrouve(QString, QString)), this, SLOT(slotTestImportImage(QString, QString)));
+//    // Cela fonctionne, mais si l'éditeur est appelé et que le thread est fini, on a pas de signal =)
 
 
-    if(m_threadRechercheImages->isRechercheTerminee())
-    {
-        qDebug() << "RECHERCHE TERMINE";
-        testThread();
-    }
+//    if(m_threadRechercheImages->isRechercheTerminee())
+//    {
+//        qDebug() << "RECHERCHE TERMINE";
+//        testThread();
+//    }
 
     ui->abuleduMediathequeGet->abeSetSource("data");
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
@@ -90,12 +90,9 @@ Editeur::Editeur(Thread *threadRechercheImage, QWidget *parent) :
     creationMenu();
 
     // Affichage de la mediatheque par defaut
-    ui->toolBoxImages->setCurrentWidget(ui->pageMediatheque);
+    ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
-    ui->listWidgetImage->setVisible(false);
-    ui->treeViewArborescence->setVisible(false);
-    //    ui->pageDisqueLocal->setVisible(false);
-
+    ui->btnModificationAbe->setEnabled(false);
 }
 
 void Editeur::initCheminTemp()
@@ -189,11 +186,11 @@ void Editeur::creationMenu()
 /** Ce slot redimensionne la colonne au contenu de celle-ci
   * Il est connecté au slot clicked() du treeView -> donc appelé à chaque fois qu'on descend dans l'arborescence
   */
-void Editeur::slotResizeColumn(const QModelIndex& index)
-{
-    ui->treeViewArborescence->resizeColumnToContents(index.column());
-    ui->treeViewArborescence->model()->sort(0, Qt::AscendingOrder);
-}
+//void Editeur::slotResizeColumn(const QModelIndex& index)
+//{
+//    ui->treeViewArborescence->resizeColumnToContents(index.column());
+//    ui->treeViewArborescence->model()->sort(0, Qt::AscendingOrder);
+//}
 
 void Editeur::slotSupprimerImage()// Test OK
 {
@@ -306,7 +303,7 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 /**
   * Creation du .abe
   */
-void Editeur::on_btnCreerTheme_clicked()
+void Editeur::createAbe()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
@@ -992,38 +989,38 @@ void Editeur::on_btnParcours5_clicked()
     gv_AireParcours->show();
 }
 
-void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
-{
-    qDebug() << "DOUBLE CLIC";
-    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
-    QModelIndexList listeSelection;
-    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
+//void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
+//{
+//    qDebug() << "DOUBLE CLIC";
+//    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
+//    QModelIndexList listeSelection;
+//    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
 
-    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
-    for (int i = 0; i < listeSelection.count(); i++)
-    {
-        QFileSystemModel *monModel;
-        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
-        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
+//    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
+//    for (int i = 0; i < listeSelection.count(); i++)
+//    {
+//        QFileSystemModel *monModel;
+//        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
+//        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
 
-        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
-        {
-            qDebug() << "c'est un dossier";
-        }
-        else if (monFichier.isFile())
-        {
-            ajouterImage(monFichier);
-        }
-    }
-    selection->clearSelection(); //nettoyage de la selection
+//        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
+//        {
+//            qDebug() << "c'est un dossier";
+//        }
+//        else if (monFichier.isFile())
+//        {
+//            ajouterImage(monFichier);
+//        }
+//    }
+//    selection->clearSelection(); //nettoyage de la selection
 
-    /// QDebug de ma liste
-    qDebug() << "Ma liste d'Images en sortie";
-    for (int i = 0; i < m_listeFichiersImages.count(); i++)
-    {
-        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
-    }
-}
+//    /// QDebug de ma liste
+//    qDebug() << "Ma liste d'Images en sortie";
+//    for (int i = 0; i < m_listeFichiersImages.count(); i++)
+//    {
+//        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+//    }
+//}
 
 
 /// **********************************************************************************************************************************************************
@@ -1116,38 +1113,38 @@ void Editeur::slotOpenFile()
 
 }
 
-void Editeur::testThread()
-{
-    qDebug() << __PRETTY_FUNCTION__ << " L'editeur vient de voir que la recherche est terminé";
-    // Recupération de la liste des fichiers listee par le thread
-    qDebug() << ui->listWidgetImage->item(0)->text();
-    ui->listWidgetImage->removeItemWidget(ui->listWidgetImage->item(0));
-    ui->listWidgetImage->item(0)->setText("OK");
-//    QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
-//    qDebug() << m_fichiersImagesLocales.count();
+//void Editeur::testThread()
+//{
+//    qDebug() << __PRETTY_FUNCTION__ << " L'editeur vient de voir que la recherche est terminé";
+//    // Recupération de la liste des fichiers listee par le thread
+//    qDebug() << ui->listWidgetImage->item(0)->text();
+//    ui->listWidgetImage->removeItemWidget(ui->listWidgetImage->item(0));
+//    ui->listWidgetImage->item(0)->setText("OK");
+////    QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
+////    qDebug() << m_fichiersImagesLocales.count();
 
-//    for (int i =0; i < 1000/*m_fichiersImagesLocales.count()*/; i++)
-//    {
-        //        QListWidgetItem *item = new QListWidgetItem();
-        //        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
-        //        item->setIcon(icone); // ajout de la petite icone sur l'item
-        //        item->setText(m_fichiersImagesLocales.at(i));
-        ////        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
-        //        ui->listWidgetImage->insertItem(0, item);
-        //        ui->listWidgetImage->show();
-//    }
+////    for (int i =0; i < 1000/*m_fichiersImagesLocales.count()*/; i++)
+////    {
+//        //        QListWidgetItem *item = new QListWidgetItem();
+//        //        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
+//        //        item->setIcon(icone); // ajout de la petite icone sur l'item
+//        //        item->setText(m_fichiersImagesLocales.at(i));
+//        ////        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+//        //        ui->listWidgetImage->insertItem(0, item);
+//        //        ui->listWidgetImage->show();
+////    }
 
-    //    ui->listWidgetImage->show();
-//    qDebug() << "Item Terminer";
-    //    QListWidgetItem *item = new QListWidgetItem();
-    //    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
-    //    item->setIcon(icone); // ajout de la petite icone sur l'item
-    //    item->setText(monFichier.fileName());
-    //    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
-    //    ui->listWidgetImagesSelection->insertItem(0, item);
+//    //    ui->listWidgetImage->show();
+////    qDebug() << "Item Terminer";
+//    //    QListWidgetItem *item = new QListWidgetItem();
+//    //    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+//    //    item->setIcon(icone); // ajout de la petite icone sur l'item
+//    //    item->setText(monFichier.fileName());
+//    //    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+//    //    ui->listWidgetImagesSelection->insertItem(0, item);
 
-    ui->widgetDisqueLocal->setListeFichiers(m_threadRechercheImages->getListeFichiers());
-}
+//    ui->widgetDisqueLocal->setListeFichiers(m_threadRechercheImages->getListeFichiers());
+//}
 
 void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
 {
@@ -1181,6 +1178,11 @@ void Editeur::on_btnSuivant_clicked()
             return;
         }
     }
+    if(ui->stackedWidget->currentWidget()->objectName() == "pageParametres") {
+        createAbe();
+        close();
+        return;
+    }
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
@@ -1206,14 +1208,15 @@ void Editeur::majBarreNavigation(int numPage)
         ui->btnPrecedent->setVisible(true);
         ui->btnSuivant->setVisible(true);
 
-        if (numPage == 3) // derniere page
+        if (numPage == 2) // derniere page
         {
-            //            ui->btnSuivant->setText(trUtf8("Terminer"));
+            ui->btnSuivant->setIcon(QIcon(":/bouton/disque"));
         }
-        else if (numPage !=3)
+        else if(numPage != 2)
         {
-            //            ui->btnSuivant->setText(trUtf8("Suivant"));
+            ui->btnSuivant->setIcon(QIcon(":/bouton/flecheD"));
         }
+
     }
 
 }

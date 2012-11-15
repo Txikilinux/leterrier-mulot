@@ -41,7 +41,6 @@
 #include "masquedeplacesouris.h"
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
-#include "thread.h"
 #include "ui_editeur.h"
 
 
@@ -55,14 +54,14 @@ class Editeur : public QDialog
     Q_OBJECT
 
 public:
-    explicit Editeur(Thread *threadRechercheImage, QWidget *parent = 0);
+    explicit Editeur(QWidget *parent);
     ~Editeur();
 
 private slots:
 
     void slotSupprimerImage();
-    void slotResizeColumn(const QModelIndex& index);
-    void on_btnCreerTheme_clicked();
+//    void slotResizeColumn(const QModelIndex& index);
+    void createAbe();
 
     // Edition Parcours
     void on_btnParcours1_clicked();
@@ -83,7 +82,7 @@ private slots:
     void ajouterImage(QFileInfo monFichier);
     void slotImportImageMediatheque();
 
-    void on_treeViewArborescence_doubleClicked(const QModelIndex &index);
+//    void on_treeViewArborescence_doubleClicked(const QModelIndex &index);
 
 
     void on_btnPrecedent_clicked();
@@ -96,7 +95,7 @@ private slots:
     void on_btnModificationAbe_clicked();
     void slotOpenFile();
 
-    void testThread();
+//    void testThread();
     void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
     void on_btnAjouterImageQFileDialog_clicked();
@@ -158,8 +157,6 @@ private:
 
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);
-
-    Thread *m_threadRechercheImages;
 
     QString m_lastOpenDir;
 

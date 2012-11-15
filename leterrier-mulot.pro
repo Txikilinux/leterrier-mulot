@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     exerciceparcours.cpp \
     exerciceclic.cpp \
     exercicedoubleclic.cpp \
-    thread.cpp \
     lib/abuleduaproposv1/abuleduaproposv1.cpp
 
 HEADERS  += mainwindow.h \
@@ -31,7 +30,6 @@ HEADERS  += mainwindow.h \
     exerciceparcours.h \
     exerciceclic.h \
     exercicedoubleclic.h \
-    thread.h \
     lib/abuleduaproposv1/abuleduaproposv1.h
 
 FORMS    += mainwindow.ui \

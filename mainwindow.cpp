@@ -81,10 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
     if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
 
-    /// Reglage et Demarrage du Thread de recherche d'images locales
-    qDebug() << "demarrage du thread";
-    rechercheImagesSurPC("/tmp");
-
     /// Utilisation de la boite aPropos
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
     monAide->hide();
@@ -92,14 +88,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Ajout de l'anglais & français dans le menu langues
 
-}
-
-void MainWindow::rechercheImagesSurPC(QString dossierDepart)
-{
-    m_threadRecherche = new Thread(dossierDepart);
-    //    toto->start(QThread::IdlePriority); // idle = qd aucun autre thread ne tourne
-    m_threadRecherche->start(QThread::HighPriority);   // ça va bcp plus vite
-    QObject::connect(m_threadRecherche, SIGNAL(finished()), m_threadRecherche, SLOT(slotFinished()));
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -313,7 +301,7 @@ void MainWindow::on_actionEditeur_triggered()
 {
     if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
     {
-        Editeur *monEditeur = new Editeur(m_threadRecherche, this);
+        Editeur *monEditeur = new Editeur(this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
 #ifdef __ABULEDUTABLETTEV1__MODE__
         monEditeur->showFullScreen();

@@ -119,10 +119,10 @@
    <item row="1" column="0">
     <widget class="QStackedWidget" name="stackedWidget">
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="page">
-      <layout class="QGridLayout" name="gridLayout_11">
+      <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QTextEdit" name="textEdit">
          <property name="focusPolicy">
@@ -163,6 +163,18 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
          <widget class="QPushButton" name="btnModificationAbe">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
@@ -193,124 +205,6 @@ p, li { white-space: pre-wrap; }
             <property name="text">
              <string>Liste des images sélectionnées</string>
             </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QToolBox" name="toolBoxImages">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="currentIndex">
-             <number>0</number>
-            </property>
-            <widget class="QWidget" name="pageFileDialog">
-             <attribute name="label">
-              <string>Disque local (parcours)</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout_14">
-              <item row="0" column="0">
-               <widget class="QPushButton" name="btnAjouterImageQFileDialog">
-                <property name="text">
-                 <string>Ajouter une image</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="pageDisqueLocal">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>763</width>
-               <height>313</height>
-              </rect>
-             </property>
-             <attribute name="icon">
-              <iconset resource="ressources.qrc">
-               <normaloff>:/bouton/disque</normaloff>:/bouton/disque</iconset>
-             </attribute>
-             <attribute name="label">
-              <string>Disque Local (recherche)</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout">
-              <item row="3" column="0">
-               <widget class="QTreeView" name="treeViewArborescence">
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="contextMenuPolicy">
-                 <enum>Qt::CustomContextMenu</enum>
-                </property>
-                <property name="autoScroll">
-                 <bool>false</bool>
-                </property>
-                <property name="dragEnabled">
-                 <bool>true</bool>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::ExtendedSelection</enum>
-                </property>
-                <property name="selectionBehavior">
-                 <enum>QAbstractItemView::SelectRows</enum>
-                </property>
-                <property name="uniformRowHeights">
-                 <bool>true</bool>
-                </property>
-                <property name="sortingEnabled">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QListWidget" name="listWidgetImage">
-                <property name="statusTip">
-                 <string/>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>Indexation en cours... Veuillez patienter.</string>
-                 </property>
-                </item>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <widget class="frmDisqueLocal" name="widgetDisqueLocal" native="true"/>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="pageMediatheque">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>748</width>
-               <height>318</height>
-              </rect>
-             </property>
-             <attribute name="icon">
-              <iconset resource="ressources.qrc">
-               <normaloff>:/bouton/cloud</normaloff>:/bouton/cloud</iconset>
-             </attribute>
-             <attribute name="label">
-              <string>Mediatheque</string>
-             </attribute>
-             <layout class="QGridLayout" name="gridLayout_9">
-              <item row="0" column="0">
-               <widget class="AbulEduMediathequeGetV1" name="abuleduMediathequeGet" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>500</width>
-                  <height>300</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
            </widget>
           </item>
           <item row="1" column="1">
@@ -347,12 +241,58 @@ p, li { white-space: pre-wrap; }
             </property>
            </widget>
           </item>
+          <item row="1" column="0">
+           <widget class="QTabWidget" name="tabWidgetImages">
+            <property name="currentIndex">
+             <number>1</number>
+            </property>
+            <widget class="QWidget" name="pageFileDialog" native="true">
+             <attribute name="icon">
+              <iconset resource="ressources.qrc">
+               <normaloff>:/bouton/disque</normaloff>:/bouton/disque</iconset>
+             </attribute>
+             <attribute name="title">
+              <string>Disque local</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_14">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="btnAjouterImageQFileDialog">
+                <property name="text">
+                 <string>Ajouter une image</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="pageMediatheque" native="true">
+             <attribute name="icon">
+              <iconset resource="ressources.qrc">
+               <normaloff>:/bouton/disque</normaloff>:/bouton/disque</iconset>
+             </attribute>
+             <attribute name="title">
+              <string>AbulÉdu Data</string>
+             </attribute>
+             <layout class="QGridLayout" name="gridLayout_9">
+              <item row="0" column="0">
+               <widget class="AbulEduMediathequeGetV1" name="abuleduMediathequeGet" native="true">
+                <property name="minimumSize">
+                 <size>
+                  <width>500</width>
+                  <height>300</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_3">
+     <widget class="QWidget" name="pageParametres">
       <layout class="QGridLayout" name="gridLayout_13">
        <item row="0" column="1" rowspan="2">
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -809,27 +749,6 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_4">
-      <widget class="QPushButton" name="btnCreerTheme">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>220</y>
-         <width>470</width>
-         <height>27</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>&amp;Sauvegarder</string>
-       </property>
-      </widget>
-     </widget>
     </widget>
    </item>
   </layout>
@@ -839,12 +758,6 @@ p, li { white-space: pre-wrap; }
    <class>AbulEduMediathequeGetV1</class>
    <extends>QWidget</extends>
    <header>abuledumediathequegetv1.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>frmDisqueLocal</class>
-   <extends>QWidget</extends>
-   <header>frmdisquelocal.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

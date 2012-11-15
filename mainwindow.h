@@ -32,7 +32,6 @@
 #include "abuleduapplicationv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "activityfilter.h"
-#include "thread.h"
 #include "version.h"
 #include "abuleduvirtualkeyboardv1.h"
 #include "lib/abuleduaproposv1/abuleduaproposv1.h"
@@ -83,8 +82,7 @@ private:
     int m_numberExoCalled;
     void abeAiguillage();
 
-    void rechercheImagesSurPC(QString dossierDepart);
-    Thread *m_threadRecherche;
+//    void rechercheImagesSurPC(QString dossierDepart);
 
     QTranslator qtTranslator;
     QTranslator myappTranslator;
