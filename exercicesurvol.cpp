@@ -161,13 +161,14 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     QString debutTableau = "<tr>";
     QString imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
-    QString consigne = "<td> " + trUtf8("Ma consigne qui presentera la sequence (video souhaitee). Ma consigne est tres longue car je veux tester son comportement") +" </td>" ;
+    QString consigne = "<td> " + trUtf8("Passe le pointeur de la souris au dessus des rectangles noirs pour faire apparaitre l'image.")+"<br />"
+                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
     QString finTableau = "</tr>";
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
-    getAbeExerciceMessageV1()->setVisible(true);
+    getAbeExerciceMessageV1()->setVisible(false);
 
     redimensionnerConsigne();
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
