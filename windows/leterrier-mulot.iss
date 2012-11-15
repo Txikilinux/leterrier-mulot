@@ -5,7 +5,6 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-; Exemple AppId={{62974C2F-0013-4262-AF5E-7F46C992672E}
 AppId={{7188AA57-B55B-4321-88B8-1797A5DA49F2}
 AppName=Le Terrier d'AbulEdu - Mulot
 AppVersion=LAVERSION
@@ -18,15 +17,17 @@ DefaultGroupName=Le Terrier d'AbulEdu
 LicenseFile=../gpl-3.0.txt
 OutputDir=.
 OutputBaseFilename=leterrier-mulot-LAVERSION-setup
+SetupIconFile=leterrier-mulot.ico
 Compression=lzma
 SolidCompression=yes
+; WizardImageFile=imageWizard.bmp
 SignTool=ryxeo /d $qPackage d'installation$q $f
 SignedUninstaller=True
 SignedUninstallerDir=.
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl" 
+Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
@@ -41,6 +42,9 @@ Source: "C:/code/exiv2/bin/libexiv2-12.dll"; DestDir: "{app}"; Flags: ignorevers
 Source: "C:/QtSDK/mingw/bin/libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/mingw/bin/mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/mingw/bin/libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/libssl32.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtGUI4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -61,8 +65,8 @@ Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/phonon4.dll"; DestDir: "{app}"; Fla
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\Mulot"; Filename: "{app}\leterrier-mulot.exe"; WorkingDir: "{app}"
-Name: "{commondesktop}\Mulot"; Filename: "{app}\leterrier-mulot.exe"; Tasks: desktopicon; WorkingDir: "{app}"
+; Name: "{group}\Mulot"; Filename: "{app}\leterrier-mulot.exe"; WorkingDir: "{app}"
+; Name: "{commondesktop}\Mulot"; Filename: "{app}\leterrier-mulot.exe"; Tasks: desktopicon; WorkingDir: "{app}"
 
 [Run]
-Filename: "{app}\leterrier-mulot.exe"; Description: "{cm:LaunchProgram,Mulot}"; Flags: nowait postinstall skipifsilent
+; Filename: "{app}\leterrier-mulot.exe"; Description: "{cm:LaunchProgram,Mulot}"; Flags: nowait postinstall skipifsilent
