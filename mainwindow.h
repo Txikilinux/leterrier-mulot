@@ -64,7 +64,7 @@ public slots:
 private slots:
     /** Slot qui gère l'action de survol avec la souris */
     void on_action_Survol_triggered();
-
+    void setTitle(int authStatus);
 
 private:
     Ui::MainWindow *ui;

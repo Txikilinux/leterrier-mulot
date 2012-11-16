@@ -53,11 +53,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Gestion bulles page d'accueil
     m_texteBulles.clear();
-    m_texteBulles.insert(0, trUtf8("Survol ..."));
-    m_texteBulles.insert(1, trUtf8("Clic ..."));
-    m_texteBulles.insert(2, trUtf8("Molette ..."));
-    m_texteBulles.insert(3, trUtf8("Parcours ..."));
-    m_texteBulles.insert(4, trUtf8("Double clic..."));
+    m_texteBulles.insert(0, trUtf8("Survol"));
+    m_texteBulles.insert(1, trUtf8("Clic"));
+    m_texteBulles.insert(2, trUtf8("Molette"));
+    m_texteBulles.insert(3, trUtf8("Parcours"));
+    m_texteBulles.insert(4, trUtf8("Double-clic"));
 
     m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
     m_abuleduaccueil = new AbulEduPageAccueilV1(m_config, &m_texteBulles, ui->fr_principale);
@@ -72,8 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()));
-    setWindowTitle(abeApp->getAbeApplicationLongName());
-
     m_abuleduFile = new AbulEduFileV1(this);
     m_abuleduFileManager = new AbulEduBoxFileManagerV1(0, m_abuleduFile);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
@@ -89,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /// Ajout de l'anglais & français dans le menu langues
 
+    setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -184,7 +183,7 @@ void MainWindow::abeLanceExo(int numero)
 void MainWindow::abeAiguillage()
 {
     setFixedSize(this->width(), this->height());
-    setWindowTitle(abeApp->getAbeApplicationLongName() +" -- "+m_texteBulles[m_numberExoCalled]);
+    setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
     ui->statusBar->showMessage(trUtf8(" Nom du fichier .abe selectionné : ")+ m_abuleduFile->abeFileGetFileName().fileName());
     if (m_numberExoCalled >= 0) ui->menuBar->setEnabled(false);
 
@@ -258,12 +257,20 @@ void MainWindow::exerciceExited()
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     ui->menuBar->setEnabled(true);
     m_exerciceEnCours = false;
+    m_numberExoCalled = -1;
+
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
+    setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 #ifdef __ABULEDUTABLETTEV1__MODE__
     showFullScreen();
 #else
     show();
 #endif
+}
+
+void MainWindow::on_actionOuvrir_un_exercice_triggered()
+{
+    btnBoxClicked();
 }
 
 void MainWindow::on_action_Survol_triggered()
@@ -362,9 +369,24 @@ void MainWindow::slotSessionAuthenticated(bool enable)
     abeApp->installEventFilter(ef);
     QObject::connect(ef, SIGNAL( userInactive() ),
                      this,  SLOT( slotDemo() ));
+    connect(abeApp->getAbeNetworkAccessManager(), SIGNAL(ssoAuthStatus(int)), this,SLOT(setTitle(int)));
 }
 
-void MainWindow::on_actionOuvrir_un_exercice_triggered()
+void MainWindow::setTitle(int authStatus)
 {
-    btnBoxClicked();
+    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<authStatus;
+    QString title = abeApp->getAbeApplicationLongName();
+    if (m_numberExoCalled >=0)
+    {
+        title.append(" -- "+m_texteBulles[m_numberExoCalled]);
+    }
+    if(!m_abuleduFile->abeFileGetFileName().fileName().isEmpty())
+    {
+        title.append(" -- "+m_abuleduFile->abeFileGetFileName().fileName());
+    }
+    if (authStatus == 1)
+    {
+        title.append(" -- "+abeApp->getAbeNetworkAccessManager()->abeGetSSOLogin());
+    }
+    setWindowTitle(title);
 }
