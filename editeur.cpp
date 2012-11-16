@@ -311,6 +311,7 @@ void Editeur::createAbe()
 
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
     QSettings parametres(m_cheminConf+"/parametres.conf", QSettings::IniFormat);
+    parametres.setValue("version",abeApp->applicationVersion());
     /// Parametres Survol
     parametres.beginGroup("survol");
         if (ui->groupBoxSurvol->isChecked())
