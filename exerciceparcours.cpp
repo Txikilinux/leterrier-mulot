@@ -119,11 +119,26 @@ void ExerciceParcours::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceParcours::chargerOption()";
 
+    QSettings parametres(cheminConf, QSettings::IniFormat);
+    bool trouve = false;
+    int i = 0;
+    while (trouve == false && i < parametres.childGroups().size())
+    {
+        qDebug()<<parametres.childGroups().at(i);
+        if (parametres.childGroups().at(i).contains("Parcours")) trouve = true;
+        i++;
+    }
+    qDebug()<<"trouve "<<trouve;
+    if (trouve == false)
+    {
+        AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Parcours</b>"));
+        messageBox->show();
+        slotQuitterAccueil();
+    }
     switch (m_numQuestion+1)
     {
     case 1:
     {
-        QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours1/timerSuivant", 7000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours1/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours1/nbMasquesHauteur", 5).toInt();
@@ -133,7 +148,6 @@ void ExerciceParcours::chargerOption()
 
     case 2:
     {
-        QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours2/timerSuivant", 7000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours2/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours2/nbMasquesHauteur", 5).toInt();
@@ -142,7 +156,6 @@ void ExerciceParcours::chargerOption()
         break;
     case 3:
     {
-        QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours3/timerSuivant", 7000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours3/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours3/nbMasquesHauteur", 5).toInt();
@@ -151,7 +164,6 @@ void ExerciceParcours::chargerOption()
         break;
     case 4:
     {
-        QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours4/timerSuivant", 7000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours4/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours4/nbMasquesHauteur", 5).toInt();
@@ -160,7 +172,6 @@ void ExerciceParcours::chargerOption()
         break;
     case 5:
     {
-        QSettings parametres(cheminConf, QSettings::IniFormat);
         opt_timerSuivant     = parametres.value("Parcours5/timerSuivant", 7000).toInt();
         opt_nbMasquesLargeur = parametres.value("Parcours5/nbMasquesLargeur", 10).toInt();
         opt_nbMasquesHauteur = parametres.value("Parcours5/nbMasquesHauteur", 5).toInt();

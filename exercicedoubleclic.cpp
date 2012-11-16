@@ -115,6 +115,12 @@ void ExerciceDoubleClic::chargerOption()
     if (m_localDebug) qDebug() << "##########################  ExerciceDoubleClic::chargerOption()";
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
+    if (!parametres.childGroups().contains("Double-Clic"))
+    {
+        AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Double-Clic</b>"));
+        messageBox->show();
+        slotQuitterAccueil();
+    }
     opt_timerSuivant     = parametres.value("Clic/timerSuivant", 7000).toInt();
     opt_nbMasquesChoisis = parametres.value("Clic/nbMasquesChoisis", 7).toInt();
 
