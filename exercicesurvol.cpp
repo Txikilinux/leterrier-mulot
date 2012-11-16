@@ -173,8 +173,8 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
-    getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(true);
-    getAbeExerciceMessageV1()->setVisible(false);
+    getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(false);
+    getAbeExerciceMessageV1()->setVisible(true);
 
     redimensionnerConsigne();
     onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
