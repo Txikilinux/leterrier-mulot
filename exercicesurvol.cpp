@@ -116,7 +116,8 @@ void ExerciceSurvol::chargerOption()
     if (m_localDebug) qDebug() << "##########################  ExerciceSurvol::chargerOption()";
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
-    if (!parametres.childGroups().contains("Survol"))
+    parametres.beginGroup("survol");
+    if (parametres.value("exerciceActive",false) == false)
     {
         AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Survol</b>"));
         messageBox->show();

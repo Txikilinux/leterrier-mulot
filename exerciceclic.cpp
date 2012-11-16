@@ -116,7 +116,8 @@ void ExerciceClic::chargerOption()
     if (m_localDebug) qDebug() << "##########################  ExerciceClic::chargerOption()";
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
-    if (!parametres.childGroups().contains("Clic"))
+    parametres.beginGroup("clic");
+    if (parametres.value("exerciceActive",false) == false)
     {
         AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Clic</b>"));
         messageBox->show();

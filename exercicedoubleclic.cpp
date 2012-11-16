@@ -115,7 +115,8 @@ void ExerciceDoubleClic::chargerOption()
     if (m_localDebug) qDebug() << "##########################  ExerciceDoubleClic::chargerOption()";
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
-    if (!parametres.childGroups().contains("Double-Clic"))
+    parametres.beginGroup("doubleClic");
+    if (parametres.value("exerciceActive",false) == false)
     {
         AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Double-Clic</b>"));
         messageBox->show();
