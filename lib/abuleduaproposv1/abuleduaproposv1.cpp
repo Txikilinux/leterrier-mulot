@@ -42,7 +42,13 @@ AbulEduAproposV1::AbulEduAproposV1(QWidget *parent) :
         ui(new Ui::AbulEduAproposV1)
 {
     ui->setupUi(this);
+    ui->lblVersion->setText(abeApp->applicationVersion());
+    ui->lblVersion->setText("alors, ducon ?");
+    ui->lblNomAppli->setText(abeApp->getAbeApplicationLongName());
+    qDebug()<<" version : "<<abeApp->applicationVersion();
     this->setWindowTitle(trUtf8("A propos de")+" "+abeApp->getAbeApplicationLongName()+" "+abeApp->applicationVersion());
+    qDebug()<<" Fenetre : "<<windowTitle();
+    update();
     QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
     installeMenu(); //Installe le menu Aide dans la menuBar
@@ -113,9 +119,10 @@ AbulEduAproposV1::~AbulEduAproposV1()
 
 void AbulEduAproposV1::installeMenu()
 {
-    QString titreAbout=trUtf8("<center>%1 %2</center").arg(abeApp->getAbeApplicationLongName()) //Récupère les paramètres
-                       .arg(abeApp->applicationVersion());
-    ui->textAbout->setHtml(titreAbout+" "+ui->textAbout->toHtml());         // Ajoute Nom application et Version en haut de la page
+//    QString titreAbout=trUtf8("<center>%1 %2</center>").arg(abeApp->getAbeApplicationLongName()) //Récupère les paramètres
+//                       .arg(abeApp->applicationVersion());
+//    qDebug()<<titreAbout;
+//    ui->textAbout->setHtml(titreAbout+" "+ui->textAbout->toHtml());         // Ajoute Nom application et Version en haut de la page
 
     QMenuBar *b = parentWidget()->findChild<QMenuBar *>(); // Cherche la barre de menu
     w=b->parentWidget();
@@ -611,5 +618,6 @@ void AbulEduAproposV1::changeEvent(QEvent *e)
         }
         installeMenu(); //Installe le menu Aide dans la menuBar
         ui->retranslateUi(this);
+        ui->lblVersion->setText(abeApp->applicationVersion());
     }
 }

@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>588</width>
+    <width>686</width>
     <height>411</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>A Propos du logiciel</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -20,7 +20,7 @@
       <bool>false</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="tabAide">
       <attribute name="title">
@@ -45,7 +45,7 @@ p, li { white-space: pre-wrap; }
 &lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;calcul_mental&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:20pt; font-weight:600; color:#005500;&quot;&gt;M&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:20pt; font-weight:600; color:#005500;&quot;&gt;ulot-1.1&lt;/span&gt;&lt;/p&gt;
+&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;calcul_mental&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:20pt; font-weight:600; color:#005500;&quot;&gt;M&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:20pt; font-weight:600; color:#005500;&quot;&gt;ulot&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;presentation&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;P&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;résentation&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Mulot est un programme pédagogique destiné à prendre en main la souris, à favoriser le langage et l'anticipation. Grâce à des exercices simples basés sur la découverte d'images ou de photos, il permet aux utilisateurs d'acquérir une plus grande aisance du maniement de la souris.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Il fait partie des logiciels du « Terrier » d'&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;AbulÉdu&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;. Vous pouvez en retrouver la liste complète sur notre site Internet &lt;/span&gt;&lt;a href=&quot;http://www.ryxeo.com/boutique/12-le-terrier&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; text-decoration: underline; color:#0000ff;&quot;&gt;http://www.ryxeo.com/boutique/12-le-terrier&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;
@@ -74,11 +74,8 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Ce logiciel est livré avec 5 modules, mais vous pouvez en &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;créer&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; de nouveaux grâce à l'&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;éditeur&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; et surtout en &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;trouver&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; sur la &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;médiathèque&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; AbulÉdu au travers de la fenêtre de l'&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;AbeBox&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;, qui s'affichera quand vous demanderez à ouvrir un document.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Le &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;référencement&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt; de ces modules sur la médiathèque respecte la norme &lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt; font-weight:600;&quot;&gt;ScoLOMFRv1.0&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Andika Basic';&quot;&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;edition&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;angues&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Les exercices peuvent être conçus et utilisés dans n'importe quelle langue.&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Andika Basic';&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;ajout d'images&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;A&lt;/span&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:14pt; color:#00aa00;&quot;&gt;jout d'images&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Pour créer des modules, vous pourrez piocher dans la base d'images AbulÉdu-Data, qui contient des milliers d'images libres, toutes indexées au format ScoLOMFR.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;Pour créer des modules, vous pourrez piocher dans la base d'images AbulÉdu-Data, qui contient des milliers d'images libres, toutes indexées au format ScoLOMFR. Vous pouvez naturellement aussi choisir des images dans vos données personnelles.&lt;/span&gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'Andika Basic'; font-size:12pt;&quot;&gt;&lt;/p&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="searchPaths">
@@ -259,7 +256,7 @@ p, li { white-space: pre-wrap; }
       <layout class="QGridLayout" name="gridLayout_8">
        <item row="0" column="0">
         <layout class="QGridLayout" name="gridAbout">
-         <item row="0" column="1" rowspan="2">
+         <item row="1" column="2" rowspan="2" colspan="2">
           <widget class="QTextBrowser" name="textAbout">
            <property name="palette">
             <palette>
@@ -318,11 +315,11 @@ p, li { white-space: pre-wrap; }
 &lt;table border=&quot;0&quot; style=&quot;-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;&quot;&gt;
 &lt;tr&gt;
 &lt;td style=&quot;border: none;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Mulot est un logiciel libre sous licence GNU/GPL 3.&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Mulot&lt;/span&gt; est un logiciel libre sous licence GNU/GPL 3.&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Auteurs :&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - André Connes &amp;lt;andre.connes@wanadoo.fr&amp;gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Eric Seigne                &amp;lt;eric.seigne@ryxeo.com&amp;gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Eric Seigne      &amp;lt;eric.seigne@ryxeo.com&amp;gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;   - Icham Sirat     &amp;lt;icham.sirat@ryxeo.com&amp;gt;&lt;/p&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Interface et ressources graphiques :&lt;/p&gt;
@@ -339,13 +336,39 @@ p, li { white-space: pre-wrap; }
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
+         <item row="1" column="0">
+          <widget class="QLabel" name="lblImageAppli">
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>data/images/will-win.png</pixmap>
+            <pixmap resource="../../ressources.qrc">:/icone/mulot-128</pixmap>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="lblNomAppli">
+           <property name="styleSheet">
+            <string notr="true">font-size:16px; font-weight:bold;</string>
+           </property>
+           <property name="text">
+            <string>AbulÉdu Mulot -</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="lblVersion">
+           <property name="styleSheet">
+            <string notr="true">font-size:16px; font-weight:bold;</string>
+           </property>
+           <property name="text">
+            <string>numéro de version</string>
            </property>
           </widget>
          </item>
@@ -397,7 +420,10 @@ p, li { white-space: pre-wrap; }
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../ressources.qrc"/>
+  <include location="../../ressources.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>pushButtonFermer</sender>

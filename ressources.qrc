@@ -7,4 +7,7 @@
         <file alias="flecheG">data/picto/flecheG.svg</file>
         <file alias="quitter">data/picto/quitter.svg</file>
     </qresource>
+    <qresource prefix="/icone">
+        <file alias="mulot-128">data/icones/leterrier-mulot-128.png</file>
+    </qresource>
 </RCC>
