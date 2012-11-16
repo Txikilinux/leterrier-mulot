@@ -43,15 +43,16 @@
      <x>0</x>
      <y>0</y>
      <width>860</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
     <property name="title">
      <string>&amp;Fichier</string>
     </property>
-    <addaction name="actionEditeur"/>
+    <addaction name="actionOuvrir_un_exercice"/>
     <addaction name="separator"/>
+    <addaction name="actionEditeur"/>
     <addaction name="separator"/>
     <addaction name="action_Quitter"/>
    </widget>
@@ -90,7 +91,7 @@
   </action>
   <action name="actionEditeur">
    <property name="text">
-    <string>&amp;Editeur</string>
+    <string>&amp;Editeur de modules</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+E</string>
@@ -137,6 +138,17 @@
    </property>
    <property name="text">
     <string>&amp;Mode Démo</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionOuvrir_un_exercice">
+   <property name="text">
+    <string>Ouvrir un module</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
  </widget>

@@ -71,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
-    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_action_Ouvrir_triggered()));
+    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()));
     setWindowTitle(abeApp->getAbeApplicationLongName());
 
     m_abuleduFile = new AbulEduFileV1(this);
@@ -156,11 +156,6 @@ void MainWindow::slotFinDemo()
 
 }
 
-void MainWindow::on_action_Ouvrir_triggered()
-{
-    btnBoxClicked();
-}
-
 void MainWindow::btnBoxClicked()
 {
     if (m_localDebug) qDebug()<<"Bouton Box Clicked";
@@ -179,7 +174,7 @@ void MainWindow::abeLanceExo(int numero)
     m_numberExoCalled = numero;
     if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty())
     {
-        on_action_Ouvrir_triggered();
+        on_actionOuvrir_un_exercice_triggered();
         return;
     }
     else
@@ -367,4 +362,9 @@ void MainWindow::slotSessionAuthenticated(bool enable)
     abeApp->installEventFilter(ef);
     QObject::connect(ef, SIGNAL( userInactive() ),
                      this,  SLOT( slotDemo() ));
+}
+
+void MainWindow::on_actionOuvrir_un_exercice_triggered()
+{
+    btnBoxClicked();
 }

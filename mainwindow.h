@@ -102,7 +102,7 @@ private slots:
     void on_action_Parcours_triggered();
     void on_actionClic_triggered();
     void on_action_Double_Clic_triggered();
-    void on_action_Ouvrir_triggered();
+    void on_actionOuvrir_un_exercice_triggered();
 
     void btnBoxClicked();
     void slotOpenFile();
