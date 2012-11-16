@@ -175,7 +175,8 @@ void ExerciceSurvol::slotPresenteSequenceEntered() //todo
 
     // Appui auto sur bouton suivant
     if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-    QTimer::singleShot(opt_timerSuivant,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
+    //Modifie pour régler "à la main" le temps d'affichage de la consigne : ce temps dépend de la longueur de la consigne
+    QTimer::singleShot(8000,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
 }
 
 /** Mettre tout ce qui est commun à chaque question
