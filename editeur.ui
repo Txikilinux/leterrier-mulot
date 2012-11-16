@@ -246,7 +246,7 @@ p, li { white-space: pre-wrap; }
             <property name="currentIndex">
              <number>1</number>
             </property>
-            <widget class="QWidget" name="pageFileDialog" native="true">
+            <widget class="QWidget" name="pageFileDialog">
              <attribute name="icon">
               <iconset resource="ressources.qrc">
                <normaloff>:/bouton/disque</normaloff>:/bouton/disque</iconset>
@@ -264,7 +264,7 @@ p, li { white-space: pre-wrap; }
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="pageMediatheque" native="true">
+            <widget class="QWidget" name="pageMediatheque">
              <attribute name="icon">
               <iconset resource="ressources.qrc">
                <normaloff>:/bouton/disque</normaloff>:/bouton/disque</iconset>
@@ -306,6 +306,12 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="title">
             <string>Survol</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
@@ -374,6 +380,12 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="title">
             <string>Clic</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
             <item row="0" column="0">
@@ -448,6 +460,12 @@ p, li { white-space: pre-wrap; }
            </property>
            <property name="title">
             <string>Double-Clic</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_3">
             <item row="0" column="0">
@@ -530,6 +548,12 @@ p, li { white-space: pre-wrap; }
           <widget class="QGroupBox" name="groupBoxParcours">
            <property name="title">
             <string>Parcours</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
            </property>
            <layout class="QGridLayout" name="gridLayout_12">
             <item row="0" column="0">

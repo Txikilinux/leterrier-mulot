@@ -77,6 +77,7 @@ private:
     QList<int> positionMasquesParcours3;
     QList<int> positionMasquesParcours4;
     QList<int> positionMasquesParcours5;
+    QList<int> positionMasquesParcours;
 
     // Chronometre
     QTime *m_chronometre;

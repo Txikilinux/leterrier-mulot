@@ -307,114 +307,104 @@ void Editeur::createAbe()
 {
     if (m_localDebug) qDebug() << "##########################  Editeur::on_btnCreationtheme_clicked()";
 
-    //    qDebug() << "destinationIdUnique " << destinationIdUnique;
-    //    qDebug() << "arborescenceImage " << arborescenceImage;
-    //    qDebug() << "cheminImage " << cheminImage;
-    //    qDebug() << "arborescenceConf" << arborescenceConf;
-    //    qDebug() << "cheminConf" << cheminConf;
-
-    // Condition de garde si le nom du theme est vide
-//    if (ui->lineEditNomTheme->text().isEmpty())
-//    {
-//        QMessageBox::warning(this, trUtf8("Sauvegarder le module"), trUtf8("Veuillez remplir le champ \"Nom du module\""));
-//        return;
-//    }
-
-
-    /// Choix destination .abe
-//    QString destAbe = QFileDialog::getExistingDirectory(this, trUtf8("Ouvrir un répertoire"), "/home", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-//    if (m_localDebug)   qDebug() << destAbe;
-//    if (destAbe.isNull()) // dossier est nul, donc pas la peine d'aller plus loin
-//    {
-//        QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez choisir un emplacement de destination pour le thème"));
-//        qDebug() << "Appui sur le bouton annuler";
-//        return;
-//    }
-//    m_dirAbe = new QDir();
-//    m_dirAbe->setPath(destAbe);
-
-
-    /// TTTTTTT
     ui->listWidgetImagesSelection->clear();
-    /// TTTTTTT
-
-//    if (m_localDebug) qDebug() << "Copie Images dans fichier temp ok";
-    //    }
-
-    /// Aller chercher le fichier conf
-//    QDir confDir(m_cheminConf);//creation dossier temporaire pour .ini
-//    if(confDir.mkpath(m_cheminConf)) // tentative de création
-//    {
-//        if (m_localDebug) qDebug() << "Creation fichier temp/conf ok " << confDir.absolutePath();
-//        else { return; } // si echec pas la peine d'aller plus loin
-//    }
 
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
     QSettings parametres(m_cheminConf+"/parametres.conf", QSettings::IniFormat);
     /// Parametres Survol
-    parametres.setValue("Survol/timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
-    parametres.setValue("Survol/nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+    parametres.beginGroup("survol");
+        if (ui->groupBoxSurvol->isChecked())
+        {
+            parametres.setValue("exerciceActive",true);
+            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+            parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+        }
+        else
+        {
+            parametres.setValue("exerciceActive",false);
+        }
+    parametres.endGroup();
     /// Parametres Clic
-    parametres.setValue("Clic/timerSuivant", (ui->spinBoxClicSuivant->value()*1000));
-    parametres.setValue("Clic/nbMasquesChoisis", (ui->spinBoxClicMasque->value()));
+    parametres.beginGroup("clic");
+        if (ui->groupBoxClic->isChecked())
+        {
+            parametres.setValue("exerciceActive",true);
+            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+            parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+        }
+        else
+        {
+            parametres.setValue("exerciceActive",false);
+        }
+    parametres.endGroup();
     /// Parametres Double-Clic
-    parametres.setValue("Double-Clic/timerSuivant", (ui->spinBoxDoubleClicSuivant->value()*1000));
-    parametres.setValue("Double-Clic/nbMasquesChoisis", (ui->spinBoxDoubleClicMasque->value()));
-    /// Parametres Parcours1
-    parametres.setValue("Parcours1/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours1/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-    parametres.setValue("Parcours1/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-    parametres.setValue("Parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
-    // Parcours
-    QMapIterator<QString, QVariant> i(m_parametresParcours1);
-    while (i.hasNext()) {
-        i.next();
-        parametres.setValue("position1/"+ i.key(), i.value());
-    }
-    /// Parametres Parcours2
-    parametres.setValue("Parcours2/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours2/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-    parametres.setValue("Parcours2/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-    parametres.setValue("Parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
-    // Parcours
-    QMapIterator<QString, QVariant> j(m_parametresParcours2);
-    while (j.hasNext()) {
-        j.next();
-        parametres.setValue("position2/"+ j.key(), j.value());
-    }
-    /// Parametres Parcours3
-    parametres.setValue("Parcours3/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours3/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-    parametres.setValue("Parcours3/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-    parametres.setValue("Parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
-    // Parcours
-    QMapIterator<QString, QVariant> k(m_parametresParcours3);
-    while (k.hasNext()) {
-        k.next();
-        parametres.setValue("position3/"+ k.key(), k.value());
-    }
-    /// Parametres Parcours4
-    parametres.setValue("Parcours4/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours4/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-    parametres.setValue("Parcours4/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-    parametres.setValue("Parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
-    // Parcours
-    QMapIterator<QString, QVariant> l(m_parametresParcours4);
-    while (l.hasNext()) {
-        l.next();
-        parametres.setValue("position4/"+ l.key(), l.value());
-    }
-    /// Parametres Parcours5
-    parametres.setValue("Parcours5/timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
-    parametres.setValue("Parcours5/nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-    parametres.setValue("Parcours5/nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-    parametres.setValue("Parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
-    // Parcours
-    QMapIterator<QString, QVariant> m(m_parametresParcours5);
-    while (m.hasNext()) {
-        m.next();
-        parametres.setValue("position5/"+ m.key(), m.value());
-    }
+    parametres.beginGroup("doubleClic");
+        if (ui->groupBoxClic->isChecked())
+        {
+            parametres.setValue("exerciceActive",true);
+            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+            parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+        }
+        else
+        {
+            parametres.setValue("exerciceActive",false);
+        }
+    parametres.endGroup();
+    /// Paramètres Parcours
+    parametres.beginGroup("parcours");
+        if (ui->groupBoxParcours->isChecked())
+        {
+            parametres.setValue("exerciceActive",true);
+            parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+            parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+            parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+            parametres.setValue("nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
+            if(!m_parametresParcours1.isEmpty())
+            {
+                QMapIterator<QString, QVariant> i(m_parametresParcours1);
+                while (i.hasNext()) {
+                    i.next();
+                    parametres.setValue("parcours1/"+ i.key(), i.value());
+                }
+            }
+            if(!m_parametresParcours2.isEmpty())
+            {
+                QMapIterator<QString, QVariant> i(m_parametresParcours2);
+                while (i.hasNext()) {
+                    i.next();
+                    parametres.setValue("parcours2/"+ i.key(), i.value());
+                }
+            }
+            if(!m_parametresParcours3.isEmpty())
+            {
+                QMapIterator<QString, QVariant> i(m_parametresParcours3);
+                while (i.hasNext()) {
+                    i.next();
+                    parametres.setValue("parcours3/"+ i.key(), i.value());
+                }
+            }
+            if(!m_parametresParcours4.isEmpty())
+            {
+                QMapIterator<QString, QVariant> i(m_parametresParcours4);
+                while (i.hasNext()) {
+                    i.next();
+                    parametres.setValue("parcours4/"+ i.key(), i.value());
+                }
+            }
+            if(!m_parametresParcours5.isEmpty())
+            {
+                QMapIterator<QString, QVariant> i(m_parametresParcours5);
+                while (i.hasNext()) {
+                    i.next();
+                    parametres.setValue("parcours5/"+ i.key(), i.value());
+                }
+            }
+        }
+        else
+        {
+            parametres.setValue("exerciceActive",false);
+        }
+    parametres.endGroup();
 
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf

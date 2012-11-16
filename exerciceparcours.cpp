@@ -120,117 +120,29 @@ void ExerciceParcours::chargerOption()
     if (m_localDebug) qDebug() << "##########################  ExerciceParcours::chargerOption()";
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
-    bool trouve = false;
-    int i = 0;
-    while (trouve == false && i < parametres.childGroups().size())
-    {
-        qDebug()<<parametres.childGroups().at(i);
-        if (parametres.childGroups().at(i).contains("Parcours")) trouve = true;
-        i++;
-    }
-    qDebug()<<"trouve "<<trouve;
-    if (trouve == false)
+    parametres.beginGroup("parcours");
+    if (parametres.value("exerciceActive",false) == false)
     {
         AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Parcours</b>"));
         messageBox->show();
         slotQuitterAccueil();
     }
-    switch (m_numQuestion+1)
-    {
-    case 1:
-    {
-        opt_timerSuivant     = parametres.value("Parcours1/timerSuivant", 7000).toInt();
-        opt_nbMasquesLargeur = parametres.value("Parcours1/nbMasquesLargeur", 10).toInt();
-        opt_nbMasquesHauteur = parametres.value("Parcours1/nbMasquesHauteur", 5).toInt();
-        opt_nbMasquesChoisis = parametres.value("Parcours1/nbMasquesChoisis", 7).toInt();
-    }
-        break;
-
-    case 2:
-    {
-        opt_timerSuivant     = parametres.value("Parcours2/timerSuivant", 7000).toInt();
-        opt_nbMasquesLargeur = parametres.value("Parcours2/nbMasquesLargeur", 10).toInt();
-        opt_nbMasquesHauteur = parametres.value("Parcours2/nbMasquesHauteur", 5).toInt();
-        opt_nbMasquesChoisis = parametres.value("Parcours2/nbMasquesChoisis", 7).toInt();
-    }
-        break;
-    case 3:
-    {
-        opt_timerSuivant     = parametres.value("Parcours3/timerSuivant", 7000).toInt();
-        opt_nbMasquesLargeur = parametres.value("Parcours3/nbMasquesLargeur", 10).toInt();
-        opt_nbMasquesHauteur = parametres.value("Parcours3/nbMasquesHauteur", 5).toInt();
-        opt_nbMasquesChoisis = parametres.value("Parcours3/nbMasquesChoisis", 7).toInt();
-    }
-        break;
-    case 4:
-    {
-        opt_timerSuivant     = parametres.value("Parcours4/timerSuivant", 7000).toInt();
-        opt_nbMasquesLargeur = parametres.value("Parcours4/nbMasquesLargeur", 10).toInt();
-        opt_nbMasquesHauteur = parametres.value("Parcours4/nbMasquesHauteur", 5).toInt();
-        opt_nbMasquesChoisis = parametres.value("Parcours4/nbMasquesChoisis", 7).toInt();
-    }
-        break;
-    case 5:
-    {
-        opt_timerSuivant     = parametres.value("Parcours5/timerSuivant", 7000).toInt();
-        opt_nbMasquesLargeur = parametres.value("Parcours5/nbMasquesLargeur", 10).toInt();
-        opt_nbMasquesHauteur = parametres.value("Parcours5/nbMasquesHauteur", 5).toInt();
-        opt_nbMasquesChoisis = parametres.value("Parcours5/nbMasquesChoisis", 7).toInt();
-    }
-        break;
-    default:
-        return;
-        break;
-    } // fin switch
+        opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
+        opt_nbMasquesLargeur = parametres.value("nbMasquesLargeur", 10).toInt();
+        opt_nbMasquesHauteur = parametres.value("nbMasquesHauteur", 5).toInt();
+        opt_nbMasquesChoisis = parametres.value("nbMasquesChoisis", 7).toInt();
+//        parametres.beginGroup("parcours"+QString::number(m_numQuestion+1));     pas là
 }
 
 void ExerciceParcours::chargerPositionMasque(int numeroQuestion)
 {
+    positionMasquesParcours.clear();
     QSettings parametres(cheminConf, QSettings::IniFormat);
-    if(numeroQuestion == 1)
+    parametres.beginGroup("parcours");
+    parametres.beginGroup("parcours"+QString::number(numeroQuestion));
+    for (int i =0 ; i < parametres.childKeys().count(); i++)
     {
-        // aller dans le groupe Parcours1, et tout récupérer
-        parametres.beginGroup("position1");
-        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        {
-            positionMasquesParcours1 << parametres.value(parametres.childKeys().at(i)).toInt();
-        }
-    }
-    else if (numeroQuestion == 2)
-    {
-        // aller dans le groupe Parcours2, et tout récupérer
-        parametres.beginGroup("position2");
-        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        {
-            positionMasquesParcours2 << parametres.value(parametres.childKeys().at(i)).toInt();
-        }
-    }
-    else if (numeroQuestion == 3)
-    {
-        // aller dans le groupe Parcours3, et tout récupérer
-        parametres.beginGroup("position3");
-        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        {
-            positionMasquesParcours3 << parametres.value(parametres.childKeys().at(i)).toInt();
-        }
-    }
-    else if (numeroQuestion == 4)
-    {
-        // aller dans le groupe Parcours4, et tout récupérer
-        parametres.beginGroup("position4");
-        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        {
-            positionMasquesParcours4 << parametres.value(parametres.childKeys().at(i)).toInt();
-        }
-    }
-    else if (numeroQuestion == 5)
-    {
-        // aller dans le groupe Parcours5, et tout récupérer
-        parametres.beginGroup("position5");
-        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        {
-            positionMasquesParcours5 << parametres.value(parametres.childKeys().at(i)).toInt();
-        }
+        positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
     }
 }
 
@@ -442,26 +354,26 @@ void ExerciceParcours::slotQuestionEntered()
         {
             // Chargement et Controle de la liste
             chargerPositionMasque(1);
-            if (positionMasquesParcours1.isEmpty() && positionMasquesParcours1.count() != opt_nbMasquesChoisis)
+            if (positionMasquesParcours.isEmpty() && positionMasquesParcours.count() != opt_nbMasquesChoisis)
             {
                 qDebug() << "PROBLEME Liste parcours 1";
                 return;
             }
             /// Masque arrivee (1 de la liste positionMasque)
-            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
+            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueArrivee->setColor(QColor(Qt::red));
             connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
-            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
+            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueDepart->setColor(QColor(Qt::green));
             connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             m_masqueDepart->setHideOnMouseOver(false);
             m_masqueDepart->setHideOnClick(true);
             m_listeMasquesParcours << m_masqueDepart; // en premier
             /// Masque parcours (le reste de la liste)
-            while (!positionMasquesParcours1.isEmpty())
+            while (!positionMasquesParcours.isEmpty())
             {
-                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours1.takeFirst());
+                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
                 m_masqueParcours->setColor(QColor(Qt::black));
                 connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
                 m_listeMasquesParcours << m_masqueParcours;
@@ -473,26 +385,26 @@ void ExerciceParcours::slotQuestionEntered()
         {
             // Chargement et Controle de la liste
             chargerPositionMasque(2);
-            if (positionMasquesParcours2.isEmpty() && positionMasquesParcours2.count() != opt_nbMasquesChoisis)
+            if (positionMasquesParcours.isEmpty() && positionMasquesParcours.count() != opt_nbMasquesChoisis)
             {
                 qDebug() << "PROBLEME Liste parcours 2";
                 return;
             }
             /// Masque arrivee (1 de la liste positionMasque)
-            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours2.takeFirst());
+            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueArrivee->setColor(QColor(Qt::red));
             connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
-            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours2.takeFirst());
+            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueDepart->setColor(QColor(Qt::green));
             connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             m_masqueDepart->setHideOnMouseOver(false);
             m_masqueDepart->setHideOnClick(true);
             m_listeMasquesParcours << m_masqueDepart; // en premier
             /// Masque parcours (le reste de la liste)
-            while (!positionMasquesParcours2.isEmpty())
+            while (!positionMasquesParcours.isEmpty())
             {
-                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours2.takeFirst());
+                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
                 m_masqueParcours->setColor(QColor(Qt::black));
                 connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
                 m_listeMasquesParcours << m_masqueParcours;
@@ -505,26 +417,26 @@ void ExerciceParcours::slotQuestionEntered()
         {
             // Chargement et Controle de la liste
             chargerPositionMasque(3);
-            if (positionMasquesParcours3.isEmpty() && positionMasquesParcours3.count() != opt_nbMasquesChoisis)
+            if (positionMasquesParcours.isEmpty() && positionMasquesParcours.count() != opt_nbMasquesChoisis)
             {
                 qDebug() << "PROBLEME Liste parcours 3";
                 return;
             }
             /// Masque arrivee (1 de la liste positionMasque)
-            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours3.takeFirst());
+            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueArrivee->setColor(QColor(Qt::red));
             connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
-            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours3.takeFirst());
+            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueDepart->setColor(QColor(Qt::green));
             connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             m_masqueDepart->setHideOnMouseOver(false);
             m_masqueDepart->setHideOnClick(true);
             m_listeMasquesParcours << m_masqueDepart; // en premier
             /// Masque parcours (le reste de la liste)
-            while (!positionMasquesParcours3.isEmpty())
+            while (!positionMasquesParcours.isEmpty())
             {
-                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours3.takeFirst());
+                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
                 m_masqueParcours->setColor(QColor(Qt::black));
                 connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
                 m_listeMasquesParcours << m_masqueParcours;
@@ -536,26 +448,26 @@ void ExerciceParcours::slotQuestionEntered()
         {
             // Chargement et Controle de la liste
             chargerPositionMasque(4);
-            if (positionMasquesParcours4.isEmpty() && positionMasquesParcours4.count() != opt_nbMasquesChoisis)
+            if (positionMasquesParcours.isEmpty() && positionMasquesParcours.count() != opt_nbMasquesChoisis)
             {
                 qDebug() << "PROBLEME Liste parcours 4";
                 return;
             }
             /// Masque arrivee (1 de la liste positionMasque)
-            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours4.takeFirst());
+            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueArrivee->setColor(QColor(Qt::red));
             connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
-            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours4.takeFirst());
+            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueDepart->setColor(QColor(Qt::green));
             connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             m_masqueDepart->setHideOnMouseOver(false);
             m_masqueDepart->setHideOnClick(true);
             m_listeMasquesParcours << m_masqueDepart; // en premier
             /// Masque parcours (le reste de la liste)
-            while (!positionMasquesParcours4.isEmpty())
+            while (!positionMasquesParcours.isEmpty())
             {
-                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours4.takeFirst());
+                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
                 m_masqueParcours->setColor(QColor(Qt::black));
                 connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
                 m_listeMasquesParcours << m_masqueParcours;
@@ -567,26 +479,26 @@ void ExerciceParcours::slotQuestionEntered()
         {
             // Chargement et Controle de la liste
             chargerPositionMasque(5);
-            if (positionMasquesParcours5.isEmpty() && positionMasquesParcours5.count() != opt_nbMasquesChoisis)
+            if (positionMasquesParcours.isEmpty() && positionMasquesParcours.count() != opt_nbMasquesChoisis)
             {
                 qDebug() << "PROBLEME Liste parcours 5";
                 return;
             }
             /// Masque arrivee (1 de la liste positionMasque)
-            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours5.takeFirst());
+            m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueArrivee->setColor(QColor(Qt::red));
             connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
-            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours5.takeFirst());
+            m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueDepart->setColor(QColor(Qt::green));
             connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
             m_masqueDepart->setHideOnMouseOver(false);
             m_masqueDepart->setHideOnClick(true);
             m_listeMasquesParcours << m_masqueDepart; // en premier
             /// Masque parcours (le reste de la liste)
-            while (!positionMasquesParcours5.isEmpty())
+            while (!positionMasquesParcours.isEmpty())
             {
-                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours5.takeFirst());
+                m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
                 m_masqueParcours->setColor(QColor(Qt::black));
                 connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
                 m_listeMasquesParcours << m_masqueParcours;

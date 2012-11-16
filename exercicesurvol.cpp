@@ -122,8 +122,8 @@ void ExerciceSurvol::chargerOption()
         messageBox->show();
         slotQuitterAccueil();
     }
-    opt_timerSuivant     = parametres.value("Survol/timerSuivant", 7000).toInt();
-    opt_nbMasquesChoisis = parametres.value("Survol/nbMasquesChoisis", 7).toInt();
+    opt_timerSuivant     = parametres.value("survol/timerSuivant", 7000).toInt();
+    opt_nbMasquesChoisis = parametres.value("survol/nbMasquesChoisis", 7).toInt();
 
     if (m_localDebug)
     {
