@@ -73,6 +73,7 @@ private:
 
     bool m_exerciceEnCours;
     bool m_localDebug;
+    bool m_isDemoAvailable;
 
     QSettings *m_config;
 
@@ -105,6 +106,7 @@ private slots:
 
     void btnBoxClicked();
     void slotOpenFile();
+    void on_actionMode_D_mo_triggered(bool checked);
 };
 
 #endif // MAINWINDOW_H

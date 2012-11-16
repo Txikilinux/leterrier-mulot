@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     m_localDebug = true;
+    m_isDemoAvailable = true;
 
     /// Langue et Translator
     QString locale = QLocale::system().name().section('_', 0, 0);
@@ -118,7 +119,10 @@ void MainWindow::slotOpenFile()
   */
 void MainWindow::slotDemo()
 {
-    if (!m_exerciceEnCours)
+    if (!m_isDemoAvailable){
+        return;
+    }
+    if (!m_exerciceEnCours && m_isDemoAvailable)
     {
         qDebug() << "Affichage des bulles ";
         m_abuleduaccueil->abePageAccueilMontreBulles(true);
@@ -128,6 +132,15 @@ void MainWindow::slotDemo()
         }
         QTimer::singleShot(8000,this,SLOT(slotFinDemo()));
     }
+}
+
+void MainWindow::on_actionMode_D_mo_triggered(bool checked)
+{
+    m_isDemoAvailable = checked;
+    if (!m_isDemoAvailable)
+        slotFinDemo();
+    else
+        slotDemo();
 }
 
 /**
