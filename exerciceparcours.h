@@ -72,11 +72,6 @@ private:
     masqueDeplaceSouris *m_masque;
     QSize m_taille;
 
-    QList<int> positionMasquesParcours1;
-    QList<int> positionMasquesParcours2;
-    QList<int> positionMasquesParcours3;
-    QList<int> positionMasquesParcours4;
-    QList<int> positionMasquesParcours5;
     QList<int> positionMasquesParcours;
 
     // Chronometre
