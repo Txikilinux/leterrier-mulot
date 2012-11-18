@@ -390,3 +390,14 @@ void MainWindow::setTitle(int authStatus)
     }
     setWindowTitle(title);
 }
+
+void MainWindow::on_action_Journal_de_mes_activit_s_triggered()
+{
+    abeApp->getAbeIdentite()->abeGetMyLogsAsPDF();
+}
+
+void MainWindow::on_action_Changer_d_utilisateur_triggered()
+{
+    abeApp->getAbeNetworkAccessManager()->abeSSOLogout();
+    abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
+}

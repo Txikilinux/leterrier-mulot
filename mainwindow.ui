@@ -76,10 +76,18 @@
     </property>
     <addaction name="actionMode_D_mo"/>
    </widget>
+   <widget class="QMenu" name="menu_Utilisateur">
+    <property name="title">
+     <string>&amp;Utilisateur</string>
+    </property>
+    <addaction name="action_Journal_de_mes_activit_s"/>
+    <addaction name="action_Changer_d_utilisateur"/>
+   </widget>
    <addaction name="menu_Fichier"/>
    <addaction name="menuExercice"/>
    <addaction name="menuLangues"/>
    <addaction name="menuOptions"/>
+   <addaction name="menu_Utilisateur"/>
   </widget>
   <action name="action_Quitter">
    <property name="text">
@@ -149,6 +157,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="action_Journal_de_mes_activit_s">
+   <property name="text">
+    <string>&amp;Journal de mes activités</string>
+   </property>
+  </action>
+  <action name="action_Changer_d_utilisateur">
+   <property name="text">
+    <string>&amp;Changer d'utilisateur</string>
    </property>
   </action>
  </widget>

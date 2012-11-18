@@ -107,6 +107,8 @@ private slots:
     void btnBoxClicked();
     void slotOpenFile();
     void on_actionMode_D_mo_triggered(bool checked);
+    void on_action_Journal_de_mes_activit_s_triggered();
+    void on_action_Changer_d_utilisateur_triggered();
 };
 
 #endif // MAINWINDOW_H
