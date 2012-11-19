@@ -45,4 +45,4 @@ sed -i -e s+/%{name}/+/%{name}/data/icones/+  %{buildroot}%{_datadir}/applicatio
 mkdir -p %{buildroot}%{_datadir}/%{name}/lang
 install -m644 lang/*.qm %{buildroot}%{_datadir}/%{name}/lang/
 mv data/ %{buildroot}%{_datadir}/%{name}/
-
+mv exemples/*.abe %{buildroot}%{_datadir}/%{name}/
