@@ -49,6 +49,7 @@ ln -s /Applications /tmp/build-dmg-${APPNAME}/Applications
 #copie des donnees
 if [ -d data ]; then
     cp -a data ${APPNAME}.app/Contents/Resources/
+    cp -a exemples/*.abe ${APPNAME}.app/Contents/Resources/
 fi
 if [ -d conf ]; then
     cp -a conf ${APPNAME}.app/Contents/Resources/

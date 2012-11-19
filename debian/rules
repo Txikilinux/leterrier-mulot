@@ -24,6 +24,7 @@ install/leterrier-mulot::
 	cp -a $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/leterrier-mulot
 	cp -a $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
 	cp -a $(CURDIR)/data/* $(BUILDTEMP)/$(DEST)/data
+	cp -a $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data
 #	cp -a $(CURDIR)/conf/* $(BUILDTEMP)/$(DEST)/conf
 	cp -a $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
 
