@@ -58,7 +58,11 @@ public:
     ~Editeur();
 
 private slots:
+    /** Permet de supprimer une image du listWidgetImagesSelection
+      * connecté à un menu contextuel appelé au clic droit sur le listWidgetImagesSelection */
     void slotSupprimerImage();
+
+    /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
 
     // Edition Parcours
@@ -67,41 +71,57 @@ private slots:
     void on_btnParcours3_clicked();
     void on_btnParcours4_clicked();
     void on_btnParcours5_clicked();
-
     void reinitialiserGvParcours();
     void sauvegarderParcours();
     void masquePoseParcours(masqueDeplaceSouris*);
-
     QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
 
+    /** Fait apparaitre sur le clic droit le menu contextuel créé dans la méthode creationMenu(); */
     void on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos);
+
+    /** Ouvre au double clic l'image dans la visionneuse */
     void on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item);
 
+    /** Ajoute une image dans le listWidgetImagesSelection, avec icône en et nom (sans extension, les images sont toutes enregistrées en .jpg) */
     void ajouterImage(QFileInfo monFichier);
+
+    /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
     void slotImportImageMediatheque();
 
-//    void on_treeViewArborescence_doubleClicked(const QModelIndex &index);
-
-
+    /** Passe à la page précédente */
     void on_btnPrecedent_clicked();
+
+    /** Passe à la page suivante
+      * Dans le cas de la dernière page, le bouton a pris l'icône d'enregistrement, la fonction createAbe() est appelée et l'éditeur fermé */
     void on_btnSuivant_clicked();
+
+    /** Gère les boutons Précédent et Suivant
+      * Le bouton Précédent est masqué si on est à la première page
+      * Le bouton Suivant prend l'icône d'enregistrement si on est à la dernière page */
     void majBarreNavigation(int numPage);
+
+    /** Ferme l'application au clic sur le bouton Quitter*/
     void on_btnQuitter_clicked();
 
+    /** Création du module à partir du contenu du répertoire temporaire de l'application */
     void on_btnCreationAbe_clicked();
 
+    /** Charge un fichier reçu de l'AbulEduFileManagerV1 et le passe à la MainWindow */
     void slotOpenFile();
 
-    /** Charge les paramètres d'abeFile */
+    /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();
 
 //    void testThread();
     void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
+    /** Appelle la fonction ajouterImage pour une image provenant du parcours du disque dur */
     void on_btnAjouterImageQFileDialog_clicked();
 
+    /** Appelle la fonction slotLoadUnit */
     void on_btnModificationCourant_clicked();
 
+    /** Fait apparaitre l'AbulEduFileManagerV1, dont le signal signalAbeFileSelected lance slotOpenFile, et donc slotLoadUnit */
     void on_btnModificationAutre_clicked();
 
 private:
