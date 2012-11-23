@@ -1,6 +1,7 @@
 /** Classe Editeur
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012 Philippe Cadaugade <philippe.cadaugade@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -57,9 +58,7 @@ public:
     ~Editeur();
 
 private slots:
-
     void slotSupprimerImage();
-//    void slotResizeColumn(const QModelIndex& index);
     void createAbe();
 
     // Edition Parcours
@@ -91,7 +90,6 @@ private slots:
 
     void on_btnCreationAbe_clicked();
 
-    void on_btnModificationAbe_clicked();
     void slotOpenFile();
 
     /** Charge les paramètres d'abeFile */
@@ -103,6 +101,8 @@ private slots:
     void on_btnAjouterImageQFileDialog_clicked();
 
     void on_btnModificationCourant_clicked();
+
+    void on_btnModificationAutre_clicked();
 
 private:
     Ui::Editeur *ui;
@@ -129,18 +129,18 @@ private:
     QList<QString> m_listeFichiersImages;      // pour ranger chaque chemin d'images
     QMenu *m_menuListWidget;   // menu contextuel listWidget
 //---------------Chemin temp
-    AbulEduFileV1 *m_abuledufilev1;
-    QDir *m_destImage;
-    QDir *m_destImageABE;
+//    AbulEduFileV1 *m_abuledufilev1;
+//    QDir *m_destImage;
+//    QDir *m_destImageABE;
 
-    QString m_destinationIdUnique;
-    QString m_cheminImage;
-    QString m_cheminConf;
+//    QString m_destinationIdUnique;
+//    QString m_cheminImage;
+//    QString m_cheminConf;
 
     //Gestion des images
     void remplirArborescence();
     void creationMenu();
-    bool copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination);
+    bool copierImageDansTemp(QFileInfo fi);
 
     bool supprimerDir(const QString& dirPath);
     QStringList parcoursRecursif(QString dossier);
@@ -157,7 +157,6 @@ private:
     bool m_modeModificationAbe; // ce booleen permet de definir si on est en creation ou en modification d'un .abe
     void setModeModificationAbe(bool yesNo);
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
-    void initCheminTemp();
 
     void dropEvent(QDropEvent *event);
     void dragEnterEvent(QDragEnterEvent *event);

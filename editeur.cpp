@@ -1,6 +1,7 @@
 /** Classe Editeur
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012 Philippe Cadaugade <philippe.cadaugade@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -34,6 +35,23 @@ Editeur::Editeur(QWidget *parent) :
 {
     ui->setupUi(this);
     m_parent = (MainWindow*) parent;
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
+
+    if (!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
+    {
+        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().fileName());
+        ui->btnModificationCourant->setEnabled(true);
+        ui->btnModificationCourant->setMinimumHeight(60);
+        ui->btnModificationAutre->setMinimumHeight(60);
+        ui->btnCreationAbe->setMinimumHeight(60);
+    }
+    else
+    {
+        ui->btnModificationCourant->setEnabled(false);
+        m_parent->abeSetMyAbulEduFile(new AbulEduFileV1(m_parent));
+    }
+
     m_lastOpenDir = QDir::homePath();
 //    m_threadRechercheImages = threadRechercheImage;
 //    connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
@@ -93,31 +111,9 @@ Editeur::Editeur(QWidget *parent) :
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 }
 
-void Editeur::initCheminTemp()
-{
-    // Initialisation des chemins temporaires Mode Création
-    m_abuledufilev1 = new AbulEduFileV1();
-    m_destinationIdUnique = m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath(); //je récupère mon Id unique
-    qDebug() << m_destinationIdUnique;
-    m_cheminImage = m_destinationIdUnique + "/data/images";
-    m_cheminConf = m_destinationIdUnique + "/conf";
-
-    qDebug() << "Dossier Temporaire de l'Editeur (doit etre celui de la MWindow" << m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
-
-    m_destImage = new QDir(m_cheminImage); // creation dossier temporaire pour les images
-    if(m_destImage->mkpath(m_cheminImage)) // tentative de création du fichier temp avec un id unique + sous dossier au nom du theme
-    {
-        if (m_localDebug)
-        {
-            qDebug() << "Creation ok : " << m_destImage->absolutePath();
-        }
-        else { return; } // si echec pas la peine d'aller plus loin
-    }
-}
-
 Editeur::~Editeur()
 {
-    if (m_localDebug) qDebug() << "##########################  Editeur::~Editeur()";
+    if (m_localDebug) qDebug() << "##########################  Editeur::~Editeur() ->"<<m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName();
     delete ui;
 }
 
@@ -234,15 +230,15 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
     }
     else
     {
-        if(copierImageDansTemp(monFichier, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath())) // Si cette fonction a fonctionnée
+        if(copierImageDansTemp(monFichier)) // Si cette fonction a fonctionnée
         {
-            m_listeFichiersImages << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
+            m_listeFichiersImages << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
             // Insertion dans mon listWidget
             QListWidgetItem *item = new QListWidgetItem();
-            QIcon icone(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+            QIcon icone(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName());//pour la mettre  à coté de l'item
             item->setIcon(icone); // ajout de la petite icone sur l'item
             item->setText(monFichier.fileName());
-            item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + monFichier.fileName());
+            item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName());
             ui->listWidgetImagesSelection->insertItem(0, item);
         }
     }
@@ -252,14 +248,36 @@ void Editeur::slotImportImageMediatheque(){
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
 }
 
-bool Editeur::copierImageDansTemp(QFileInfo cheminOriginal, QString dossierDestination)
+bool Editeur::copierImageDansTemp(QFileInfo fi)
 {
-    if (m_localDebug) // Affichage chemin originale & destination des images
+//    if (m_localDebug) // Affichage chemin originale & destination des images
+//    {
+//        qDebug() << "Chemin de l'image a copier      " << cheminOriginal.absoluteFilePath();
+//        qDebug() << "Chemin ou l'image va etre copiee" << dossierDestination + QDir::separator() + cheminOriginal.fileName();
+//    }
+//    if(QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()))
+//    {
+//        if (m_localDebug) qDebug() << "Copie image ok";
+//        return true;
+//    }
+//    else // Si la copie échoue, pas la peine d'aller plus loin
+//    {
+//        if (m_localDebug) qDebug() << "Copie impossible";
+//        return false;
+//    }
+//    return false;
+    qDebug()<<fi.absoluteFilePath();
+    qDebug()<<" ------------- ";
+    qDebug()<<m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName();
+    if (QFile(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName()).exists())
     {
-        qDebug() << "Chemin de l'image a copier      " << cheminOriginal.absoluteFilePath();
-        qDebug() << "Chemin ou l'image va etre copiee" << dossierDestination + QDir::separator() + cheminOriginal.fileName();
+        return true;
     }
-    if(QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()))
+    QPixmap imageBase;
+    imageBase.load(fi.absoluteFilePath());
+    QPixmap ret = imageBase.scaledToWidth(1024,Qt::SmoothTransformation);
+    if(ret.save(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.baseName()+".jpg","JPG"))
+//    if(QFile::copy(fi.absoluteFilePath(), m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName()))
     {
         if (m_localDebug) qDebug() << "Copie image ok";
         return true;
@@ -308,7 +326,7 @@ void Editeur::createAbe()
     ui->listWidgetImagesSelection->clear();
 
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
-    QSettings parametres(m_cheminConf+"/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.setValue("version",abeApp->applicationVersion());
     /// Parametres Survol
     parametres.beginGroup("survol");
@@ -408,20 +426,20 @@ void Editeur::createAbe()
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
 
-    if (m_localDebug) qDebug() << m_destinationIdUnique<< " " << parametres.fileName();
-    if (m_localDebug) qDebug() << parcoursRecursif(m_destinationIdUnique);
+//    if (m_localDebug) qDebug() << m_destinationIdUnique<< " " << parametres.fileName();
+    if (m_localDebug) qDebug() << parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath());
 
 //    QString nomtheme = ui->lineEditNomTheme->text();
 //    QDir temp(m_destinationIdUnique); // récupération du chemin du fichier temp
 //    QString m_fileBase = temp.absolutePath();
 
 //    QString destination = m_dirAbe->absolutePath() + QDir::separator() + nomtheme ;
-    m_abuledufilev1->abeFileExportPrepare(parcoursRecursif(m_destinationIdUnique), m_destinationIdUnique, "abe");
+    m_parent->abeGetMyAbulEduFile()->abeFileExportPrepare(parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()), m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath(), "abe");
 
-    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuledufilev1,AbulEduBoxFileManagerV1::abeSave);
-    SaveAbuleduFileManager->abeSetFile(m_abuledufilev1);
+    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_parent->abeGetMyAbulEduFile(),AbulEduBoxFileManagerV1::abeSave);
+    SaveAbuleduFileManager->abeSetFile(m_parent->abeGetMyAbulEduFile());
     SaveAbuleduFileManager->show();
-
+//mettre au parent le file
 
     if (m_localDebug) qDebug() << "Création abe OK";
 
@@ -1034,7 +1052,6 @@ void Editeur::on_btnCreationAbe_clicked()
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
     ui->listWidgetImagesSelection->clear();
-    initCheminTemp();
 
     qDebug() << trUtf8("Mode Création sélectionné");
     setModeModificationAbe(false);
@@ -1043,68 +1060,20 @@ void Editeur::on_btnCreationAbe_clicked()
     ui->btnSuivant->click(); // Clic sur le bouton suivant
 }
 
-void Editeur::on_btnModificationAbe_clicked()
-{
-    m_listeDossiers.clear();
-    m_listeFichiersImages.clear();
-    m_listeMasquesParcours.clear();
-    m_listeMasques.clear();
-    ui->listWidgetImagesSelection->clear();
-    initCheminTemp();
-
-    qDebug() << trUtf8("Mode Modification sélectionné");
-    setModeModificationAbe(true);
-    qDebug() << m_modeModificationAbe;
-
-    //Récupération de l'abe à modifier
-    m_abuledufilev1 = new AbulEduFileV1();
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
-    m_abuleduFileManager->abeSetFile(m_abuledufilev1);
-
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    m_abuleduFileManager->showFullScreen();
-#else
-    m_abuleduFileManager->show();
-#endif
-    ui->btnSuivant->click(); // Clic sur le bouton suivant
-}
-
-/** Lors de la modification d'un .abe, permet de le choisir et de faire ce qui faut en conséquence
-  * C'est encore en construction...
-  */
 void Editeur::slotOpenFile()
 {
     if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
-    m_abuledufilev1 = m_abuleduFileManager->abeGetFile();
-
-    qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_abuledufilev1->abeFileGetDirectoryTemp().absolutePath();
+    m_parent->abeSetMyAbulEduFile(m_abuleduFileManager->abeGetFile());
+    slotLoadUnit();
+    qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath();
     m_abuleduFileManager->hide();
 
-    m_destImageABE = new QDir(m_cheminImage) ;
-
-    qDebug() << "CHEMIN IMAGE " << m_destImageABE->absolutePath();
-    // Jusqu'ici ok pour les images
-
-    /// OK
-    // Copier les images dans un dossier temporaire
-    // les mettre dans le listeWidget de Selection
-    //    destImageABE->setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
-    //    QFileInfoList list = destImageABE->entryInfoList();
-    //    for(int i = 0; i < list.count(); i++)
-    //    {
-    //        qDebug() << "Liste du dossier image " << QString::number(i)+" "+ list.at(i).absoluteFilePath();
-    //        ajouterImage(list.at(i));
-    //    }
-
-    /// Autre approche -> copier tous le dossier dezipper dans le fichier temporaire
     /// TODO -> Comment rassembler des fichiers LOMFr et tout ce qui suit ?
-
 }
 
 void Editeur::slotLoadUnit()
 {
-    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().fileName();
     m_listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
     QDir folder(QString(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
@@ -1329,4 +1298,9 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
 void Editeur::on_btnModificationCourant_clicked()
 {
     slotLoadUnit();
+}
+
+void Editeur::on_btnModificationAutre_clicked()
+{
+    m_abuleduFileManager->show();
 }
