@@ -36,7 +36,6 @@
 #include "abuleduvirtualkeyboardv1.h"
 #include "lib/abuleduaproposv1/abuleduaproposv1.h"
 #include "ui_mainwindow.h"
-#include "editeur.h"
 #include "exercicesurvol.h"
 #include "exerciceparcours.h"
 #include "exerciceclic.h"
@@ -54,6 +53,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     void resizeEvent(QResizeEvent *);
+    void abeSetMyAbulEduFile(AbulEduFileV1* abeFile);
+    AbulEduFileV1* abeGetMyAbulEduFile();
     ~MainWindow();
 
 public slots:

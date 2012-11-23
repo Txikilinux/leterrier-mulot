@@ -20,6 +20,7 @@
   */
 
 #include "mainwindow.h"
+#include "editeur.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -93,6 +94,11 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::resizeEvent(QResizeEvent *)
 {
     m_abuleduaccueil->setDimensionsWidgets();
+}
+
+void MainWindow::abeSetMyAbulEduFile(AbulEduFileV1 *abeFile)
+{
+    m_abuleduFile = abeFile;
 }
 
 MainWindow::~MainWindow()
@@ -400,4 +406,9 @@ void MainWindow::on_action_Changer_d_utilisateur_triggered()
 {
     abeApp->getAbeNetworkAccessManager()->abeSSOLogout();
     abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
+}
+
+AbulEduFileV1 *MainWindow::abeGetMyAbulEduFile()
+{
+    return m_abuleduFile;
 }
