@@ -237,7 +237,7 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
             QListWidgetItem *item = new QListWidgetItem();
             QIcon icone(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName());//pour la mettre  à coté de l'item
             item->setIcon(icone); // ajout de la petite icone sur l'item
-            item->setText(monFichier.fileName());
+            item->setText(monFichier.baseName());
             item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName());
             ui->listWidgetImagesSelection->insertItem(0, item);
         }
