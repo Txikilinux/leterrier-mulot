@@ -42,8 +42,7 @@
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "ui_editeur.h"
-
-
+#include "mainwindow.h"
 
 namespace Ui {
 class Editeur;
@@ -95,10 +94,15 @@ private slots:
     void on_btnModificationAbe_clicked();
     void slotOpenFile();
 
+    /** Charge les paramètres d'abeFile */
+    void slotLoadUnit();
+
 //    void testThread();
     void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
     void on_btnAjouterImageQFileDialog_clicked();
+
+    void on_btnModificationCourant_clicked();
 
 private:
     Ui::Editeur *ui;
@@ -159,6 +163,8 @@ private:
     void dragEnterEvent(QDragEnterEvent *event);
 
     QString m_lastOpenDir;
+    MainWindow* m_parent;
+
 
 //protected:
 //    bool eventFilter(QObject *obj, QEvent *ev);

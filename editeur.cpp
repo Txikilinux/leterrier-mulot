@@ -33,7 +33,7 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-
+    m_parent = (MainWindow*) parent;
     m_lastOpenDir = QDir::homePath();
 //    m_threadRechercheImages = threadRechercheImage;
 //    connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
@@ -91,8 +91,6 @@ Editeur::Editeur(QWidget *parent) :
 
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
-
-    ui->btnModificationAbe->setEnabled(false);
 }
 
 void Editeur::initCheminTemp()
@@ -236,15 +234,15 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
     }
     else
     {
-        if(copierImageDansTemp(monFichier, m_destImage->absolutePath())) // Si cette fonction a fonctionnée
+        if(copierImageDansTemp(monFichier, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath())) // Si cette fonction a fonctionnée
         {
-            m_listeFichiersImages << m_destImage->absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
+            m_listeFichiersImages << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
             // Insertion dans mon listWidget
             QListWidgetItem *item = new QListWidgetItem();
-            QIcon icone(m_destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
+            QIcon icone(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
             item->setIcon(icone); // ajout de la petite icone sur l'item
             item->setText(monFichier.fileName());
-            item->setData(4, m_destImage->absolutePath() + QDir::separator() + monFichier.fileName());
+            item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + QDir::separator() + monFichier.fileName());
             ui->listWidgetImagesSelection->insertItem(0, item);
         }
     }
@@ -317,7 +315,7 @@ void Editeur::createAbe()
         if (ui->groupBoxSurvol->isChecked())
         {
             parametres.setValue("exerciceActive",true);
-            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
             parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
         }
         else
@@ -330,7 +328,7 @@ void Editeur::createAbe()
         if (ui->groupBoxClic->isChecked())
         {
             parametres.setValue("exerciceActive",true);
-            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
             parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
         }
         else
@@ -343,7 +341,7 @@ void Editeur::createAbe()
         if (ui->groupBoxClic->isChecked())
         {
             parametres.setValue("exerciceActive",true);
-            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()*1000));
+            parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
             parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
         }
         else
@@ -356,7 +354,7 @@ void Editeur::createAbe()
         if (ui->groupBoxParcours->isChecked())
         {
             parametres.setValue("exerciceActive",true);
-            parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()*1000));
+            parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
             parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
             parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
             parametres.setValue("nbMasquesChoisis", (ui->spinBoxParcoursMasque->value()));
@@ -1104,6 +1102,44 @@ void Editeur::slotOpenFile()
 
 }
 
+void Editeur::slotLoadUnit()
+{
+    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__;
+    m_listeFichiersImages.clear();
+    ui->listWidgetImagesSelection->clear();
+    QDir folder(QString(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
+    folder.setFilter(QDir::NoDotAndDotDot | QDir::Files);
+    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    {
+        ajouterImage(fileInfo.absoluteFilePath());
+        m_lastOpenDir = fileInfo.absolutePath();
+    }
+    QSettings parametres(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    parametres.beginGroup("clic");
+        ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
+        ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
+    parametres.endGroup();
+    parametres.beginGroup("doubleClic");
+        ui->groupBoxDoubleClic->setChecked(parametres.value("exerciceActive",true).toBool());
+        ui->spinBoxDoubleClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxDoubleClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
+    parametres.endGroup();
+    parametres.beginGroup("survol");
+        ui->groupBoxSurvol->setChecked(parametres.value("exerciceActive",true).toBool());
+        ui->spinBoxSurvolSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxSurvolMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
+    parametres.endGroup();
+    parametres.beginGroup("parcours");
+        ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
+        ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxParcoursMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
+        ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
+        ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
+    parametres.endGroup();
+    ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
+}
+
 //void Editeur::testThread()
 //{
 //    qDebug() << __PRETTY_FUNCTION__ << " L'editeur vient de voir que la recherche est terminé";
@@ -1288,4 +1324,9 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
         ajouterImage(fi.absoluteFilePath());
         m_lastOpenDir = fi.absolutePath();
     }
+}
+
+void Editeur::on_btnModificationCourant_clicked()
+{
+    slotLoadUnit();
 }

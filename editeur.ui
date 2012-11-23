@@ -159,10 +159,10 @@ p, li { white-space: pre-wrap; }
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="text">
-           <string>Creation</string>
+           <string>&amp;Créer un module à partir de ressources  </string>
           </property>
          </widget>
-         <widget class="QPushButton" name="btnModificationAbe">
+         <widget class="QPushButton" name="btnModificationCourant">
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -179,7 +179,12 @@ p, li { white-space: pre-wrap; }
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="text">
-           <string>Modification</string>
+           <string>&amp;Editer le module en cours</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="btnModificationAutre">
+          <property name="text">
+           <string>&amp;Ouvrir un module existant</string>
           </property>
          </widget>
         </widget>
