@@ -123,6 +123,12 @@ private slots:
     /** Fait apparaitre l'AbulEduFileManagerV1, dont le signal signalAbeFileSelected lance slotOpenFile, et donc slotLoadUnit */
     void on_btnModificationAutre_clicked();
 
+    /** Charge la position des masques en lisant le fichier de paramètre */
+    void chargerPositionMasque(int numeroParcours);
+
+    /** Place les masques sur la grille en fonction des positions */
+//    void chargerMasqueParcours(int numeroParcours);
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -140,6 +146,13 @@ private:
     QMap<QString, QVariant> m_parametresParcours3;
     QMap<QString, QVariant> m_parametresParcours4;
     QMap<QString, QVariant> m_parametresParcours5;
+
+    QMap<QString, int> positionMasquesParcours;
+
+    QList<masqueDeplaceSouris *> m_listeMasquesFixes;
+    masqueDeplaceSouris *m_masqueDepart;
+    masqueDeplaceSouris *m_masqueArrivee;
+    masqueDeplaceSouris *m_masqueParcours;
 
     QDir *m_dir;
     QDir *m_dirAbe;
@@ -160,7 +173,7 @@ private:
     QList<masqueDeplaceSouris *> m_listeMasques;
     QList<masqueDeplaceSouris *> m_listeMasquesParcours;
     AbulEduEtiquettesV1 *gv_AireParcours;
-    void remplirGvParcours();
+    void remplirGvParcours(int numeroParcours);
     bool controleVoisinMasque(masqueDeplaceSouris *masque);
 
     // Mode d'édition

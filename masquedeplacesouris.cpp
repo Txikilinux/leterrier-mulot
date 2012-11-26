@@ -37,7 +37,7 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_menuMasque = new QMenu();
     m_menuMasque->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
     m_menuMasque->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
-    connect(m_menuMasque, SIGNAL(triggered(QAction *)), this, SLOT(triggered(QAction *)));
+//    connect(m_menuMasque, SIGNAL(triggered(QAction *)), this, SLOT(triggered(QAction *)));
 
     cptClic = 0;
     QApplication::setDoubleClickInterval(1000);
