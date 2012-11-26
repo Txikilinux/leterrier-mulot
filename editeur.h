@@ -112,7 +112,6 @@ private slots:
     /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();
 
-//    void testThread();
     void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant du parcours du disque dur */
@@ -148,17 +147,8 @@ private:
 
     QList<QString> m_listeFichiersImages;      // pour ranger chaque chemin d'images
     QMenu *m_menuListWidget;   // menu contextuel listWidget
-//---------------Chemin temp
-//    AbulEduFileV1 *m_abuledufilev1;
-//    QDir *m_destImage;
-//    QDir *m_destImageABE;
-
-//    QString m_destinationIdUnique;
-//    QString m_cheminImage;
-//    QString m_cheminConf;
 
     //Gestion des images
-    void remplirArborescence();
     void creationMenu();
     bool copierImageDansTemp(QFileInfo fi);
 
@@ -183,11 +173,6 @@ private:
 
     QString m_lastOpenDir;
     MainWindow* m_parent;
-
-
-//protected:
-//    bool eventFilter(QObject *obj, QEvent *ev);
-
 };
 
 #endif // EDITEUR_H

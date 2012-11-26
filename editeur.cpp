@@ -53,17 +53,6 @@ Editeur::Editeur(QWidget *parent) :
     }
 
     m_lastOpenDir = QDir::homePath();
-//    m_threadRechercheImages = threadRechercheImage;
-//    connect(m_threadRechercheImages, SIGNAL(finished()), this, SLOT(testThread())); // OK ça Fonctionne !!
-//    connect(m_threadRechercheImages, SIGNAL(signalFichierTrouve(QString, QString)), this, SLOT(slotTestImportImage(QString, QString)));
-//    // Cela fonctionne, mais si l'éditeur est appelé et que le thread est fini, on a pas de signal =)
-
-
-//    if(m_threadRechercheImages->isRechercheTerminee())
-//    {
-//        qDebug() << "RECHERCHE TERMINE";
-//        testThread();
-//    }
 
     ui->abuleduMediathequeGet->abeSetSource("data");
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
@@ -96,12 +85,9 @@ Editeur::Editeur(QWidget *parent) :
 
     ui->stackedWidget->setCurrentIndex(0);
     majBarreNavigation(0);
-    remplirArborescence();
 
-    //    ui->listWidgetImagesSelection->installEventFilter(this);
     setAcceptDrops(true);
 
-    //    ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
@@ -117,52 +103,6 @@ Editeur::~Editeur()
     delete ui;
 }
 
-
-void Editeur::remplirArborescence()
-{
-
-    /// Ce qui marche est commenté
-//        QFileSystemModel *model = new QFileSystemModel;
-//        model->setRootPath(QDir::homePath());
-
-
-//        QStringList filters;
-//        QDir dir;
-//        filters << "*.jpg" << "*.bmp"<< "*.png" << "*.svg"; //Choix des extensions
-//        dir.setNameFilters(filters);
-
-//        ui->treeViewArborescence->setModel(model);
-//        model->setNameFilters(filters); //Filtrage des photos
-
-//        connect(ui->treeViewArborescence, SIGNAL(clicked(const QModelIndex&)),this, SLOT(slotResizeColumn(const QModelIndex&)));
-//        //    connect(ui->treeViewArborescence, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotMenuContextuel(const QPoint &)));
-
-//        ui->treeViewArborescence->setHeaderHidden(true);
-//        ui->treeViewArborescence->hideColumn(1);
-//        ui->treeViewArborescence->hideColumn(2);
-//        ui->treeViewArborescence->hideColumn(3);
-
-//        ui->treeViewArborescence->setUniformRowHeights(true); // met toutes les lignes à la meme taille, ce qui permet d'optimiser le temps de réponse (ne recalcule pas la taille de chaque ligne)
-//        ui->treeViewArborescence->setAnimated(true);          // a mettre a false pour les petites configurations (hein JLF !)
-//        ui->treeViewArborescence->setSortingEnabled(true);
-//        ui->listWidgetImagesSelection->setIconSize(QSize(50, 50));
-
-//        creationMenu();
-
-    /// Tentative d'une nouvelle facon
-
-//        ThreadRechercheImage *toto;
-//        toto = new ThreadRechercheImage();
-//        toto->run(ui->listWidgetImagesSelection);
-//        QStringList listeFichiersThread;
-
-//        if (toto->getListeFichiers().count() < 0)
-//        {
-//            qDebug() << "OK pour la liste";
-//        }
-
-}
-
 void Editeur::creationMenu()
 {
     /// COMMUN
@@ -176,15 +116,6 @@ void Editeur::creationMenu()
     a_supprimer->connect(a_supprimer, SIGNAL(triggered()), this, SLOT(slotSupprimerImage()));
     m_menuListWidget->addAction(a_supprimer);
 }
-
-/** Ce slot redimensionne la colonne au contenu de celle-ci
-  * Il est connecté au slot clicked() du treeView -> donc appelé à chaque fois qu'on descend dans l'arborescence
-  */
-//void Editeur::slotResizeColumn(const QModelIndex& index)
-//{
-//    ui->treeViewArborescence->resizeColumnToContents(index.column());
-//    ui->treeViewArborescence->model()->sort(0, Qt::AscendingOrder);
-//}
 
 void Editeur::slotSupprimerImage()// Test OK
 {
@@ -250,22 +181,6 @@ void Editeur::slotImportImageMediatheque(){
 
 bool Editeur::copierImageDansTemp(QFileInfo fi)
 {
-//    if (m_localDebug) // Affichage chemin originale & destination des images
-//    {
-//        qDebug() << "Chemin de l'image a copier      " << cheminOriginal.absoluteFilePath();
-//        qDebug() << "Chemin ou l'image va etre copiee" << dossierDestination + QDir::separator() + cheminOriginal.fileName();
-//    }
-//    if(QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()))
-//    {
-//        if (m_localDebug) qDebug() << "Copie image ok";
-//        return true;
-//    }
-//    else // Si la copie échoue, pas la peine d'aller plus loin
-//    {
-//        if (m_localDebug) qDebug() << "Copie impossible";
-//        return false;
-//    }
-//    return false;
     qDebug()<<fi.absoluteFilePath();
     qDebug()<<" ------------- ";
     qDebug()<<m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName();
@@ -277,7 +192,6 @@ bool Editeur::copierImageDansTemp(QFileInfo fi)
     imageBase.load(fi.absoluteFilePath());
     QPixmap ret = imageBase.scaledToWidth(1024,Qt::SmoothTransformation);
     if(ret.save(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.baseName()+".jpg","JPG"))
-//    if(QFile::copy(fi.absoluteFilePath(), m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName()))
     {
         if (m_localDebug) qDebug() << "Copie image ok";
         return true;
@@ -426,33 +340,16 @@ void Editeur::createAbe()
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
 
-//    if (m_localDebug) qDebug() << m_destinationIdUnique<< " " << parametres.fileName();
     if (m_localDebug) qDebug() << parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath());
 
-//    QString nomtheme = ui->lineEditNomTheme->text();
-//    QDir temp(m_destinationIdUnique); // récupération du chemin du fichier temp
-//    QString m_fileBase = temp.absolutePath();
-
-//    QString destination = m_dirAbe->absolutePath() + QDir::separator() + nomtheme ;
     m_parent->abeGetMyAbulEduFile()->abeFileExportPrepare(parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()), m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath(), "abe");
 
     AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_parent->abeGetMyAbulEduFile(),AbulEduBoxFileManagerV1::abeSave);
     SaveAbuleduFileManager->abeSetFile(m_parent->abeGetMyAbulEduFile());
     SaveAbuleduFileManager->show();
-//mettre au parent le file
 
     if (m_localDebug) qDebug() << "Création abe OK";
 
-    /// Supprimer le dossier temporaire
-//    if(supprimerDir(temp.absolutePath())) qDebug() << "Effacement dossier temp ok";
-//    else qDebug() << "Suppression impossible";
-
-    /// Arrangement graphique
-//    ui->lineEditNomTheme->clear();
-    //    ui->listWidget->clear();
-    //    ui->listWidgetSelection->clear();
-    //    ui->treeWidget->clear();
-//    QMessageBox::information(this, trUtf8("Sauvegarder Thème"), trUtf8("Le theme a été sauvegardé avec succès"));
 }
 
 /** Supprime un répertoire et tout son contenu
@@ -996,40 +893,6 @@ void Editeur::on_btnParcours5_clicked()
     gv_AireParcours->show();
 }
 
-//void Editeur::on_treeViewArborescence_doubleClicked(const QModelIndex &index)
-//{
-//    qDebug() << "DOUBLE CLIC";
-//    QItemSelectionModel *selection = ui->treeViewArborescence->selectionModel();
-//    QModelIndexList listeSelection;
-//    listeSelection = selection->selectedRows(0); // je recupere tous les lignes selectionnées (sans controle dir/file)
-
-//    // Je construis un QFileInfo pour chaque ligne selectionnée afin de déduire si c'est un dossier ou un fichier
-//    for (int i = 0; i < listeSelection.count(); i++)
-//    {
-//        QFileSystemModel *monModel;
-//        monModel = new QFileSystemModel(ui->treeViewArborescence->model()); // je recupere mon modele (je n'arrive pas à le caster...)
-//        QFileInfo monFichier(monModel->filePath(listeSelection.at(i)));
-
-//        if (monFichier.isDir()) // Controle sur la monFichier si fichier -> dans listeImages sinon nothing
-//        {
-//            qDebug() << "c'est un dossier";
-//        }
-//        else if (monFichier.isFile())
-//        {
-//            ajouterImage(monFichier);
-//        }
-//    }
-//    selection->clearSelection(); //nettoyage de la selection
-
-//    /// QDebug de ma liste
-//    qDebug() << "Ma liste d'Images en sortie";
-//    for (int i = 0; i < m_listeFichiersImages.count(); i++)
-//    {
-//        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
-//    }
-//}
-
-
 /// **********************************************************************************************************************************************************
 ///                             GESTION MODE MODIFIER ABE
 /// **********************************************************************************************************************************************************
@@ -1045,8 +908,6 @@ void Editeur::setModeModificationAbe(bool yesNo)
 
 void Editeur::on_btnCreationAbe_clicked()
 {
-    //    remplirArborescence();
-
     m_listeDossiers.clear();
     m_listeFichiersImages.clear();
     m_listeMasquesParcours.clear();
@@ -1083,25 +944,27 @@ void Editeur::slotLoadUnit()
         ajouterImage(fileInfo.absoluteFilePath());
         m_lastOpenDir = fileInfo.absolutePath();
     }
+
     QSettings parametres(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("clic");
+    qDebug() << "Parametres suivant clic : " << parametres.value("timerSuivant",7).toInt();
         ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
-        ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
         ui->spinBoxClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("doubleClic");
         ui->groupBoxDoubleClic->setChecked(parametres.value("exerciceActive",true).toBool());
-        ui->spinBoxDoubleClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxDoubleClicSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
         ui->spinBoxDoubleClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("survol");
         ui->groupBoxSurvol->setChecked(parametres.value("exerciceActive",true).toBool());
-        ui->spinBoxSurvolSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxSurvolSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
         ui->spinBoxSurvolMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("parcours");
         ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
-        ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
         ui->spinBoxParcoursMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
         ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
         ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
@@ -1109,48 +972,10 @@ void Editeur::slotLoadUnit()
     ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
 }
 
-//void Editeur::testThread()
-//{
-//    qDebug() << __PRETTY_FUNCTION__ << " L'editeur vient de voir que la recherche est terminé";
-//    // Recupération de la liste des fichiers listee par le thread
-//    qDebug() << ui->listWidgetImage->item(0)->text();
-//    ui->listWidgetImage->removeItemWidget(ui->listWidgetImage->item(0));
-//    ui->listWidgetImage->item(0)->setText("OK");
-////    QStringList m_fichiersImagesLocales = m_threadRechercheImages->getListeFichiers();
-////    qDebug() << m_fichiersImagesLocales.count();
-
-////    for (int i =0; i < 1000/*m_fichiersImagesLocales.count()*/; i++)
-////    {
-//        //        QListWidgetItem *item = new QListWidgetItem();
-//        //        QIcon icone(m_fichiersImagesLocales.at(i));//pour la mettre  à coté de l'item
-//        //        item->setIcon(icone); // ajout de la petite icone sur l'item
-//        //        item->setText(m_fichiersImagesLocales.at(i));
-//        ////        item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
-//        //        ui->listWidgetImage->insertItem(0, item);
-//        //        ui->listWidgetImage->show();
-////    }
-
-//    //    ui->listWidgetImage->show();
-////    qDebug() << "Item Terminer";
-//    //    QListWidgetItem *item = new QListWidgetItem();
-//    //    QIcon icone(destImage->absolutePath() + QDir::separator() + monFichier.fileName());//pour la mettre  à coté de l'item
-//    //    item->setIcon(icone); // ajout de la petite icone sur l'item
-//    //    item->setText(monFichier.fileName());
-//    //    item->setData(4, destImage->absolutePath() + QDir::separator() + monFichier.fileName());
-//    //    ui->listWidgetImagesSelection->insertItem(0, item);
-
-//    ui->widgetDisqueLocal->setListeFichiers(m_threadRechercheImages->getListeFichiers());
-//}
-
 void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
 {
     qDebug() << "Fichier Recu" << cheminFichier <<" "<< nomFichier;
-
     /// La creation d'item pose probleme
-
-
-
-
 }
 
 
@@ -1221,8 +1046,6 @@ void Editeur::majBarreNavigation(int numPage)
 
 void Editeur::dropEvent(QDropEvent *event)
 {
-
-
     qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
 
     if (event->source()->objectName() == "treeViewArborescence" && ui->listWidgetImagesSelection->geometry().contains(event->pos()))
@@ -1242,47 +1065,13 @@ void Editeur::dropEvent(QDropEvent *event)
         event->setDropAction(Qt::MoveAction);
         event->accept();
     }
-
 }
 
 void Editeur::dragEnterEvent(QDragEnterEvent *event)
 {
     qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
     event->accept();
-
-    //    if (event->mimeData()->hasImage())
-    //        event->acceptProposedAction();
-
-    //    if (obj->objectName() == ui->listWidgetImagesSelection->objectName())
-    //    {
-    //        qDebug() << "OK";
-    //    }
 }
-
-//bool Editeur::eventFilter(QObject *obj, QEvent *ev)
-//{
-//    //    qDebug() << "** " << ev->type();
-
-//    QDragEnterEvent *event = static_cast<QDragEnterEvent*>(ev);
-//    if(event->type() == QEvent::Drop /*&& obj == ui->listWidgetImagesSelection*/) {
-//        qDebug() << "======ENTER ======================";
-//        qDebug() << obj->objectName();
-//        qDebug() << "============================";
-//        //        event->accept();
-
-//    }
-//    if(ev->type() == QEvent::DragLeave && obj == ui->listWidgetImagesSelection) {
-//        qDebug() << "============DROP ================";
-//        qDebug() << obj->objectName();
-//        qDebug() << "============================";
-//        QDropEvent *event = static_cast<QDropEvent*>(ev);
-//        event->acceptProposedAction();
-//    }
-//    if(ev->type() == MouseEvent::MouseButtonRelease)
-//    {
-//        qDebug() << "QMouseEvent::Release";
-//    }
-//}
 
 void Editeur::on_btnAjouterImageQFileDialog_clicked()
 {
