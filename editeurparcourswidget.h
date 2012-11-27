@@ -15,17 +15,45 @@ class EditeurParcoursWidget : public QWidget
     Q_OBJECT
     
 public:
+    /** Constructeur de la classe EditeurParcoursWidget */
     explicit EditeurParcoursWidget(QWidget *parent = 0);
+
+    /** Destructeur de la classe EditeurParcoursWidget */
     ~EditeurParcoursWidget();
     
+    /** Retourne la QGraphicsScene contenue dans la QGraphicsView
+      * @return QGraphicsScene *, un pointeur sur la scene
+      */
     QGraphicsScene *getScene();
+
+    /** Retourne la QGraphicsView
+      * @return QGraphicsView *, un pointeur sur la vue
+      */
     QGraphicsView *getGraphicsView();
+
+    /** Retourne le bouton sauvegarder
+      * @return QPushButton *, un pointeur sur le bouton sauvegarder
+      */
     QPushButton *getBtnSave();
+
+    /** Retourne le bouton réinitialiser
+      * @return QPushButton *, un pointeur sur le bouton réinitialiser
+      */
     QPushButton *getBtnReset();
 
+    /** Retourne la hauteur d'un bouton (sauvegarder ou quitter)
+      * @return int, la hauteur du bouton
+      */
     int getBoutonHeight();
+
+    /** Retourne la largeur d'un bouton (sauvegarder ou quitter)
+      * @return int, la largeur du bouton
+      */
     int getBoutonWidth();
 
+    /** Permet d'activer/desactiver le bouton sauvegarder
+      * @param bool enable, true = bouton activé, false = bouton desactiver
+      */
     void connectBtnSave(bool enable);
 
 private:
@@ -35,13 +63,20 @@ private:
     bool m_localDebug;
 
 private slots:
+    /** Méthode appelée lors de fermeture de la fenetre
+      * @param QCloseEvent *event, un pointeur sur l'évènement fermeture
+      */
     void closeEvent(QCloseEvent *event);
 
+    /** Méthode appelée lors d'un click sur le bouton réinitialiser
+      */
     void on_btnReset_clicked();
 
 signals:
+    /** Signal émis lors de la fermeture de la fenetre
+      * @param QCloseEvent *event, un pointeur sur l'évènement fermeture
+      */
     void signalCloseEvent(QCloseEvent *event);
-
 };
 
 #endif // EDITEURPARCOURSWIDGET_H
