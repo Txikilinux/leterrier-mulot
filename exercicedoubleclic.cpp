@@ -108,8 +108,6 @@ ExerciceDoubleClic::~ExerciceDoubleClic()
     emit exerciceExited(); // Permet à la MainWindow de savoir que l'exercice est terminé
 }
 
-/** Charge les options contenues dans le fichier de configuration (parametres.ini)
-  */
 void ExerciceDoubleClic::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceDoubleClic::chargerOption()";
@@ -154,8 +152,6 @@ void ExerciceDoubleClic::slotSequenceEntered() // en cours
     }
 }
 
-/** Affichage de la consigne
-  */
 void ExerciceDoubleClic::slotPresenteSequenceEntered() //todo
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceDoubleClic::slotPresenteSequenceEntered()";
@@ -186,11 +182,6 @@ void ExerciceDoubleClic::slotPresenteSequenceEntered() //todo
     QTimer::singleShot(8000,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
 }
 
-/** Mettre tout ce qui est commun à chaque question
-  * Aller chercher le pack image
-  * Choisir 5 images au hasard dans le pack
-  * Condition de garde .abe
-  */
 void ExerciceDoubleClic::slotRealisationExerciceEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceDoubleClic::slotRealisationExerciceEntered()";
@@ -259,9 +250,6 @@ void ExerciceDoubleClic::slotRealisationExerciceEntered()
     }
 }
 
-/** Affichage de l'image
-  * Calcul et mise en place des masques
-  */
 void ExerciceDoubleClic::slotInitQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceDoubleClic::slotInitQuestionEntered()";
@@ -303,7 +291,7 @@ void ExerciceDoubleClic::slotInitQuestionEntered()
         qreal xMasque = 0.00;
         qreal yMasque = 0.00;
 
-        qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
+        if(m_localDebug) qDebug()<<" -------------------------- Début boucle d'affichage : " << nbMasques;
 
         for (float i=0; i<nbMasquesHauteur;i++)
         {
@@ -326,9 +314,6 @@ void ExerciceDoubleClic::slotInitQuestionEntered()
     }
 }
 
-/** Choix aléatoire du positionnement des masques interactifs
-  * Connexion du slot cacheMasque sur chaque masque interactif
-  */
 void ExerciceDoubleClic::slotQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceDoubleClic::slotQuestionEntered()";
@@ -360,9 +345,6 @@ void ExerciceDoubleClic::slotQuestionEntered()
     m_exerciceEnCours = true;
 }
 
-/**
-  * Appeler pour appuyer automatiquement sur le bouton suivant
-  */
 void ExerciceDoubleClic::slotAfficheVerificationQuestionEntered()
 {
     if (m_localDebug) qDebug()<< "##########################  ExerciceDoubleClic::slotAfficheVerificationQuestionEntered()";
@@ -395,7 +377,6 @@ void ExerciceDoubleClic::slotFinVerificationQuestionEntered()
 
 }
 
-// Ce slot est pour la derniere question !
 void ExerciceDoubleClic::slotFinQuestionEntered()
 {
     if (m_localDebug)qDebug()<< "##########################  ExerciceDoubleClic::slotFinQuestionEntered()";
@@ -463,7 +444,7 @@ void ExerciceDoubleClic::slotBilanExerciceEntered() // todo boucle pour les têt
     redimensionnerConsigne();
 }
 
-void ExerciceDoubleClic::slotQuitter() // ok
+void ExerciceDoubleClic::slotQuitter()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceDoubleClic::slotQuitter";
 
@@ -505,8 +486,6 @@ void ExerciceDoubleClic::setDimensionsWidgets()
 //------------------------------------------------------------------
 //                 Méthodes propres à la classe
 //------------------------------------------------------------------
-/** Redimensionne la consigne
-  */
 void ExerciceDoubleClic::redimensionnerConsigne()
 {
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
@@ -514,9 +493,6 @@ void ExerciceDoubleClic::redimensionnerConsigne()
                                     ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
 }
 
-/** Redimensionne l'image par rapport à sa largeur ou sa hauteur.
-  * Obsolète mais conserver au cas ou !
-  */
 void ExerciceDoubleClic::redimensionnerImage()
 {
     if (m_localDebug) qDebug()<< m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
@@ -548,13 +524,10 @@ void ExerciceDoubleClic::redimensionnerImage()
     }
 }
 
-/** Redimensionne l'image (2e méthode)
-  */
 void ExerciceDoubleClic::redimensionnerImage2()
 {
     m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     gv_AireDeJeu->setFixedSize(m_itemImage->boundingRect().size().toSize());
-    /** @todo positionner l'aire de jeu au centre */
     float ratio = abeApp->getAbeApplicationDecorRatio();
     gv_AireDeJeu->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()
                         -gv_AireDeJeu->width())/2 + 40 * ratio,
@@ -562,11 +535,6 @@ void ExerciceDoubleClic::redimensionnerImage2()
                         - 60 * ratio -gv_AireDeJeu->height())/2 + 32 * ratio);
 }
 
-/** A chaque passsage sur un masque interactif, on décremente le nombre de masques interactifs.
-  * Dès que les masques interactifs sont tous cliqués, on affiche l'image.
-  * On affiche la tête dans la boiteTete.
-  * On vide m_listeMasquesFixes
-  */
 void ExerciceDoubleClic::slotCacheMasque()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceDoubleClic::slotCacheMasque : " << m_nbMasquesInteractifs;
@@ -620,30 +588,18 @@ void ExerciceDoubleClic::slotCacheMasque()
     }
 }
 
-/** Cette méthode emet le signal appuiSuivant
-  * Permet donc d'activer (de simuler) l'appui sur le bouton suivant de la telecommande
-  */
 void ExerciceDoubleClic::slotAppuiAutoSuivant()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceDoubleClic::slotAppuiAutoSuivant()";
     emit appuiSuivant();
 }
 
-/** Cette méthode emet le signal appuiVerifier
-  * Permet donc d'activer (de simuler) l'appui sur le bouton verifier de la telecommande
-  */
 void ExerciceDoubleClic::slotAppuiAutoVerifier()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceDoubleClic::slotAppuiAutoVerifier()";
     emit appuiVerifier();
 }
 
-/** Cette méthode retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
-  * Elle sert au calcul de la taille des masques.
-  * exemple: pour 11 masques, les divisions possibles sont 2*6 ou 3*4.
-  * le QPair retourné sera 3*4, ce qui nous donne 12.
-  * Donc à la première question, l'image sera divisé par 12 petits masques de taille identique (4 dans la largeur et 3 dans la hauteur)
-  */
 QPair<int, int> ExerciceDoubleClic::plusPetiteDivision(int monChiffre)
 {
     QList<QPair<int,int> > listeResultat;
@@ -690,10 +646,6 @@ QPair<int, int> ExerciceDoubleClic::plusPetiteDivision(int monChiffre)
     return paire;
 }
 
-/** Event Filter pour la pause.
-  * Capture l'appui sur la barre espace lorsque le booléen "onPeutMettreEnPause" est à "true".
-  * C'est le cas lorsque tous les masques sont découvert.
-  */
 bool ExerciceDoubleClic::eventFilter(QObject *obj, QEvent *event)
 {
     obj = this;
@@ -712,7 +664,7 @@ bool ExerciceDoubleClic::eventFilter(QObject *obj, QEvent *event)
             if (m_timer->isActive())
             {
                 m_timer->stop();
-                qDebug() << "Le timer est actif est vient d'etre stoppé";
+                if (m_localDebug) qDebug() << "Le timer est actif est vient d'etre stoppé";
 
                 boiteTetes->setVisible(false);
                 m_labelImagePause->show();
@@ -730,13 +682,13 @@ bool ExerciceDoubleClic::eventFilter(QObject *obj, QEvent *event)
             else
             {
                 m_timer->start();
-                qDebug() << "Le timer repart   ";
+                if (m_localDebug) qDebug() << "Le timer repart   ";
                 m_labelImagePause->setVisible(false);
                 m_labelTextePause->setVisible(false);
                 boiteTetes->setVisible(true);
             }
 
-            qDebug() << "Pause !";
+            if (m_localDebug) qDebug() << "Pause !";
         }
     }
     return false;
