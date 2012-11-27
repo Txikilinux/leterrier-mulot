@@ -333,7 +333,7 @@ void Editeur::createAbe()
         parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
         if(!m_parametresParcours1.isEmpty())
         {
-            parametres.setValue("nbMasquesChoisis1", (ui->spinBoxParcoursMasque_1->value()));
+//            parametres.setValue("parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque_1->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours1);
             while (i.hasNext()) {
                 i.next();
@@ -342,7 +342,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours2.isEmpty())
         {
-            parametres.setValue("nbMasquesChoisis2", (ui->spinBoxParcoursMasque_2->value()));
+//            parametres.setValue("parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque_2->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours2);
             while (i.hasNext()) {
                 i.next();
@@ -351,7 +351,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours3.isEmpty())
         {
-            parametres.setValue("nbMasquesChoisis3", (ui->spinBoxParcoursMasque_3->value()));
+//            parametres.setValue("parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque_3->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours3);
             while (i.hasNext()) {
                 i.next();
@@ -360,7 +360,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours4.isEmpty())
         {
-            parametres.setValue("nbMasquesChoisis4", (ui->spinBoxParcoursMasque_4->value()));
+//            parametres.setValue("parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque_4->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours4);
             while (i.hasNext()) {
                 i.next();
@@ -369,7 +369,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours5.isEmpty())
         {
-            parametres.setValue("nbMasquesChoisis5", (ui->spinBoxParcoursMasque_5->value()));
+//            parametres.setValue("parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque_5->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours5);
             while (i.hasNext()) {
                 i.next();
@@ -1116,11 +1116,11 @@ void Editeur::slotLoadUnit()
     parametres.beginGroup("parcours");
     ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
-    ui->spinBoxParcoursMasque_1->setValue(parametres.value("nbMasquesChoisis1",7).toInt());
-    ui->spinBoxParcoursMasque_2->setValue(parametres.value("nbMasquesChoisis2",7).toInt());
-    ui->spinBoxParcoursMasque_3->setValue(parametres.value("nbMasquesChoisis3",7).toInt());
-    ui->spinBoxParcoursMasque_4->setValue(parametres.value("nbMasquesChoisis4",7).toInt());
-    ui->spinBoxParcoursMasque_5->setValue(parametres.value("nbMasquesChoisis5",7).toInt());
+    ui->spinBoxParcoursMasque_1->setValue(parametres.value("parcours1/nbMasquesChoisis",7).toInt());
+    ui->spinBoxParcoursMasque_2->setValue(parametres.value("parcours2/nbMasquesChoisis",7).toInt());
+    ui->spinBoxParcoursMasque_3->setValue(parametres.value("parcours3/nbMasquesChoisis",7).toInt());
+    ui->spinBoxParcoursMasque_4->setValue(parametres.value("parcours4/nbMasquesChoisis",7).toInt());
+    ui->spinBoxParcoursMasque_5->setValue(parametres.value("parcours5/nbMasquesChoisis",7).toInt());
     ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
     ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
     parametres.endGroup();

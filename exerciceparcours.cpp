@@ -122,10 +122,9 @@ void ExerciceParcours::chargerOption()
         messageBox->show();
         slotQuitterAccueil();
     }
-        opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
-        opt_nbMasquesLargeur = parametres.value("nbMasquesLargeur", 10).toInt();
-        opt_nbMasquesHauteur = parametres.value("nbMasquesHauteur", 5).toInt();
-        opt_nbMasquesChoisis = parametres.value("nbMasquesChoisis", 7).toInt();
+    opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
+    opt_nbMasquesLargeur = parametres.value("nbMasquesLargeur", 10).toInt();
+    opt_nbMasquesHauteur = parametres.value("nbMasquesHauteur", 5).toInt();
 }
 
 void ExerciceParcours::chargerPositionMasque(int numeroQuestion)
@@ -134,10 +133,15 @@ void ExerciceParcours::chargerPositionMasque(int numeroQuestion)
     QSettings parametres(cheminConf, QSettings::IniFormat);
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroQuestion));
+    opt_nbMasquesChoisis = parametres.childKeys().count();
     for (int i =0 ; i < parametres.childKeys().count(); i++)
     {
-        positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
+        qDebug() << parametres.childKeys().at(i);
+
+            positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
+
     }
+    qDebug() << positionMasquesParcours;
 }
 
 void ExerciceParcours::slotSequenceEntered() // en cours
@@ -176,11 +180,11 @@ void ExerciceParcours::slotPresenteSequenceEntered() //todo
     QString debutTableau = "<tr>";
     QString imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
     QString consigne = "<td> " + trUtf8("Suis le parcours.")+" <br />"
-                                + trUtf8("Clique sur le rectangle vert pour commencer.") +" <br />"
-                                + trUtf8("Survole les rectangles noirs.") +" <br />"
-                                + trUtf8("Clique sur le rectangle rouge pour terminer.") +" <br />"
-                                +trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.")
-                    +" </td>" ;
+            + trUtf8("Clique sur le rectangle vert pour commencer.") +" <br />"
+            + trUtf8("Survole les rectangles noirs.") +" <br />"
+            + trUtf8("Clique sur le rectangle rouge pour terminer.") +" <br />"
+            +trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.")
+            +" </td>" ;
     QString finTableau = "</tr>";
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
@@ -519,7 +523,7 @@ void ExerciceParcours::redimensionnerImage2()
 {
     m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     gv_AireDeJeu->setFixedSize(m_itemImage->boundingRect().size().toSize());
-   // positionner l'aire de jeu au centre */
+    // positionner l'aire de jeu au centre */
     float ratio = abeApp->getAbeApplicationDecorRatio();
     gv_AireDeJeu->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()
                         -gv_AireDeJeu->width())/2 + 40 * ratio,
