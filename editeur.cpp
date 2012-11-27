@@ -748,8 +748,6 @@ void Editeur::reinitialiserGvParcours()
     gv_AireParcours->update();
 }
 
-/** Sauvegarde le parcours (à l'appui sur le menu contextuel Sauvegarde)
-  */
 void Editeur::sauvegarderParcours()
 {
     if(m_localDebug)
@@ -840,7 +838,6 @@ QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
     int nbTotal = largeur * hauteur;
 
     int gauche, droite, bas, haut = 0;
-//    gauche = droite = bas = haut = 0;
 
     // calcul des différentes directions possibles
     gauche = numeroMasque - 1;
@@ -1128,14 +1125,6 @@ void Editeur::slotLoadUnit()
     ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
 }
 
-//void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
-//{
-//    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-//    qDebug() << "Fichier Recu" << cheminFichier <<" "<< nomFichier;
-//    /// La creation d'item pose probleme
-//}
-
 void Editeur::chargerPositionMasque(int numeroParcours)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -1166,7 +1155,6 @@ void Editeur::on_btnSuivant_clicked()
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
-        /// Aller chercher les images et les enregistrer dans le fichier temporaire
         // Condition de garde = m_listeFichiersImages < 5
         if ( m_listeFichiersImages.count() < 5)
         {

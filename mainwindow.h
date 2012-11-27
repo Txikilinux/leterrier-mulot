@@ -51,20 +51,50 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    /** Constructeur de la classe MainWindow
+      * @param QWidget *parent = 0, le parent de cet objet, initialisé par défaut à 0 (aucun)
+      */
     explicit MainWindow(QWidget *parent = 0);
-    void resizeEvent(QResizeEvent *);
-    void abeSetMyAbulEduFile(AbulEduFileV1* abeFile);
-    AbulEduFileV1* abeGetMyAbulEduFile();
+
+    /** Destructeur de la classe MainWindow */
     ~MainWindow();
 
+    /** Méthode appelée à chaque redimensionnement de l'objet MainWindow
+      * @param QResizeEvent *, un pointeur sur l'évènement de redimensionnement
+      */
+    void resizeEvent(QResizeEvent *);
+
+    /** Méthode qui définit l'abe courant
+      * @param AbulEduFileV1* abeFile, l'objet abulEduFile
+      */
+    void abeSetMyAbulEduFile(AbulEduFileV1* abeFile);
+
+    /** Méthode qui retourne l'abe courant
+      * @return AbulEduFileV1 *, un pointeur sur l'objet abuledufile
+      */
+    AbulEduFileV1* abeGetMyAbulEduFile();
+
 public slots:
+    /** Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif */
     void slotDemo();
+
+    /** Permet de desactiver l'affichage des zones et des bulles
+      * @brief Permet de cacher les zones et les bulles après l'affichage par le slotDemo()
+      */
     void slotFinDemo();
+
+    /** Méthode qui gère l'authentification de la session
+      * @param bool enable, true si authentifié, false sino,
+      */
     void slotSessionAuthenticated(bool enable);
 
 private slots:
-    /** Slot qui gère l'action de survol avec la souris */
+    /** Méthode qui gère l'action de survol avec la souris */
     void on_action_Survol_triggered();
+
+    /** Méthode qui gère le titre de la fenetre
+      * @param int authStatus, permet si l'authentification est ok, d'afficher le login dans le titre de la fenetre
+      */
     void setTitle(int authStatus);
 
 private:
@@ -84,31 +114,63 @@ private:
     int m_numberExoCalled;
     void abeAiguillage();
 
-//    void rechercheImagesSurPC(QString dossierDepart);
-
     QTranslator qtTranslator;
     QTranslator myappTranslator;
 
+    /** Méthode qui créée le menu des langues
+      * @brief Francais et Anglais pour l'instant
+      */
     void creeMenuLangue();
 
 protected:
+    /** Méthode qui gère les changement d'évènement
+      * @param QEvent *e, un pointeur sur l'évènement
+      * @brief ne sert pour l'instant qu'à la translation languistique du programme
+      */
     virtual void changeEvent(QEvent *e);
 
 private slots:
+    /** Méthode qui gère le changement des langues */
     void slotChangeLangue();
+
+    /** Méthode qui lance les exercices en fonction du numéro
+      * @param int numero, le numero de l'exercice
+      */
     void abeLanceExo(int numero);
+
+    /** Méthode qui gère le déroulement de fin d'un exercice */
     void exerciceExited();
 
+    /** Méthode appelée lors de l'appui sur le menu Editeur */
     void on_actionEditeur_triggered();
+
+    /** Méthode appelée lors de l'appui sur le menu Exercice, Parcours */
     void on_action_Parcours_triggered();
+
+    /** Méthode appelée lors de l'appui sur le menu Exercice, Clic */
     void on_actionClic_triggered();
+
+    /** Méthode appelée lors de l'appui sur le menu Exercice, Double-Clic */
     void on_action_Double_Clic_triggered();
+
+    /** Méthode appelée lors de l'appui sur le menu Ouvrir un Exercice */
     void on_actionOuvrir_un_exercice_triggered();
 
+    /** Méthode appelée lors de l'appui sur le menu Box */
     void btnBoxClicked();
+
+    /** Méthode appelée lors du choix d'un abe @see AbulEduBoxFileManagerV1 */
     void slotOpenFile();
+
+    /** Méthode qui gère le mode démo
+      * @param bool checked, true mode demo, false mode normal
+      */
     void on_actionMode_D_mo_triggered(bool checked);
+
+    /** Méthode appelée lors de l'appui sur le menu Journal */
     void on_action_Journal_de_mes_activit_s_triggered();
+
+    /** Méthode appelée lors de l'appui sur le menu Changer Utilisateur */
     void on_action_Changer_d_utilisateur_triggered();
 };
 

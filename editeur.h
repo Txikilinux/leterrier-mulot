@@ -87,7 +87,7 @@ private slots:
     /** Réinitialise l'editeur de parcours */
     void reinitialiserGvParcours();
 
-    /** Sauvegarde le parcours conçu avec l'éditeir de parcours */
+    /** Sauvegarde le parcours conçu avec l'éditeur de parcours */
     void sauvegarderParcours();
 
     /** Gère la pose des masques dans l'éditeur de parcours */
@@ -136,8 +136,6 @@ private slots:
 
     /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();
-
-//    void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant du parcours du disque dur */
     void on_btnAjouterImageQFileDialog_clicked();

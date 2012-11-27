@@ -22,6 +22,7 @@
 #include "mainwindow.h"
 #include "editeur.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -119,9 +120,6 @@ void MainWindow::slotOpenFile()
     abeAiguillage();
 }
 
-/**
-  * Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif
-  */
 void MainWindow::slotDemo()
 {
     if (!m_isDemoAvailable){
@@ -148,9 +146,6 @@ void MainWindow::on_actionMode_D_mo_triggered(bool checked)
         slotDemo();
 }
 
-/**
-  * Permet de cacher les zones et les bulles après l'affichage par le slotDemo()
-  */
 void MainWindow::slotFinDemo()
 {
     m_abuleduaccueil->abePageAccueilMontreBulles(false);
@@ -158,7 +153,6 @@ void MainWindow::slotFinDemo()
     {
         zone->abeZoneDrawRect(false);
     }
-
 }
 
 void MainWindow::btnBoxClicked()
@@ -336,7 +330,6 @@ void MainWindow::on_actionEditeur_triggered()
     }
 }
 
-
 void MainWindow::creeMenuLangue()
 {
     QAction* actionLangueEn = new QAction(trUtf8("English"),this);
@@ -373,8 +366,7 @@ void MainWindow::slotSessionAuthenticated(bool enable)
     ef = new activityFilter(abeApp);
     ef->setInterval(7000);
     abeApp->installEventFilter(ef);
-    QObject::connect(ef, SIGNAL( userInactive() ),
-                     this,  SLOT( slotDemo() ));
+    QObject::connect(ef, SIGNAL(userInactive()), this, SLOT(slotDemo()));
     connect(abeApp->getAbeNetworkAccessManager(), SIGNAL(ssoAuthStatus(int)), this,SLOT(setTitle(int)));
 }
 
