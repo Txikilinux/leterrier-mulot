@@ -44,6 +44,7 @@
 #include "abuleduboxfilemanagerv1.h"
 #include "ui_editeur.h"
 #include "mainwindow.h"
+#include "editeurparcourswidget.h"
 
 namespace Ui {
 class Editeur;
@@ -172,7 +173,7 @@ private:
     masqueDeplaceSouris *m_masque;
     QList<masqueDeplaceSouris *> m_listeMasques;
     QList<masqueDeplaceSouris *> m_listeMasquesParcours;
-    AbulEduEtiquettesV1 *gv_AireParcours;
+    EditeurParcoursWidget *gv_AireParcours;
     void remplirGvParcours(int numeroParcours);
     bool controleVoisinMasque(masqueDeplaceSouris *masque);
 

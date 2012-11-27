@@ -504,13 +504,20 @@ void Editeur::remplirGvParcours(int numeroParcours)
             xMasque+=largeurMasque;
 
             m_masque->setMenuSauvegarderEnabled(false);
-            gv_AireParcours->scene()->addItem(m_masque);
+
+            gv_AireParcours->getScene()->addItem(m_masque);
+
             m_listeMasques << m_masque;
             numeroMasque++;
         }
         xMasque = 0;
         yMasque += hauteurMasque;
     }
+
+    /// Gestion de la taille de la Scene
+    gv_AireParcours->setGeometry((gv_AireParcours->x()), (gv_AireParcours->y()),
+                                (largeurMasque * m_opt_nbMasquesLargeur) + gv_AireParcours->getGraphicsView()->verticalScrollBar()->width(),
+                                 (hauteurMasque * m_opt_nbMasquesHauteur) + gv_AireParcours->getGraphicsView()->horizontalScrollBar()->height() + (gv_AireParcours->getBoutonHeight()) *2);
 
     /// Parcours de la QMap positionMasqueParcours
     int positionDepart  = 0;
@@ -535,12 +542,13 @@ void Editeur::remplirGvParcours(int numeroParcours)
         qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
         qDebug() << "Position Parcours               : " << positionParcours;
     }
-    /// Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
 
+    /// ****************************************************
+    /// MODE MODIFICATION
+    /// Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
     //depart
     m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
     m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
-//    m_listeMasques.at(positionDepart)->update();
     m_listeMasquesParcours << m_listeMasques.at(positionDepart);
 
     // parcours
@@ -548,7 +556,6 @@ void Editeur::remplirGvParcours(int numeroParcours)
     {
         m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
         m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
-//        m_listeMasques.at(positionParcours.first())->update();
         m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
         positionParcours.removeFirst();
     }
@@ -556,7 +563,6 @@ void Editeur::remplirGvParcours(int numeroParcours)
     //arrivee
     m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
     m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
-//    m_listeMasques.at(positionArrivee)->update();
     m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
 
     // Et j'active le menu Sauvegarder
@@ -565,7 +571,6 @@ void Editeur::remplirGvParcours(int numeroParcours)
         var_masque->setMenuSauvegarderEnabled(true);
         var_masque->update();
     }
-
 }
 
 void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
@@ -876,7 +881,7 @@ void Editeur::on_btnParcours1_clicked()
         return;
     }
 
-    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
@@ -905,7 +910,7 @@ void Editeur::on_btnParcours2_clicked()
         return;
     }
 
-    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 2"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
@@ -934,7 +939,7 @@ void Editeur::on_btnParcours3_clicked()
         return;
     }
 
-    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 3"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
@@ -963,7 +968,7 @@ void Editeur::on_btnParcours4_clicked()
         return;
     }
 
-    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 4"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
@@ -992,7 +997,7 @@ void Editeur::on_btnParcours5_clicked()
         return;
     }
 
-    gv_AireParcours = new AbulEduEtiquettesV1(QPoint(0,0));
+    gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 5"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
