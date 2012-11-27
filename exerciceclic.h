@@ -34,14 +34,19 @@ class ExerciceClic : public AbulEduCommonStatesV1
     Q_OBJECT
 
 public:
+    /** Constructeur de la classe ExerciceClic
+      * @param QWidget *parent = 0, le parent de cet objet, instancié par défaut à 0 (aucun objet)
+      * @param QString theme = "" , le chemin vers le thème utilisé (abe), instancié à vide ("")
+      */
     ExerciceClic(QWidget *parent = 0, QString theme ="");
+
+    /** Destructeur de la classe ExerciceClic */
     ~ExerciceClic();
 
 private:
-
-    AbulEduEtiquettesV1 *gv_AireDeJeu;  //mon AbulEduEtiquettes afin d'avoir une graphicView et tt ce qui va avec
-    QGraphicsProxyWidget *proxy;        // Pour stocker AbulEduLabelWidget
-    QWidget *m_parent;
+    AbulEduEtiquettesV1     *gv_AireDeJeu;
+    QGraphicsProxyWidget    *proxy;
+    QWidget                 *m_parent;
     bool m_localDebug;
     bool m_exerciceEnCours;
 
@@ -60,7 +65,7 @@ private:
     int m_nbMasquesInteractifs;         // = à 7
     QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
 
-    QPair<int, int> plusPetiteDivision(int monChiffre); // Pour le choix du découpage de l'image par rapport au nb de masques interactifs choisis
+
     float nbMasquesLargeur;
     float nbMasquesHauteur;
 
@@ -83,43 +88,113 @@ private:
     QLabel *m_labelImagePause;
     QLabel *m_labelTextePause;
 
+    /** Méthode qui retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
+      * @param int monChiffre, le chiffre à calculer
+      * @return QPair<int, int>, la plus petite division d'entiers dont le resultat est supérieur à monChiffre
+      * @brief Elle sert au calcul de la taille des masques.
+      * @example Pour 11 masques, les divisions possibles sont 2*6 ou 3*4.
+      *          le QPair retourné sera 3*4, ce qui nous donne 12.
+      *          Donc à la première question, l'image sera divisé par 12 petits masques de taille identique (4 dans la largeur et 3 dans la hauteur)
+      */
+    QPair<int, int> plusPetiteDivision(int monChiffre);
+
+    /** Redimensionne la consigne */
     void redimensionnerConsigne();
-    void redimensionnerImage(); // obsolete mais conserver, on ne sait jamais
+
+    /** Redimensionne l'image par rapport à sa largeur ou sa hauteur.
+      * @obsolete mais conserver au cas où
+      */
+    void redimensionnerImage();
+
+    /** Redimensionne l'image (2e méthode) */
     void redimensionnerImage2();
+
+    /** Charge les options contenues dans le fichier de configuration (parametres.ini) */
     void chargerOption();
+
+    /** Méthode qui filtre les évènement
+      * @param QObject *obj, un pointeur sur l'objet auteur de l'évènement
+      * @param QEvent *ev  , un pointeur sur l'évènement filtré
+      * @brief Capture l'appui sur la barre espace lorsque le booléen "onPeutMettreEnPause" est à "true".
+      *        C'est le cas lorsque tous les masques sont découvert.
+      */
     bool eventFilter(QObject *obj, QEvent *ev);
 
     // jlf 2012/09/29
 
-    // DImensions de l'aire de jeu
+    // Dimensions de l'aire de jeu
     QSize m_tailleAireDejeu;
 
 private slots:
+    /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotSequenceEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @brief Affichage de la consigne
+      */
     void slotPresenteSequenceEntered();
-    //    void slotPresentationExerciceEntered()
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @brief Mettre tout ce qui est commun à chaque question
+      *        Aller chercher le pack image
+      *        Choisir 5 images au hasard dans le pack
+      *        Condition de garde .abe
+      */
     void slotRealisationExerciceEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @brief Affichage de l'image
+      *        Calcul et mise en place des masques
+      */
     void slotInitQuestionEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @brief Choix aléatoire du positionnement des masques interactifs
+      *        Connexion du slot cacheMasque sur chaque masque interactif
+      */
     void slotQuestionEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotFinQuestionEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotFinVerificationQuestionEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @brief Appeler pour appuyer automatiquement sur le bouton suivant
+      */
     void slotAfficheVerificationQuestionEntered();
-    //    void slotVerificationQuestionEntered();
-    //    void slotQuestionExited();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @todo mettre en place une boucle pour l'affichage des tetes en fonct° des résultats
+      */
     void slotBilanExerciceEntered();
-    //    void slotBilanSequenceEntered();
-    //    void slotBilanSequenceExited();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotQuitter();
 
+    /** Méthode qui redimmensionne tous les éléments graphiques les uns par rapport aux autres */
     void setDimensionsWidgets();
 
-    // ExerciceSurvol
+    /** Méthode appelée à chaque interaction avec un masque interactif
+      * @brief A chaque passage sur un masque interactif, on décremente le nombre de masques interactifs.
+      *        Dès que les masques interactifs sont tous cliqués, on affiche l'image.
+      *        On affiche la tête dans la boiteTete.
+      *        On vide m_listeMasquesFixes
+      */
     void slotCacheMasque();
+
+    /** Méthode qui emet le signal appuiSuivant
+      * @brief Permet donc d'activer (de simuler) l'appui sur le bouton suivant de la telecommande
+      */
     void slotAppuiAutoSuivant();
+
+    /** Cette méthode emet le signal appuiVerifier
+      * @brief Permet donc d'activer (de simuler) l'appui sur le bouton verifier de la telecommande
+      */
     void slotAppuiAutoVerifier();
 
 signals:
-    // Ce slot sert à abeLanceExo -> il redefinit exerciceEnCourt à false..etc
     void exerciceExited();
     void appuiSuivant();
     void appuiVerifier();
