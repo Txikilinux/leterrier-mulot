@@ -108,8 +108,6 @@ ExerciceParcours::~ExerciceParcours()
     emit exerciceExited(); // Permet à la MainWindow de savoir que l'exercice est terminé
 }
 
-/** Charge les options contenues dans le fichier de configuration (parametres.ini)
-  */
 void ExerciceParcours::chargerOption()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceParcours::chargerOption()";
@@ -136,12 +134,8 @@ void ExerciceParcours::chargerPositionMasque(int numeroQuestion)
     opt_nbMasquesChoisis = parametres.childKeys().count();
     for (int i =0 ; i < parametres.childKeys().count(); i++)
     {
-        qDebug() << parametres.childKeys().at(i);
-
-            positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
-
+        positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
     }
-    qDebug() << positionMasquesParcours;
 }
 
 void ExerciceParcours::slotSequenceEntered() // en cours
@@ -165,8 +159,6 @@ void ExerciceParcours::slotSequenceEntered() // en cours
     }
 }
 
-/** Affichage de la consigne
-  */
 void ExerciceParcours::slotPresenteSequenceEntered() //todo
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceParcours::slotPresenteSequenceEntered()";
@@ -201,11 +193,6 @@ void ExerciceParcours::slotPresenteSequenceEntered() //todo
     QTimer::singleShot(10000,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
 }
 
-/** Mettre tout ce qui est commun à chaque question
-  * Aller chercher le pack image
-  * Choisir 5 images au hasard dans le pack
-  * Condition de garde .abe
-  */
 void ExerciceParcours::slotRealisationExerciceEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceParcours::slotRealisationExerciceEntered()";
@@ -262,9 +249,6 @@ void ExerciceParcours::slotRealisationExerciceEntered()
     }
 }
 
-/** Affichage de l'image
-  * Calcul et mise en place des masques
-  */
 void ExerciceParcours::slotInitQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceParcours::slotInitQuestionEntered()";
@@ -306,7 +290,7 @@ void ExerciceParcours::slotInitQuestionEntered()
         qreal xMasque = 0.00;
         qreal yMasque = 0.00;
 
-        qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
+        if (m_localDebug) qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
 
         int numeroMasque = 0;
         for (float i=0; i<opt_nbMasquesHauteur;i++)
@@ -330,9 +314,6 @@ void ExerciceParcours::slotInitQuestionEntered()
     }
 }
 
-/** Choix aléatoire du positionnement des masques interactifs
-  * Connexion du slot cacheMasque sur chaque masque interactif
-  */
 void ExerciceParcours::slotQuestionEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceParcours::slotQuestionEntered()";
@@ -345,12 +326,12 @@ void ExerciceParcours::slotQuestionEntered()
 
     if (!m_exerciceEnCours)
     {
-        qDebug() << m_numQuestion;
+        if (m_localDebug) qDebug() << m_numQuestion;
         chargerPositionMasque(m_numQuestion);
         // Chargement et Controle de la liste
         if (positionMasquesParcours.isEmpty() && positionMasquesParcours.count() != opt_nbMasquesChoisis)
         {
-            qDebug() << "PROBLEME Liste parcours "+QString::number(m_numQuestion);
+            if (m_localDebug) qDebug() << "PROBLEME Liste parcours "+QString::number(m_numQuestion);
             return;
         }
         /// Masque arrivee (1 de la liste positionMasque)
@@ -377,9 +358,6 @@ void ExerciceParcours::slotQuestionEntered()
     m_exerciceEnCours = true;
 }
 
-/**
-  * Appeler pour appuyer automatiquement sur le bouton suivant
-  */
 void ExerciceParcours::slotAfficheVerificationQuestionEntered()
 {
     if (m_localDebug) qDebug()<< "##########################  ExerciceParcours::slotAfficheVerificationQuestionEntered()";
@@ -485,19 +463,12 @@ void ExerciceParcours::slotQuitter() // ok
     AbulEduCommonStatesV1::slotQuitter();
 }
 
-
-/** Cette méthode emet le signal appuiSuivant
-  * Permet donc d'activer (de simuler) l'appui sur le bouton suivant de la telecommande
-  */
 void ExerciceParcours::slotAppuiAutoSuivant()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceParcours::slotAppuiAutoSuivant()";
     emit appuiSuivant();
 }
 
-/** Cette méthode emet le signal appuiVerifier
-  * Permet donc d'activer (de simuler) l'appui sur le bouton verifier de la telecommande
-  */
 void ExerciceParcours::slotAppuiAutoVerifier()
 {
     if (m_localDebug) qDebug() << "##########################  ExerciceParcours::slotAppuiAutoVerifier()";
@@ -508,8 +479,6 @@ void ExerciceParcours::slotAppuiAutoVerifier()
 //------------------------------------------------------------------
 //                 Méthodes propres à la classe
 //------------------------------------------------------------------
-/** Redimensionne la consigne
-  */
 void ExerciceParcours::redimensionnerConsigne()
 {
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
@@ -517,8 +486,6 @@ void ExerciceParcours::redimensionnerConsigne()
                                     ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
 }
 
-/** Redimensionne l'image (2e méthode)
-  */
 void ExerciceParcours::redimensionnerImage2()
 {
     m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -627,10 +594,6 @@ void ExerciceParcours::slotCacheMasque()
     }
 }
 
-/** Event Filter pour la pause.
-  * Capture l'appui sur la barre espace lorsque le booléen "onPeutMettreEnPause" est à "true".
-  * C'est le cas lorsque tous les masques sont découvert.
-  */
 bool ExerciceParcours::eventFilter(QObject *obj, QEvent *event)
 {
     obj = this;
@@ -649,7 +612,7 @@ bool ExerciceParcours::eventFilter(QObject *obj, QEvent *event)
             if (m_timer->isActive())
             {
                 m_timer->stop();
-                qDebug() << "Le timer est actif est vient d'etre stoppé";
+                if (m_localDebug) qDebug() << "Le timer est actif est vient d'etre stoppé";
 
                 boiteTetes->setVisible(false);
                 m_labelImagePause->show();
@@ -667,13 +630,12 @@ bool ExerciceParcours::eventFilter(QObject *obj, QEvent *event)
             else
             {
                 m_timer->start();
-                qDebug() << "Le timer repart   ";
+                if(m_localDebug) qDebug() << "Le timer repart   ";
                 m_labelImagePause->setVisible(false);
                 m_labelTextePause->setVisible(false);
                 boiteTetes->setVisible(true);
             }
-
-            qDebug() << "Pause !";
+            if(m_localDebug) qDebug() << "Pause !";
         }
     }
     return false;
