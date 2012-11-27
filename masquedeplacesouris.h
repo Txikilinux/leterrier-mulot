@@ -44,7 +44,7 @@ public:
     void setIsEditable(bool isEditable);
     QColor getColor();
     int getNumero();
-    void setMenuSauvegarderEnabled(bool yesNo);
+//    void setMenuSauvegarderEnabled(bool yesNo);
 
 
 
@@ -65,8 +65,8 @@ private:
 
 signals:
         void signalCacheMasque();
-        void signalReinitialisationMasque();
-        void signalSauvegarderParcours();
+//        void signalReinitialisationMasque();
+//        void signalSauvegarderParcours();
         void signalPoseSurParcours(masqueDeplaceSouris*);
 
 public slots:
@@ -76,8 +76,8 @@ public slots:
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 
 private slots:
-    void on_action_Reinitialiser();
-    void on_action_Sauvegarder();
+//    void on_action_Reinitialiser();
+//    void on_action_Sauvegarder();
 };
 
 #endif // MASQUEDEPLACESOURIS_H

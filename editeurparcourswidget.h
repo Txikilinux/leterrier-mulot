@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QGraphicsView>
+#include <QPushButton>
+#include <QDebug>
 
 namespace Ui {
 class EditeurParcoursWidget;
@@ -18,15 +20,28 @@ public:
     
     QGraphicsScene *getScene();
     QGraphicsView *getGraphicsView();
+    QPushButton *getBtnSave();
+    QPushButton *getBtnReset();
 
     int getBoutonHeight();
     int getBoutonWidth();
+
+    void connectBtnSave(bool enable);
 
 private:
     Ui::EditeurParcoursWidget *ui;
     QGraphicsScene *m_scene;
 
     bool m_localDebug;
+
+private slots:
+    void closeEvent(QCloseEvent *event);
+
+    void on_btnReset_clicked();
+
+signals:
+    void signalCloseEvent(QCloseEvent *event);
+
 };
 
 #endif // EDITEURPARCOURSWIDGET_H

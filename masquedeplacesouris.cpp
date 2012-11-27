@@ -34,9 +34,9 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_numero = numero;
     setAcceptsHoverEvents(true);
 
-    m_menuMasque = new QMenu();
-    m_menuMasque->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
-    m_menuMasque->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
+//    m_menuMasque = new QMenu();
+//    m_menuMasque->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
+//    m_menuMasque->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
 //    connect(m_menuMasque, SIGNAL(triggered(QAction *)), this, SLOT(triggered(QAction *)));
 
     cptClic = 0;
@@ -149,10 +149,10 @@ void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
     else if (event->buttons() == Qt::RightButton)
     {
         qDebug() << "clic droit";
-        if (m_isEditable)
-        {
-            m_menuMasque->popup(event->screenPos());
-        }
+//        if (m_isEditable)
+//        {
+//            m_menuMasque->popup(event->screenPos());
+//        }
     }
 }
 
@@ -169,34 +169,34 @@ void masqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
     }
 }
 
-void masqueDeplaceSouris::on_action_Reinitialiser()
-{
-    emit signalReinitialisationMasque();
-}
+//void masqueDeplaceSouris::on_action_Reinitialiser()
+//{
+//    emit signalReinitialisationMasque();
+//}
 
-void masqueDeplaceSouris::on_action_Sauvegarder()
-{
-    emit signalSauvegarderParcours();
-}
+//void masqueDeplaceSouris::on_action_Sauvegarder()
+//{
+//    emit signalSauvegarderParcours();
+//}
 
 /** Permet d'activer ou de désactiver l'entrée "Sauvegarder" du menu du masque
   */
-void masqueDeplaceSouris::setMenuSauvegarderEnabled(bool yesNo)
-{
-    // Chercher l'action Sauvegarder
-    for (int i =0; i < m_menuMasque->actions().count(); i++)
-    {
-        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Sauvegarder"))
-        {
-            if(!yesNo) // si false = desactivation
-            {
-                m_menuMasque->actions().at(i)->setEnabled(false);
-            }
-            else // si true = activation
-            {
-                m_menuMasque->actions().at(i)->setEnabled(true);
-            }
-        }
-    }
-}
+//void masqueDeplaceSouris::setMenuSauvegarderEnabled(bool yesNo)
+//{
+//    // Chercher l'action Sauvegarder
+//    for (int i =0; i < m_menuMasque->actions().count(); i++)
+//    {
+//        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Sauvegarder"))
+//        {
+//            if(!yesNo) // si false = desactivation
+//            {
+//                m_menuMasque->actions().at(i)->setEnabled(false);
+//            }
+//            else // si true = activation
+//            {
+//                m_menuMasque->actions().at(i)->setEnabled(true);
+//            }
+//        }
+//    }
+//}
 

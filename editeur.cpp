@@ -532,14 +532,9 @@ void Editeur::remplirGvParcours(int numeroParcours)
             m_masque->setHideOnMouseOver(false);
             m_masque->setIsEditable(true);
 
-            connect(m_masque, SIGNAL(signalReinitialisationMasque()), this, SLOT(reinitialiserGvParcours()));                       // Reinitialisation
-            connect(m_masque, SIGNAL(signalSauvegarderParcours()), this, SLOT(sauvegarderParcours()));                              // Sauvegarde du parcours
             connect(m_masque, SIGNAL(signalPoseSurParcours(masqueDeplaceSouris*)), this, SLOT(masquePoseParcours(masqueDeplaceSouris*)));
 
             xMasque+=largeurMasque;
-
-            m_masque->setMenuSauvegarderEnabled(false);
-
             gv_AireParcours->getScene()->addItem(m_masque);
 
             m_listeMasques << m_masque;
@@ -554,57 +549,62 @@ void Editeur::remplirGvParcours(int numeroParcours)
                                 (largeurMasque * m_opt_nbMasquesLargeur) + gv_AireParcours->getGraphicsView()->verticalScrollBar()->width(),
                                  (hauteurMasque * m_opt_nbMasquesHauteur) + gv_AireParcours->getGraphicsView()->horizontalScrollBar()->height() + (gv_AireParcours->getBoutonHeight()) *2);
 
-    /// Parcours de la QMap positionMasqueParcours
-    int positionDepart  = 0;
-    int positionArrivee = 0;
-    QList<int> positionParcours;
-    positionParcours.clear();
-    QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
-    while (i != positionMasquesParcours.constEnd())
+    /// Mode Modification
+    if(m_modeModificationAbe)
     {
-        if(m_localDebug) qDebug() << i.key() << " " << i.value();
-        if (i.key() == "MasqueDepart")
-            positionDepart = i.value();
-        else if (i.key() == "MasqueArrivee")
-            positionArrivee = i.value();
-        else
-            positionParcours << i.value();
-        i ++;
+        /// Parcours de la QMap positionMasqueParcours
+        int positionDepart  = 0;
+        int positionArrivee = 0;
+        QList<int> positionParcours;
+        positionParcours.clear();
+        QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
+        while (i != positionMasquesParcours.constEnd())
+        {
+            if(m_localDebug) qDebug() << i.key() << " " << i.value();
+            if (i.key() == "MasqueDepart")
+                positionDepart = i.value();
+            else if (i.key() == "MasqueArrivee")
+                positionArrivee = i.value();
+            else
+                positionParcours << i.value();
+            i ++;
+        }
+        if (m_localDebug)
+        {
+            qDebug() << "La liste des positions normales : " << positionMasquesParcours;
+            qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
+            qDebug() << "Position Parcours               : " << positionParcours;
+        }
+
+        /// ****************************************************
+        /// MODE MODIFICATION
+        /// Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
+        //depart
+        m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
+        m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
+        m_listeMasquesParcours << m_listeMasques.at(positionDepart);
+
+        // parcours
+        while(!positionParcours.isEmpty())
+        {
+            m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
+            m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
+            m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
+            positionParcours.removeFirst();
+        }
+
+        //arrivee
+        m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
+        m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
+        m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
+
+        // Et j'active le menu Sauvegarder
+        gv_AireParcours->connectBtnSave(true);
     }
-    if (m_localDebug)
+    /// Mode Creation
+    else
     {
-        qDebug() << "La liste des positions normales : " << positionMasquesParcours;
-        qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
-        qDebug() << "Position Parcours               : " << positionParcours;
-    }
-
-    /// ****************************************************
-    /// MODE MODIFICATION
-    /// Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
-    //depart
-    m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
-    m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
-    m_listeMasquesParcours << m_listeMasques.at(positionDepart);
-
-    // parcours
-    while(!positionParcours.isEmpty())
-    {
-        m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
-        m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
-        m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
-        positionParcours.removeFirst();
-    }
-
-    //arrivee
-    m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
-    m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
-    m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
-
-    // Et j'active le menu Sauvegarder
-    foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-    {
-        var_masque->setMenuSauvegarderEnabled(true);
-        var_masque->update();
+        gv_AireParcours->connectBtnSave(false);
     }
 }
 
@@ -698,11 +698,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
                     }
                 }
                 // Et j'active le menu Sauvegarder
-                foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-                {
-                    var_masque->setMenuSauvegarderEnabled(true);
-                    var_masque->update();
-                }
+                gv_AireParcours->connectBtnSave(true);
             }
         }
     } // Fin si mon masque n'a pas de role = creation de masque
@@ -725,11 +721,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
             }
         }
         // Et je desactive le menu Sauvegarder
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
-        {
-            var_masque->setMenuSauvegarderEnabled(false);
-            var_masque->update();
-        }
+        gv_AireParcours->connectBtnSave(false);
         // et j'enleve ce masque de ma liste parcours
         m_listeMasquesParcours.removeLast();
         // Remise des masques gris pour les voisins du dernier masque (je viens d'enlever CE masque juste avant)
@@ -852,6 +844,7 @@ void Editeur::sauvegarderParcours()
 
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
+
     QMessageBox::information(this,"Editeur de Parcours", trUtf8("Le parcours a bien été sauvegardé"),0,0);
 
     gv_AireParcours->close();
@@ -920,6 +913,10 @@ void Editeur::on_btnParcours1_clicked()
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
+    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()));
+    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()));
+    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(test(QCloseEvent*)));
+
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
@@ -928,6 +925,13 @@ void Editeur::on_btnParcours1_clicked()
 
     remplirGvParcours(m_numeroParcours);
     gv_AireParcours->show();
+}
+
+void Editeur::test(QCloseEvent *)
+{
+    qDebug() << "Fermeture EditeurParcoursWidget...";
+    m_listeMasquesParcours.clear();
+    m_listeMasques.clear();
 }
 
 void Editeur::on_btnParcours2_clicked()

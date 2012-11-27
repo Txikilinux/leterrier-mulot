@@ -130,6 +130,8 @@ private slots:
     /** Place les masques sur la grille en fonction des positions */
 //    void chargerMasqueParcours(int numeroParcours);
 
+    void test(QCloseEvent*);
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;

@@ -6,7 +6,7 @@ EditeurParcoursWidget::EditeurParcoursWidget(QWidget *parent) :
     ui(new Ui::EditeurParcoursWidget)
 {
     ui->setupUi(this);
-    m_localDebug = false;
+    m_localDebug = true;
 
     m_scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(m_scene);
@@ -35,4 +35,32 @@ int EditeurParcoursWidget::getBoutonHeight()
 int EditeurParcoursWidget::getBoutonWidth()
 {
     return ui->btnReset->width();
+}
+
+QPushButton* EditeurParcoursWidget::getBtnReset()
+{
+    return ui->btnReset;
+}
+
+QPushButton* EditeurParcoursWidget::getBtnSave()
+{
+    return ui->btnSave;
+}
+
+void EditeurParcoursWidget::connectBtnSave(bool enable)
+{
+    if(enable)
+        ui->btnSave->setEnabled(true);
+    else
+        ui->btnSave->setEnabled(false);
+}
+
+void EditeurParcoursWidget::closeEvent(QCloseEvent *event)
+{
+    emit signalCloseEvent(event);
+}
+
+void EditeurParcoursWidget::on_btnReset_clicked()
+{
+    connectBtnSave(false);
 }
