@@ -22,13 +22,6 @@
 
 #include "editeur.h"
 
-
-/// **********************************************************************************************************************************************************
-///                                             EDITEUR
-///
-/// **********************************************************************************************************************************************************
-
-
 Editeur::Editeur(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Editeur)
@@ -58,7 +51,6 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
-
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()));
 
@@ -96,12 +88,11 @@ Editeur::Editeur(QWidget *parent) :
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
-
     if(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().mkpath("data/images"))
-        qDebug() << "Creation ok";
+    {
+        if(m_localDebug) qDebug() << "Creation ok";
+    }
     else { return; } // si echec pas la peine d'aller plus loin
-
-
 }
 
 Editeur::~Editeur()
@@ -125,7 +116,7 @@ void Editeur::creationMenu()
     m_menuListWidget->addAction(a_supprimer);
 }
 
-void Editeur::slotSupprimerImage()// Test OK
+void Editeur::slotSupprimerImage()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     if (m_listeFichiersImages.isEmpty()) // condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =)
@@ -134,10 +125,10 @@ void Editeur::slotSupprimerImage()// Test OK
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()) // Garde
     { return;}
 
-    qDebug() << "Suppression ItemImage -> liste images avant : ";
+    if (m_localDebug) qDebug() << "Suppression ItemImage -> liste images avant : ";
     for (int i = 0; i < m_listeFichiersImages.count(); i++)
     {
-        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+        if (m_localDebug) qDebug() << i <<" "<<m_listeFichiersImages.at(i);
     }
 
     for (int i = 0; i < ui->listWidgetImagesSelection->selectedItems().count(); i++)// Suppression de ma liste d'images
@@ -145,7 +136,9 @@ void Editeur::slotSupprimerImage()// Test OK
         m_listeFichiersImages.removeOne(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString());
         // suppression du fichier image dans temp
         if (QFile::remove(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString()))
-            qDebug() << "suppression image du fichier temp ok";
+        {
+            if (m_localDebug)qDebug() << "suppression image du fichier temp ok";
+        }
     }
 
     foreach(QListWidgetItem *i, ui->listWidgetImagesSelection->selectedItems())// Suppression des items selectionné
@@ -153,14 +146,14 @@ void Editeur::slotSupprimerImage()// Test OK
         delete i;
     }
 
-    qDebug() << "Suppression ItemImage -> liste images apres : ";
+    if (m_localDebug) qDebug() << "Suppression ItemImage -> liste images apres : ";
     for (int i = 0; i < m_listeFichiersImages.count(); i++)
     {
-        qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+        if (m_localDebug) qDebug() << i <<" "<<m_listeFichiersImages.at(i);
     }
 }
 
-void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant de mediathequeGet
+void Editeur::ajouterImage(QFileInfo monFichier)
 {
     if (m_localDebug)
     {
@@ -171,6 +164,7 @@ void Editeur::ajouterImage(QFileInfo monFichier) // pour les fichiers provenant 
     if (m_listeFichiersImages.contains(monFichier.fileName())) // Controle des insertions (éviter les doublons)
     {
         if(m_localDebug) qDebug() << "Fichier deja présent";
+        return;
     }
     else
     {
@@ -281,9 +275,6 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 #endif
 }
 
-/**
-  * Creation du .abe
-  */
 void Editeur::createAbe()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -404,14 +395,8 @@ void Editeur::createAbe()
     SaveAbuleduFileManager->show();
 
     if (m_localDebug) qDebug() << "Création abe OK";
-
 }
 
-/** Supprime un répertoire et tout son contenu
-  * Le répertoire passé en paramètre est aussi supprimé
-  * @param const QString& dirPath, le chemin du répertoire à supprimer (ex : "/home/user/monRepertoire")
-  * @return bool, true si suppression ok, false sinon
-  */
 bool Editeur::supprimerDir(const QString& dirPath)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -448,7 +433,7 @@ bool Editeur::supprimerDir(const QString& dirPath)
     return true;
 }
 
-QStringList Editeur::parcoursRecursif(QString dossier)
+QStringList Editeur::parcoursRecursif(const QString dossier)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
@@ -512,9 +497,10 @@ void Editeur::remplirGvParcours(int numeroParcours)
     qreal yMasque = 0.00;
 
     if (m_localDebug)
+    {
         qDebug()<<" -------------------------- Début boucle d'affichage : " << nbMasques;
-
-    if (m_localDebug) qDebug() << "Chargement position parcours : " << numeroParcours;
+        qDebug() << "Chargement position parcours : " << numeroParcours;
+    }
     chargerPositionMasque(numeroParcours);
 
     int numeroMasque = 0;
@@ -746,10 +732,6 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
     if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
 }
 
-/** Réinitialise l'éditeur de Parcours.
-  * Redéfinit tous les masques comme fixe, et la couleur à blanc
-  * (à l'appui sur le menu contextuel Reinitialiser)
-  */
 void Editeur::reinitialiserGvParcours()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -783,7 +765,7 @@ void Editeur::sauvegarderParcours()
         m_parametresParcours1.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
         m_parametresParcours1.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
         // Il reste que des masques "Parcours" dans la liste
-        qDebug() << m_listeMasquesParcours.count();
+        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
             m_parametresParcours1.insert("MasqueParcours" + QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
@@ -795,7 +777,7 @@ void Editeur::sauvegarderParcours()
         m_parametresParcours2.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
         m_parametresParcours2.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
         // Il reste que des masques "Parcours" dans la liste
-        qDebug() << m_listeMasquesParcours.count();
+        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
             m_parametresParcours2.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
@@ -807,7 +789,7 @@ void Editeur::sauvegarderParcours()
         m_parametresParcours3.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
         m_parametresParcours3.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
         // Il reste que des masques "Parcours" dans la liste
-        qDebug() << m_listeMasquesParcours.count();
+        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
             m_parametresParcours3.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
@@ -819,7 +801,7 @@ void Editeur::sauvegarderParcours()
         m_parametresParcours4.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
         m_parametresParcours4.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
         // Il reste que des masques "Parcours" dans la liste
-        qDebug() << m_listeMasquesParcours.count();
+        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
             m_parametresParcours4.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
@@ -831,7 +813,7 @@ void Editeur::sauvegarderParcours()
         m_parametresParcours5.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
         m_parametresParcours5.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
         // Il reste que des masques "Parcours" dans la liste
-        qDebug() << m_listeMasquesParcours.count();
+        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
             m_parametresParcours5.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
@@ -850,12 +832,6 @@ void Editeur::sauvegarderParcours()
     gv_AireParcours->close();
 }
 
-/** Retourne la liste des voisins possibles d'un masque
-  * @param numeroMasque, int, le numero du masque courant
-  * @param largeur, int, le nombre de masques dans la largeur du parcours
-  * @param hauteur, int, le nombre de masques dans la hauteur du parcours
-  * @return voisinsMasques, QList<Int>, la liste des voisins possibles (gauche, droite, haut, bas)
-  */
 QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -863,11 +839,8 @@ QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
     QList<int> voisinsMasques;
     int nbTotal = largeur * hauteur;
 
-    int gauche;
-    int droite;
-    int bas;
-    int haut;
-    gauche = droite = bas = haut = 0;
+    int gauche, droite, bas, haut = 0;
+//    gauche = droite = bas = haut = 0;
 
     // calcul des différentes directions possibles
     gauche = numeroMasque - 1;
@@ -915,7 +888,7 @@ void Editeur::on_btnParcours1_clicked()
 
     connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()));
     connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()));
-    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(test(QCloseEvent*)));
+    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)));
 
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
@@ -927,9 +900,9 @@ void Editeur::on_btnParcours1_clicked()
     gv_AireParcours->show();
 }
 
-void Editeur::test(QCloseEvent *)
+void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
 {
-    qDebug() << "Fermeture EditeurParcoursWidget...";
+    if(m_localDebug) qDebug() << "Fermeture EditeurParcoursWidget...";
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
 }
@@ -952,6 +925,10 @@ void Editeur::on_btnParcours2_clicked()
     gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 2"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
+
+    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()));
+    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()));
+    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)));
 
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
@@ -982,6 +959,10 @@ void Editeur::on_btnParcours3_clicked()
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 3"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
+    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()));
+    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()));
+    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)));
+
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
@@ -1010,6 +991,10 @@ void Editeur::on_btnParcours4_clicked()
     gv_AireParcours = new EditeurParcoursWidget();
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 4"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
+
+    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()));
+    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()));
+    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)));
 
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
@@ -1040,6 +1025,10 @@ void Editeur::on_btnParcours5_clicked()
     gv_AireParcours->setWindowTitle(trUtf8("Parcours 5"));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
+    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()));
+    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()));
+    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)));
+
     //On centre la fenetre sur l'ecran de l'utilisateur
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
@@ -1054,10 +1043,6 @@ void Editeur::on_btnParcours5_clicked()
 ///                             GESTION MODE MODIFIER ABE
 /// **********************************************************************************************************************************************************
 
-/** TODO : Gestion des chemins lors d'une modification abe
-  * Focus OK
-  * Problème de récupération du chemin de dezippage de l'abe choisi getFile ne renvoie pas le bon -> OK
-  */
 void Editeur::setModeModificationAbe(bool yesNo)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -1143,13 +1128,13 @@ void Editeur::slotLoadUnit()
     ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
 }
 
-void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+//void Editeur::slotTestImportImage(QString cheminFichier, QString nomFichier)
+//{
+//    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    qDebug() << "Fichier Recu" << cheminFichier <<" "<< nomFichier;
-    /// La creation d'item pose probleme
-}
+//    qDebug() << "Fichier Recu" << cheminFichier <<" "<< nomFichier;
+//    /// La creation d'item pose probleme
+//}
 
 void Editeur::chargerPositionMasque(int numeroParcours)
 {
@@ -1201,7 +1186,7 @@ void Editeur::on_btnQuitter_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    // Controle que l'utilisateur veut quitter sans sauvegarder
+    /// @todo Controle que l'utilisateur veut quitter sans sauvegarder
     this->close();
 }
 
@@ -1267,7 +1252,7 @@ void Editeur::dropEvent(QDropEvent *event)
 
 void Editeur::dragEnterEvent(QDragEnterEvent *event)
 {
-    qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
     event->accept();
 }
 
@@ -1288,6 +1273,7 @@ void Editeur::on_btnModificationCourant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
+    setModeModificationAbe(true);
     slotLoadUnit();
 }
 
@@ -1295,5 +1281,6 @@ void Editeur::on_btnModificationAutre_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
+    setModeModificationAbe(true);
     m_abuleduFileManager->show();
 }

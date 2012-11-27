@@ -55,7 +55,10 @@ class Editeur : public QDialog
     Q_OBJECT
 
 public:
+    /** Constructeur de la classe Editeur */
     explicit Editeur(QWidget *parent);
+
+    /** Destructeur de la classe Editeur */
     ~Editeur();
 
 private slots:
@@ -66,15 +69,36 @@ private slots:
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
 
-    // Edition Parcours
+    /** Gère l'appui sur le bouton parcours 1*/
     void on_btnParcours1_clicked();
+
+    /** Gère l'appui sur le bouton parcours 2*/
     void on_btnParcours2_clicked();
+
+    /** Gère l'appui sur le bouton parcours 3*/
     void on_btnParcours3_clicked();
+
+    /** Gère l'appui sur le bouton parcours 4*/
     void on_btnParcours4_clicked();
+
+    /** Gère l'appui sur le bouton parcours 5*/
     void on_btnParcours5_clicked();
+
+    /** Réinitialise l'editeur de parcours */
     void reinitialiserGvParcours();
+
+    /** Sauvegarde le parcours conçu avec l'éditeir de parcours */
     void sauvegarderParcours();
+
+    /** Gère la pose des masques dans l'éditeur de parcours */
     void masquePoseParcours(masqueDeplaceSouris*);
+
+    /** Calcule et retourne la liste des voisins possibles d'un masque
+      * @param numeroMasque, int, le numero du masque courant
+      * @param largeur, int, le nombre de masques dans la largeur du parcours
+      * @param hauteur, int, le nombre de masques dans la hauteur du parcours
+      * @return voisinsMasques, QList<Int>, la liste des voisins possibles (gauche, droite, haut, bas)
+      */
     QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
 
     /** Fait apparaitre sur le clic droit le menu contextuel créé dans la méthode creationMenu(); */
@@ -83,7 +107,7 @@ private slots:
     /** Ouvre au double clic l'image dans la visionneuse */
     void on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item);
 
-    /** Ajoute une image dans le listWidgetImagesSelection, avec icône en et nom (sans extension, les images sont toutes enregistrées en .jpg) */
+    /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
     void ajouterImage(QFileInfo monFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
@@ -113,7 +137,7 @@ private slots:
     /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();
 
-    void slotTestImportImage(QString cheminFichier, QString nomFichier);
+//    void slotTestImportImage(QString cheminFichier, QString nomFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant du parcours du disque dur */
     void on_btnAjouterImageQFileDialog_clicked();
@@ -127,17 +151,18 @@ private slots:
     /** Charge la position des masques en lisant le fichier de paramètre */
     void chargerPositionMasque(int numeroParcours);
 
-    /** Place les masques sur la grille en fonction des positions */
-//    void chargerMasqueParcours(int numeroParcours);
-
-    void test(QCloseEvent*);
+    /** Gère la fermeture de l'editeur de parcours */
+    void slotFermetureEditeurParcoursWidget(QCloseEvent*);
 
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
+    bool m_modeModificationAbe;
 
-//    QStringList m_listeFichiers; // la liste des fichiers images présents dans le dossier choisi
-    QStringList m_listeDossiers; // la liste des dossiers ouverts
+    QString m_lastOpenDir;
+    MainWindow* m_parent;
+
+    QStringList m_listeDossiers;
 
     int m_opt_nbMasquesChoisisParcours;
     int m_opt_nbMasquesLargeur;
@@ -161,34 +186,62 @@ private:
     QDir *m_dirAbe;
     VisionneuseImage *m_visionneuseImage;
 
-    QList<QString> m_listeFichiersImages;      // pour ranger chaque chemin d'images
-    QMenu *m_menuListWidget;   // menu contextuel listWidget
+    QList<QString> m_listeFichiersImages;
+    QMenu *m_menuListWidget;
 
-    //Gestion des images
-    void creationMenu();
-    bool copierImageDansTemp(QFileInfo fi);
-
-    bool supprimerDir(const QString& dirPath);
-    QStringList parcoursRecursif(QString dossier);
-
-    // Parcours
     masqueDeplaceSouris *m_masque;
     QList<masqueDeplaceSouris *> m_listeMasques;
     QList<masqueDeplaceSouris *> m_listeMasquesParcours;
     EditeurParcoursWidget *gv_AireParcours;
-    void remplirGvParcours(int numeroParcours);
-    bool controleVoisinMasque(masqueDeplaceSouris *masque);
 
-    // Mode d'édition
-    bool m_modeModificationAbe; // ce booleen permet de definir si on est en creation ou en modification d'un .abe
-    void setModeModificationAbe(bool yesNo);
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
 
+    /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
+    void creationMenu();
+
+    /** Copie une image (téléchargée ou locale) dans le dossier de travail de l'éditeur
+      * @param QFileInfo fi, le chemin de l'image à copier
+      * @return bool, true si la copie est effective, false sinon
+      */
+    bool copierImageDansTemp(QFileInfo fi);
+
+    /** Supprime un répertoire et tout son contenu
+      * Le répertoire passé en paramètre est aussi supprimé
+      * @param const QString& dirPath, le chemin du répertoire à supprimer (ex : "/home/user/monRepertoire")
+      * @return bool, true si suppression ok, false sinon
+      */
+    bool supprimerDir(const QString& dirPath);
+
+    /** Retourne une liste de chemin correspondant à l'arborescence située en dessous du dossier donné en paramètre
+      * @param const QString dossier, le chemin du dossier à analyser
+      * @return QStringList, la liste des chemins correspondant à l'arborescence descandante du dossier
+      */
+    QStringList parcoursRecursif(const QString dossier);
+
+    /** Remplie la scène de l'éditeur de parcours en fonction des paramètres définies (nombre de masques largeur/hauteur)
+      * Si mode création, la scène n'aura pas de parcours
+      * Si mode modification, la scène créera le parcours contenu dans l'abe courant
+      * @param int, numeroParcours, le numéro du parcours à créer/modifier
+      */
+    void remplirGvParcours(int numeroParcours);
+
+//    bool controleVoisinMasque(masqueDeplaceSouris *masque);
+
+    /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
+      * @param bool yesNo, true = mode modification, false = mode création
+      */
+    void setModeModificationAbe(bool yesNo);
+
+    /** Gestion du drop
+      * @param QDropEvent *event, un pointeur sur l'évènement drop
+      */
     void dropEvent(QDropEvent *event);
+
+    /** Gestion du drag
+      * @param QDragEnterEvent *event, un pointeur sur l'évènement drag
+      */
     void dragEnterEvent(QDragEnterEvent *event);
 
-    QString m_lastOpenDir;
-    MainWindow* m_parent;
 };
 
 #endif // EDITEUR_H
