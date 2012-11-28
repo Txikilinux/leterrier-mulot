@@ -38,32 +38,32 @@ EditeurParcoursWidget::~EditeurParcoursWidget()
     delete ui;
 }
 
-QGraphicsScene* EditeurParcoursWidget::getScene()
+QGraphicsScene* EditeurParcoursWidget::getScene() const
 {
     return m_scene;
 }
 
-QGraphicsView* EditeurParcoursWidget::getGraphicsView()
+QGraphicsView* EditeurParcoursWidget::getGraphicsView() const
 {
     return ui->graphicsView;
 }
 
-int EditeurParcoursWidget::getBoutonHeight()
+int EditeurParcoursWidget::getBoutonHeight() const
 {
     return ui->btnReset->height();
 }
 
-int EditeurParcoursWidget::getBoutonWidth()
+int EditeurParcoursWidget::getBoutonWidth() const
 {
     return ui->btnReset->width();
 }
 
-QPushButton* EditeurParcoursWidget::getBtnReset()
+QPushButton* EditeurParcoursWidget::getBtnReset() const
 {
     return ui->btnReset;
 }
 
-QPushButton* EditeurParcoursWidget::getBtnSave()
+QPushButton* EditeurParcoursWidget::getBtnSave() const
 {
     return ui->btnSave;
 }

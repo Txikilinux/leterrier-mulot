@@ -45,32 +45,32 @@ public:
     /** Retourne la QGraphicsScene contenue dans la QGraphicsView
       * @return QGraphicsScene *, un pointeur sur la scene
       */
-    QGraphicsScene *getScene();
+    QGraphicsScene *getScene() const;
 
     /** Retourne la QGraphicsView
       * @return QGraphicsView *, un pointeur sur la vue
       */
-    QGraphicsView *getGraphicsView();
+    QGraphicsView *getGraphicsView() const;
 
     /** Retourne le bouton sauvegarder
       * @return QPushButton *, un pointeur sur le bouton sauvegarder
       */
-    QPushButton *getBtnSave();
+    QPushButton *getBtnSave() const;
 
     /** Retourne le bouton réinitialiser
       * @return QPushButton *, un pointeur sur le bouton réinitialiser
       */
-    QPushButton *getBtnReset();
+    QPushButton *getBtnReset() const;
 
     /** Retourne la hauteur d'un bouton (sauvegarder ou quitter)
       * @return int, la hauteur du bouton
       */
-    int getBoutonHeight();
+    int getBoutonHeight() const;
 
     /** Retourne la largeur d'un bouton (sauvegarder ou quitter)
       * @return int, la largeur du bouton
       */
-    int getBoutonWidth();
+    int getBoutonWidth() const;
 
     /** Permet d'activer/desactiver le bouton sauvegarder
       * @param bool enable, true = bouton activé, false = bouton desactiver
