@@ -67,12 +67,12 @@ private:
     int m_nbMasquesInteractifs;         // = à 7
     QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
 
-    QList<masqueDeplaceSouris *> m_listeMasquesFixes;
-    QList<masqueDeplaceSouris *> m_listeMasquesParcours;
-    masqueDeplaceSouris *m_masqueDepart;
-    masqueDeplaceSouris *m_masqueArrivee;
-    masqueDeplaceSouris *m_masqueParcours;
-    masqueDeplaceSouris *m_masque;
+    QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
+    QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
+    MasqueDeplaceSouris *m_masqueDepart;
+    MasqueDeplaceSouris *m_masqueArrivee;
+    MasqueDeplaceSouris *m_masqueParcours;
+    MasqueDeplaceSouris *m_masque;
     QSize m_taille;
 
     QList<int> positionMasquesParcours;

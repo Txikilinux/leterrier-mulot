@@ -298,7 +298,7 @@ void ExerciceParcours::slotInitQuestionEntered()
 
             for (int j =0; j < opt_nbMasquesLargeur;j++)
             {
-                m_masque = new masqueDeplaceSouris(0, numeroMasque);
+                m_masque = new MasqueDeplaceSouris(0, numeroMasque);
                 m_masque->setSize(largeurMasque, hauteurMasque);
                 m_masque->setPos(xMasque, yMasque);
                 m_masque->setColor(QColor::fromRgb(255,255,255));
@@ -548,7 +548,7 @@ void ExerciceParcours::slotCacheMasque()
 
     if (m_listeMasquesParcours.isEmpty())
     {
-        foreach (masqueDeplaceSouris* var_masque, m_listeMasquesFixes)
+        foreach (MasqueDeplaceSouris* var_masque, m_listeMasquesFixes)
         {
             var_masque->setVisible(false);
         }

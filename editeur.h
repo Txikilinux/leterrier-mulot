@@ -91,7 +91,7 @@ private slots:
     void sauvegarderParcours();
 
     /** Gère la pose des masques dans l'éditeur de parcours */
-    void masquePoseParcours(masqueDeplaceSouris*);
+    void masquePoseParcours(MasqueDeplaceSouris*);
 
     /** Calcule et retourne la liste des voisins possibles d'un masque
       * @param numeroMasque, int, le numero du masque courant
@@ -175,10 +175,10 @@ private:
 
     QMap<QString, int> positionMasquesParcours;
 
-    QList<masqueDeplaceSouris *> m_listeMasquesFixes;
-    masqueDeplaceSouris *m_masqueDepart;
-    masqueDeplaceSouris *m_masqueArrivee;
-    masqueDeplaceSouris *m_masqueParcours;
+    QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
+    MasqueDeplaceSouris *m_masqueDepart;
+    MasqueDeplaceSouris *m_masqueArrivee;
+    MasqueDeplaceSouris *m_masqueParcours;
 
     QDir *m_dir;
     QDir *m_dirAbe;
@@ -187,9 +187,9 @@ private:
     QList<QString> m_listeFichiersImages;
     QMenu *m_menuListWidget;
 
-    masqueDeplaceSouris *m_masque;
-    QList<masqueDeplaceSouris *> m_listeMasques;
-    QList<masqueDeplaceSouris *> m_listeMasquesParcours;
+    MasqueDeplaceSouris *m_masque;
+    QList<MasqueDeplaceSouris *> m_listeMasques;
+    QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
     EditeurParcoursWidget *gv_AireParcours;
 
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
@@ -223,7 +223,7 @@ private:
       */
     void remplirGvParcours(int numeroParcours);
 
-//    bool controleVoisinMasque(masqueDeplaceSouris *masque);
+//    bool controleVoisinMasque(MasqueDeplaceSouris *masque);
 
     /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
       * @param bool yesNo, true = mode modification, false = mode création

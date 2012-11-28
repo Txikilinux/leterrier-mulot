@@ -1,4 +1,4 @@
-/** Classe masqueDeplaceSouris
+/** Classe MasqueDeplaceSouris
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
   * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
@@ -22,7 +22,7 @@
 
 #include "masquedeplacesouris.h"
 
-masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
+MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     QGraphicsObject(parent)
 {
     m_taille = QRectF(0,0,50,50); //Une taille par défaut de 50x50
@@ -34,56 +34,55 @@ masqueDeplaceSouris::masqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_numero = numero;
     setAcceptsHoverEvents(true);
 
-//    m_menuMasque = new QMenu();
-//    m_menuMasque->addAction(trUtf8("Réinitialiser"), this, SLOT(on_action_Reinitialiser()));
-//    m_menuMasque->addAction(trUtf8("Sauvegarder"), this, SLOT(on_action_Sauvegarder()));
-//    connect(m_menuMasque, SIGNAL(triggered(QAction *)), this, SLOT(triggered(QAction *)));
-
     cptClic = 0;
     QApplication::setDoubleClickInterval(1000);
 }
 
-void masqueDeplaceSouris::setSize(float width, float height)
+MasqueDeplaceSouris::~MasqueDeplaceSouris()
+{
+}
+
+void MasqueDeplaceSouris::setSize(float width, float height)
 {
     m_taille = QRectF(0,0,width,height);
 }
 
-void masqueDeplaceSouris::setColor(QColor couleur)
+void MasqueDeplaceSouris::setColor(QColor couleur)
 {
     m_couleur = couleur;
 }
 
-void masqueDeplaceSouris::setHideOnMouseOver(bool hide)
+void MasqueDeplaceSouris::setHideOnMouseOver(bool hide)
 {
     m_hideOnMouseOver = hide;
 }
 
-void masqueDeplaceSouris::setHideOnClick(bool hide)
+void MasqueDeplaceSouris::setHideOnClick(bool hide)
 {
     m_hideOnClick = hide;
 }
 
-void masqueDeplaceSouris::setHideOnDoubleClick(bool hide)
+void MasqueDeplaceSouris::setHideOnDoubleClick(bool hide)
 {
     m_hideOnDoubleClick = hide;
 }
 
-void masqueDeplaceSouris::setIsEditable(bool isEditable)
+void MasqueDeplaceSouris::setIsEditable(bool isEditable)
 {
     m_isEditable = isEditable;
 }
 
-QColor masqueDeplaceSouris::getColor()
+QColor MasqueDeplaceSouris::getColor() const
 {
     return m_couleur;
 }
 
-int masqueDeplaceSouris::getNumero()
+int MasqueDeplaceSouris::getNumero() const
 {
     return m_numero;
 }
 
-void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void MasqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPainterPath zoneDessin;
     zoneDessin.addRect(boundingRect());
@@ -92,12 +91,12 @@ void masqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawRect(m_taille);
 }
 
-QRectF masqueDeplaceSouris::boundingRect() const
+QRectF MasqueDeplaceSouris::boundingRect() const
 {
     return m_taille;
 }
 
-void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
+void MasqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
     if(m_hideOnMouseOver)
     {
@@ -106,7 +105,7 @@ void masqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
     }
 }
 
-void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->buttons()== Qt::LeftButton)
     {
@@ -156,7 +155,7 @@ void masqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
 }
 
-void masqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
+void MasqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
 {
     qDebug()<< __FUNCTION__;
 
@@ -168,35 +167,4 @@ void masqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
         emit signalCacheMasque();
     }
 }
-
-//void masqueDeplaceSouris::on_action_Reinitialiser()
-//{
-//    emit signalReinitialisationMasque();
-//}
-
-//void masqueDeplaceSouris::on_action_Sauvegarder()
-//{
-//    emit signalSauvegarderParcours();
-//}
-
-/** Permet d'activer ou de désactiver l'entrée "Sauvegarder" du menu du masque
-  */
-//void masqueDeplaceSouris::setMenuSauvegarderEnabled(bool yesNo)
-//{
-//    // Chercher l'action Sauvegarder
-//    for (int i =0; i < m_menuMasque->actions().count(); i++)
-//    {
-//        if (m_menuMasque->actions().at(i)->iconText() == trUtf8("Sauvegarder"))
-//        {
-//            if(!yesNo) // si false = desactivation
-//            {
-//                m_menuMasque->actions().at(i)->setEnabled(false);
-//            }
-//            else // si true = activation
-//            {
-//                m_menuMasque->actions().at(i)->setEnabled(true);
-//            }
-//        }
-//    }
-//}
 

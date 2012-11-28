@@ -31,7 +31,7 @@ Editeur::Editeur(QWidget *parent) :
     m_abuleduFileManager = new AbulEduBoxFileManagerV1();
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
-    if (!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
+    if(!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
         ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().fileName());
         ui->btnModificationCourant->setEnabled(true);
@@ -508,7 +508,7 @@ void Editeur::remplirGvParcours(int numeroParcours)
     {
         for (int j =0; j < m_opt_nbMasquesLargeur;j++)
         {
-            m_masque = new masqueDeplaceSouris(0, numeroMasque);
+            m_masque = new MasqueDeplaceSouris(0, numeroMasque);
             m_masque->setSize(largeurMasque, hauteurMasque);
             m_masque->setPos(xMasque, yMasque);
 
@@ -518,7 +518,7 @@ void Editeur::remplirGvParcours(int numeroParcours)
             m_masque->setHideOnMouseOver(false);
             m_masque->setIsEditable(true);
 
-            connect(m_masque, SIGNAL(signalPoseSurParcours(masqueDeplaceSouris*)), this, SLOT(masquePoseParcours(masqueDeplaceSouris*)));
+            connect(m_masque, SIGNAL(signalPoseSurParcours(MasqueDeplaceSouris*)), this, SLOT(masquePoseParcours(MasqueDeplaceSouris*)));
 
             xMasque+=largeurMasque;
             gv_AireParcours->getScene()->addItem(m_masque);
@@ -594,7 +594,7 @@ void Editeur::remplirGvParcours(int numeroParcours)
     }
 }
 
-void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
+void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
@@ -613,7 +613,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
 
             // ...& je coloris en gris les voisins
             listeVoisins = masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
-            foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+            foreach(MasqueDeplaceSouris* var_masque, m_listeMasques)
             {
                 for (int i =0 ; i < listeVoisins.count(); i++)
                 {
@@ -635,7 +635,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
             if (listeVoisins.contains(masque->getNumero())) // Si le numero de ce masque est contenu ds mas liste de voisins = Ok
             {
                 // S'il y a des masques de couleur grise... les remettre en blanc
-                foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+                foreach(MasqueDeplaceSouris* var_masque,m_listeMasques)
                 {
                     if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
                     {
@@ -651,7 +651,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
 
                 // ...& je coloris en gris les voisins
                 listeVoisins = masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
-                foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+                foreach(MasqueDeplaceSouris* var_masque, m_listeMasques)
                 {
                     for (int i =0 ; i < listeVoisins.count(); i++)
                     {
@@ -675,7 +675,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
                 masque->update();
                 m_listeMasquesParcours << masque;
                 // S'il y a des masques de couleur grise... les remettre en blanc
-                foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+                foreach(MasqueDeplaceSouris* var_masque,m_listeMasques)
                 {
                     if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
                     {
@@ -698,7 +698,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
         masque->update();
 
         // je remets les masques blanc
-        foreach(masqueDeplaceSouris* var_masque,m_listeMasques)
+        foreach(MasqueDeplaceSouris* var_masque,m_listeMasques)
         {
             if(var_masque->getColor().value() == QColor(Qt::gray).value()) //gris getColor().value = 164;
             {
@@ -715,7 +715,7 @@ void Editeur::masquePoseParcours(masqueDeplaceSouris* masque)
         if (!m_listeMasquesParcours.isEmpty())
         {
             listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
-            foreach(masqueDeplaceSouris* var_masque, m_listeMasques)
+            foreach(MasqueDeplaceSouris* var_masque, m_listeMasques)
             {
                 for (int i =0 ; i < listeVoisins.count(); i++)
                 {

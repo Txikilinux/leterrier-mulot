@@ -70,9 +70,9 @@ private:
     float nbMasquesLargeur;
     float nbMasquesHauteur;
 
-    QList<masqueDeplaceSouris *> m_listeMasquesFixes;
-        masqueDeplaceSouris *m_masque;
-        masqueDeplaceSouris *m_masqueInteractif;
+    QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
+        MasqueDeplaceSouris *m_masque;
+        MasqueDeplaceSouris *m_masqueInteractif;
         QSize m_taille;
 
     // Chronometre

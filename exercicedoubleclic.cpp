@@ -297,7 +297,7 @@ void ExerciceDoubleClic::slotInitQuestionEntered()
         {
             for (int j =0; j < nbMasquesLargeur;j++)
             {
-                m_masque = new masqueDeplaceSouris();
+                m_masque = new MasqueDeplaceSouris();
                 m_masque->setSize(largeurMasque, hauteurMasque);
                 m_masque->setPos(xMasque, yMasque);
                 m_masque->setColor(QColor::fromRgb(255,255,255));
