@@ -161,23 +161,24 @@ void Editeur::ajouterImage(QFileInfo monFichier)
         qDebug() << "ajouterImage -> Chemin du fichier selectionné : " << monFichier.absoluteFilePath() <<" Nom du fichier : " << monFichier.fileName();
     }
 
-    if (m_listeFichiersImages.contains(monFichier.fileName())) // Controle des insertions (éviter les doublons)
+    if (m_listeFichiersImages.contains(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg")) // Controle des insertions (éviter les doublons)
     {
         if(m_localDebug) qDebug() << "Fichier deja présent";
         return;
     }
     else
     {
-        if(copierImageDansTemp(monFichier)) // Si cette fonction a fonctionnée
+        if (m_parent->abeGetMyAbulEduFile()->resizeImage(&monFichier, 1024,m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
         {
-            m_listeFichiersImages << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName(); // je range le chemin de l'image dans ma liste (celui du fichier temp)
+            m_listeFichiersImages << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"; // je range le chemin de l'image dans ma liste (celui du fichier temp)
             // Insertion dans mon listWidget
             QListWidgetItem *item = new QListWidgetItem();
             QIcon icone(monFichier.absoluteFilePath());
             item->setIcon(icone);
             item->setText(monFichier.baseName());
-            item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.fileName());
+            item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
             ui->listWidgetImagesSelection->insertItem(0, item);
+            qDebug() << m_listeFichiersImages;
         }
     }
 }
@@ -186,64 +187,6 @@ void Editeur::slotImportImageMediatheque()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
-}
-
-/** @todo SVG ok ou pas ?
-    ** Si Solution 1 (QFile::copy()) on a tous les formats mais pas de redimmensionnement
-    ** SI Solution 2 (pixmap.save()) On peut retailler mais on a que ces formats
-    BMP     Windows Bitmap                          Read/write
-    GIF     Graphic Interchange Format (optional)	Read
-    JPG     Joint Photographic Experts Group        Read/write
-    JPEG    Joint Photographic Experts Group        Read/write
-    PNG     Portable Network Graphics               Read/write
-    PBM     Portable Bitmap                         Read
-    PGM     Portable Graymap                        Read
-    PPM     Portable Pixmap                         Read/write
-    XBM     X11 Bitmap                              Read/write
-    XPM     X11 Pixmap                              Read/write
-  */
-bool Editeur::copierImageDansTemp(QFileInfo fi)
-{
-    if (m_localDebug)
-    {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-        qDebug() << fi.absoluteFilePath();
-        qDebug() << " ------------- ";
-        qDebug() << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName();
-    }
-    if (QFile(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName()).exists())
-    {
-        return true;
-    }
-
-    /// SOLUTION 1
-//    if(QFile::copy(cheminOriginal.absoluteFilePath(), dossierDestination + QDir::separator() + cheminOriginal.fileName()))
-//    {
-//        if (m_localDebug) qDebug() << "Copie image ok";
-//        return true;
-//    }
-//    else // Si la copie échoue, pas la peine d'aller plus loin
-//    {
-//        if (m_localDebug) qDebug() << "Copie impossible";
-//        return false;
-//    }
-//    return false;
-
-    /// SOLUTION 2
-    QPixmap imageBase;
-    imageBase.load(fi.absoluteFilePath());
-    QPixmap ret = imageBase.scaledToWidth(1024, Qt::SmoothTransformation);
-
-    if(ret.save(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + fi.fileName()))
-    {
-        if (m_localDebug) qDebug() << "Copie image ok";
-        return true;
-    }
-    else // Si la copie échoue, pas la peine d'aller plus loin
-    {
-        if (m_localDebug) qDebug() << "Copie impossible";
-        return false;
-    }
 }
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
@@ -1249,7 +1192,7 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     QString fileName = QFileDialog::getOpenFileName(this,
-                                                    trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg)"));
+                                                    trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg *.svg *.bmp *.ppm *.xpm *.xbm)")); /* */
     QFileInfo fi(fileName);
     if(fi.exists()) {
         ajouterImage(fi.absoluteFilePath());

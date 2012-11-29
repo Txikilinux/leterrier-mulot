@@ -197,12 +197,6 @@ private:
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
 
-    /** Copie une image (téléchargée ou locale) dans le dossier de travail de l'éditeur
-      * @param QFileInfo fi, le chemin de l'image à copier
-      * @return bool, true si la copie est effective, false sinon
-      */
-    bool copierImageDansTemp(QFileInfo fi);
-
     /** Supprime un répertoire et tout son contenu
       * Le répertoire passé en paramètre est aussi supprimé
       * @param const QString& dirPath, le chemin du répertoire à supprimer (ex : "/home/user/monRepertoire")
