@@ -72,7 +72,7 @@ public:
     /** Méthode qui retourne l'abe courant
       * @return AbulEduFileV1 *, un pointeur sur l'objet abuledufile
       */
-    AbulEduFileV1* abeGetMyAbulEduFile();
+    AbulEduFileV1* abeGetMyAbulEduFile() const;
 
 public slots:
     /** Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif */

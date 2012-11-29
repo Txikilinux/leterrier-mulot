@@ -400,7 +400,7 @@ void MainWindow::on_action_Changer_d_utilisateur_triggered()
     abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
 }
 
-AbulEduFileV1 *MainWindow::abeGetMyAbulEduFile()
+AbulEduFileV1 *MainWindow::abeGetMyAbulEduFile() const
 {
     return m_abuleduFile;
 }
