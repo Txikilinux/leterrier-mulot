@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
     QApplication::setStyle("plastique");
 #endif
 
-
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
 
@@ -45,8 +44,8 @@ int main(int argc, char *argv[])
     splash->show();
     w = new MainWindow(0);
     splash->setMainWindow(w);
-    //pour les developpeurs presses, remplacer le 1000 par 100
-    splash->launch(1000);
+    //pour les developpeurs presses, remplacer le 10000 par 1000
+    splash->launch(0);
     // ================== splashscreen end
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
@@ -55,8 +54,7 @@ int main(int argc, char *argv[])
     ef = new activityFilter(&a);
     a.installEventFilter(ef);
 
-    QObject::connect(ef, SIGNAL( userInactive() ),
-                     w,  SLOT( slotDemo() ));
+    QObject::connect(ef, SIGNAL(userInactive()), w, SLOT(slotDemo()));
 
     //Gestion de la ligne de commande pour activer ou pas le clavier virtuel
     //    if(abeApp->arguments().size() > 1)
