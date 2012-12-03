@@ -61,8 +61,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_texteBulles.insert(3, trUtf8("Parcours"));
     m_texteBulles.insert(4, trUtf8("Double-clic"));
 
-    m_config = new QSettings("data/abuledupageaccueilv1/settings.conf", QSettings::IniFormat);
-    m_abuleduaccueil = new AbulEduPageAccueilV1(m_config, &m_texteBulles, ui->fr_principale);
+    m_abuleduaccueil = new AbulEduPageAccueilV1(&m_texteBulles, ui->fr_principale);
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)));
 
     /// Centrage de la fenetre sur le bureau de l'utilisateur
