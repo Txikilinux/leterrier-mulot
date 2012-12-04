@@ -123,6 +123,12 @@ void ExerciceParcours::chargerOption()
     opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
     opt_nbMasquesLargeur = parametres.value("nbMasquesLargeur", 10).toInt();
     opt_nbMasquesHauteur = parametres.value("nbMasquesHauteur", 5).toInt();
+
+    if (m_localDebug)
+    {
+        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
+                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
+    }
 }
 
 void ExerciceParcours::chargerPositionMasque(int numeroQuestion)

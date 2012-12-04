@@ -232,7 +232,7 @@ void Editeur::createAbe()
     if (ui->groupBoxSurvol->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value() *1000));
         parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     }
     else
@@ -245,7 +245,7 @@ void Editeur::createAbe()
     if (ui->groupBoxClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value() *1000 ));
         parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     }
     else
@@ -258,7 +258,7 @@ void Editeur::createAbe()
     if (ui->groupBoxClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value() *1000));
         parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     }
     else
@@ -271,7 +271,7 @@ void Editeur::createAbe()
     if (ui->groupBoxParcours->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
+        parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value() *1000));
         parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
         parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
         if(!m_parametresParcours1.isEmpty())
