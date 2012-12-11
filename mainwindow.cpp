@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()));
     m_abuleduFile = new AbulEduFileV1(this);
     m_abuleduFileManager = new AbulEduBoxFileManagerV1(0, m_abuleduFile);
+    m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     m_numberExoCalled = -1;
