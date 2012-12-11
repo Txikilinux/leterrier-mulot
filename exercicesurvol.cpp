@@ -73,15 +73,15 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     // Demarrage de la machine à états
     sequenceMachine->start();
     // Assignation des propriétés de la télécommande
-    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
-    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
@@ -100,6 +100,13 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
         qDebug() << "Chemin des fichiers images" << cheminImage;
     }
 
+    /// Gestion Consignes & Aide
+    onPeutPresenterExercice = false;
+    onPeutPresenterSequence = false;
+
+    m_timer = new QTimer(this);
+    m_timer->setInterval(opt_timerSuivant);
+    m_timer->setSingleShot(true);
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -117,8 +124,9 @@ void ExerciceSurvol::chargerOption()
     parametres.beginGroup("survol");
     if (parametres.value("exerciceActive",false) == false)
     {
-        AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Survol</b>"));
-        messageBox->show();
+        m_messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Survol</b>"), m_parent);
+        m_messageBox->show();
+
         slotQuitterAccueil();
     }
     opt_timerSuivant     = parametres.value("survol/timerSuivant", 7000).toInt();
@@ -150,6 +158,54 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
 
         setAbeLevel("1"); // a instancier après le slot sinon niveau 0 par def.
     }
+}
+
+/**
+  * @todo FAIRE LE CENTRAGE de L'AIDE
+  */
+void ExerciceSurvol::slotAide()
+{
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotAide()";
+
+    if(onPeutMettreEnPause)
+    {
+        QPointer<QWidget> w = qApp->focusWidget();
+        QKeyEvent *keyRelease= new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
+        QApplication::postEvent(w, keyRelease);
+    }
+
+    getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
+
+    QString consigne = "<td> " + trUtf8("Passe le pointeur de la souris au dessus des rectangles noirs pour faire apparaitre l'image.")+"<br />"
+                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
+
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, m_parent);
+    qDebug() <<"parent  " << m_parent;
+    connect(m_messageBox, SIGNAL(destroyed()), this, SLOT(slotFermetureAide()));
+    m_messageBox->setWink();
+    m_messageBox->setWindowModality(Qt::ApplicationModal);
+    m_messageBox->exec();
+    QPoint center(gv_AireDeJeu->geometry().center());
+
+    qDebug() << center;
+
+//    m_messageBox->show();
+//    AbulEduStateMachineV1::slotAide();
+
+}
+
+void ExerciceSurvol::slotFermetureAide()
+{
+    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotFermetureAide()";
+
+    if(onPeutMettreEnPause)
+    {
+        QPointer<QWidget> w = qApp->focusWidget();
+        QKeyEvent *keyRelease= new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
+        QApplication::postEvent(w, keyRelease);
+    }
+
+    getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 
 void ExerciceSurvol::slotPresenteSequenceEntered() //todo
@@ -351,9 +407,6 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
     if (m_exerciceEnCours)
     {
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
-        m_timer = new QTimer(this);
-        m_timer->setInterval(opt_timerSuivant);
-        m_timer->setSingleShot(true);
         connect(m_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()));
         m_timer->start();
     }
@@ -655,13 +708,13 @@ bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
         float ratio = abeApp->getAbeApplicationDecorRatio();
         m_labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
         m_labelTextePause->setText(trUtf8("En Pause ..."));
-        //        m_labelImagePause->setStyleSheet("border:2px solid black");
-        //        m_labelTextePause->setStyleSheet("border:2px solid black");
+        m_labelImagePause->setStyleSheet("background-color: transparent");
+        m_labelTextePause->setStyleSheet("background-color: transparent");
 
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(event);
         if(c && c->key() == Qt::Key_Space )
         {
-            if (m_timer->isActive())
+            if( m_timer->isActive())
             {
                 m_timer->stop();
                 if(m_localDebug) qDebug() << "Le timer est actif est vient d'etre stoppé";

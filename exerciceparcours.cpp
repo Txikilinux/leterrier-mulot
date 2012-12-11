@@ -609,8 +609,8 @@ bool ExerciceParcours::eventFilter(QObject *obj, QEvent *event)
         float ratio = abeApp->getAbeApplicationDecorRatio();
         m_labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
         m_labelTextePause->setText(trUtf8("En Pause ..."));
-        //        m_labelImagePause->setStyleSheet("border:2px solid black");
-        //        m_labelTextePause->setStyleSheet("border:2px solid black");
+        m_labelImagePause->setStyleSheet("background-color: transparent");
+        m_labelTextePause->setStyleSheet("background-color: transparent");
 
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(event);
         if(c && c->key() == Qt::Key_Space )

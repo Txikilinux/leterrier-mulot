@@ -29,7 +29,6 @@
 #include "abuleducommonstatesv1.h"
 #include "masquedeplacesouris.h"
 
-
 class ExerciceSurvol : public AbulEduCommonStatesV1
 {
     Q_OBJECT
@@ -93,6 +92,8 @@ private:
     // Dimensions de l'aire de jeu
     QSize m_tailleAireDejeu;
 
+    AbulEduMessageBoxV1* m_messageBox;
+
     /** Méthode qui retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
       * @param int monChiffre, le chiffre à calculer
       * @return QPair<int, int>, la plus petite division d'entiers dont le resultat est supérieur à monChiffre
@@ -133,6 +134,15 @@ private slots:
       * @brief Affichage de la consigne
       */
     void slotPresenteSequenceEntered();
+
+    /** Méthode héritée @see AbulEduCommonStatesV1
+      * @brief Affichage de l'aide
+      */
+    void slotAide();
+
+    /** @todo commenter
+      */
+    void slotFermetureAide();
 
     /** Méthode héritée @see AbulEduCommonStatesV1
       * @brief Mettre tout ce qui est commun à chaque question
