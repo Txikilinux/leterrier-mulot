@@ -107,6 +107,8 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     m_timer = new QTimer(this);
     m_timer->setInterval(opt_timerSuivant);
     m_timer->setSingleShot(true);
+
+    keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
 }
 
 ExerciceSurvol::~ExerciceSurvol()
@@ -160,82 +162,24 @@ void ExerciceSurvol::slotSequenceEntered() // en cours
     }
 }
 
-/**
-  * @todo FAIRE LE CENTRAGE de L'AIDE
-  */
 void ExerciceSurvol::slotAide()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotAide()";
-
-    if(onPeutMettreEnPause)
-    {
-        QPointer<QWidget> w = qApp->focusWidget();
-        QKeyEvent *keyRelease= new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
-        QApplication::postEvent(w, keyRelease);
-    }
-
+    eventFilter(this, keySpace);
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
 
     QString consigne = "<td> " + trUtf8("Passe le pointeur de la souris au dessus des rectangles noirs pour faire apparaitre l'image.")+"<br />"
-                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
+                               + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
 
-    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, m_parent);
-    qDebug() <<"parent  " << m_parent;
-    connect(m_messageBox, SIGNAL(destroyed()), this, SLOT(slotFermetureAide()));
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, 0);
+    connect(m_messageBox, SIGNAL(signalFermeture()), this, SLOT(slotFermetureAide()));
     m_messageBox->setWink();
-    m_messageBox->setWindowModality(Qt::ApplicationModal);
-    m_messageBox->exec();
-    QPoint center(gv_AireDeJeu->geometry().center());
-
-    qDebug() << center;
-
-//    m_messageBox->show();
-//    AbulEduStateMachineV1::slotAide();
-
+    m_messageBox->show();
 }
 
 void ExerciceSurvol::slotFermetureAide()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotFermetureAide()";
-
-    if(onPeutMettreEnPause)
-    {
-        QPointer<QWidget> w = qApp->focusWidget();
-        QKeyEvent *keyRelease= new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
-        QApplication::postEvent(w, keyRelease);
-    }
-
+    eventFilter(this, keySpace);
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
-}
-
-void ExerciceSurvol::slotPresenteSequenceEntered() //todo
-{
-    if (m_localDebug) qDebug()<<"##########################  ExerciceSurvol::slotPresenteSequenceEntered()";
-
-    // Normalement, on n'efface pas cette ligne, sinon tant pis
-    AbulEduCommonStatesV1::slotPresenteSequenceEntered();
-
-    getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Ma consigne qui presentera la sequence (video souhaitee)");
-    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Survol"));
-
-    QString debutTableau = "<tr>";
-    QString imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
-    QString consigne = "<td> " + trUtf8("Passe le pointeur de la souris au dessus des rectangles noirs pour faire apparaitre l'image.")+"<br />"
-                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
-    QString finTableau = "</tr>";
-    getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
-
-    getAbeExerciceMessageV1()->abeWidgetMessageResize();
-    getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(false);
-    getAbeExerciceMessageV1()->setVisible(true);
-
-    redimensionnerConsigne();
-    onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
-
-    // Appui auto sur bouton suivant
-    if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-    //Modifie pour régler "à la main" le temps d'affichage de la consigne : ce temps dépend de la longueur de la consigne
-    QTimer::singleShot(8000,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
 }
 
 void ExerciceSurvol::slotRealisationExerciceEntered()

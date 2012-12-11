@@ -121,18 +121,25 @@ private:
     bool eventFilter(QObject *obj, QEvent *ev);
 
     // jlf 2012/09/29
-
     // Dimensions de l'aire de jeu
     QSize m_tailleAireDejeu;
+
+    AbulEduMessageBoxV1* m_messageBox;
+    QKeyEvent *keySpace; /** C'est la touche espace, pour la pause */
 
 private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotSequenceEntered();
 
     /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Affichage de la consigne
+      * @brief Affichage de l'aide
       */
-    void slotPresenteSequenceEntered();
+    void slotAide();
+
+    /** Méthode appelée à la fermeture de l'aire
+      * @see AbulEduMessageBoxV1::signalFermeture()
+      */
+    void slotFermetureAide();
 
     /** Méthode héritée @see AbulEduCommonStatesV1
       * @brief Mettre tout ce qui est commun à chaque question

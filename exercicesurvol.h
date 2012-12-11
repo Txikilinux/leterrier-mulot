@@ -93,6 +93,8 @@ private:
     QSize m_tailleAireDejeu;
 
     AbulEduMessageBoxV1* m_messageBox;
+    QKeyEvent *keySpace; /** C'est la touche espace, pour la pause */
+
 
     /** Méthode qui retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
       * @param int monChiffre, le chiffre à calculer
@@ -131,16 +133,12 @@ private slots:
     void slotSequenceEntered();
 
     /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Affichage de la consigne
-      */
-    void slotPresenteSequenceEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1
       * @brief Affichage de l'aide
       */
     void slotAide();
 
-    /** @todo commenter
+    /** Méthode appelée à la fermeture de l'aire
+      * @see AbulEduMessageBoxV1::signalFermeture()
       */
     void slotFermetureAide();
 

@@ -72,15 +72,15 @@ ExerciceDoubleClic::ExerciceDoubleClic(QWidget *parent, QString theme):
     // Demarrage de la machine à états
     sequenceMachine->start();
     // Assignation des propriétés de la télécommande
-    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
-    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", false);
+    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
@@ -99,6 +99,15 @@ ExerciceDoubleClic::ExerciceDoubleClic(QWidget *parent, QString theme):
         qDebug() << "Chemin des fichiers images" << cheminImage;
     }
 
+    /// Gestion Consignes & Aide
+    onPeutPresenterExercice = false;
+    onPeutPresenterSequence = false;
+
+    m_timer = new QTimer(this);
+    m_timer->setInterval(opt_timerSuivant);
+    m_timer->setSingleShot(true);
+
+    keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
 }
 
 ExerciceDoubleClic::~ExerciceDoubleClic()
@@ -152,34 +161,24 @@ void ExerciceDoubleClic::slotSequenceEntered() // en cours
     }
 }
 
-void ExerciceDoubleClic::slotPresenteSequenceEntered() //todo
+void ExerciceDoubleClic::slotAide()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceDoubleClic::slotPresenteSequenceEntered()";
+    eventFilter(this, keySpace);
+    getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
 
-    // Normalement, on n'efface pas cette ligne, sinon tant pis
-    AbulEduCommonStatesV1::slotPresenteSequenceEntered();
-
-    getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Ma consigne qui presentera la sequence (video souhaitee)");
-    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Double Clic"));
-
-    QString debutTableau = "<tr>";
-    QString imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
     QString consigne = "<td> " + trUtf8("Double-clique sur les rectangles noirs pour faire apparaitre l'image.")+"<br />"
-                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
-    QString finTableau = "</tr>";
-    getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
+            + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
 
-    getAbeExerciceMessageV1()->abeWidgetMessageResize();
-    getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(false);
-    getAbeExerciceMessageV1()->setVisible(true);
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, 0);
+    connect(m_messageBox, SIGNAL(signalFermeture()), this, SLOT(slotFermetureAide()));
+    m_messageBox->setWink();
+    m_messageBox->show();
+}
 
-    redimensionnerConsigne();
-    onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
-
-    // Appui auto sur bouton suivant
-    if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-    //Modifie pour régler "à la main" le temps d'affichage de la consigne : ce temps dépend de la longueur de la consigne
-    QTimer::singleShot(8000,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
+void ExerciceDoubleClic::slotFermetureAide()
+{
+    eventFilter(this, keySpace);
+    getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 
 void ExerciceDoubleClic::slotRealisationExerciceEntered()

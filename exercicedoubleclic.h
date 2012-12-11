@@ -92,6 +92,9 @@ private:
     // Dimensions de l'aire de jeu
     QSize m_tailleAireDejeu;
 
+    AbulEduMessageBoxV1* m_messageBox;
+    QKeyEvent *keySpace; /** C'est la touche espace, pour la pause */
+
     /** Méthode qui retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
       * @param int monChiffre, le chiffre à calculer
       * @return QPair<int, int>, la plus petite division d'entiers dont le resultat est supérieur à monChiffre
@@ -129,9 +132,14 @@ private slots:
     void slotSequenceEntered();
 
     /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Affichage de la consigne
+      * @brief Affichage de l'aide
       */
-    void slotPresenteSequenceEntered();
+    void slotAide();
+
+    /** Méthode appelée à la fermeture de l'aire
+      * @see AbulEduMessageBoxV1::signalFermeture()
+      */
+    void slotFermetureAide();
 
     /** Méthode héritée @see AbulEduCommonStatesV1
       * @brief Mettre tout ce qui est commun à chaque question
