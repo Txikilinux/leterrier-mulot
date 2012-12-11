@@ -181,36 +181,6 @@ void ExerciceClic::slotFermetureAide()
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 
-//void ExerciceClic::slotPresenteSequenceEntered() //todo
-//{
-//    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotPresenteSequenceEntered()";
-
-//    // Normalement, on n'efface pas cette ligne, sinon tant pis
-//    AbulEduCommonStatesV1::slotPresenteSequenceEntered();
-
-//    getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Ma consigne qui presentera la sequence (video souhaitee)");
-//    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Clic"));
-
-//    QString debutTableau = "<tr>";
-//    QString imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
-//    QString consigne = "<td> " + trUtf8("Clique sur les rectangles noirs pour faire apparaitre l'image.")+"<br />"
-//                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
-//    QString finTableau = "</tr>";
-//    getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
-
-//    getAbeExerciceMessageV1()->abeWidgetMessageResize();
-//    getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(false);
-//    getAbeExerciceMessageV1()->setVisible(true);
-
-//    redimensionnerConsigne();
-//    onPeutPresenterExercice = false; // permet de "sauter" la présentation de l'exercice
-
-//    // Appui auto sur bouton suivant
-//    if (m_localDebug) qDebug() << "Passage à l'exercice automatique";
-//    //Modifie pour régler "à la main" le temps d'affichage de la consigne : ce temps dépend de la longueur de la consigne
-//    QTimer::singleShot(8000,this,SLOT(slotAppuiAutoSuivant()));     // Clic auto du bouton suivant avec un timer
-//}
-
 void ExerciceClic::slotRealisationExerciceEntered()
 {
     if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotRealisationExerciceEntered()";
@@ -412,9 +382,9 @@ void ExerciceClic::slotFinQuestionEntered()
     if (m_localDebug)qDebug()<< "##########################  ExerciceClic::slotFinQuestionEntered()";
 
     // Affichage du temps passé Total
-    if (m_localDebug) qDebug("Temps écoulé en millisecondes: %d ms", m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5);
+    if (m_localDebug) qDebug() << "Temps écoulé en millisecondes: " << m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5;
     // On ne veut pas un chronometre précis au millième près =)
-    if (m_localDebug) qDebug("Temps écoulé en secondes: %d sec", (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
+    if (m_localDebug) qDebug() << "Temps écoulé en secondes: " << (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000;
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }

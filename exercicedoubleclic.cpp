@@ -381,9 +381,9 @@ void ExerciceDoubleClic::slotFinQuestionEntered()
     if (m_localDebug)qDebug()<< "##########################  ExerciceDoubleClic::slotFinQuestionEntered()";
 
     // Affichage du temps passé Total
-    if (m_localDebug) qDebug("Temps écoulé en millisecondes: %d ms", m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5);
+    if (m_localDebug) qDebug() << "Temps écoulé en millisecondes: " << m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5;
     // On ne veut pas un chronometre précis au millième près =)
-    if (m_localDebug) qDebug("Temps écoulé en secondes: %d sec", (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
+    if (m_localDebug) qDebug() << "Temps écoulé en secondes: " << (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000;
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }

@@ -157,6 +157,7 @@ void MainWindow::slotFinDemo()
 void MainWindow::btnBoxClicked()
 {
     if (m_localDebug) qDebug()<<"Bouton Box Clicked";
+    /** @todo Passage en mode vignette  */
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
 #ifdef __ABULEDUTABLETTEV1__MODE__
     m_abuleduFileManager->showFullScreen();
