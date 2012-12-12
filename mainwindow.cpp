@@ -92,7 +92,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
-    ui->statusBar->hide();
 #endif
 }
 
@@ -186,7 +185,6 @@ void MainWindow::abeAiguillage()
 {
     setFixedSize(this->width(), this->height());
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
-    ui->statusBar->showMessage(trUtf8(" Nom du fichier .abe selectionné : ")+ m_abuleduFile->abeFileGetFileName().fileName());
     if (m_numberExoCalled >= 0) ui->menuBar->setEnabled(false);
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
