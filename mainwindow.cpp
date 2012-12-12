@@ -88,8 +88,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
 
     /// Ajout de l'anglais & français dans le menu langues
-
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
+
+#ifdef __ABULEDUTABLETTEV1__MODE__
+    ui->menuBar->hide();
+    ui->menuExercice->hide();
+    ui->menuLangues->hide();
+    ui->menuOptions->hide();
+    ui->statusBar->hide();
+#endif
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -156,8 +163,6 @@ void MainWindow::slotFinDemo()
 
 void MainWindow::btnBoxClicked()
 {
-    if (m_localDebug) qDebug()<<"Bouton Box Clicked";
-    /** @todo Passage en mode vignette  */
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
 #ifdef __ABULEDUTABLETTEV1__MODE__
     m_abuleduFileManager->showFullScreen();
