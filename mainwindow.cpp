@@ -92,9 +92,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
-    ui->menuExercice->hide();
-    ui->menuLangues->hide();
-    ui->menuOptions->hide();
     ui->statusBar->hide();
 #endif
 }
