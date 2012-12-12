@@ -106,7 +106,6 @@ MainWindow::~MainWindow()
 {
     if (m_localDebug) qDebug() << "##########################  MainWindow::~MainWindow()";
     delete ui;
-    delete m_config;
     //    cleanDirectory(m_tempDir->absolutePath(),m_tempDir->absolutePath());
     //    bool exitSucceded = QDir().rmdir(m_tempDir->absolutePath());
     //    if (m_localDebug) qDebug()<<"Destruction du repertoire temporaire reussie : "<<exitSucceded;

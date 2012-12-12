@@ -106,8 +106,6 @@ private:
     bool m_localDebug;
     bool m_isDemoAvailable;
 
-    QSettings *m_config;
-
     AbulEduFileV1 *m_abuleduFile;
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
     QDir *m_tempDir;
