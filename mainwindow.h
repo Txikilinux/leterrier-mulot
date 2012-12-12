@@ -33,7 +33,6 @@
 #include "abuleduboxfilemanagerv1.h"
 #include "activityfilter.h"
 #include "version.h"
-#include "abuleduvirtualkeyboardv1.h"
 #include "lib/abuleduaproposv1/abuleduaproposv1.h"
 #include "ui_mainwindow.h"
 #include "exercicesurvol.h"
