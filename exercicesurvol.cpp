@@ -131,13 +131,14 @@ void ExerciceSurvol::chargerOption()
 
         slotQuitterAccueil();
     }
-    opt_timerSuivant     = parametres.value("survol/timerSuivant", 7000).toInt();
-    opt_nbMasquesChoisis = parametres.value("survol/nbMasquesChoisis", 7).toInt();
+    opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
+    opt_nbMasquesChoisis = parametres.value("nbMasquesChoisis", 7).toInt();
 
     if (m_localDebug)
     {
         qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
+                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis
+                    << parametres.value("survol/nbMasquesChoisis").toInt();
     }
 }
 
