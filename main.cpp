@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
 {
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, "leterrier");
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
+
 #ifdef __ABULEDUTABLETTEV1__MODE__
     QApplication::setStyle("plastique");
 #endif
@@ -39,14 +40,12 @@ int main(int argc, char *argv[])
     MainWindow *w;
 
     /// Splashscreen
-    // ================== splashscreen
     AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0,true);
     splash->show();
     w = new MainWindow(0);
     splash->setMainWindow(w);
     //pour les developpeurs presses, remplacer le 10000 par 1000
     splash->launch(0);
-    // ================== splashscreen end
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
     //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
@@ -55,23 +54,6 @@ int main(int argc, char *argv[])
     a.installEventFilter(ef);
 
     QObject::connect(ef, SIGNAL(userInactive()), w, SLOT(slotDemo()));
-
-    //Gestion de la ligne de commande pour activer ou pas le clavier virtuel
-    //    if(abeApp->arguments().size() > 1)
-    //    {
-    //        if(abeApp->arguments().contains("--virtualkeyboard")) {
-    //AbulEduVirtualKeyboardV1 *ic = new AbulEduVirtualKeyboardV1();
-    //a.setInputContext(ic);
-    //        }
-    //    }
-
-    /// TODO -> A mettre dans splashScreen !!
-//#ifdef __ABULEDUTABLETTEV1__MODE__
-//    w->showFullScreen();
-//#else
-//    // jlf 2012/09/29 Fenetre maximisée par défaut
-//    w->showMaximized();
-//#endif
 
     return a.exec();
 }

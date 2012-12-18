@@ -52,7 +52,6 @@ macx {
  ICON = macos/icones/leterrier-mulot.icns
 }
 
-
 include(lib/abuleduapplicationv1/abuleduapplicationv1.pri)
 include(lib/abuleduconstantesv1/abuleduconstantesv1.pri)
 include(lib/abuleducommonstatesv1/abuleducommonstatesv1.pri)
