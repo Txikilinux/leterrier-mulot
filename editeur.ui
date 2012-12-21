@@ -468,96 +468,92 @@ font : bold;
       </layout>
      </widget>
      <widget class="QWidget" name="pageScoLOM">
-      <widget class="QTabWidget" name="tabWidgetLOM">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>896</width>
-         <height>524</height>
-        </rect>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <property name="elideMode">
-        <enum>Qt::ElideNone</enum>
-       </property>
-       <widget class="QWidget" name="tabWidgetLOMFR">
-        <attribute name="title">
-         <string>Norme LOMFR</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_26">
-         <item row="0" column="0">
-          <widget class="AbulEduWidgetLOMFrV1" name="abewLOMFR" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabWidgetScoLOMFR">
-        <attribute name="title">
-         <string>Norme ScoLOMFR</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_35">
-         <item row="0" column="0">
-          <widget class="AbulEduWidgetSCOLOMFrV1" name="abewScoLOMFR" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabWidgetAbeLOM1">
-        <attribute name="title">
-         <string>AbulÉduLOM 1</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_34">
-         <item row="0" column="0">
-          <widget class="AbulEduWidgetLOMV1" name="abewLOM" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tabWidgetAbeLOM2">
-        <attribute name="title">
-         <string>AbulÉduLOM 2</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_38">
-         <item row="0" column="0">
-          <widget class="AbulEduWidgetLOMSuiteV1" name="abewLOMSuite" native="true">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </widget>
+      <layout class="QGridLayout" name="gridLayout_14">
+       <item row="0" column="0">
+        <widget class="QTabWidget" name="tabWidgetLOM">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="currentIndex">
+          <number>3</number>
+         </property>
+         <property name="elideMode">
+          <enum>Qt::ElideNone</enum>
+         </property>
+         <widget class="QWidget" name="tabWidgetLOMFR">
+          <attribute name="title">
+           <string>Norme LOMFR</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_26">
+           <item row="0" column="0">
+            <widget class="AbulEduWidgetLOMFrV1" name="abewLOMFR" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabWidgetScoLOMFR">
+          <attribute name="title">
+           <string>Norme ScoLOMFR</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_35">
+           <item row="0" column="0">
+            <widget class="AbulEduWidgetSCOLOMFrV1" name="abewScoLOMFR" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabWidgetAbeLOM1">
+          <attribute name="title">
+           <string>AbulÉduLOM 1</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_34">
+           <item row="0" column="0">
+            <widget class="AbulEduWidgetLOMV1" name="abewLOM" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabWidgetAbeLOM2">
+          <attribute name="title">
+           <string>AbulÉduLOM 2</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_38">
+           <item row="0" column="0">
+            <widget class="AbulEduWidgetLOMSuiteV1" name="abewLOMSuite" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="pageParametres">
       <layout class="QGridLayout" name="gridLayout_11">
