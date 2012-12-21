@@ -234,6 +234,8 @@ private:
       */
     void dragEnterEvent(QDragEnterEvent *event);
 
+    /** Sauve les méta données écrites dans les widget ScoLOMFr et crée le fichier lom.xml par appel de la méthode abeLOMExportAsXML */
+    void saveMetaData();
 };
 
 #endif // EDITEUR_H

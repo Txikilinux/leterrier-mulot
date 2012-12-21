@@ -93,6 +93,11 @@ Editeur::Editeur(QWidget *parent) :
         if(m_localDebug) qDebug() << "Creation ok";
     }
     else { return; } // si echec pas la peine d'aller plus loin
+
+    ui->abewScoLOMFR->abeWLOMsetABESCOLOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
+    ui->abewLOMFR->abeWLOMsetABELOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
+    ui->abewLOM->abeWLOMsetABELOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
+    ui->abewLOMSuite->abeWLOMsetABELOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
 }
 
 Editeur::~Editeur()
@@ -328,6 +333,8 @@ void Editeur::createAbe()
 
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
+
+    saveMetaData();
 
     if (m_localDebug) qDebug() << parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath());
 
@@ -1139,11 +1146,11 @@ void Editeur::majBarreNavigation(int numPage)
         ui->btnPrecedent->setVisible(true);
         ui->btnSuivant->setVisible(true);
 
-        if (numPage == 2) // derniere page
+        if (numPage == ui->stackedWidget->count()-1) // derniere page
         {
             ui->btnSuivant->setIcon(QIcon(":/bouton/disque"));
         }
-        else if(numPage != 2)
+        else if(numPage != ui->stackedWidget->count()-1)
         {
             ui->btnSuivant->setIcon(QIcon(":/bouton/flecheD"));
         }
@@ -1214,4 +1221,24 @@ void Editeur::on_btnModificationAutre_clicked()
 
     setModeModificationAbe(true);
     m_abuleduFileManager->show();
+}
+
+void Editeur::saveMetaData()
+{
+    ui->abewLOM->saveOnExit();
+    ui->abewLOMSuite->saveOnExit();
+    ui->abewLOMFR->saveOnExit();
+    ui->abewScoLOMFR->saveOnExit();
+    QFile file(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+"/lom.xml");
+     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+     {
+         if (m_localDebug)
+         {
+             qDebug()<<"Echec dans l'ouverture du fichier lom.xml pour écriture...";
+         }
+         return;
+     }
+     QTextStream out(&file);
+     out << m_parent->abeGetMyAbulEduFile()->abeFileGetLOM()->abeLOMExportAsXML();
+     file.close();
 }
