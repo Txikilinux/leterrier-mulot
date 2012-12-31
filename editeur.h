@@ -45,6 +45,7 @@
 #include "ui_editeur.h"
 #include "mainwindow.h"
 #include "editeurparcourswidget.h"
+#include "abuledumediathequepushv1.h"
 
 namespace Ui {
 class Editeur;
@@ -193,6 +194,7 @@ private:
     EditeurParcoursWidget *gv_AireParcours;
 
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
+    AbulEduFileV1           *m_abuleduFile;
 
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();

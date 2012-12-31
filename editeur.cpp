@@ -33,7 +33,8 @@ Editeur::Editeur(QWidget *parent) :
 
     if(!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
-        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().fileName());
+        m_abuleduFile = m_parent->abeGetMyAbulEduFile();
+        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_abuleduFile->abeFileGetFileName().fileName());
         ui->btnModificationCourant->setEnabled(true);
         ui->btnModificationCourant->setMinimumHeight(60);
         ui->btnModificationAutre->setMinimumHeight(60);
@@ -41,8 +42,9 @@ Editeur::Editeur(QWidget *parent) :
     }
     else
     {
+        m_abuleduFile = new AbulEduFileV1();
         ui->btnModificationCourant->setEnabled(false);
-        m_parent->abeSetMyAbulEduFile(new AbulEduFileV1(m_parent));
+        m_parent->abeSetMyAbulEduFile(m_abuleduFile);
     }
 
     m_lastOpenDir = QDir::homePath();
@@ -51,6 +53,8 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
+    ui->abuleduMediathequeGet->abeHideInfoPanel(true);
+    ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()));
 
@@ -80,29 +84,22 @@ Editeur::Editeur(QWidget *parent) :
 
     setAcceptDrops(true);
 
-    ui->abuleduMediathequeGet->abeHideInfoPanel(true);
-    ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
     creationMenu();
 
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
-    if(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().mkpath("data/images"))
+    if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images"))
     {
         if(m_localDebug) qDebug() << "Creation ok";
     }
     else { return; } // si echec pas la peine d'aller plus loin
-
-    ui->abewScoLOMFR->abeWLOMsetABESCOLOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
-    ui->abewLOMFR->abeWLOMsetABELOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
-    ui->abewLOM->abeWLOMsetABELOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
-    ui->abewLOMSuite->abeWLOMsetABELOMFrV1(m_parent->abeGetMyAbulEduFile()->abeFileGetLOM());
 }
 
 Editeur::~Editeur()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName();
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
 }
 
@@ -166,22 +163,22 @@ void Editeur::ajouterImage(QFileInfo monFichier)
         qDebug() << "ajouterImage -> Chemin du fichier selectionné : " << monFichier.absoluteFilePath() <<" Nom du fichier : " << monFichier.fileName();
     }
 
-    if (m_listeFichiersImages.contains(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg")) // Controle des insertions (éviter les doublons)
+    if (m_listeFichiersImages.contains(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg")) // Controle des insertions (éviter les doublons)
     {
         if(m_localDebug) qDebug() << "Fichier deja présent";
         return;
     }
     else
     {
-        if (m_parent->abeGetMyAbulEduFile()->resizeImage(&monFichier, 1024,m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
+        if (m_abuleduFile->resizeImage(&monFichier, 1024,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
         {
-            m_listeFichiersImages << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"; // je range le chemin de l'image dans ma liste (celui du fichier temp)
+            m_listeFichiersImages << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"; // je range le chemin de l'image dans ma liste (celui du fichier temp)
             // Insertion dans mon listWidget
             QListWidgetItem *item = new QListWidgetItem();
             QIcon icone(monFichier.absoluteFilePath());
             item->setIcon(icone);
             item->setText(monFichier.baseName());
-            item->setData(4, m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
+            item->setData(4, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
             ui->listWidgetImagesSelection->insertItem(0, item);
             qDebug() << m_listeFichiersImages;
         }
@@ -192,6 +189,22 @@ void Editeur::slotImportImageMediatheque()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
+
+    //Ajout des metadata
+    QDate ladate = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetLifeCycleContributionDates("author").first();
+    if(!ladate.isValid()){
+        ladate = QDate::currentDate();
+    }
+    vCard card = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetLifeCycleContributionEntities("author",ladate).first();
+    m_abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole(trUtf8("fournisseur de contenu"), card, ladate);
+    if(m_localDebug) {
+        qDebug() << "On ajoute au LOM le contributeur : " << card.getFullName() << " a la date du " << ladate;
+    }
+    //Ajout des mots clés
+    QStringList kwords = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetGeneralKeywords("fre");
+    for(int i = 0; i < kwords.size(); i++) {
+        m_abuleduFile->abeFileGetLOM()->abeLOMaddGeneralKeyword("fre",kwords.at(i));
+    }
 }
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
@@ -230,7 +243,7 @@ void Editeur::createAbe()
     ui->listWidgetImagesSelection->clear();
 
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
-    QSettings parametres(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.setValue("version",abeApp->applicationVersion());
     /// Parametres Survol
     parametres.beginGroup("survol");
@@ -334,15 +347,18 @@ void Editeur::createAbe()
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
 
-    saveMetaData();
 
-    if (m_localDebug) qDebug() << parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath());
+    //2012.12.31: temporaire pour tester l'export sur mediatheque
+    AbulEduMediathequePushV1* medPush = new AbulEduMediathequePushV1(0,"mediatheque");
+    medPush->abeSetFile(m_abuleduFile);
+    medPush->show();
 
-    m_parent->abeGetMyAbulEduFile()->abeFileExportPrepare(parcoursRecursif(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()), m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath(), "abe");
-
-    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_parent->abeGetMyAbulEduFile(),AbulEduBoxFileManagerV1::abeSave);
-    SaveAbuleduFileManager->abeSetFile(m_parent->abeGetMyAbulEduFile());
-    SaveAbuleduFileManager->show();
+//    saveMetaData();
+//    if (m_localDebug) qDebug() << parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+//    m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+//    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuleduFile,AbulEduBoxFileManagerV1::abeSave);
+//    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
+//    SaveAbuleduFileManager->show();
 
     if (m_localDebug) qDebug() << "Création abe OK";
 }
@@ -1025,7 +1041,7 @@ void Editeur::slotOpenFile()
     }
     m_parent->abeSetMyAbulEduFile(m_abuleduFileManager->abeGetFile());
     slotLoadUnit();
-    if (m_localDebug) qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath();
+    if (m_localDebug) qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     m_abuleduFileManager->hide();
 
     /// TODO -> Comment rassembler des fichiers LOMFr et tout ce qui suit ?
@@ -1033,10 +1049,10 @@ void Editeur::slotOpenFile()
 
 void Editeur::slotLoadUnit()
 {
-    if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().fileName();
+    if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<m_abuleduFile->abeFileGetFileName().fileName();
     m_listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
-    QDir folder(QString(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
+    QDir folder(QString(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
     folder.setFilter(QDir::NoDotAndDotDot | QDir::Files);
     foreach(QFileInfo fileInfo, folder.entryInfoList())
     {
@@ -1044,7 +1060,7 @@ void Editeur::slotLoadUnit()
         m_lastOpenDir = fileInfo.absolutePath();
     }
 
-    QSettings parametres(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("clic");
     ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
@@ -1080,7 +1096,7 @@ void Editeur::chargerPositionMasque(int numeroParcours)
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     positionMasquesParcours.clear();
-    QSettings parametres(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroParcours));
     for (int i =0 ; i < parametres.childKeys().count(); i++)
@@ -1225,20 +1241,17 @@ void Editeur::on_btnModificationAutre_clicked()
 
 void Editeur::saveMetaData()
 {
-    ui->abewLOM->saveOnExit();
-    ui->abewLOMSuite->saveOnExit();
-    ui->abewLOMFR->saveOnExit();
-    ui->abewScoLOMFR->saveOnExit();
-    QFile file(m_parent->abeGetMyAbulEduFile()->abeFileGetDirectoryTemp().absolutePath()+"/lom.xml");
-     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-     {
-         if (m_localDebug)
-         {
-             qDebug()<<"Echec dans l'ouverture du fichier lom.xml pour écriture...";
-         }
-         return;
-     }
-     QTextStream out(&file);
-     out << m_parent->abeGetMyAbulEduFile()->abeFileGetLOM()->abeLOMExportAsXML();
-     file.close();
+//note eric 31.12.2012: Mais pourquoi tu fais ça icham ?
+//    QFile file(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/lom.xml");
+//     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+//     {
+//         if (m_localDebug)
+//         {
+//             qDebug()<<"Echec dans l'ouverture du fichier lom.xml pour écriture...";
+//         }
+//         return;
+//     }
+//     QTextStream out(&file);
+//     out << m_abuleduFile->abeFileGetLOM()->abeLOMExportAsXML();
+//     file.close();
 }
