@@ -27,6 +27,7 @@ install/leterrier-mulot::
 	cp -a $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data
 #	cp -a $(CURDIR)/conf/* $(BUILDTEMP)/$(DEST)/conf
 	cp -a $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
+	strip $(BUILDTEMP)/$(EXECDEST)/leterrier-mulot
 
 #	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
 #	install -D --mode=0755 $(QTDIR)/lib/libQtXml.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
