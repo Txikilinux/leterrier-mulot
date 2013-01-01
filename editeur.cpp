@@ -346,6 +346,8 @@ void Editeur::createAbe()
 
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
+    saveMetaData();
+    m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
 
 
     //2012.12.31: temporaire pour tester l'export sur mediatheque
@@ -353,9 +355,7 @@ void Editeur::createAbe()
     medPush->abeSetFile(m_abuleduFile);
     medPush->show();
 
-//    saveMetaData();
 //    if (m_localDebug) qDebug() << parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-//    m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
 //    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuleduFile,AbulEduBoxFileManagerV1::abeSave);
 //    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
 //    SaveAbuleduFileManager->show();
