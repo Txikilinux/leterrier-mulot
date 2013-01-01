@@ -45,15 +45,15 @@ int main(int argc, char *argv[])
     w = new MainWindow(0);
     splash->setMainWindow(w);
     //pour les developpeurs presses, remplacer le 10000 par 1000
-    splash->launch(0);
+    splash->launch(1000);
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
     //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
-    activityFilter *ef;
-    ef = new activityFilter(&a);
-    a.installEventFilter(ef);
+//    activityFilter *ef;
+//    ef = new activityFilter(&a);
+//    a.installEventFilter(ef);
 
-    QObject::connect(ef, SIGNAL(userInactive()), w, SLOT(slotDemo()));
+//    QObject::connect(ef, SIGNAL(userInactive()), w, SLOT(slotDemo()));
 
     return a.exec();
 }
