@@ -188,9 +188,9 @@ void ExerciceDoubleClic::slotRealisationExerciceEntered()
     if (!m_exerciceEnCours)
     {
         // Mettre tout ce qui est commun à chaque question
-        m_nbImage = m_nbTotalQuestions; // le nb image = le nb de question
+        m_nbImage = getAbeNbTotalQuestions(); // le nb image = le nb de question
         m_nbMasquesInteractifs = 0;
-        boiteTetes->resetTetes(m_nbTotalQuestions);
+        boiteTetes->resetTetes(getAbeNbTotalQuestions());
 
         // aller chercher le pack image
         QDir dir(cheminImage);
@@ -268,7 +268,7 @@ void ExerciceDoubleClic::slotInitQuestionEntered()
         redimensionnerImage2();
 
         gv_AireDeJeu->show();
-        getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(m_numQuestion);
+        getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(getAbeNumQuestion());
 
         //--------- Calcul de la taille des masques
         float largeurMasque = 0.00;
@@ -366,7 +366,7 @@ void ExerciceDoubleClic::slotFinVerificationQuestionEntered()
 
     m_listeMasquesFixes.clear();
 
-    boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
+    boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
 
     // Vider itemImage
     gv_AireDeJeu->scene()->removeItem(m_itemImage);
@@ -553,7 +553,7 @@ void ExerciceDoubleClic::slotCacheMasque()
         // Appui sur le bouton vérifier
         QTimer::singleShot(0, this, SLOT(slotAppuiAutoVerifier()));
 
-        boiteTetes->setEtatTete(m_numQuestion-1, abe::evalA );
+        boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
         m_listeMasquesFixes.clear();
 
         // Affichage du temps passé
@@ -564,7 +564,7 @@ void ExerciceDoubleClic::slotCacheMasque()
         }
 
         // Enregistrement du temps passé pour chaque question
-        switch (m_numQuestion){
+        switch (getAbeNumQuestion()){
         case 1:
             m_tempsQuestion1 = m_chronometre->elapsed();
             break;
