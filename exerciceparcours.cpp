@@ -1,6 +1,7 @@
 /** Classe ExerciceParcours
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2013 Eric Seigne <eric.seigne@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -24,13 +25,13 @@
 ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
 {
-    m_localDebug = true;
+    m_localDebug = false;
     m_exerciceEnCours = false;
 
     m_parent = parent;
     m_theme = theme;
 
-    connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()));
+    connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
     //Création de l'aire de travail + propriétés
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
@@ -91,8 +92,8 @@ ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true);
 
     // Pour les appuis automatiques sur les touches
-    connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()));
-    connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()));
+    connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()), Qt::UniqueConnection);
+    connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()), Qt::UniqueConnection);
 
     if (m_localDebug)
     {
@@ -105,8 +106,9 @@ ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     onPeutPresenterSequence = false;
 
     m_timer = new QTimer(this);
-    m_timer->setInterval(opt_timerSuivant);
+    m_timer->setInterval(opt_timerSuivant*1000);
     m_timer->setSingleShot(true);
+    connect(m_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
     keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
 }
@@ -188,7 +190,7 @@ void ExerciceParcours::slotAide()
             +" </td>" ;
 
     m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, 0);
-    connect(m_messageBox, SIGNAL(signalFermeture()), this, SLOT(slotFermetureAide()));
+    connect(m_messageBox, SIGNAL(signalFermeture()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
     m_messageBox->setWink();
     m_messageBox->show();
 }
@@ -343,11 +345,11 @@ void ExerciceParcours::slotQuestionEntered()
         /// Masque arrivee (1 de la liste positionMasque)
         m_masqueArrivee = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
         m_masqueArrivee->setColor(QColor(Qt::red));
-        connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+        connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
         /// Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee)
         m_masqueDepart = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
         m_masqueDepart->setColor(QColor(Qt::green));
-        connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+        connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
         m_masqueDepart->setHideOnMouseOver(false);
         m_masqueDepart->setHideOnClick(true);
         m_listeMasquesParcours << m_masqueDepart; // en premier
@@ -356,7 +358,7 @@ void ExerciceParcours::slotQuestionEntered()
         {
             m_masqueParcours = m_listeMasquesFixes.at(positionMasquesParcours.takeFirst());
             m_masqueParcours->setColor(QColor(Qt::black));
-            connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()));
+            connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
             m_listeMasquesParcours << m_masqueParcours;
         }
         m_listeMasquesParcours << m_masqueArrivee; // en dernier
@@ -371,10 +373,6 @@ void ExerciceParcours::slotAfficheVerificationQuestionEntered()
     if (m_exerciceEnCours)
     {
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
-        m_timer = new QTimer(this);
-        m_timer->setInterval(opt_timerSuivant);
-        m_timer->setSingleShot(true);
-        connect(m_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()));
         m_timer->start();
     }
 }
