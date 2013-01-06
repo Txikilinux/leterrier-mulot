@@ -27,9 +27,10 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
+    setAttribute(Qt::WA_DeleteOnClose);
+    //    setAttribute(Qt::WA_ShowModal);
+
     m_parent = (MainWindow*) parent;
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     if(!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
@@ -42,10 +43,14 @@ Editeur::Editeur(QWidget *parent) :
     }
     else
     {
-        m_abuleduFile = new AbulEduFileV1();
+        m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
         ui->btnModificationCourant->setEnabled(false);
         m_parent->abeSetMyAbulEduFile(m_abuleduFile);
     }
+
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    m_abuleduFileManager->abeSetFile(m_abuleduFile);
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     m_lastOpenDir = QDir::homePath();
 
@@ -58,8 +63,6 @@ Editeur::Editeur(QWidget *parent) :
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()));
 
-    setAttribute(Qt::WA_DeleteOnClose);
-    setAttribute(Qt::WA_ShowModal);
 
     m_localDebug = true;
 
@@ -84,23 +87,24 @@ Editeur::Editeur(QWidget *parent) :
 
     setAcceptDrops(true);
 
-
     creationMenu();
 
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
-    if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images"))
-    {
+    if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
         if(m_localDebug) qDebug() << "Creation ok";
     }
-    else { return; } // si echec pas la peine d'aller plus loin
+    else {
+        return;
+    } // si echec pas la peine d'aller plus loin
 }
 
 Editeur::~Editeur()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
+    delete m_abuleduFileManager;
 }
 
 void Editeur::creationMenu()
@@ -250,7 +254,7 @@ void Editeur::createAbe()
     if (ui->groupBoxSurvol->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value() *1000));
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
         parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     }
     else
@@ -263,7 +267,7 @@ void Editeur::createAbe()
     if (ui->groupBoxClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value() *1000 ));
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
         parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     }
     else
@@ -276,7 +280,7 @@ void Editeur::createAbe()
     if (ui->groupBoxClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value() *1000));
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
         parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
     }
     else
@@ -289,12 +293,12 @@ void Editeur::createAbe()
     if (ui->groupBoxParcours->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value() *1000));
+        parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
         parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
         parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
         if(!m_parametresParcours1.isEmpty())
         {
-//            parametres.setValue("parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque_1->value()));
+            //            parametres.setValue("parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque_1->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours1);
             while (i.hasNext()) {
                 i.next();
@@ -303,7 +307,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours2.isEmpty())
         {
-//            parametres.setValue("parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque_2->value()));
+            //            parametres.setValue("parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque_2->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours2);
             while (i.hasNext()) {
                 i.next();
@@ -312,7 +316,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours3.isEmpty())
         {
-//            parametres.setValue("parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque_3->value()));
+            //            parametres.setValue("parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque_3->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours3);
             while (i.hasNext()) {
                 i.next();
@@ -321,7 +325,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours4.isEmpty())
         {
-//            parametres.setValue("parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque_4->value()));
+            //            parametres.setValue("parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque_4->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours4);
             while (i.hasNext()) {
                 i.next();
@@ -330,7 +334,7 @@ void Editeur::createAbe()
         }
         if(!m_parametresParcours5.isEmpty())
         {
-//            parametres.setValue("parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque_5->value()));
+            //            parametres.setValue("parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque_5->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours5);
             while (i.hasNext()) {
                 i.next();
@@ -351,14 +355,16 @@ void Editeur::createAbe()
 
 
     //2012.12.31: temporaire pour tester l'export sur mediatheque
-    AbulEduMediathequePushV1* medPush = new AbulEduMediathequePushV1(0,"mediatheque");
+    AbulEduMediathequePushV1 *medPush = new AbulEduMediathequePushV1(0,"mediatheque");
     medPush->abeSetFile(m_abuleduFile);
+    //Super important si on veut que son destructeur soit appellé ...
+    medPush->setAttribute(Qt::WA_DeleteOnClose);
     medPush->show();
 
-//    if (m_localDebug) qDebug() << parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-//    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuleduFile,AbulEduBoxFileManagerV1::abeSave);
-//    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
-//    SaveAbuleduFileManager->show();
+    //    if (m_localDebug) qDebug() << parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+    //    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuleduFile,AbulEduBoxFileManagerV1::abeSave);
+    //    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
+    //    SaveAbuleduFileManager->show();
 
     if (m_localDebug) qDebug() << "Création abe OK";
 }
@@ -498,7 +504,7 @@ void Editeur::remplirGvParcours(int numeroParcours)
 
     /// Gestion de la taille de la Scene
     gv_AireParcours->setGeometry((gv_AireParcours->x()), (gv_AireParcours->y()),
-                                (largeurMasque * m_opt_nbMasquesLargeur) + gv_AireParcours->getGraphicsView()->verticalScrollBar()->width(),
+                                 (largeurMasque * m_opt_nbMasquesLargeur) + gv_AireParcours->getGraphicsView()->verticalScrollBar()->width(),
                                  (hauteurMasque * m_opt_nbMasquesHauteur) + gv_AireParcours->getGraphicsView()->horizontalScrollBar()->height() + (gv_AireParcours->getBoutonHeight()) *2);
 
     /// Mode Modification
@@ -1039,9 +1045,8 @@ void Editeur::slotOpenFile()
         qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
         qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
     }
-    m_parent->abeSetMyAbulEduFile(m_abuleduFileManager->abeGetFile());
     slotLoadUnit();
-    if (m_localDebug) qDebug() << trUtf8("Fichier temporaire de dézippage de l'ABE choisi")  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    if (m_localDebug) qDebug() << trUtf8("Répertoire temporaire de dézippage de l'ABE choisi")  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     m_abuleduFileManager->hide();
 
     /// TODO -> Comment rassembler des fichiers LOMFr et tout ce qui suit ?
@@ -1063,22 +1068,22 @@ void Editeur::slotLoadUnit()
     QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("clic");
     ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
-    ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
+    ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("doubleClic");
     ui->groupBoxDoubleClic->setChecked(parametres.value("exerciceActive",true).toBool());
-    ui->spinBoxDoubleClicSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
+    ui->spinBoxDoubleClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxDoubleClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("survol");
     ui->groupBoxSurvol->setChecked(parametres.value("exerciceActive",true).toBool());
-    ui->spinBoxSurvolSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
+    ui->spinBoxSurvolSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxSurvolMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("parcours");
     ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
-    ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt() / 1000);
+    ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxParcoursMasque_1->setValue(parametres.value("parcours1/nbMasquesChoisis",7).toInt());
     ui->spinBoxParcoursMasque_2->setValue(parametres.value("parcours2/nbMasquesChoisis",7).toInt());
     ui->spinBoxParcoursMasque_3->setValue(parametres.value("parcours3/nbMasquesChoisis",7).toInt());
@@ -1241,17 +1246,17 @@ void Editeur::on_btnModificationAutre_clicked()
 
 void Editeur::saveMetaData()
 {
-//note eric 31.12.2012: Mais pourquoi tu fais ça icham ?
-//    QFile file(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/lom.xml");
-//     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-//     {
-//         if (m_localDebug)
-//         {
-//             qDebug()<<"Echec dans l'ouverture du fichier lom.xml pour écriture...";
-//         }
-//         return;
-//     }
-//     QTextStream out(&file);
-//     out << m_abuleduFile->abeFileGetLOM()->abeLOMExportAsXML();
-//     file.close();
+    //note eric 31.12.2012: Mais pourquoi tu fais ça icham ?
+    //    QFile file(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/lom.xml");
+    //     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+    //     {
+    //         if (m_localDebug)
+    //         {
+    //             qDebug()<<"Echec dans l'ouverture du fichier lom.xml pour écriture...";
+    //         }
+    //         return;
+    //     }
+    //     QTextStream out(&file);
+    //     out << m_abuleduFile->abeFileGetLOM()->abeLOMExportAsXML();
+    //     file.close();
 }

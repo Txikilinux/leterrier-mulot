@@ -66,12 +66,12 @@ public:
     /** Méthode qui définit l'abe courant
       * @param AbulEduFileV1* abeFile, l'objet abulEduFile
       */
-    void abeSetMyAbulEduFile(AbulEduFileV1* abeFile);
+    void abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile);
 
     /** Méthode qui retourne l'abe courant
       * @return AbulEduFileV1 *, un pointeur sur l'objet abuledufile
       */
-    AbulEduFileV1* abeGetMyAbulEduFile() const;
+    QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile();
 
 public slots:
     /** Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif */
@@ -105,9 +105,8 @@ private:
     bool m_localDebug;
     bool m_isDemoAvailable;
 
-    AbulEduFileV1 *m_abuleduFile;
+    QSharedPointer<AbulEduFileV1> m_abuleduFile;
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
-    QDir *m_tempDir;
     int m_numberExoCalled;
     void abeAiguillage();
 

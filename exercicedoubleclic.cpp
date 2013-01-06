@@ -131,7 +131,7 @@ void ExerciceDoubleClic::chargerOption()
         messageBox->show();
         slotQuitterAccueil();
     }
-    opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
+    opt_timerSuivant     = parametres.value("timerSuivant", 7).toInt();
     opt_nbMasquesChoisis = parametres.value("nbMasquesChoisis", 7).toInt();
 
     if (m_localDebug)

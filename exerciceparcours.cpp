@@ -132,7 +132,7 @@ void ExerciceParcours::chargerOption()
         messageBox->show();
         slotQuitterAccueil();
     }
-    opt_timerSuivant     = parametres.value("timerSuivant", 7000).toInt();
+    opt_timerSuivant     = parametres.value("timerSuivant", 7).toInt();
     opt_nbMasquesLargeur = parametres.value("nbMasquesLargeur", 10).toInt();
     opt_nbMasquesHauteur = parametres.value("nbMasquesHauteur", 5).toInt();
 

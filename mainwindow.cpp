@@ -73,14 +73,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()));
-    m_abuleduFile = new AbulEduFileV1(this);
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1(0, m_abuleduFile);
+    m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1(0);
+    m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     m_numberExoCalled = -1;
-    m_tempDir = new QDir(m_abuleduFile->abeFileGetDirectoryTemp());
-    if (m_localDebug) qDebug()<<"Repertoire temporaire : "<< m_tempDir->absolutePath();
 
     /// Utilisation de la boite aPropos
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
@@ -100,7 +99,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
     m_abuleduaccueil->setDimensionsWidgets();
 }
 
-void MainWindow::abeSetMyAbulEduFile(AbulEduFileV1 *abeFile)
+void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
 {
     m_abuleduFile = abeFile;
 }
@@ -109,9 +108,7 @@ MainWindow::~MainWindow()
 {
     if (m_localDebug) qDebug() << "##########################  MainWindow::~MainWindow()";
     delete ui;
-    //    cleanDirectory(m_tempDir->absolutePath(),m_tempDir->absolutePath());
-    //    bool exitSucceded = QDir().rmdir(m_tempDir->absolutePath());
-    //    if (m_localDebug) qDebug()<<"Destruction du repertoire temporaire reussie : "<<exitSucceded;
+    delete m_abuleduFileManager;
 }
 
 void MainWindow::slotOpenFile()
@@ -159,7 +156,6 @@ void MainWindow::slotFinDemo()
 
 void MainWindow::btnBoxClicked()
 {
-    m_abuleduFileManager->abeSetFile(m_abuleduFile);
 #ifdef __ABULEDUTABLETTEV1__MODE__
     m_abuleduFileManager->showFullScreen();
 #else
@@ -400,7 +396,7 @@ void MainWindow::on_action_Changer_d_utilisateur_triggered()
     abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
 }
 
-AbulEduFileV1 *MainWindow::abeGetMyAbulEduFile() const
+QSharedPointer<AbulEduFileV1> MainWindow::abeGetMyAbulEduFile()
 {
     return m_abuleduFile;
 }
