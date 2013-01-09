@@ -115,7 +115,7 @@ max-height: 50px;
         </property>
        </widget>
       </item>
-      <item row="0" column="6">
+      <item row="0" column="5">
        <widget class="QPushButton" name="btnSuivant">
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
@@ -135,20 +135,6 @@ max-height: 50px;
         </property>
        </widget>
       </item>
-      <item row="0" column="5">
-       <widget class="QComboBox" name="cbChoixEnregistrement">
-        <item>
-         <property name="text">
-          <string>Enregistrer le fichier</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Publier sur abuledu-mediathèque</string>
-         </property>
-        </item>
-       </widget>
-      </item>
      </layout>
     </widget>
    </item>
@@ -158,7 +144,7 @@ max-height: 50px;
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>3</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout">
@@ -1135,6 +1121,221 @@ font : bold;
           </size>
          </property>
         </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="pageFin">
+      <layout class="QGridLayout" name="gridLayout_14">
+       <item row="0" column="0" colspan="7">
+        <widget class="QLabel" name="lblEtVoilaCTermine">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px black solid;
+padding: 4 4 4 60px;
+border-radius: 10px;
+background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
+         </property>
+         <property name="text">
+          <string>Et voilà c'est terminé !</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="lblTitreModule">
+         <property name="text">
+          <string>Titre de votre module :</string>
+         </property>
+         <property name="buddy">
+          <cstring>leTitre</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="3">
+        <widget class="QLineEdit" name="leTitre">
+         <property name="flagModification" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QLabel" name="lblLicence">
+         <property name="text">
+          <string>Licence :</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>cbLicence</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="5" colspan="2">
+        <widget class="QComboBox" name="cbLicence">
+         <property name="flagModification" stdset="0">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>inconnue</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>cc-by-sa</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>cc</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>cc-by</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>gfdl</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>pd</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="lblNom">
+         <property name="text">
+          <string>Votre nom :</string>
+         </property>
+         <property name="buddy">
+          <cstring>leAuteur</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1" colspan="3">
+        <widget class="QLineEdit" name="leAuteur">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="flagModification" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4" colspan="3">
+        <spacer name="horizontalSpacer_13">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>250</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Description :</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="buddy">
+          <cstring>teDescription</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1" rowspan="2" colspan="3">
+        <widget class="QPlainTextEdit" name="teDescription">
+         <property name="flagModification" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="4" colspan="3">
+        <spacer name="horizontalSpacer_14">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>250</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <spacer name="horizontalSpacer_11">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>260</width>
+           <height>24</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="2">
+        <spacer name="horizontalSpacer_12">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="5" column="3" colspan="3">
+        <widget class="QComboBox" name="cbChoixEnregistrement">
+         <item>
+          <property name="text">
+           <string>Enregistrer le fichier</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Publier sur abuledu-mediathèque</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="5" column="6">
+        <widget class="QPushButton" name="btnEnregistrementOK">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>1677215</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>OK</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

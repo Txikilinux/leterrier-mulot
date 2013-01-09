@@ -91,7 +91,6 @@ Editeur::Editeur(QWidget *parent) :
 
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
-    ui->cbChoixEnregistrement->setVisible(false);
 
     if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
         if(m_localDebug) qDebug() << "Creation ok";
@@ -1011,27 +1010,16 @@ void Editeur::on_btnSuivant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-//    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
-//        // Condition de garde = m_listeFichiersImages < 5
-//        if ( m_listeFichiersImages.count() < 5)
-//        {
-//            QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
-//            return;
-//        }
-//    }
-    if(ui->stackedWidget->currentWidget()->objectName() == "pageParametres")
-    {
-        if (ui->cbChoixEnregistrement->currentIndex() == 0)
+/* Condition commentée le temps des tests
+    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
+        // Condition de garde = m_listeFichiersImages < 5
+        if ( m_listeFichiersImages.count() < 5)
         {
-            createAbe();
+            QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
+            return;
         }
-        else
-        {
-            releaseAbe();
-        }
-        close();
-        return;
-    }
+    } */
+
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
@@ -1063,13 +1051,12 @@ void Editeur::majBarreNavigation(int numPage)
 
         if (numPage == ui->stackedWidget->count()-1) // derniere page
         {
-            ui->btnSuivant->setIcon(QIcon(":/bouton/disque"));
-            ui->cbChoixEnregistrement->setVisible(true);
+            ui->btnSuivant->setVisible(false);
         }
         else if(numPage != ui->stackedWidget->count()-1)
         {
+            ui->btnSuivant->setVisible(true);
             ui->btnSuivant->setIcon(QIcon(":/bouton/flecheD"));
-            ui->cbChoixEnregistrement->setVisible(false);
         }
     }
 }
@@ -1142,6 +1129,49 @@ void Editeur::on_btnModificationAutre_clicked()
 
 void Editeur::preparerSauvegarde()
 {
+    if(ui->leTitre->text().isEmpty()) {
+        AbulEduMessageBoxV1( trUtf8("Pas de titre !"),
+                             trUtf8("Vous n'avez pas renseigné le champ titre !")
+                             );
+        return;
+    }
+
+    if(ui->leAuteur->text().trimmed() == "") {
+        AbulEduMessageBoxV1( trUtf8("Pas d'auteur !"),
+                             trUtf8("Vous n'avez pas renseigné votre nom !")
+                             );
+        return;
+    }
+    //Les informations pour LOM
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralTitle("fre",ui->leTitre->text());
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralDescription("fre",ui->teDescription->document()->toPlainText());
+
+    vCard vcard;
+    vCardProperty name_prop  = vCardProperty::createName(ui->leAuteur->text(), "");
+    vcard.addProperty(name_prop);
+    vCardProperty fn_prop    = vCardProperty(VC_FORMATTED_NAME, ui->leAuteur->text());
+    vcard.addProperty(fn_prop);
+    vCardProperty note_prop  = vCardProperty(VC_NOTE, "");
+    vcard.addProperty(note_prop);
+    vCardProperty org_prop   = vCardProperty::createOrganization("");
+    vcard.addProperty(org_prop);
+    vCardProperty url_prop   = vCardProperty(VC_URL, "");
+    vcard.addProperty(url_prop);
+
+    m_abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole("author", vcard, QDate::currentDate());
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsCost("no");
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsCopyrightAndOtherRestrictions("yes");
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription("fre",ui->cbLicence->currentText());
+
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage("fre");
+
+    QString destTemp = m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    QDir().mkpath(destTemp + "/data/images");
+    QDir().mkpath(destTemp + "/conf");
+    QStringList listeFichiers;
+
+    m_abuleduFile->abeFileExportPrepare(listeFichiers,destTemp,QString("abe"));
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
     QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.setValue("version",abeApp->applicationVersion());
@@ -1260,4 +1290,18 @@ void Editeur::releaseAbe()
     //Super important si on veut que son destructeur soit appellé ...
     medPush->setAttribute(Qt::WA_DeleteOnClose);
     medPush->show();
+}
+
+void Editeur::on_btnEnregistrementOK_clicked()
+{
+    if (ui->cbChoixEnregistrement->currentIndex() == 0)
+    {
+        createAbe();
+    }
+    else
+    {
+        releaseAbe();
+    }
+    close();
+    return;
 }

@@ -153,6 +153,8 @@ private slots:
     /** Gère la fermeture de l'editeur de parcours */
     void slotFermetureEditeurParcoursWidget(QCloseEvent*);
 
+    void on_btnEnregistrementOK_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
