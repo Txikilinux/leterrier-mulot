@@ -314,6 +314,8 @@ void MainWindow::on_actionEditeur_triggered()
     {
         Editeur *monEditeur = new Editeur(this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
+        monEditeur->setFixedSize(width(),height());
+        monEditeur->move(pos()-QPoint(5,25));
 #ifdef __ABULEDUTABLETTEV1__MODE__
         monEditeur->showFullScreen();
 #else
