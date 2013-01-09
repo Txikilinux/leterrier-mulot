@@ -236,8 +236,12 @@ private:
       */
     void dragEnterEvent(QDragEnterEvent *event);
 
-    /** Sauve les méta données écrites dans les widget ScoLOMFr et crée le fichier lom.xml par appel de la méthode abeLOMExportAsXML */
-    void saveMetaData();
+    /** Factorisation de la préparation de la sauvegarde, que ce soit pour enregistrement du fichier ou publication pour la médiathèque
+      * Écriture des informations ScoLOMFR et copie des informations et fichiers dans les dossiers conf et data */
+    void preparerSauvegarde();
+
+    /** Publie le fichier édité sur la médiathèque */
+    void releaseAbe();
 };
 
 #endif // EDITEUR_H

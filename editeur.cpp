@@ -91,6 +91,7 @@ Editeur::Editeur(QWidget *parent) :
 
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
+    ui->cbChoixEnregistrement->setVisible(false);
 
     if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
         if(m_localDebug) qDebug() << "Creation ok";
@@ -246,127 +247,12 @@ void Editeur::createAbe()
 
     ui->listWidgetImagesSelection->clear();
 
-    /// Creation fichier Conf (note les timers sont convertis en millisecondes)
-    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
-    parametres.setValue("version",abeApp->applicationVersion());
-    /// Parametres Survol
-    parametres.beginGroup("survol");
-    if (ui->groupBoxSurvol->isChecked())
-    {
-        parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
-        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
-    }
-    else
-    {
-        parametres.setValue("exerciceActive",false);
-    }
-    parametres.endGroup();
-    /// Parametres Clic
-    parametres.beginGroup("clic");
-    if (ui->groupBoxClic->isChecked())
-    {
-        parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
-        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
-    }
-    else
-    {
-        parametres.setValue("exerciceActive",false);
-    }
-    parametres.endGroup();
-    /// Parametres Double-Clic
-    parametres.beginGroup("doubleClic");
-    if (ui->groupBoxClic->isChecked())
-    {
-        parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
-        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
-    }
-    else
-    {
-        parametres.setValue("exerciceActive",false);
-    }
-    parametres.endGroup();
-    /// Paramètres Parcours
-    parametres.beginGroup("parcours");
-    if (ui->groupBoxParcours->isChecked())
-    {
-        parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
-        parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
-        parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-        if(!m_parametresParcours1.isEmpty())
-        {
-            //            parametres.setValue("parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque_1->value()));
-            QMapIterator<QString, QVariant> i(m_parametresParcours1);
-            while (i.hasNext()) {
-                i.next();
-                parametres.setValue("parcours1/"+ i.key(), i.value());
-            }
-        }
-        if(!m_parametresParcours2.isEmpty())
-        {
-            //            parametres.setValue("parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque_2->value()));
-            QMapIterator<QString, QVariant> i(m_parametresParcours2);
-            while (i.hasNext()) {
-                i.next();
-                parametres.setValue("parcours2/"+ i.key(), i.value());
-            }
-        }
-        if(!m_parametresParcours3.isEmpty())
-        {
-            //            parametres.setValue("parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque_3->value()));
-            QMapIterator<QString, QVariant> i(m_parametresParcours3);
-            while (i.hasNext()) {
-                i.next();
-                parametres.setValue("parcours3/"+ i.key(), i.value());
-            }
-        }
-        if(!m_parametresParcours4.isEmpty())
-        {
-            //            parametres.setValue("parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque_4->value()));
-            QMapIterator<QString, QVariant> i(m_parametresParcours4);
-            while (i.hasNext()) {
-                i.next();
-                parametres.setValue("parcours4/"+ i.key(), i.value());
-            }
-        }
-        if(!m_parametresParcours5.isEmpty())
-        {
-            //            parametres.setValue("parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque_5->value()));
-            QMapIterator<QString, QVariant> i(m_parametresParcours5);
-            while (i.hasNext()) {
-                i.next();
-                parametres.setValue("parcours5/"+ i.key(), i.value());
-            }
-        }
-    }
-    else
-    {
-        parametres.setValue("exerciceActive",false);
-    }
-    parametres.endGroup();
+    preparerSauvegarde();
 
-    /// Creation .abe
-    parametres.sync(); //pour forcer l'écriture du .conf
-    saveMetaData();
-    m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
-
-
-    //2012.12.31: temporaire pour tester l'export sur mediatheque
-    AbulEduMediathequePushV1 *medPush = new AbulEduMediathequePushV1(0,"mediatheque");
-    medPush->abeSetFile(m_abuleduFile);
-    //Super important si on veut que son destructeur soit appellé ...
-    medPush->setAttribute(Qt::WA_DeleteOnClose);
-    medPush->show();
-
-    //    if (m_localDebug) qDebug() << parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-    //    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,m_abuleduFile,AbulEduBoxFileManagerV1::abeSave);
-    //    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
-    //    SaveAbuleduFileManager->show();
-
-    if (m_localDebug) qDebug() << "Création abe OK";
+    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,AbulEduBoxFileManagerV1::abeSave);
+    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
+    SaveAbuleduFileManager->show();
+    close();
 }
 
 bool Editeur::supprimerDir(const QString& dirPath)
@@ -1125,16 +1011,24 @@ void Editeur::on_btnSuivant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
-        // Condition de garde = m_listeFichiersImages < 5
-        if ( m_listeFichiersImages.count() < 5)
+//    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
+//        // Condition de garde = m_listeFichiersImages < 5
+//        if ( m_listeFichiersImages.count() < 5)
+//        {
+//            QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
+//            return;
+//        }
+//    }
+    if(ui->stackedWidget->currentWidget()->objectName() == "pageParametres")
+    {
+        if (ui->cbChoixEnregistrement->currentIndex() == 0)
         {
-            QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
-            return;
+            createAbe();
         }
-    }
-    if(ui->stackedWidget->currentWidget()->objectName() == "pageParametres") {
-        createAbe();
+        else
+        {
+            releaseAbe();
+        }
         close();
         return;
     }
@@ -1170,10 +1064,12 @@ void Editeur::majBarreNavigation(int numPage)
         if (numPage == ui->stackedWidget->count()-1) // derniere page
         {
             ui->btnSuivant->setIcon(QIcon(":/bouton/disque"));
+            ui->cbChoixEnregistrement->setVisible(true);
         }
         else if(numPage != ui->stackedWidget->count()-1)
         {
             ui->btnSuivant->setIcon(QIcon(":/bouton/flecheD"));
+            ui->cbChoixEnregistrement->setVisible(false);
         }
     }
 }
@@ -1244,19 +1140,124 @@ void Editeur::on_btnModificationAutre_clicked()
     m_abuleduFileManager->show();
 }
 
-void Editeur::saveMetaData()
+void Editeur::preparerSauvegarde()
 {
-    //note eric 31.12.2012: Mais pourquoi tu fais ça icham ?
-    //    QFile file(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/lom.xml");
-    //     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-    //     {
-    //         if (m_localDebug)
-    //         {
-    //             qDebug()<<"Echec dans l'ouverture du fichier lom.xml pour écriture...";
-    //         }
-    //         return;
-    //     }
-    //     QTextStream out(&file);
-    //     out << m_abuleduFile->abeFileGetLOM()->abeLOMExportAsXML();
-    //     file.close();
+    /// Creation fichier Conf (note les timers sont convertis en millisecondes)
+    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    parametres.setValue("version",abeApp->applicationVersion());
+    /// Parametres Survol
+    parametres.beginGroup("survol");
+    if (ui->groupBoxSurvol->isChecked())
+    {
+        parametres.setValue("exerciceActive",true);
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
+        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+    }
+    else
+    {
+        parametres.setValue("exerciceActive",false);
+    }
+    parametres.endGroup();
+    /// Parametres Clic
+    parametres.beginGroup("clic");
+    if (ui->groupBoxClic->isChecked())
+    {
+        parametres.setValue("exerciceActive",true);
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
+        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+    }
+    else
+    {
+        parametres.setValue("exerciceActive",false);
+    }
+    parametres.endGroup();
+    /// Parametres Double-Clic
+    parametres.beginGroup("doubleClic");
+    if (ui->groupBoxClic->isChecked())
+    {
+        parametres.setValue("exerciceActive",true);
+        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
+        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+    }
+    else
+    {
+        parametres.setValue("exerciceActive",false);
+    }
+    parametres.endGroup();
+    /// Paramètres Parcours
+    parametres.beginGroup("parcours");
+    if (ui->groupBoxParcours->isChecked())
+    {
+        parametres.setValue("exerciceActive",true);
+        parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
+        parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
+        parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
+        if(!m_parametresParcours1.isEmpty())
+        {
+            //            parametres.setValue("parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque_1->value()));
+            QMapIterator<QString, QVariant> i(m_parametresParcours1);
+            while (i.hasNext()) {
+                i.next();
+                parametres.setValue("parcours1/"+ i.key(), i.value());
+            }
+        }
+        if(!m_parametresParcours2.isEmpty())
+        {
+            //            parametres.setValue("parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque_2->value()));
+            QMapIterator<QString, QVariant> i(m_parametresParcours2);
+            while (i.hasNext()) {
+                i.next();
+                parametres.setValue("parcours2/"+ i.key(), i.value());
+            }
+        }
+        if(!m_parametresParcours3.isEmpty())
+        {
+            //            parametres.setValue("parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque_3->value()));
+            QMapIterator<QString, QVariant> i(m_parametresParcours3);
+            while (i.hasNext()) {
+                i.next();
+                parametres.setValue("parcours3/"+ i.key(), i.value());
+            }
+        }
+        if(!m_parametresParcours4.isEmpty())
+        {
+            //            parametres.setValue("parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque_4->value()));
+            QMapIterator<QString, QVariant> i(m_parametresParcours4);
+            while (i.hasNext()) {
+                i.next();
+                parametres.setValue("parcours4/"+ i.key(), i.value());
+            }
+        }
+        if(!m_parametresParcours5.isEmpty())
+        {
+            //            parametres.setValue("parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque_5->value()));
+            QMapIterator<QString, QVariant> i(m_parametresParcours5);
+            while (i.hasNext()) {
+                i.next();
+                parametres.setValue("parcours5/"+ i.key(), i.value());
+            }
+        }
+    }
+    else
+    {
+        parametres.setValue("exerciceActive",false);
+    }
+    parametres.endGroup();
+
+    /// Creation .abe
+    parametres.sync(); //pour forcer l'écriture du .conf
+    m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+}
+
+void Editeur::releaseAbe()
+{
+    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+
+    preparerSauvegarde();
+
+    AbulEduMediathequePushV1 *medPush = new AbulEduMediathequePushV1(0,"mediatheque");
+    medPush->abeSetFile(m_abuleduFile);
+    //Super important si on veut que son destructeur soit appellé ...
+    medPush->setAttribute(Qt::WA_DeleteOnClose);
+    medPush->show();
 }
