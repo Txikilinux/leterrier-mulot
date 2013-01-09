@@ -6,8 +6,10 @@
         <file alias="flecheD">data/picto/flecheD.svg</file>
         <file alias="flecheG">data/picto/flecheG.svg</file>
         <file alias="quitter">data/picto/quitter.svg</file>
+        <file alias="cloud-up">data/picto/cloud-up.svg</file>
     </qresource>
     <qresource prefix="/icone">
         <file alias="mulot-128">data/icones/leterrier-mulot-128.png</file>
+        <file alias="lapin">data/picto/lapin.png</file>
     </qresource>
 </RCC>

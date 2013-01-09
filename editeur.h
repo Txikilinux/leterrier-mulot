@@ -155,6 +155,8 @@ private slots:
 
     void on_btnEnregistrementOK_clicked();
 
+    void on_cbChoixEnregistrement_currentIndexChanged(int index);
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;

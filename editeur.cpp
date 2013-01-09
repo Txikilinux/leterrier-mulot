@@ -84,6 +84,7 @@ Editeur::Editeur(QWidget *parent) :
 
     ui->stackedWidget->setCurrentIndex(0);
     majBarreNavigation(0);
+    on_cbChoixEnregistrement_currentIndexChanged(0);
 
     setAcceptDrops(true);
 
@@ -1304,4 +1305,16 @@ void Editeur::on_btnEnregistrementOK_clicked()
     }
     close();
     return;
+}
+
+void Editeur::on_cbChoixEnregistrement_currentIndexChanged(int index)
+{
+    if (ui->cbChoixEnregistrement->currentIndex() == 0)
+    {
+        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/disque"));
+    }
+    else
+    {
+        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/cloud-up"));
+    }
 }
