@@ -242,7 +242,7 @@ private:
 
     /** Factorisation de la préparation de la sauvegarde, que ce soit pour enregistrement du fichier ou publication pour la médiathèque
       * Écriture des informations ScoLOMFR et copie des informations et fichiers dans les dossiers conf et data */
-    void preparerSauvegarde();
+    bool preparerSauvegarde();
 
     /** Publie le fichier édité sur la médiathèque */
     void releaseAbe();

@@ -1132,9 +1132,6 @@ font : bold;
      </widget>
      <widget class="QWidget" name="pageFin">
       <layout class="QGridLayout" name="gridLayout_14">
-       <property name="horizontalSpacing">
-        <number>0</number>
-       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="lblEtVoilaCTermine">
          <property name="minimumSize">
@@ -1166,6 +1163,27 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
+       <item row="0" column="1" colspan="2">
+        <widget class="QLabel" name="label">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">border: 1px black solid;
+padding: 4 4 4 30px;
+border-radius: 0 10 10 0px;
+background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
+         </property>
+         <property name="text">
+          <string>Et voilà, c'est terminé !</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="lblTitreModule">
          <property name="text">
@@ -1181,56 +1199,6 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          <property name="flagModification" stdset="0">
           <bool>true</bool>
          </property>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QLabel" name="lblLicence">
-         <property name="text">
-          <string>Licence :</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="buddy">
-          <cstring>cbLicence</cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="5" colspan="2">
-        <widget class="QComboBox" name="cbLicence">
-         <property name="flagModification" stdset="0">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>inconnue</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>cc-by-sa</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>cc</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>cc-by</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>gfdl</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>pd</string>
-          </property>
-         </item>
         </widget>
        </item>
        <item row="2" column="0">
@@ -1253,19 +1221,6 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="4" colspan="3">
-        <spacer name="horizontalSpacer_13">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>250</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="3" column="0">
         <widget class="QLabel" name="label_3">
          <property name="text">
@@ -1286,7 +1241,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="4" column="4" colspan="3">
+       <item row="4" column="4" colspan="4">
         <spacer name="horizontalSpacer_14">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -1325,7 +1280,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </spacer>
        </item>
-       <item row="5" column="3" colspan="3">
+       <item row="5" column="3" colspan="4">
         <widget class="QComboBox" name="cbChoixEnregistrement">
          <item>
           <property name="text">
@@ -1339,7 +1294,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </item>
         </widget>
        </item>
-       <item row="5" column="6">
+       <item row="5" column="7">
         <widget class="QPushButton" name="btnEnregistrementOK">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -1364,24 +1319,63 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="6">
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
+       <item row="2" column="6">
+        <widget class="QComboBox" name="cbLicence">
+         <property name="flagModification" stdset="0">
+          <bool>true</bool>
          </property>
-         <property name="styleSheet">
-          <string notr="true">border: 1px black solid;
-padding: 4 4 4 30px;
-border-radius: 0 10 10 0px;
-background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
-         </property>
+         <item>
+          <property name="text">
+           <string>inconnue</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>cc-by-sa</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>cc-by</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>cc</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>lal</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>gfdl</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QComboBox" name="cbLangueRessource"/>
+       </item>
+       <item row="1" column="5">
+        <widget class="QLabel" name="lblLangueRessource">
          <property name="text">
-          <string>Et voilà, c'est terminé !</string>
+          <string>Langue de la ressource : </string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5">
+        <widget class="QLabel" name="lblLicence">
+         <property name="text">
+          <string>Licence :</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buddy">
+          <cstring>cbLicence</cstring>
          </property>
         </widget>
        </item>

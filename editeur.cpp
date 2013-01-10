@@ -92,6 +92,8 @@ Editeur::Editeur(QWidget *parent) :
 
     creationMenu();
 
+    ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
+
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
@@ -208,9 +210,9 @@ void Editeur::slotImportImageMediatheque()
         qDebug() << "On ajoute au LOM le contributeur : " << card.getFullName() << " a la date du " << ladate;
     }
     //Ajout des mots clés
-    QStringList kwords = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetGeneralKeywords("fre");
+    QStringList kwords = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetGeneralKeywords(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
     for(int i = 0; i < kwords.size(); i++) {
-        m_abuleduFile->abeFileGetLOM()->abeLOMaddGeneralKeyword("fre",kwords.at(i));
+        m_abuleduFile->abeFileGetLOM()->abeLOMaddGeneralKeyword(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first(),kwords.at(i));
     }
 }
 
@@ -1130,24 +1132,27 @@ void Editeur::on_btnModificationAutre_clicked()
     m_abuleduFileManager->show();
 }
 
-void Editeur::preparerSauvegarde()
+bool Editeur::preparerSauvegarde()
 {
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+
     if(ui->leTitre->text().isEmpty()) {
-        AbulEduMessageBoxV1( trUtf8("Pas de titre !"),
-                             trUtf8("Vous n'avez pas renseigné le champ titre !")
-                             );
-        return;
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"));
+        alertBox->show();
+        return false;
     }
 
     if(ui->leAuteur->text().trimmed() == "") {
-        AbulEduMessageBoxV1( trUtf8("Pas d'auteur !"),
-                             trUtf8("Vous n'avez pas renseigné votre nom !")
-                             );
-        return;
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"));
+        alertBox->show();
+        return false;
     }
+
+    QString codeLangue = m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().key(ui->cbLangueRessource->currentText());
+
     //Les informations pour LOM
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralTitle("fre",ui->leTitre->text());
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralDescription("fre",ui->teDescription->document()->toPlainText());
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralTitle(codeLangue,ui->leTitre->text());
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralDescription(codeLangue,ui->teDescription->document()->toPlainText());
 
     vCard vcard;
     vCardProperty name_prop  = vCardProperty::createName(ui->leAuteur->text(), "");
@@ -1164,10 +1169,11 @@ void Editeur::preparerSauvegarde()
     m_abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole("author", vcard, QDate::currentDate());
     m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsCost("no");
     m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsCopyrightAndOtherRestrictions("yes");
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription("fre",ui->cbLicence->currentText());
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription(codeLangue,ui->cbLicence->currentText());
 
     m_abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage("fre");
+    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
+    qDebug()<<" /////////////////////////////////////////// j'ai écrit pour la langue "<<codeLangue;
 
     QString destTemp = m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     QDir().mkpath(destTemp + "/data/images");
@@ -1280,6 +1286,7 @@ void Editeur::preparerSauvegarde()
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
     m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+    return true;
 }
 
 void Editeur::releaseAbe()
