@@ -687,7 +687,9 @@ void Editeur::sauvegarderParcours()
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
 
-    QMessageBox::information(this,"Editeur de Parcours", trUtf8("Le parcours a bien été sauvegardé"),0,0);
+    AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+    alertBox->setWink();
+    alertBox->show();
 
     gv_AireParcours->close();
 }
@@ -736,8 +738,8 @@ void Editeur::on_btnParcours1_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_1->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
-                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Nombre masques Parcours"),trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur"));
+        alertBox->show();
         return;
     }
 
@@ -776,8 +778,9 @@ void Editeur::on_btnParcours2_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_2->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
-                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        alertBox->setWink();
+        alertBox->show();
         return;
     }
 
@@ -809,8 +812,9 @@ void Editeur::on_btnParcours3_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_3->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
-                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        alertBox->setWink();
+        alertBox->show();
         return;
     }
 
@@ -842,8 +846,9 @@ void Editeur::on_btnParcours4_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_4->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
-                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        alertBox->setWink();
+        alertBox->show();
         return;
     }
 
@@ -875,8 +880,9 @@ void Editeur::on_btnParcours5_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_5->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        QMessageBox::information(this,trUtf8("Nombre masques Parcours"),
-                                 trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur") ,0,0);
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        alertBox->setWink();
+        alertBox->show();
         return;
     }
 
@@ -1019,7 +1025,8 @@ void Editeur::on_btnSuivant_clicked()
         // Condition de garde = m_listeFichiersImages < 5
         if ( m_listeFichiersImages.count() < 5)
         {
-            QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"));
+            alertBox->show();
             return;
         }
     }
