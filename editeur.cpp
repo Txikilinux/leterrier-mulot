@@ -989,6 +989,17 @@ void Editeur::slotLoadUnit()
     ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
     parametres.endGroup();
 
+    ui->leTitre->setText(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralTitle(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()));
+    if (abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus() == 1)
+    {
+        ui->leAuteur->setText(abeApp->getAbeIdentite()->abeGetPreNom()+" "+abeApp->getAbeIdentite()->abeGetNom());
+    }
+    ui->teDescription->setPlainText(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralDescription(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()).first());
+    QString langueRessource = m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().value(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
+    ui->cbLangueRessource->setCurrentIndex(ui->cbLangueRessource->findText(langueRessource));
+    QString licence = m_abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
+    ui->cbLicence->setCurrentIndex(ui->cbLicence->findText(licence));
+
     ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
 }
 
