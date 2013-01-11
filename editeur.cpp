@@ -1030,7 +1030,6 @@ void Editeur::on_btnSuivant_clicked()
             return;
         }
     }
-
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
