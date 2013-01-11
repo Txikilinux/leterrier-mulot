@@ -1015,7 +1015,6 @@ void Editeur::on_btnSuivant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-/* Condition commentée le temps des tests
     if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
         // Condition de garde = m_listeFichiersImages < 5
         if ( m_listeFichiersImages.count() < 5)
@@ -1023,7 +1022,7 @@ void Editeur::on_btnSuivant_clicked()
             QMessageBox::warning(this, trUtf8("Sauvegarder Thème"), trUtf8("Veuillez sélectionner au minimum 5 images"));
             return;
         }
-    } */
+    }
 
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }

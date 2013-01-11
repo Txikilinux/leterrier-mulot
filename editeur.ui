@@ -1132,6 +1132,9 @@ font : bold;
      </widget>
      <widget class="QWidget" name="pageFin">
       <layout class="QGridLayout" name="gridLayout_14">
+       <property name="horizontalSpacing">
+        <number>0</number>
+       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="lblEtVoilaCTermine">
          <property name="minimumSize">
@@ -1163,7 +1166,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="1" colspan="2">
+       <item row="0" column="1" colspan="7">
         <widget class="QLabel" name="label">
          <property name="font">
           <font>
@@ -1336,22 +1339,22 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </item>
          <item>
           <property name="text">
-           <string>cc-by</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
            <string>cc</string>
           </property>
          </item>
          <item>
           <property name="text">
-           <string>lal</string>
+           <string>cc-by</string>
           </property>
          </item>
          <item>
           <property name="text">
            <string>gfdl</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>pd</string>
           </property>
          </item>
         </widget>
@@ -1362,7 +1365,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
        <item row="1" column="5">
         <widget class="QLabel" name="lblLangueRessource">
          <property name="text">
-          <string>Langue de la ressource : </string>
+          <string>  Langue de la ressource : </string>
          </property>
         </widget>
        </item>
