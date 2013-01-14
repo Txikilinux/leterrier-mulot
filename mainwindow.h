@@ -73,6 +73,9 @@ public:
       */
     QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile();
 
+    /** Permet d'accéder à la page d'accueil */
+    AbulEduPageAccueilV1* abeGetMyAbulEduAccueil();
+
 public slots:
     /** Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif */
     void slotDemo();
@@ -98,7 +101,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    AbulEduPageAccueilV1 *m_abuleduaccueil;
+    AbulEduPageAccueilV1* m_abuleduaccueil;
     QMap<int, QString> m_texteBulles;
 
     bool m_exerciceEnCours;

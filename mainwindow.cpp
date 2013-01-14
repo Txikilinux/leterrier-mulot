@@ -314,6 +314,8 @@ void MainWindow::on_actionEditeur_triggered()
     {
         Editeur *monEditeur = new Editeur(this);
         monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
+        connect(monEditeur,SIGNAL(editorExited()),this, SLOT(exerciceExited()),Qt::UniqueConnection);
+
         monEditeur->setFixedSize(width(),height());
         monEditeur->move(pos()-QPoint(5,25));
 #ifdef __ABULEDUTABLETTEV1__MODE__
@@ -401,4 +403,9 @@ void MainWindow::on_action_Changer_d_utilisateur_triggered()
 QSharedPointer<AbulEduFileV1> MainWindow::abeGetMyAbulEduFile()
 {
     return m_abuleduFile;
+}
+
+AbulEduPageAccueilV1 *MainWindow::abeGetMyAbulEduAccueil()
+{
+    return m_abuleduaccueil;
 }

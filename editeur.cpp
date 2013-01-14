@@ -31,6 +31,8 @@ Editeur::Editeur(QWidget *parent) :
     //    setAttribute(Qt::WA_ShowModal);
 
     m_parent = (MainWindow*) parent;
+    connect(m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(show()));
+
 
     if(!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
@@ -110,6 +112,8 @@ Editeur::~Editeur()
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     delete m_abuleduFileManager;
+    m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->hide();
+    emit editorExited();
 }
 
 void Editeur::creationMenu()
@@ -251,12 +255,13 @@ void Editeur::createAbe()
 
     ui->listWidgetImagesSelection->clear();
 
-    preparerSauvegarde();
-
-    AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,AbulEduBoxFileManagerV1::abeSave);
-    SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
-    SaveAbuleduFileManager->show();
-    close();
+    if (preparerSauvegarde())
+    {
+        AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,AbulEduBoxFileManagerV1::abeSave);
+        SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
+        SaveAbuleduFileManager->show();
+        close();
+    }
 }
 
 bool Editeur::supprimerDir(const QString& dirPath)
@@ -1308,19 +1313,31 @@ bool Editeur::preparerSauvegarde()
 void Editeur::releaseAbe()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    preparerSauvegarde();
-
-    AbulEduMediathequePushV1 *medPush = new AbulEduMediathequePushV1(0,"mediatheque");
-    medPush->abeSetFile(m_abuleduFile);
-    //Super important si on veut que son destructeur soit appellé ...
-    medPush->setAttribute(Qt::WA_DeleteOnClose);
-    medPush->show();
+    ui->listWidgetImagesSelection->clear();
+    if (preparerSauvegarde())
+    {
+        AbulEduMediathequePushV1* medPush = new AbulEduMediathequePushV1(0,"mediatheque");
+        medPush->abeSetFile(m_abuleduFile);
+        medPush->setAttribute(Qt::WA_DeleteOnClose);
+        medPush->show();
+        close();
+    }
 }
 
 void Editeur::on_btnEnregistrementOK_clicked()
 {
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+
     if (ui->cbChoixEnregistrement->currentIndex() == 0)
+    {
+        if (preparerSauvegarde())
+        {
+            hide();
+            m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->show();
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."));
+            alertBox->show();        }
+    }
+    else if(ui->cbChoixEnregistrement->currentIndex() == 1)
     {
         createAbe();
     }
@@ -1328,18 +1345,21 @@ void Editeur::on_btnEnregistrementOK_clicked()
     {
         releaseAbe();
     }
-    close();
-    return;
 }
 
 void Editeur::on_cbChoixEnregistrement_currentIndexChanged(int index)
 {
-    if (ui->cbChoixEnregistrement->currentIndex() == 0)
+    if (index == 0)
+    {
+        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/essai"));
+        m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
+    }
+    else if(index == 1)
     {
         ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/disque"));
     }
     else
     {
-        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/cloud-up"));
+        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/mediatheque-up"));
     }
 }

@@ -1287,6 +1287,11 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
         <widget class="QComboBox" name="cbChoixEnregistrement">
          <item>
           <property name="text">
+           <string>Essayer ces paramètres</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Enregistrer le fichier</string>
           </property>
          </item>

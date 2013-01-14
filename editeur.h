@@ -246,6 +246,9 @@ private:
 
     /** Publie le fichier édité sur la médiathèque */
     void releaseAbe();
+
+signals:
+    void editorExited();
 };
 
 #endif // EDITEUR_H
