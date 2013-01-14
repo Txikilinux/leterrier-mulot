@@ -168,7 +168,7 @@ void MainWindow::abeLanceExo(int numero)
     if(m_exerciceEnCours){return;}
 
     m_numberExoCalled = numero;
-    if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty())
+    if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty() && m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->isHidden())
     {
         on_actionOuvrir_un_exercice_triggered();
         return;
@@ -181,7 +181,11 @@ void MainWindow::abeAiguillage()
 {
     setFixedSize(this->width(), this->height());
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
-    if (m_numberExoCalled >= 0) ui->menuBar->setEnabled(false);
+    if (m_numberExoCalled >= 0)
+    {
+        ui->menuBar->setEnabled(false);
+        m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(false);
+    }
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     showFullScreen();
@@ -254,6 +258,7 @@ void MainWindow::exerciceExited()
     ui->menuBar->setEnabled(true);
     m_exerciceEnCours = false;
     m_numberExoCalled = -1;
+    m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
 
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
