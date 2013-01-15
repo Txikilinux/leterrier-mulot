@@ -32,7 +32,7 @@ Editeur::Editeur(QWidget *parent) :
 
     m_parent = (MainWindow*) parent;
     connect(m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(show()));
-
+    connect(m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()));
 
     if(!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {

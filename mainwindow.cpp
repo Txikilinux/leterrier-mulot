@@ -184,7 +184,7 @@ void MainWindow::abeAiguillage()
     if (m_numberExoCalled >= 0)
     {
         ui->menuBar->setEnabled(false);
-        m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(false);
+        m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
@@ -258,7 +258,7 @@ void MainWindow::exerciceExited()
     ui->menuBar->setEnabled(true);
     m_exerciceEnCours = false;
     m_numberExoCalled = -1;
-    m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
+    m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(true);
 
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
