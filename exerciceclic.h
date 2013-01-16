@@ -127,6 +127,8 @@ private:
     AbulEduMessageBoxV1* m_messageBox;
     QKeyEvent *keySpace; /** C'est la touche espace, pour la pause */
 
+    void pause();
+
 private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotSequenceEntered();

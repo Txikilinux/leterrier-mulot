@@ -648,47 +648,66 @@ QPair<int, int> ExerciceSurvol::plusPetiteDivision(int monChiffre)
 bool ExerciceSurvol::eventFilter(QObject *obj, QEvent *event)
 {
     obj = this;
+
     if(event->type() == QEvent::KeyRelease && onPeutMettreEnPause)
     {
-        QPixmap pixPause(":/bouton/pause");
-        float ratio = abeApp->getAbeApplicationDecorRatio();
-        m_labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
-        m_labelTextePause->setText(trUtf8("En Pause ..."));
-        m_labelImagePause->setStyleSheet("background-color: transparent");
-        m_labelTextePause->setStyleSheet("background-color: transparent");
-
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(event);
         if(c && c->key() == Qt::Key_Space )
         {
-            if( m_timer->isActive())
-            {
-                m_timer->stop();
-                if(m_localDebug) qDebug() << "Le timer est actif est vient d'etre stoppé";
-
-                boiteTetes->setVisible(false);
-                m_labelImagePause->show();
-                m_labelTextePause->show();
-
-                int W = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
-                int w1 = m_labelImagePause->width();
-                int w2 = m_labelTextePause->width();
-                int x1 = (W-(w1+w2))/2;
-                int x2 = (W-(w2-w1))/2;
-
-                m_labelImagePause->move(x1, gv_AireDeJeu->height() + m_labelImagePause->height() - 60 *ratio);
-                m_labelTextePause->move(x2, gv_AireDeJeu->height() + m_labelImagePause->height());
-            }
-            else
-            {
-                m_timer->start();
-                if(m_localDebug) qDebug() << "Le timer repart   ";
-                m_labelImagePause->setVisible(false);
-                m_labelTextePause->setVisible(false);
-                boiteTetes->setVisible(true);
-            }
-
-            if(m_localDebug) qDebug() << "Pause !";
+            pause();
         }
     }
+    else if(event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent *castMouseEvent;
+        castMouseEvent = dynamic_cast<QMouseEvent *>(event);
+        qDebug() << "Position :: " <<  castMouseEvent->pos();
+        if(boiteTetes->geometry().contains(castMouseEvent->pos()) || m_labelImagePause->geometry().contains(castMouseEvent->pos()))
+        {
+            pause();
+        }
+    }
+    else {
+        event->ignore();
+    }
     return false;
+}
+
+void ExerciceSurvol::pause()
+{
+    QPixmap pixPause(":/bouton/pause");
+    float ratio = abeApp->getAbeApplicationDecorRatio();
+    m_labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
+    m_labelTextePause->setText(trUtf8("En Pause ..."));
+    m_labelImagePause->setStyleSheet("background-color: transparent");
+    m_labelTextePause->setStyleSheet("background-color: transparent");
+
+    if( m_timer->isActive())
+    {
+        m_timer->stop();
+        if(m_localDebug) qDebug() << "Le timer est actif est vient d'etre stoppé";
+
+        boiteTetes->setVisible(false);
+        m_labelImagePause->show();
+        m_labelTextePause->show();
+
+        int W = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
+        int w1 = m_labelImagePause->width();
+        int w2 = m_labelTextePause->width();
+        int x1 = (W-(w1+w2))/2;
+        int x2 = (W-(w2-w1))/2;
+
+        m_labelImagePause->move(x1, gv_AireDeJeu->height() + m_labelImagePause->height() - 60 *ratio);
+        m_labelTextePause->move(x2, gv_AireDeJeu->height() + m_labelImagePause->height());
+    }
+    else
+    {
+        m_timer->start();
+        if(m_localDebug) qDebug() << "Le timer repart   ";
+        m_labelImagePause->setVisible(false);
+        m_labelTextePause->setVisible(false);
+        boiteTetes->setVisible(true);
+    }
+
+    if(m_localDebug) qDebug() << "Pause !";
 }

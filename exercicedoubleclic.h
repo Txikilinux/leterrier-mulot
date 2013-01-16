@@ -127,6 +127,8 @@ private:
       */
     bool eventFilter(QObject *obj, QEvent *ev);
 
+    void pause();
+
 private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotSequenceEntered();
