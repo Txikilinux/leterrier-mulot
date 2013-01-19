@@ -204,7 +204,7 @@ void Editeur::slotImportImageMediatheque()
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
 
     //Ajout des metadata
-    m_abuleduFile->abeFileAddMetaDataFromABB(ui->mediathequeGetABB->abeGetLOM(), ui->mediathequeGetABB->abeGetFile()->abeFileGetContent(0).baseName());
+    m_abuleduFile->abeFileAddMetaDataFromABB(ui->abuleduMediathequeGet->abeGetLOM(), ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0).baseName());
 }
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
