@@ -204,20 +204,7 @@ void Editeur::slotImportImageMediatheque()
     ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
 
     //Ajout des metadata
-    QDate ladate = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetLifeCycleContributionDates("author").first();
-    if(!ladate.isValid()){
-        ladate = QDate::currentDate();
-    }
-    vCard card = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetLifeCycleContributionEntities("author",ladate).first();
-    m_abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole(trUtf8("fournisseur de contenu"), card, ladate);
-    if(m_localDebug) {
-        qDebug() << "On ajoute au LOM le contributeur : " << card.getFullName() << " a la date du " << ladate;
-    }
-    //Ajout des mots clés
-    QStringList kwords = ui->abuleduMediathequeGet->abeGetLOM()->abeLOMgetGeneralKeywords(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
-    for(int i = 0; i < kwords.size(); i++) {
-        m_abuleduFile->abeFileGetLOM()->abeLOMaddGeneralKeyword(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first(),kwords.at(i));
-    }
+    m_abuleduFile->abeFileAddMetaDataFromABB(ui->mediathequeGetABB->abeGetLOM(), ui->mediathequeGetABB->abeGetFile()->abeFileGetContent(0).baseName());
 }
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
