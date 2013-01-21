@@ -144,7 +144,7 @@ max-height: 50px;
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QGridLayout" name="gridLayout">
@@ -380,7 +380,7 @@ font : bold;
  Les fomats d'images supportés sont : 
  JPEG (ou JPG), SVG, GIF, PNG, PBM, PGM, PPM, XBM, XPM, BMP. 
  Dans le cas des formats PNG et SVG, les fonds transparents
- seront automatiquement redessiner en blanc</string>
+ seront automatiquement redessinés en blanc</string>
                 </property>
                </widget>
               </item>
@@ -1402,7 +1402,6 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="ressources.qrc"/>
   <include location="ressources.qrc"/>
  </resources>
  <connections/>
