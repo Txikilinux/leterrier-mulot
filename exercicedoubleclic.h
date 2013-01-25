@@ -45,7 +45,11 @@ public:
     ~ExerciceDoubleClic();
 
 protected:
+    /** Fonction qui doit être implémentée pour cause d'héritage. Ici pas de vraie vérification, et pas d'erreur possible
+      * @todo créer une évaluation de l'activité, pourquoi pas en fonction du temps mis */
     inline int verifieReponse(){return 0;}
+
+    /** Fonction qui doit être implémentée pour cause d'héritage. Ici pas de bonne réponse à afficher */
     inline int donneReponse() {return -1;}
 
 private:
