@@ -55,7 +55,6 @@ ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme):
     m_labelImagePause =  new QLabel(m_parent);
     m_labelTextePause = new QLabel(m_parent);
 
-
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)"); // Fond transparent
@@ -356,6 +355,8 @@ void ExerciceSurvol::slotAfficheVerificationQuestionEntered()
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
         m_timer->start();
     }
+    abeStateMachineSetVerifieReponse(verifieReponse());
+    AbulEduStateMachineV1::slotAfficheVerificationQuestionEntered();
 }
 
 void ExerciceSurvol::slotFinVerificationQuestionEntered()
@@ -372,7 +373,6 @@ void ExerciceSurvol::slotFinVerificationQuestionEntered()
     gv_AireDeJeu->scene()->clear();
     gv_AireDeJeu->show();
     m_exerciceEnCours = false;
-
 }
 
 void ExerciceSurvol::slotFinQuestionEntered()

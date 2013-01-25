@@ -355,6 +355,8 @@ void ExerciceDoubleClic::slotAfficheVerificationQuestionEntered()
         if (m_localDebug) qDebug()<< "Click bouton suivant automatique ! " << opt_timerSuivant;
         m_timer->start();
     }
+    abeStateMachineSetVerifieReponse(verifieReponse());
+    AbulEduStateMachineV1::slotAfficheVerificationQuestionEntered();
 }
 
 void ExerciceDoubleClic::slotFinVerificationQuestionEntered()

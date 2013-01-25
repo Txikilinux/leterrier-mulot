@@ -41,6 +41,10 @@ public:
     /** Destructeur de la classe ExerciceClic */
     ~ExerciceParcours();
 
+protected:
+    inline int verifieReponse(){return 0;}
+    inline int donneReponse() {return -1;}
+
 private:
 
     AbulEduEtiquettesV1 *gv_AireDeJeu;
