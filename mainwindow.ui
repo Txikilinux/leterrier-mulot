@@ -22,7 +22,7 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QFrame" name="fr_principale">
+     <widget class="QStackedWidget" name="stCentral">
       <property name="styleSheet">
        <string notr="true">background: transparent;</string>
       </property>
@@ -32,6 +32,20 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <widget class="QWidget" name="fr_principale" native="true"/>
+      <widget class="QWidget" name="pageBoxFileManager">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="AbulEduBoxFileManagerV1" name="AbulEduBoxFileManager" native="true"/>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -42,7 +56,7 @@
      <x>0</x>
      <y>0</y>
      <width>860</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Fichier">
@@ -170,6 +184,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>AbulEduBoxFileManagerV1</class>
+   <extends>QWidget</extends>
+   <header>abuleduboxfilemanagerv1.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>

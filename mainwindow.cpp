@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()));
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()));
     m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1(0);
+    m_abuleduFileManager = ui->AbulEduBoxFileManager;
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
@@ -113,9 +113,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotOpenFile()
 {
-    if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = m_abuleduFileManager->abeGetFile();
-    m_abuleduFileManager->hide();
+    if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
     abeAiguillage();
 }
 
@@ -156,11 +157,7 @@ void MainWindow::slotFinDemo()
 
 void MainWindow::btnBoxClicked()
 {
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    m_abuleduFileManager->showFullScreen();
-#else
-    m_abuleduFileManager->show();
-#endif
+    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }
 
 void MainWindow::abeLanceExo(int numero)
@@ -187,11 +184,7 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
 
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    showFullScreen();
-#else
-    show();
-#endif
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
 
     switch (m_numberExoCalled)
     {
@@ -262,11 +255,7 @@ void MainWindow::exerciceExited()
 
     setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    showFullScreen();
-#else
-    show();
-#endif
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
 }
 
 void MainWindow::on_actionOuvrir_un_exercice_triggered()
@@ -364,8 +353,7 @@ void MainWindow::slotSessionAuthenticated(bool enable)
     if (m_localDebug) qDebug() << "MainWindow::slotSessionAuthenticated" << enable;
     if(enable)
         abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
-    show();
-    //showMaximized();
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
 
     activityFilter *ef;
     ef = new activityFilter(abeApp);
