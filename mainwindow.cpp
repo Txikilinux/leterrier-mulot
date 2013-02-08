@@ -351,8 +351,9 @@ void MainWindow::changeEvent(QEvent *e)
 void MainWindow::slotSessionAuthenticated(bool enable)
 {
     if (m_localDebug) qDebug() << "MainWindow::slotSessionAuthenticated" << enable;
-    if(enable)
+    if(enable) {
         abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
+    }
     ui->stCentral->setCurrentWidget(ui->fr_principale);
 
     activityFilter *ef;
