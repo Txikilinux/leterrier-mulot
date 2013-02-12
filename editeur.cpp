@@ -67,7 +67,6 @@ Editeur::Editeur(QWidget *parent) :
 
     ui->stackedWidget->setCurrentIndex(0);
     majBarreNavigation(0);
-    on_cbChoixEnregistrement_currentIndexChanged(0);
 
     setAcceptDrops(true);
 
@@ -1310,42 +1309,22 @@ void Editeur::releaseAbe()
     }
 }
 
-void Editeur::on_btnEnregistrementOK_clicked()
+void Editeur::on_btnEssayer_clicked()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    if (ui->cbChoixEnregistrement->currentIndex() == 0)
+    if (preparerSauvegarde())
     {
-        if (preparerSauvegarde())
-        {
-            hide();
-//            m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->show();
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."));
-            alertBox->show();        }
-    }
-    else if(ui->cbChoixEnregistrement->currentIndex() == 1)
-    {
-        createAbe();
-    }
-    else
-    {
-        releaseAbe();
+        emit editorTest();
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."));
+        alertBox->show();
     }
 }
 
-void Editeur::on_cbChoixEnregistrement_currentIndexChanged(int index)
+void Editeur::on_btnEnregistrer_clicked()
 {
-    if (index == 0)
-    {
-        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/essai"));
-//        m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
-    }
-    else if(index == 1)
-    {
-        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/disque"));
-    }
-    else
-    {
-        ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/mediatheque-up"));
-    }
+    createAbe();
+}
+
+void Editeur::on_btnPublier_clicked()
+{
+    releaseAbe();
 }

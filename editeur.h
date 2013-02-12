@@ -154,9 +154,11 @@ private slots:
     /** Gère la fermeture de l'editeur de parcours */
     void slotFermetureEditeurParcoursWidget(QCloseEvent*);
 
-    void on_btnEnregistrementOK_clicked();
+    void on_btnEssayer_clicked();
 
-    void on_cbChoixEnregistrement_currentIndexChanged(int index);
+    void on_btnEnregistrer_clicked();
+
+    void on_btnPublier_clicked();
 
 private:
     Ui::Editeur *ui;
@@ -249,6 +251,7 @@ private:
 
 signals:
     void editorExited();
+    void editorTest();
 };
 
 #endif // EDITEUR_H
