@@ -157,6 +157,8 @@ private slots:
 
     void on_stackedWidget_currentChanged(int arg1);
 
+    void slotSortieVisionneuse();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -186,7 +188,6 @@ private:
 
     QDir *m_dir;
     QDir *m_dirAbe;
-    VisionneuseImage *m_visionneuseImage;
 
     QList<QString> m_listeFichiersImages;
     QMenu *m_menuListWidget;

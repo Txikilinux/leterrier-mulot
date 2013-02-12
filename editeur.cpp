@@ -70,6 +70,9 @@ Editeur::Editeur(QWidget *parent) :
 
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
+
+    QGraphicsScene* scene = new QGraphicsScene();
+    ui->gvPageVisio->setScene(scene);
 }
 
 Editeur::~Editeur()
@@ -230,14 +233,16 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     item = ui->listWidgetImagesSelection->currentItem();
-    m_visionneuseImage = new VisionneuseImage(this);
-    m_visionneuseImage->ouvrirFicher(item->data(4).toString());
-    m_visionneuseImage->setWindowModality(Qt::WindowModal);
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    m_visionneuseImage->showFullScreen();
-#else
-    m_visionneuseImage->show();
-#endif
+    AbulEduVisionneuseImageV1 *visio = new AbulEduVisionneuseImageV1(ui->tabWidgetImages);
+    connect(visio, SIGNAL(destroyed()),this,SLOT(slotSortieVisionneuse()));
+    visio->setAttribute(Qt::WA_DeleteOnClose);
+    visio->fixeTempsAffichageMax(0);
+    QGraphicsProxyWidget* prox = ui->gvPageVisio->scene()->addWidget(visio);
+    prox->grabMouse();
+
+    visio->ouvrirFicher(item->data(4).toString());
+    visio->ajusterFenetreAuMieux();
+    ui->stackedWidget->setCurrentWidget(ui->pageVisio);
 }
 
 void Editeur::createAbe()
@@ -1302,4 +1307,9 @@ void Editeur::on_stackedWidget_currentChanged(int arg1)
     ui->btnPrecedent->setHidden(arg1 == 0);
     ui->btnSuivant->setHidden(arg1 == 0);
     ui->btnSuivant->setDisabled((ui->stackedWidget->currentWidget() == ui->pageFin));
+}
+
+void Editeur::slotSortieVisionneuse()
+{
+    ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
 }
