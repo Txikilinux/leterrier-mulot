@@ -78,6 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),ui->editeur, SLOT(slotOpenFile()));
 
     m_numberExoCalled = -1;
 
@@ -87,8 +88,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
 
     connect(ui->editeur,SIGNAL(editorExited()),this, SLOT(exerciceExited()),Qt::UniqueConnection);
-//        connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()));
-//        connect(ui->editeur, SIGNAL(editorChoose()),this, SLOT(afficheBoxFileManager()),Qt::UniqueConnection);
+    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()));
+    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),Qt::UniqueConnection);
 //        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
 
     /// Ajout de l'anglais & français dans le menu langues
@@ -122,8 +123,24 @@ void MainWindow::slotOpenFile()
 {
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = m_abuleduFileManager->abeGetFile();
+    AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
+
+    if (box->abeGetSender() > 0)
+    {
+        if (box->abeGetSender()->objectName() == "editeur")
+        {
+            ui->stCentral->setCurrentWidget(ui->pageEditeur);
+        }
+        else
+        {
+            ui->stCentral->setCurrentWidget(ui->fr_principale);
+        }
+    }
+    else
+    {
+        ui->stCentral->setCurrentWidget(ui->fr_principale);
+    }
     if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
-    ui->stCentral->setCurrentWidget(ui->fr_principale);
     abeAiguillage();
 }
 
@@ -190,8 +207,6 @@ void MainWindow::abeAiguillage()
         ui->menuBar->setEnabled(false);
         m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
-
-    ui->stCentral->setCurrentWidget(ui->fr_principale);
 
     switch (m_numberExoCalled)
     {
@@ -313,6 +328,7 @@ void MainWindow::on_action_Double_Clic_triggered()
 
 void MainWindow::on_actionEditeur_triggered()
 {
+    ui->editeur->abeEditeurSetMainWindow(this);
     if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
     {
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
@@ -402,3 +418,31 @@ AbulEduPageAccueilV1 *MainWindow::abeGetMyAbulEduAccueil()
 {
     return m_abuleduaccueil;
 }
+
+void MainWindow::debutTestParametres()
+{
+    m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
+    connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(afficheEditeur()));
+    connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()));
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
+}
+
+void MainWindow::afficheEditeur()
+{
+    ui->stCentral->setCurrentWidget(ui->pageEditeur);
+}
+
+void MainWindow::afficheFrPrincipale()
+{
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
+}
+
+void MainWindow::afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave)
+{
+    ui->AbulEduBoxFileManager->abeSetOpenOrSaveEnum(openOrSave);
+    ui->AbulEduBoxFileManager->abeSetFile(m_abuleduFile);
+    ui->AbulEduBoxFileManager->abeRefresh(AbulEduBoxFileManagerV1::abePC);
+    ui->AbulEduBoxFileManager->abeSetSender(sender());
+    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
+}
+

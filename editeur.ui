@@ -144,9 +144,9 @@ max-height: 50px;
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="page">
+     <widget class="QWidget" name="pageAccueil">
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="2">
         <spacer name="verticalSpacer_9">
@@ -325,7 +325,7 @@ Choisissez entre la création ou la modification d'un thème déjà existant.
           <item row="1" column="0">
            <widget class="QTabWidget" name="tabWidgetImages">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1371,6 +1371,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
        </item>
       </layout>
      </widget>
+     <widget class="AbulEduMediathequePushV1" name="stPageMediathequePush"/>
     </widget>
    </item>
   </layout>
@@ -1380,6 +1381,12 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
    <class>AbulEduMediathequeGetV1</class>
    <extends>QWidget</extends>
    <header>abuledumediathequegetv1.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AbulEduMediathequePushV1</class>
+   <extends>QWidget</extends>
+   <header>abuledumediathequepushv1.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -122,11 +122,6 @@ private slots:
       * Dans le cas de la dernière page, le bouton a pris l'icône d'enregistrement, la fonction createAbe() est appelée et l'éditeur fermé */
     void on_btnSuivant_clicked();
 
-    /** Gère les boutons Précédent et Suivant
-      * Le bouton Précédent est masqué si on est à la première page
-      * Le bouton Suivant prend l'icône d'enregistrement si on est à la dernière page */
-    void majBarreNavigation(int numPage);
-
     /** Ferme l'application au clic sur le bouton Quitter*/
     void on_btnQuitter_clicked();
 
@@ -159,6 +154,8 @@ private slots:
     void on_btnEnregistrer_clicked();
 
     void on_btnPublier_clicked();
+
+    void on_stackedWidget_currentChanged(int arg1);
 
 private:
     Ui::Editeur *ui;
@@ -201,6 +198,9 @@ private:
 
     AbulEduBoxFileManagerV1 *m_abuleduFileManager;
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
+
+    /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
+    QWidget* m_parent;
 
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
@@ -252,6 +252,7 @@ private:
 signals:
     void editorExited();
     void editorTest();
+    void editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave);
 };
 
 #endif // EDITEUR_H

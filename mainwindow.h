@@ -98,6 +98,10 @@ private slots:
       * @param int authStatus, permet si l'authentification est ok, d'afficher le login dans le titre de la fenetre
       */
     void setTitle(int authStatus);
+    void debutTestParametres();
+    void afficheEditeur();
+    void afficheFrPrincipale();
+    void afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave);
 
 private:
     Ui::MainWindow *ui;

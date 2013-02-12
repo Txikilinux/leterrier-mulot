@@ -29,9 +29,8 @@ Editeur::Editeur(QWidget *parent) :
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
-    //    setAttribute(Qt::WA_ShowModal);
 
-
+    m_parent = parent;
 
     m_lastOpenDir = QDir::homePath();
 
@@ -63,10 +62,7 @@ Editeur::Editeur(QWidget *parent) :
     m_parametresParcours5.clear();
     m_listeFichiersImages.clear();
 
-    connect(ui->stackedWidget, SIGNAL(currentChanged(int)), this, SLOT(majBarreNavigation(int)));
-
     ui->stackedWidget->setCurrentIndex(0);
-    majBarreNavigation(0);
 
     setAcceptDrops(true);
 
@@ -81,12 +77,12 @@ Editeur::~Editeur()
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     delete m_abuleduFileManager;
-//    m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->hide();
     emit editorExited();
 }
 
 void Editeur::abeEditeurSetMainWindow(QWidget *mw)
 {
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     MainWindow* parent = (MainWindow*) mw;
     connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(show()));
     connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()));
@@ -112,6 +108,16 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
+
+    if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
+        if(m_localDebug) qDebug() << "Creation ok";
+    }
+    else {
+        if(m_localDebug) qDebug()<<"impossible de créer le dossier pour les images";
+        return;
+    }
+    ui->stackedWidget->setCurrentWidget(ui->pageAccueil);
+
 }
 
 void Editeur::creationMenu()
@@ -238,14 +244,14 @@ void Editeur::createAbe()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
+    MainWindow* parent = (MainWindow*) m_parent;
     ui->listWidgetImagesSelection->clear();
 
     if (preparerSauvegarde())
     {
-        AbulEduBoxFileManagerV1 *SaveAbuleduFileManager = new AbulEduBoxFileManagerV1(0,AbulEduBoxFileManagerV1::abeSave);
-        SaveAbuleduFileManager->abeSetFile(m_abuleduFile);
-        SaveAbuleduFileManager->show();
-        close();
+        emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeSave);
+        ui->btnPrecedent->hide();
+        ui->btnSuivant->hide();
     }
 }
 
@@ -926,16 +932,9 @@ void Editeur::on_btnCreationAbe_clicked()
 
 void Editeur::slotOpenFile()
 {
-    if(m_localDebug)
-    {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-        qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
-    }
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     slotLoadUnit();
     if (m_localDebug) qDebug() << trUtf8("Répertoire temporaire de dézippage de l'ABE choisi")  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
-    m_abuleduFileManager->hide();
-
-    /// TODO -> Comment rassembler des fichiers LOMFr et tout ce qui suit ?
 }
 
 void Editeur::slotLoadUnit()
@@ -1022,15 +1021,15 @@ void Editeur::on_btnSuivant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-//    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
-//        // Condition de garde = m_listeFichiersImages < 5
-//        if ( m_listeFichiersImages.count() < 5)
-//        {
-//            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"));
-//            alertBox->show();
-//            return;
-//        }
-//    }
+    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
+        // Condition de garde = m_listeFichiersImages < 5
+        if ( m_listeFichiersImages.count() < 5)
+        {
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"));
+            alertBox->show();
+            return;
+        }
+    }
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
@@ -1040,36 +1039,6 @@ void Editeur::on_btnQuitter_clicked()
 
     /// @todo Controle que l'utilisateur veut quitter sans sauvegarder
     emit editorExited();
-}
-
-void Editeur::majBarreNavigation(int numPage)
-{
-    if(m_localDebug)
-    {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-        qDebug() << "Index de la page courante" << ui->stackedWidget->currentIndex();
-    }
-    if (numPage == 0) // page d'accueil
-    {
-        // On cache le bouton précèdent
-        ui->btnPrecedent->setVisible(false);
-        ui->btnSuivant->setVisible(false);
-    }
-    else if(numPage != 0)
-    {
-        ui->btnPrecedent->setVisible(true);
-        ui->btnSuivant->setVisible(true);
-
-        if (numPage == ui->stackedWidget->count()-1) // derniere page
-        {
-            ui->btnSuivant->setVisible(false);
-        }
-        else if(numPage != ui->stackedWidget->count()-1)
-        {
-            ui->btnSuivant->setVisible(true);
-            ui->btnSuivant->setIcon(QIcon(":/bouton/flecheD"));
-        }
-    }
 }
 
 /// **********************************************************************************************************************************************************
@@ -1133,9 +1102,8 @@ void Editeur::on_btnModificationCourant_clicked()
 void Editeur::on_btnModificationAutre_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
+    emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeOpen);
     setModeModificationAbe(true);
-    m_abuleduFileManager->show();
 }
 
 bool Editeur::preparerSauvegarde()
@@ -1179,14 +1147,11 @@ bool Editeur::preparerSauvegarde()
 
     m_abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
     m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
-    qDebug()<<" /////////////////////////////////////////// j'ai écrit pour la langue "<<codeLangue;
 
     QString destTemp = m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     QDir().mkpath(destTemp + "/data/images");
     QDir().mkpath(destTemp + "/conf");
-    QStringList listeFichiers;
 
-    m_abuleduFile->abeFileExportPrepare(listeFichiers,destTemp,QString("abe"));
     /// Creation fichier Conf (note les timers sont convertis en millisecondes)
     QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.setValue("version",abeApp->applicationVersion());
@@ -1301,16 +1266,16 @@ void Editeur::releaseAbe()
     ui->listWidgetImagesSelection->clear();
     if (preparerSauvegarde())
     {
-        AbulEduMediathequePushV1* medPush = new AbulEduMediathequePushV1(0,"mediatheque");
-        medPush->abeSetFile(m_abuleduFile);
-        medPush->setAttribute(Qt::WA_DeleteOnClose);
-        medPush->show();
-        close();
+        ui->stPageMediathequePush->abeSetFile(m_abuleduFile);
+        ui->stackedWidget->setCurrentWidget(ui->stPageMediathequePush);
+        ui->btnPrecedent->hide();
+        ui->btnSuivant->hide();
     }
 }
 
 void Editeur::on_btnEssayer_clicked()
 {
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     if (preparerSauvegarde())
     {
         emit editorTest();
@@ -1321,10 +1286,20 @@ void Editeur::on_btnEssayer_clicked()
 
 void Editeur::on_btnEnregistrer_clicked()
 {
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     createAbe();
 }
 
 void Editeur::on_btnPublier_clicked()
 {
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     releaseAbe();
+}
+
+void Editeur::on_stackedWidget_currentChanged(int arg1)
+{
+    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidget->currentWidget()->objectName()<<")";
+    ui->btnPrecedent->setHidden(arg1 == 0);
+    ui->btnSuivant->setHidden(arg1 == 0);
+    ui->btnSuivant->setDisabled((ui->stackedWidget->currentWidget() == ui->pageFin));
 }
