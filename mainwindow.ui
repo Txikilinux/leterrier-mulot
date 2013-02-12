@@ -12,7 +12,7 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
-    <string notr="true">background: #1d2d4f;</string>
+    <string notr="true"/>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="margin">
@@ -32,7 +32,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QWidget" name="fr_principale" native="true"/>
+      <widget class="QWidget" name="fr_principale"/>
       <widget class="QWidget" name="pageBoxFileManager">
        <layout class="QGridLayout" name="gridLayout_2">
         <property name="margin">
@@ -43,6 +43,19 @@
         </property>
         <item row="0" column="0">
          <widget class="AbulEduBoxFileManagerV1" name="AbulEduBoxFileManager" native="true"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pageEditeur">
+       <layout class="QGridLayout" name="gridLayout_3">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <widget class="Editeur" name="editeur" native="true"/>
         </item>
        </layout>
       </widget>
@@ -189,6 +202,12 @@
    <class>AbulEduBoxFileManagerV1</class>
    <extends>QWidget</extends>
    <header>abuleduboxfilemanagerv1.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Editeur</class>
+   <extends>QWidget</extends>
+   <header>editeur.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -43,7 +43,6 @@
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "ui_editeur.h"
-#include "mainwindow.h"
 #include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
 
@@ -51,7 +50,7 @@ namespace Ui {
 class Editeur;
 }
 
-class Editeur : public QDialog
+class Editeur : public QWidget
 {
     Q_OBJECT
 
@@ -61,6 +60,8 @@ public:
 
     /** Destructeur de la classe Editeur */
     ~Editeur();
+
+    void abeEditeurSetMainWindow(QWidget* mw);
 
 private slots:
     /** Permet de supprimer une image du listWidgetImagesSelection
@@ -163,7 +164,6 @@ private:
     bool m_modeModificationAbe;
 
     QString m_lastOpenDir;
-    MainWindow* m_parent;
 
     QStringList m_listeDossiers;
 

@@ -86,8 +86,15 @@ MainWindow::MainWindow(QWidget *parent) :
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()));
 
+    connect(ui->editeur,SIGNAL(editorExited()),this, SLOT(exerciceExited()),Qt::UniqueConnection);
+//        connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()));
+//        connect(ui->editeur, SIGNAL(editorChoose()),this, SLOT(afficheBoxFileManager()),Qt::UniqueConnection);
+//        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
+
     /// Ajout de l'anglais & français dans le menu langues
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
+
+    ui->editeur->abeEditeurSetMainWindow(this);
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
@@ -246,16 +253,18 @@ void MainWindow::abeAiguillage()
 void MainWindow::exerciceExited()
 {
     if (m_localDebug) qDebug()<<"Exercice Exited";
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
-    ui->menuBar->setEnabled(true);
     m_exerciceEnCours = false;
     m_numberExoCalled = -1;
+    setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
+    m_isDemoAvailable = ui->actionMode_D_mo->isChecked();
     m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(true);
 
-    setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)); // redimensionnement autorisé
+    ui->menuBar->setEnabled(true);
+
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
-    ui->stCentral->setCurrentWidget(ui->fr_principale);
 }
 
 void MainWindow::on_actionOuvrir_un_exercice_triggered()
@@ -306,17 +315,7 @@ void MainWindow::on_actionEditeur_triggered()
 {
     if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
     {
-        Editeur *monEditeur = new Editeur(this);
-        monEditeur->setModal(true); // Tant qu'on ne ferme pas l'éditeur, on ne peut rien faire d'autre (évite d'avoir plein de fenetres en arrière plan)
-        connect(monEditeur,SIGNAL(editorExited()),this, SLOT(exerciceExited()),Qt::UniqueConnection);
-
-        monEditeur->setFixedSize(width(),height());
-        monEditeur->move(pos()-QPoint(5,25));
-#ifdef __ABULEDUTABLETTEV1__MODE__
-        monEditeur->showFullScreen();
-#else
-        monEditeur->show();
-#endif
+        ui->stCentral->setCurrentWidget(ui->pageEditeur);
     }
     else // On affiche un petit message...
     {

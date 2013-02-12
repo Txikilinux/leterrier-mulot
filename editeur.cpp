@@ -21,38 +21,17 @@
   */
 
 #include "editeur.h"
+#include "mainwindow.h"
 
 Editeur::Editeur(QWidget *parent) :
-    QDialog(parent),
+    QWidget(parent),
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
     //    setAttribute(Qt::WA_ShowModal);
 
-    m_parent = (MainWindow*) parent;
-    connect(m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(show()));
-    connect(m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()));
 
-    if(!m_parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
-    {
-        m_abuleduFile = m_parent->abeGetMyAbulEduFile();
-        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_abuleduFile->abeFileGetFileName().fileName());
-        ui->btnModificationCourant->setEnabled(true);
-        ui->btnModificationCourant->setMinimumHeight(60);
-        ui->btnModificationAutre->setMinimumHeight(60);
-        ui->btnCreationAbe->setMinimumHeight(60);
-    }
-    else
-    {
-        m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
-        ui->btnModificationCourant->setEnabled(false);
-        m_parent->abeSetMyAbulEduFile(m_abuleduFile);
-    }
-
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
-    m_abuleduFileManager->abeSetFile(m_abuleduFile);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     m_lastOpenDir = QDir::homePath();
 
@@ -94,17 +73,8 @@ Editeur::Editeur(QWidget *parent) :
 
     creationMenu();
 
-    ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
-
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
-
-    if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-        if(m_localDebug) qDebug() << "Creation ok";
-    }
-    else {
-        return;
-    } // si echec pas la peine d'aller plus loin
 }
 
 Editeur::~Editeur()
@@ -112,8 +82,37 @@ Editeur::~Editeur()
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     delete m_abuleduFileManager;
-    m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->hide();
+//    m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->hide();
     emit editorExited();
+}
+
+void Editeur::abeEditeurSetMainWindow(QWidget *mw)
+{
+    MainWindow* parent = (MainWindow*) mw;
+    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(show()));
+    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()));
+
+    if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
+    {
+        m_abuleduFile = parent->abeGetMyAbulEduFile();
+        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_abuleduFile->abeFileGetFileName().fileName());
+        ui->btnModificationCourant->setEnabled(true);
+        ui->btnModificationCourant->setMinimumHeight(60);
+        ui->btnModificationAutre->setMinimumHeight(60);
+        ui->btnCreationAbe->setMinimumHeight(60);
+    }
+    else
+    {
+        m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
+        ui->btnModificationCourant->setEnabled(false);
+        parent->abeSetMyAbulEduFile(m_abuleduFile);
+    }
+
+    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
+    m_abuleduFileManager->abeSetFile(m_abuleduFile);
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
+
+    ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
 }
 
 void Editeur::creationMenu()
@@ -1024,15 +1023,15 @@ void Editeur::on_btnSuivant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
-        // Condition de garde = m_listeFichiersImages < 5
-        if ( m_listeFichiersImages.count() < 5)
-        {
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"));
-            alertBox->show();
-            return;
-        }
-    }
+//    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
+//        // Condition de garde = m_listeFichiersImages < 5
+//        if ( m_listeFichiersImages.count() < 5)
+//        {
+//            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"));
+//            alertBox->show();
+//            return;
+//        }
+//    }
     ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
 }
 
@@ -1041,7 +1040,7 @@ void Editeur::on_btnQuitter_clicked()
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     /// @todo Controle que l'utilisateur veut quitter sans sauvegarder
-    this->close();
+    emit editorExited();
 }
 
 void Editeur::majBarreNavigation(int numPage)
@@ -1320,7 +1319,7 @@ void Editeur::on_btnEnregistrementOK_clicked()
         if (preparerSauvegarde())
         {
             hide();
-            m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->show();
+//            m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->show();
             AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."));
             alertBox->show();        }
     }
@@ -1339,7 +1338,7 @@ void Editeur::on_cbChoixEnregistrement_currentIndexChanged(int index)
     if (index == 0)
     {
         ui->btnEnregistrementOK->setIcon(QIcon(":/bouton/essai"));
-        m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
+//        m_parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
     }
     else if(index == 1)
     {
