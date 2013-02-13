@@ -234,7 +234,6 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     visio->fixeTempsAffichageMax(0);
     QGraphicsProxyWidget* prox = ui->gvPageVisio->scene()->addWidget(visio);
     prox->grabMouse();
-
     visio->ouvrirFicher(item->data(4).toString());
     visio->ajusterFenetreAuMieux();
     ui->stackedWidget->setCurrentWidget(ui->pageVisio);
@@ -1299,8 +1298,9 @@ void Editeur::on_btnPublier_clicked()
 void Editeur::on_stackedWidget_currentChanged(int arg1)
 {
     if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidget->currentWidget()->objectName()<<")";
-    ui->btnPrecedent->setHidden(arg1 == 0);
-    ui->btnSuivant->setHidden(arg1 == 0);
+    ui->btnQuitter->setHidden(ui->stackedWidget->currentWidget() == ui->pageVisio);
+    ui->btnPrecedent->setHidden(arg1 == 0 || ui->stackedWidget->currentWidget() == ui->pageVisio);
+    ui->btnSuivant->setHidden(arg1 == 0 || ui->stackedWidget->currentWidget() == ui->pageVisio);
     ui->btnSuivant->setDisabled((ui->stackedWidget->currentWidget() == ui->pageFin));
 }
 
