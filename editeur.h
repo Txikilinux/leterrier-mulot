@@ -197,7 +197,6 @@ private:
     QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
     EditeurParcoursWidget *gv_AireParcours;
 
-    AbulEduBoxFileManagerV1 *m_abuleduFileManager;
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
 
     /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */

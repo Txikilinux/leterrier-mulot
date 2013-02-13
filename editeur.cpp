@@ -79,7 +79,6 @@ Editeur::~Editeur()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
-    delete m_abuleduFileManager;
     emit editorExited();
 }
 
@@ -105,10 +104,6 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
         ui->btnModificationCourant->setEnabled(false);
         parent->abeSetMyAbulEduFile(m_abuleduFile);
     }
-
-    m_abuleduFileManager = new AbulEduBoxFileManagerV1();
-    m_abuleduFileManager->abeSetFile(m_abuleduFile);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
 
     ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
 
