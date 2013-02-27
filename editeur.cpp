@@ -62,7 +62,7 @@ Editeur::Editeur(QWidget *parent) :
     m_parametresParcours5.clear();
     m_listeFichiersImages.clear();
 
-    ui->stackedWidget->setCurrentIndex(0);
+    ui->stackedWidgetEditeur->setCurrentIndex(0);
 
     setAcceptDrops(true);
 
@@ -114,7 +114,7 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
         if(m_localDebug) qDebug()<<"impossible de créer le dossier pour les images";
         return;
     }
-    ui->stackedWidget->setCurrentWidget(ui->pageAccueil);
+    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
 
 }
 
@@ -236,7 +236,7 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     prox->grabMouse();
     visio->ouvrirFicher(item->data(4).toString());
     visio->ajusterFenetreAuMieux();
-    ui->stackedWidget->setCurrentWidget(ui->pageVisio);
+    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageVisio);
 }
 
 void Editeur::createAbe()
@@ -988,7 +988,7 @@ void Editeur::slotLoadUnit()
     QString licence = m_abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
     ui->cbLicence->setCurrentIndex(ui->cbLicence->findText(licence));
 
-    ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
+    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
 }
 
 void Editeur::chargerPositionMasque(int numeroParcours)
@@ -1013,14 +1013,14 @@ void Editeur::on_btnPrecedent_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() - 1);
+    ui->stackedWidgetEditeur->setCurrentIndex(ui->stackedWidgetEditeur->currentIndex() - 1);
 }
 
 void Editeur::on_btnSuivant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    if(ui->stackedWidget->currentWidget()->objectName() == "pageGestionImages") {
+    if(ui->stackedWidgetEditeur->currentWidget()->objectName() == "pageGestionImages") {
         // Condition de garde = m_listeFichiersImages < 5
         if ( m_listeFichiersImages.count() < 5)
         {
@@ -1029,7 +1029,7 @@ void Editeur::on_btnSuivant_clicked()
             return;
         }
     }
-    ui->stackedWidget->setCurrentIndex(ui->stackedWidget->currentIndex() + 1);
+    ui->stackedWidgetEditeur->setCurrentIndex(ui->stackedWidgetEditeur->currentIndex() + 1);
 }
 
 void Editeur::on_btnQuitter_clicked()
@@ -1266,7 +1266,7 @@ void Editeur::releaseAbe()
     if (preparerSauvegarde())
     {
         ui->stPageMediathequePush->abeSetFile(m_abuleduFile);
-        ui->stackedWidget->setCurrentWidget(ui->stPageMediathequePush);
+        ui->stackedWidgetEditeur->setCurrentWidget(ui->stPageMediathequePush);
         ui->btnPrecedent->hide();
         ui->btnSuivant->hide();
     }
@@ -1295,16 +1295,16 @@ void Editeur::on_btnPublier_clicked()
     releaseAbe();
 }
 
-void Editeur::on_stackedWidget_currentChanged(int arg1)
+void Editeur::on_stackedWidgetEditeur_currentChanged(int arg1)
 {
-    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidget->currentWidget()->objectName()<<")";
-    ui->btnQuitter->setHidden(ui->stackedWidget->currentWidget() == ui->pageVisio);
-    ui->btnPrecedent->setHidden(arg1 == 0 || ui->stackedWidget->currentWidget() == ui->pageVisio);
-    ui->btnSuivant->setHidden(arg1 == 0 || ui->stackedWidget->currentWidget() == ui->pageVisio);
-    ui->btnSuivant->setDisabled((ui->stackedWidget->currentWidget() == ui->pageFin));
+    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidgetEditeur->currentWidget()->objectName()<<")";
+    ui->btnQuitter->setHidden(ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
+    ui->btnPrecedent->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
+    ui->btnSuivant->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
+    ui->btnSuivant->setDisabled((ui->stackedWidgetEditeur->currentWidget() == ui->pageFin));
 }
 
 void Editeur::slotSortieVisionneuse()
 {
-    ui->stackedWidget->setCurrentWidget(ui->pageGestionImages);
+    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
 }

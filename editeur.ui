@@ -139,12 +139,12 @@ max-height: 50px;
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QStackedWidget" name="stackedWidget">
+    <widget class="QStackedWidget" name="stackedWidgetEditeur">
      <property name="styleSheet">
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageAccueil">
       <layout class="QGridLayout" name="gridLayout">
@@ -455,7 +455,7 @@ font : bold;
              </attribute>
              <layout class="QGridLayout" name="gridLayout_9">
               <item row="0" column="0">
-               <widget class="AbulEduMediathequeGetV1" name="abuleduMediathequeGet" native="true">
+               <widget class="AbulEduMediathequeGetV1" name="abuleduMediathequeGet">
                 <property name="minimumSize">
                  <size>
                   <width>500</width>

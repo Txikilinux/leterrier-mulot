@@ -6,28 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>860</width>
-    <height>444</height>
+    <width>1024</width>
+    <height>500</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>800</width>
+    <height>500</height>
+   </size>
+  </property>
   <widget class="QWidget" name="centralWidget">
-   <property name="styleSheet">
-    <string notr="true">QWidget #centralWidget {
-  background-color: #1d2d4f;
-}</string>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
-     <number>0</number>
-    </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
     </property>
-    <item row="0" column="0">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <item>
      <widget class="QStackedWidget" name="stCentral">
-      <property name="styleSheet">
-       <string notr="true">background: transparent;</string>
-      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -70,7 +68,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>860</width>
+     <width>1024</width>
      <height>25</height>
     </rect>
    </property>

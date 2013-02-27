@@ -116,7 +116,6 @@ MainWindow::~MainWindow()
 {
     if (m_localDebug) qDebug() << "##########################  MainWindow::~MainWindow()";
     delete ui;
-    delete m_abuleduFileManager;
 }
 
 void MainWindow::slotOpenFile()

@@ -155,7 +155,7 @@ private slots:
 
     void on_btnPublier_clicked();
 
-    void on_stackedWidget_currentChanged(int arg1);
+    void on_stackedWidgetEditeur_currentChanged(int arg1);
 
     void slotSortieVisionneuse();
 
