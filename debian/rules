@@ -21,6 +21,7 @@ install/leterrier-mulot::
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/data
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/conf
 	install -d -m 755  $(BUILDTEMP)/usr/share/applications
+	install -d -m 755 $(BUILDTEMP)/$(DEST)/data/icones/
 	install -m 755 $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/leterrier-mulot
 	install -m 644 $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
 	#install -m 644 $(CURDIR)/data/*.abe $(BUILDTEMP)/$(DEST)/data
