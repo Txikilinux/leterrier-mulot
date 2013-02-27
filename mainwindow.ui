@@ -12,7 +12,9 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">QWidget #centralWidget {
+  background-color: #1d2d4f;
+}</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <property name="margin">
