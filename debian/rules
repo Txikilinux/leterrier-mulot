@@ -27,7 +27,7 @@ install/leterrier-mulot::
 	#install -m 644 $(CURDIR)/data/*.abe $(BUILDTEMP)/$(DEST)/data
 	install -m 644 $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data
 	install -s -m 755 $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
-	install -m 644 $(CURDIR)/data/icones/*$(EXECNAME)*.png $(BUILDTEMP)/$(DEST)/data/icones/
+	install -m 644 $(CURDIR)/data/icones/*$(EXECNAME)*.png $(BUILDTEMP)/$(DEST)/
 
 #	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
 #	install -D --mode=0755 $(QTDIR)/lib/libQtXml.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
