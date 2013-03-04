@@ -26,10 +26,6 @@ int main(int argc, char *argv[])
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, "leterrier");
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
 
-#ifdef __ABULEDUTABLETTEV1__MODE__
-    QApplication::setStyle("plastique");
-#endif
-
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
 
