@@ -45,11 +45,10 @@ AbulEduAproposV1::AbulEduAproposV1(QWidget *parent) :
     ui->lblVersion->setText(abeApp->applicationVersion());
     ui->lblVersion->setText("alors, ducon ?");
     ui->lblNomAppli->setText(abeApp->getAbeApplicationLongName());
-    qDebug()<<" version : "<<abeApp->applicationVersion();
+//    qDebug()<<" version : "<<abeApp->applicationVersion();
     this->setWindowTitle(trUtf8("A propos de")+" "+abeApp->getAbeApplicationLongName()+" "+abeApp->applicationVersion());
-    qDebug()<<" Fenetre : "<<windowTitle();
+//    qDebug()<<" Fenetre : "<<windowTitle();
     update();
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
     installeMenu(); //Installe le menu Aide dans la menuBar
 
@@ -70,13 +69,13 @@ AbulEduAproposV1::AbulEduAproposV1(QWidget *parent) :
     QString envproxy = getenv("http_proxy");
     if(envproxy.length() > 0)
     {
-        qDebug() << "AbulEduAproposv1.cpp: Proxy detected :: " << envproxy;
+//        qDebug() << "AbulEduAproposv1.cpp: Proxy detected :: " << envproxy;
         envproxy.remove("/");
         //On découpe le proxy
         QRegExp exp(":");
         QStringList split = envproxy.split(exp);
 
-        qDebug() << "AbulEduAproposv1.cpp: Proxy detected :: " << split;
+//        qDebug() << "AbulEduAproposv1.cpp: Proxy detected :: " << split;
         QNetworkProxy proxy;
         proxy.setType(QNetworkProxy::HttpProxy);
         proxy.setHostName(split[1]);
@@ -89,11 +88,11 @@ AbulEduAproposV1::AbulEduAproposV1(QWidget *parent) :
         QUrl adresseWPAD("");
         QHostInfo wpadSingleResolve = QHostInfo::fromName("wpad");
         if (wpadSingleResolve.error() != QHostInfo::NoError) {
-            qDebug() << "Lookup failed:" << wpadSingleResolve.errorString();
+//            qDebug() << "Lookup failed:" << wpadSingleResolve.errorString();
             //On essaye avec le domaine complet ...
             QHostInfo wpadDomainResolve = QHostInfo::fromName("wpad." + QHostInfo::localDomainName());
             if (wpadDomainResolve.error() != QHostInfo::NoError) {
-                qDebug() << "Lookup failed:" << wpadDomainResolve.errorString();
+//                qDebug() << "Lookup failed:" << wpadDomainResolve.errorString();
             }
             else {
                 //On télécharge le fichier wpad pour l'analyser ...
@@ -592,11 +591,11 @@ void AbulEduAproposV1::finishedSlotWPAD(QNetworkReply* reply)
         if(contenu.contains("PROXY")) {
             QByteArray temp = contenu.right(contenu.length() - contenu.indexOf("PROXY ") - 6); //6 = longueur du mot "PROXY "
             QString envproxy = temp.left(temp.indexOf(";"));
-            qDebug() << "Proxy trouvé: " << envproxy;
+//            qDebug() << "Proxy trouvé: " << envproxy;
             QRegExp exp(":");
             QStringList split = envproxy.split(exp);
 
-            qDebug() << "AbulEduAproposv1.cpp: Proxy detected :: " << split;
+//            qDebug() << "AbulEduAproposv1.cpp: Proxy detected :: " << split;
             QNetworkProxy proxy;
             proxy.setType(QNetworkProxy::HttpProxy);
             proxy.setHostName(split[0]);
