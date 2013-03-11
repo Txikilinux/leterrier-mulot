@@ -163,7 +163,7 @@ private slots:
     void btnBoxClicked();
 
     /** Méthode appelée lors du choix d'un abe @see AbulEduBoxFileManagerV1 */
-    void slotOpenFile();
+    void slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1);
 
     /** Méthode qui gère le mode démo
       * @param bool checked, true mode demo, false mode normal

@@ -77,8 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduFileManager = ui->AbulEduBoxFileManager;
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),this, SLOT(slotOpenFile()));
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected()),ui->editeur, SLOT(slotOpenFile()));
+
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)));
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)),ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)));
 
     m_numberExoCalled = -1;
 
@@ -118,10 +119,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::slotOpenFile()
+void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
 {
+    qDebug() << "slot openFile";
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
-    m_abuleduFile = m_abuleduFileManager->abeGetFile();
+    m_abuleduFile = qsp_AbulEduFileV1;
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
 
     if (box->abeGetSender() > 0)
