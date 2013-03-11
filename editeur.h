@@ -129,7 +129,7 @@ private slots:
     void on_btnCreationAbe_clicked();
 
     /** Charge un fichier reçu de l'AbulEduFileManagerV1 et le passe à la MainWindow */
-    void slotOpenFile();
+    void slotOpenFile(QSharedPointer<AbulEduFileV1>);
 
     /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();

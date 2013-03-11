@@ -929,7 +929,7 @@ void Editeur::on_btnCreationAbe_clicked()
     ui->btnSuivant->click(); // Clic sur le bouton suivant
 }
 
-void Editeur::slotOpenFile()
+void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     slotLoadUnit();
