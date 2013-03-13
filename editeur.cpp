@@ -41,7 +41,7 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
-    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(int)), this, SLOT(slotImportImageMediatheque()), Qt::UniqueConnection);
+    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this, SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
 
     QShortcut *shortcutSupprimeChoix = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listWidgetImagesSelection, 0, 0, Qt::WidgetShortcut);
     connect(shortcutSupprimeChoix, SIGNAL(activated()), this, SLOT(slotSupprimerImage()), Qt::UniqueConnection);
@@ -201,13 +201,13 @@ void Editeur::ajouterImage(QFileInfo monFichier)
     }
 }
 
-void Editeur::slotImportImageMediatheque()
+void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB)
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-    ajouterImage(ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0));
+    ajouterImage(fichierABB->abeFileGetContent(0));
 
     //Ajout des metadata
-    m_abuleduFile->abeFileAddMetaDataFromABB(ui->abuleduMediathequeGet->abeGetLOM(), ui->abuleduMediathequeGet->abeGetFile()->abeFileGetContent(0).baseName());
+    m_abuleduFile->abeFileAddMetaDataFromABB(fichierABB->abeFileGetLOM(), fichierABB->abeFileGetContent(0).baseName());
 }
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
