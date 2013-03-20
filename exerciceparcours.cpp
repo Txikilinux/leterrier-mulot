@@ -467,7 +467,7 @@ void ExerciceParcours::slotBilanExerciceEntered()
     AbulEduCommonStatesV1::slotBilanExerciceEntered();
 
     getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Bilan");
-    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Survol"));
+    getAbeExerciceMessageV1()->abeWidgetMessageSetTitre(trUtf8("Parcours"));
 
     debutTableau = "<tr>";
     imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
