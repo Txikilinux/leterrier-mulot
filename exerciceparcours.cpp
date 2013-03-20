@@ -21,6 +21,7 @@
   */
 
 #include "exerciceparcours.h"
+#include <QVector>
 
 ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
@@ -146,14 +147,46 @@ void ExerciceParcours::chargerOption()
 void ExerciceParcours::chargerPositionMasque(int numeroQuestion)
 {
     positionMasquesParcours.clear();
+    QList<int> position;
     QSettings parametres(cheminConf, QSettings::IniFormat);
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroQuestion));
     opt_nbMasquesChoisis = parametres.childKeys().count();
-    for (int i =0 ; i < parametres.childKeys().count(); i++)
-    {
-        positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
+    //    for (int i =0 ; i < parametres.childKeys().count(); i++)
+    //    {
+    //        positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
+    //        qDebug() << "Postion masque :: " << parametres.childKeys()  <<  parametres.value(parametres.childKeys().at(i)).toInt();
+    //    }
+    /**        Contournement de l'enregistrement alphabétique des QSettings
+               Ich 20/03/2013
+      */
+    //! Recuperation des masques de départ et d'arrivée..
+    int i = 0;
+    while(i < parametres.childKeys().count()){
+        if(parametres.childKeys().at(i).contains("MasqueD") || parametres.childKeys().at(i).contains("MasqueA")){
+            positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
+            ++i;
+        }
+        else{
+            //! Remplissage d'une liste de position
+            position << parametres.childKeys().at(i).split("MasqueParcours").at(1).toInt();
+            ++i;
+        }
     }
+    //! Trier la position des masques de parcours
+    qSort(position.begin(), position.end(), qLess<int>());
+    //! La liste est triée, il faut boucler sur le QSetting, et enregistrer les correspondances
+    while (!position.isEmpty()) {
+        int pos = position.takeFirst();
+        foreach (QString var, parametres.childKeys()) {
+            if(var.contains("MasqueP")){
+                if(pos == var.split("MasqueParcours").at(1).toInt()){
+                    positionMasquesParcours << parametres.value(var).toInt();
+                }
+            }
+        }
+    }
+
 }
 
 void ExerciceParcours::slotSequenceEntered() // en cours
