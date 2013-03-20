@@ -306,6 +306,7 @@ void ExerciceParcours::slotInitQuestionEntered()
         getAbeExerciceMessageV1()->setVisible(false);
         m_itemImage = new QGraphicsPixmapItem(0, gv_AireDeJeu->scene());
         m_itemImage->setPixmap(m_listeImage.takeAt(0));
+        m_itemImage->setVisible(false);
         redimensionnerImage2();
 
         gv_AireDeJeu->show();
@@ -367,6 +368,7 @@ void ExerciceParcours::slotQuestionEntered()
 
     if (!m_exerciceEnCours)
     {
+        m_itemImage->setVisible(true);
         if (m_localDebug) qDebug() << getAbeNumQuestion();
         chargerPositionMasque(getAbeNumQuestion());
         // Chargement et Controle de la liste

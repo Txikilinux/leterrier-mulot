@@ -267,6 +267,7 @@ void ExerciceDoubleClic::slotInitQuestionEntered()
         getAbeExerciceMessageV1()->setVisible(false);
         m_itemImage = new QGraphicsPixmapItem(0, gv_AireDeJeu->scene());
         m_itemImage->setPixmap(m_listeImage.takeAt(0));
+        m_itemImage->setVisible(false);
         redimensionnerImage2();
 
         gv_AireDeJeu->show();
@@ -327,6 +328,7 @@ void ExerciceDoubleClic::slotQuestionEntered()
 
     if (!m_exerciceEnCours)
     {
+        m_itemImage->setVisible(true);
         m_nbMasquesInteractifs = 0;
         if (m_localDebug) qDebug()<<"*******************//   Boucle des Clicables ";
 
