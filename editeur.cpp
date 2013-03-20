@@ -625,7 +625,7 @@ void Editeur::sauvegarderParcours()
         if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
-            m_parametresParcours1.insert("MasqueParcours" + QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
+            m_parametresParcours1.insert("MasqueParcours" + QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours1->setStyleSheet("color : green;");
         break;
@@ -637,7 +637,7 @@ void Editeur::sauvegarderParcours()
         if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
-            m_parametresParcours2.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
+            m_parametresParcours2.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours2->setStyleSheet("color : green;");
         break;
@@ -649,7 +649,7 @@ void Editeur::sauvegarderParcours()
         if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
-            m_parametresParcours3.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
+            m_parametresParcours3.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours3->setStyleSheet("color : green;");
         break;
@@ -661,7 +661,7 @@ void Editeur::sauvegarderParcours()
         if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
-            m_parametresParcours4.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
+            m_parametresParcours4.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours4->setStyleSheet("color : green;");
         break;
@@ -673,7 +673,7 @@ void Editeur::sauvegarderParcours()
         if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
         for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
-            m_parametresParcours5.insert("MasqueParcours"+ QString::number('0'+i), m_listeMasquesParcours.at(i)->getNumero());
+            m_parametresParcours5.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours5->setStyleSheet("color : green;");
         break;
