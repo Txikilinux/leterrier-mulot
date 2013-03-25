@@ -159,6 +159,9 @@ private slots:
 
     void slotSortieVisionneuse();
 
+    /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
+    void slotAfficheEtatPublication(int code);
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;

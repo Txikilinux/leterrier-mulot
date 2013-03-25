@@ -42,6 +42,7 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this, SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+    connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this, SLOT(slotAfficheEtatPublication(int)));
 
     QShortcut *shortcutSupprimeChoix = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listWidgetImagesSelection, 0, 0, Qt::WidgetShortcut);
     connect(shortcutSupprimeChoix, SIGNAL(activated()), this, SLOT(slotSupprimerImage()), Qt::UniqueConnection);
@@ -250,8 +251,6 @@ void Editeur::createAbe()
     if (preparerSauvegarde())
     {
         emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeSave);
-        ui->btnPrecedent->hide();
-        ui->btnSuivant->hide();
     }
 }
 
@@ -1309,4 +1308,19 @@ void Editeur::on_stackedWidgetEditeur_currentChanged(int arg1)
 void Editeur::slotSortieVisionneuse()
 {
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
+}
+
+void Editeur::slotAfficheEtatPublication(int code)
+{
+    if(code > 0)
+    {
+        AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), trUtf8("Votre module a bien été publié sur AbulÉdu-Médiathèque..."));
+        msgEnregistrement->setWink();
+        msgEnregistrement->show();
+    }
+    else
+    {
+        AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Problème"), trUtf8("Un problème a empêché la publication de votre module sur AbulÉdu-Médiathèque..."));
+        msgEnregistrement->show();
+    }
 }
