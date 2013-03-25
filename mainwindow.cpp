@@ -80,6 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)),ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+    connect(m_abuleduFileManager,SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)));
 
     m_numberExoCalled = -1;
 
@@ -409,6 +410,59 @@ void MainWindow::on_action_Changer_d_utilisateur_triggered()
 {
     abeApp->getAbeNetworkAccessManager()->abeSSOLogout();
     abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
+}
+
+void MainWindow::slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation loc, QString nom, bool reussite)
+{
+    QString emplacement;
+    if (loc == AbulEduBoxFileManagerV1::abePC)
+    {
+        emplacement = trUtf8("votre ordinateur");
+    }
+    else if (loc == AbulEduBoxFileManagerV1::abeBoxPerso)
+    {
+        emplacement = trUtf8("votre abeBox personnelle");
+    }
+    else if (loc == AbulEduBoxFileManagerV1::abeBoxShare)
+    {
+        emplacement = trUtf8("une abeBox partagée");
+    }
+    else if (loc == AbulEduBoxFileManagerV1::abeMediatheque)
+    {
+        emplacement = trUtf8("AbulEdu-Médiathèque");
+    }
+    else
+    {
+        emplacement = trUtf8("un endroit inconnu");
+    }
+
+    QString message;
+    if (reussite == true)
+    {
+        message = trUtf8("Votre fichier a été enregistré dans ")+emplacement;
+        if (!nom.isEmpty())
+        {
+            message.append(trUtf8(" sous le nom : ")+nom.split("/").last());
+        }
+    }
+    else
+    {
+        message = trUtf8("Votre fichier n'a pas pu être enregistré...");
+    }
+    AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), message);
+    if (reussite == true)
+    {
+        msgEnregistrement->setWink();
+    }
+    msgEnregistrement->show();
+    if (ui->AbulEduBoxFileManager->abeGetSender()->objectName() == "editeur")
+    {
+        ui->stCentral->setCurrentWidget(ui->pageEditeur);
+    }
+    else
+    {
+        ui->stCentral->setCurrentWidget(ui->fr_principale);
+    }
 }
 
 QSharedPointer<AbulEduFileV1> MainWindow::abeGetMyAbulEduFile()

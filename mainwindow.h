@@ -175,6 +175,10 @@ private slots:
 
     /** Méthode appelée lors de l'appui sur le menu Changer Utilisateur */
     void on_action_Changer_d_utilisateur_triggered();
+
+    /** Gère le comportement qui suit la sauvegarde un module */
+    void slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation enumLocation, QString fileName, bool success);
+
 };
 
 #endif // MAINWINDOW_H
