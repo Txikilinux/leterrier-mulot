@@ -245,7 +245,6 @@ void Editeur::createAbe()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    MainWindow* parent = (MainWindow*) m_parent;
     ui->listWidgetImagesSelection->clear();
 
     if (preparerSauvegarde())
