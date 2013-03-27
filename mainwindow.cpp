@@ -128,15 +128,6 @@ void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
     m_abuleduFile = qsp_AbulEduFileV1;
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
 
-    /** #2790 -> Bug d'affichage produit pas setCurrentWidget
-      Icham 27/03/13
-      Pour pallier à ça, on enregistre la taille avant, et on la réapplique
-      après..
-      J'ai toujours pas trouvé pourquoi...
-
-    **/
-    QRect originSize = m_abuleduaccueil->geometry();
-
     if (box->abeGetSender() > 0)
     {
         if (box->abeGetSender()->objectName() == "editeur")
@@ -146,13 +137,11 @@ void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
         else
         {
             ui->stCentral->setCurrentWidget(ui->fr_principale);
-            m_abuleduaccueil->setGeometry(originSize); //! #2790
         }
     }
     else
     {
         ui->stCentral->setCurrentWidget(ui->fr_principale);
-        m_abuleduaccueil->setGeometry(originSize); //! #2790
     }
     if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
     abeAiguillage();
@@ -214,19 +203,18 @@ void MainWindow::abeLanceExo(int numero)
 
 void MainWindow::abeAiguillage()
 {
-    setFixedSize(this->width(), this->height());
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
     if (m_numberExoCalled >= 0)
     {
+        qDebug() << "DESACTIVATION BARRE MENU ET BOUTON REVENIR EDITEUR";
         ui->menuBar->setEnabled(false);
         m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
 
-    switch (m_numberExoCalled)
-    {
+    switch (m_numberExoCalled) {
     case 0:
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
     {
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
         ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -234,12 +222,11 @@ void MainWindow::abeAiguillage()
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
         installEventFilter(s);
-    }
-        m_exerciceEnCours = true;
         break;
+    }
     case 1:
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Clic";
     {
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Clic";
         ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -247,12 +234,11 @@ void MainWindow::abeAiguillage()
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
         installEventFilter(c);
-    }
-        m_exerciceEnCours = true;
         break;
+    }
     case 3:
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Parcours";
     {
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Parcours";
         ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -260,12 +246,11 @@ void MainWindow::abeAiguillage()
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
         installEventFilter(p);
-    }
-        m_exerciceEnCours = true;
         break;
+    }
     case 4:
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
     {
+        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
         ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -273,10 +258,12 @@ void MainWindow::abeAiguillage()
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); // redimensionnement interdit
         installEventFilter(d);
-    }
-        m_exerciceEnCours = true;
         break;
     }
+    default:
+        qDebug() << "CASE DEFAUT";
+        break;
+    } //! Fin Switch
 }
 
 void MainWindow::exerciceExited()
@@ -287,7 +274,8 @@ void MainWindow::exerciceExited()
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     m_exerciceEnCours = false;
     m_numberExoCalled = -1;
-    setFixedSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX));
+    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    setMinimumSize(1024, 600);
     m_isDemoAvailable = ui->actionMode_D_mo->isChecked();
     m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(true);
 
