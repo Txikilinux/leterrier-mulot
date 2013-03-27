@@ -93,7 +93,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
             this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
-//        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
+    //        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
 
     /// Ajout de l'anglais & français dans le menu langues
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
@@ -128,6 +128,15 @@ void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
     m_abuleduFile = qsp_AbulEduFileV1;
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
 
+    /** #2790 -> Bug d'affichage produit pas setCurrentWidget
+      Icham 27/03/13
+      Pour pallier à ça, on enregistre la taille avant, et on la réapplique
+      après..
+      J'ai toujours pas trouvé pourquoi...
+
+    **/
+    QRect originSize = m_abuleduaccueil->geometry();
+
     if (box->abeGetSender() > 0)
     {
         if (box->abeGetSender()->objectName() == "editeur")
@@ -137,11 +146,13 @@ void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
         else
         {
             ui->stCentral->setCurrentWidget(ui->fr_principale);
+            m_abuleduaccueil->setGeometry(originSize); //! #2790
         }
     }
     else
     {
         ui->stCentral->setCurrentWidget(ui->fr_principale);
+        m_abuleduaccueil->setGeometry(originSize); //! #2790
     }
     if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
     abeAiguillage();
