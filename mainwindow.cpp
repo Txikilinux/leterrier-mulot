@@ -123,7 +123,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
 {
-    qDebug() << "slot openFile";
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = qsp_AbulEduFileV1;
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
@@ -206,7 +205,6 @@ void MainWindow::abeAiguillage()
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
     if (m_numberExoCalled >= 0)
     {
-        qDebug() << "DESACTIVATION BARRE MENU ET BOUTON REVENIR EDITEUR";
         ui->menuBar->setEnabled(false);
         m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
@@ -261,7 +259,7 @@ void MainWindow::abeAiguillage()
         break;
     }
     default:
-        qDebug() << "CASE DEFAUT";
+        qDebug() << "CASE DEFAUT qui arrive quand on appel la box puis aiguillage sans exercice...";
         break;
     } //! Fin Switch
 }
