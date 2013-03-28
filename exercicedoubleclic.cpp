@@ -359,6 +359,11 @@ void ExerciceDoubleClic::slotAfficheVerificationQuestionEntered()
     }
     abeStateMachineSetVerifieReponse(verifieReponse());
     AbulEduStateMachineV1::slotAfficheVerificationQuestionEntered();
+
+    //! Desactivation delai auto de la stateMachine
+    if(sequenceMachine->cancelDelayedEvent(id_temporisation))
+        if(m_localDebug) qDebug() << "DESATIVATION DELAI OK";
+
 }
 
 void ExerciceDoubleClic::slotFinVerificationQuestionEntered()

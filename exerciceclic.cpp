@@ -110,8 +110,8 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
     m_timer->setSingleShot(true);
     connect(m_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
-
     keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
+
 }
 
 ExerciceClic::~ExerciceClic()
@@ -162,6 +162,7 @@ void ExerciceClic::slotSequenceEntered()
 
         setAbeLevel("1"); // a instancier après le slot sinon niveau 0 par def.
     }
+
 }
 
 void ExerciceClic::slotAide()
@@ -229,7 +230,7 @@ void ExerciceClic::slotRealisationExerciceEntered()
         {
             for(int i = 0; i < m_nbImage; i++) // choisir 5 images au hasard dans le pack
             {
-                qsrand(QDateTime::currentDateTime ().toTime_t ());
+                qsrand(QDateTime::currentDateTime().toTime_t());
                 int n = (qrand() % (m_listeFichiers.size()));
                 QFileInfo fileInfo = m_listeFichiers.takeAt(n);
                 m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
@@ -361,6 +362,11 @@ void ExerciceClic::slotAfficheVerificationQuestionEntered()
     }
     abeStateMachineSetVerifieReponse(verifieReponse());
     AbulEduStateMachineV1::slotAfficheVerificationQuestionEntered();
+
+    //! Desactivation delai auto de la stateMachine
+    if(sequenceMachine->cancelDelayedEvent(id_temporisation))
+        if(m_localDebug) qDebug() << "DESATIVATION DELAI OK";
+
 }
 
 void ExerciceClic::slotFinVerificationQuestionEntered()
@@ -593,8 +599,15 @@ void ExerciceClic::slotCacheMasque()
 
 void ExerciceClic::slotAppuiAutoSuivant()
 {
-    if (m_localDebug) qDebug() << "##########################  ExerciceClic::slotAppuiAutoSuivant()";
-    emit appuiSuivant();
+//    if (m_localDebug) qDebug() << "##########################  ExerciceClic::slotAppuiAutoSuivant()";
+//    if(m_timer->isActive()) {
+//        qDebug() << "le timer est active, on peut passer à la suivante";
+        emit appuiSuivant();
+//    }
+//    else{
+//        qDebug() << "le timer n'est pas actif";
+//        return;
+//    }
 }
 
 void ExerciceClic::slotAppuiAutoVerifier()
@@ -689,8 +702,8 @@ void ExerciceClic::pause()
     if( m_timer->isActive())
     {
         m_timer->stop();
-        if(m_localDebug) qDebug() << "Le timer est actif est vient d'etre stoppé";
 
+        qDebug() << m_timer->isActive();
         boiteTetes->setVisible(false);
         m_labelImagePause->show();
         m_labelTextePause->show();
@@ -713,5 +726,4 @@ void ExerciceClic::pause()
         boiteTetes->setVisible(true);
     }
 
-    if(m_localDebug) qDebug() << "Pause !";
 }
