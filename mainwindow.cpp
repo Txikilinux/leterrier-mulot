@@ -371,8 +371,8 @@ void MainWindow::slotSessionAuthenticated(bool enable)
     }
     ui->stCentral->setCurrentWidget(ui->fr_principale);
 
-    activityFilter *ef;
-    ef = new activityFilter(abeApp);
+    ActivityFilter *ef;
+    ef = new ActivityFilter(abeApp);
     ef->setInterval(7000);
     abeApp->installEventFilter(ef);
     QObject::connect(ef, SIGNAL(userInactive()), this, SLOT(slotDemo()), Qt::UniqueConnection);
