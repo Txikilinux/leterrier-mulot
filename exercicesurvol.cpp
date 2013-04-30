@@ -127,8 +127,8 @@ void ExerciceSurvol::chargerOption()
     parametres.beginGroup("survol");
     if (parametres.value("exerciceActive",false) == false)
     {
-        m_messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Survol</b>"), m_parent);
-        m_messageBox->show();
+        AbulEduMessageBoxV1* msgBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>Survol</b>"), m_parent);
+        msgBox->show();
 
         slotQuitterAccueil();
     }
@@ -172,8 +172,8 @@ void ExerciceSurvol::slotAide()
     QString consigne = "<td> " + trUtf8("Passe le pointeur de la souris au dessus des rectangles noirs pour faire apparaitre l'image.")+"<br />"
                                + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
 
-    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, 0);
-    connect(m_messageBox, SIGNAL(signalFermeture()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,false, 0);
+    connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
     m_messageBox->setWink();
     m_messageBox->show();
 }

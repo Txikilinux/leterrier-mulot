@@ -222,8 +222,8 @@ void ExerciceParcours::slotAide()
             +trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.")
             +" </td>" ;
 
-    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne, 0);
-    connect(m_messageBox, SIGNAL(signalFermeture()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,false, 0);
+    connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
     m_messageBox->setWink();
     m_messageBox->show();
 }

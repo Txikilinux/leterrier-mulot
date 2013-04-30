@@ -147,7 +147,7 @@ private slots:
     void slotAide();
 
     /** Méthode appelée à la fermeture de l'aire
-      * @see AbulEduMessageBoxV1::signalFermeture()
+      * @see AbulEduMessageBoxV1::signalAbeMessageBoxCloseOrHide()
       */
     void slotFermetureAide();
 
