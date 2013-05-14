@@ -1109,33 +1109,44 @@ bool Editeur::preparerSauvegarde()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    if(ui->leTitre->text().isEmpty()) {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"));
-        alertBox->show();
-        ui->stackedWidgetEditeur->setCurrentWidget(ui->pageFin);
-        ui->lblTitreModule->setStyleSheet("color:red");
-        ui->leTitre->setStyleSheet("border:1px solid red;border-radius:3px");
-        return false;
-    }
-    else
+    if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
-        ui->lblTitreModule->setStyleSheet("color:black");
-        ui->leTitre->setStyleSheet("border:1px solid grey;border-radius:3px");
-    }
-
-    if(ui->leAuteur->text().trimmed() == "") {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"));
-        alertBox->show();
-        ui->stackedWidgetEditeur->setCurrentWidget(ui->pageFin);
-        ui->lblNom->setStyleSheet("color:red");
-        ui->leAuteur->setStyleSheet("border:1px solid red;border-radius:3px");
+        if(ui->leTitre->text().trimmed().isEmpty())
+        {
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"));
+            alertBox->show();
+            ui->stackedWidgetEditeur->setCurrentWidget(ui->pageFin);
+            ui->lblTitreModule->setStyleSheet("color:red");
+            ui->leTitre->setStyleSheet("border:1px solid red;border-radius:3px");
+        }
+        else
+        {
+            ui->lblTitreModule->setStyleSheet("color:black");
+            ui->leTitre->setStyleSheet("border:1px solid grey;border-radius:3px");
+        }
+        if(ui->leAuteur->text().trimmed().isEmpty())
+        {
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"));
+            alertBox->show();
+            ui->stackedWidgetEditeur->setCurrentWidget(ui->pageFin);
+            ui->lblNom->setStyleSheet("color:red");
+            ui->leAuteur->setStyleSheet("border:1px solid red;border-radius:3px");
+        }
+        else
+        {
+            ui->lblNom->setStyleSheet("color:black");
+            ui->leAuteur->setStyleSheet("border:1px solid grey;border-radius:3px");
+        }
         return false;
     }
     else
     {
         ui->lblNom->setStyleSheet("color:black");
         ui->leAuteur->setStyleSheet("border:1px solid grey;border-radius:3px");
+        ui->lblTitreModule->setStyleSheet("color:black");
+        ui->leTitre->setStyleSheet("border:1px solid grey;border-radius:3px");
     }
+
     QString codeLangue = m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().key(ui->cbLangueRessource->currentText());
 
     //Les informations pour LOM
