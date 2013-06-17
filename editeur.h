@@ -113,7 +113,7 @@ private slots:
     void ajouterImage(QFileInfo monFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
-    void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB);
+    void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, int success);
 
     /** Passe à la page précédente */
     void on_btnPrecedent_clicked();
