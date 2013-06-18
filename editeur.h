@@ -219,7 +219,7 @@ private:
       * @param const QString dossier, le chemin du dossier à analyser
       * @return QStringList, la liste des chemins correspondant à l'arborescence descandante du dossier
       */
-    QStringList parcoursRecursif(const QString dossier);
+    QStringList parcoursRecursif(const QString& dossier);
 
     /** Remplie la scène de l'éditeur de parcours en fonction des paramètres définies (nombre de masques largeur/hauteur)
       * Si mode création, la scène n'aura pas de parcours

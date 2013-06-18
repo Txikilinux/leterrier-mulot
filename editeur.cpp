@@ -31,6 +31,7 @@ Editeur::Editeur(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_parent = parent;
+    m_localDebug = true;
 
     m_lastOpenDir = QDir::homePath();
 
@@ -41,18 +42,15 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
-    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this, SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
-    connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this, SLOT(slotAfficheEtatPublication(int)));
+    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this,
+            SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
+    connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this,
+            SLOT(slotAfficheEtatPublication(int)), Qt::UniqueConnection);
 
     QShortcut *shortcutSupprimeChoix = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listWidgetImagesSelection, 0, 0, Qt::WidgetShortcut);
     connect(shortcutSupprimeChoix, SIGNAL(activated()), this, SLOT(slotSupprimerImage()), Qt::UniqueConnection);
 
-    m_localDebug = true;
-
-    m_opt_nbMasquesChoisisParcours = 0;
-    m_opt_nbMasquesLargeur = 0;
-    m_opt_nbMasquesHauteur = 0;
-    m_numeroParcours = 0;
+    m_opt_nbMasquesChoisisParcours = m_opt_nbMasquesLargeur = m_opt_nbMasquesHauteur = m_numeroParcours = 0;
 
     m_listeMasques.clear();
     m_listeMasquesParcours.clear();
@@ -72,7 +70,7 @@ Editeur::Editeur(QWidget *parent) :
     // Affichage de la mediatheque par defaut
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
-    QGraphicsScene* scene = new QGraphicsScene();
+    QGraphicsScene* scene = new QGraphicsScene(this);
     ui->gvPageVisio->setScene(scene);
 }
 
@@ -86,10 +84,13 @@ Editeur::~Editeur()
 void Editeur::abeEditeurSetMainWindow(QWidget *mw)
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+
     MainWindow* parent = (MainWindow*) mw;
-    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(show()), Qt::UniqueConnection);
+    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,
+            SLOT(show()), Qt::UniqueConnection);
     connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
-            SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
+            SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
+            SLOT(hide()), Qt::UniqueConnection);
 
     if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
@@ -117,15 +118,14 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
         return;
     }
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
-
 }
 
 void Editeur::creationMenu()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-    /// COMMUN
+    // COMMUN
     QStyle* style =  QApplication::style(); // récupération du style systeme
-    /// MENU LISTWIDGET (Supprimer)
+    // MENU LISTWIDGET (Supprimer)
     m_menuListWidget = new QMenu(ui->listWidgetImagesSelection);
     QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer de la selection"),m_menuListWidget);
@@ -266,7 +266,6 @@ bool Editeur::supprimerDir(const QString& dirPath)
 
     QDir folder(dirPath);
     //On va lister dans ce répertoire tous les éléments différents de "." et ".."
-    //(désignant respectivement le répertoire en cours et le répertoire parent)
     folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
     foreach(QFileInfo fileInfo, folder.entryInfoList())
     {
@@ -296,7 +295,7 @@ bool Editeur::supprimerDir(const QString& dirPath)
     return true;
 }
 
-QStringList Editeur::parcoursRecursif(const QString dossier)
+QStringList Editeur::parcoursRecursif(const QString& dossier)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
@@ -689,7 +688,7 @@ void Editeur::sauvegarderParcours()
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
 
-    AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+    AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
     alertBox->setWink();
     alertBox->show();
 
@@ -740,7 +739,8 @@ void Editeur::on_btnParcours1_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_1->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Nombre masques Parcours"),trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur"));
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Nombre masques Parcours"),
+                                                              trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur"), true, this);
         alertBox->show();
         return;
     }
@@ -780,7 +780,7 @@ void Editeur::on_btnParcours2_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_2->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
         alertBox->setWink();
         alertBox->show();
         return;
@@ -814,7 +814,7 @@ void Editeur::on_btnParcours3_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_3->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
         alertBox->setWink();
         alertBox->show();
         return;
@@ -848,7 +848,7 @@ void Editeur::on_btnParcours4_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_4->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
         alertBox->setWink();
         alertBox->show();
         return;
@@ -882,7 +882,7 @@ void Editeur::on_btnParcours5_clicked()
     //Verification du nombre de masque
     if (ui->spinBoxParcoursMasque_5->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
         alertBox->setWink();
         alertBox->show();
         return;
@@ -1031,7 +1031,7 @@ void Editeur::on_btnSuivant_clicked()
         // Condition de garde = m_listeFichiersImages < 5
         if ( m_listeFichiersImages.count() < 5)
         {
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"));
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"), true, this);
             alertBox->show();
             return;
         }
@@ -1120,7 +1120,7 @@ bool Editeur::preparerSauvegarde()
     {
         if(ui->leTitre->text().trimmed().isEmpty())
         {
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"));
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"), true, this);
             alertBox->show();
             ui->stackedWidgetEditeur->setCurrentWidget(ui->pageFin);
             ui->lblTitreModule->setStyleSheet("color:red");
@@ -1133,7 +1133,7 @@ bool Editeur::preparerSauvegarde()
         }
         if(ui->leAuteur->text().trimmed().isEmpty())
         {
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"));
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"), true, this);
             alertBox->show();
             ui->stackedWidgetEditeur->setCurrentWidget(ui->pageFin);
             ui->lblNom->setStyleSheet("color:red");
@@ -1311,7 +1311,8 @@ void Editeur::on_btnEssayer_clicked()
     if (preparerSauvegarde())
     {
         emit editorTest();
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."));
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),
+                                                              trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."), true, this);
         alertBox->show();
     }
 }
@@ -1346,13 +1347,13 @@ void Editeur::slotAfficheEtatPublication(int code)
 {
     if(code > 0)
     {
-        AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), trUtf8("Votre module a bien été publié sur AbulÉdu-Médiathèque..."));
+        AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), trUtf8("Votre module a bien été publié sur AbulÉdu-Médiathèque..."), true, this);
         msgEnregistrement->setWink();
         msgEnregistrement->show();
     }
     else
     {
-        AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Problème"), trUtf8("Un problème a empêché la publication de votre module sur AbulÉdu-Médiathèque..."));
+        AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Problème"), trUtf8("Un problème a empêché la publication de votre module sur AbulÉdu-Médiathèque..."), true, this);
         msgEnregistrement->show();
     }
 }
