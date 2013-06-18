@@ -157,10 +157,13 @@ void Editeur::slotSupprimerImage()
     for (int i = 0; i < ui->listWidgetImagesSelection->selectedItems().count(); i++)// Suppression de ma liste d'images
     {
         m_listeFichiersImages.removeOne(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString());
-        // suppression du fichier image dans temp
-        if (QFile::remove(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString()))
+        QFileInfo fi(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString());
+        if(QFile::remove(fi.absoluteFilePath().replace(fi.suffix(), "xml").remove("/images"))){
+            if(m_localDebug) qDebug() << "Suppr XML OK";
+        }
+        if (QFile::remove(fi.absoluteFilePath()))
         {
-            if (m_localDebug)qDebug() << "suppression image du fichier temp ok";
+            if (m_localDebug)qDebug() << "Suppr image du fichier temp ok";
         }
     }
 
