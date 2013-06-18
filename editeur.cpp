@@ -31,7 +31,7 @@ Editeur::Editeur(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_parent = parent;
-    m_localDebug = true;
+    m_localDebug = false;
 
     m_lastOpenDir = QDir::homePath();
 
@@ -768,6 +768,8 @@ void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
     if(m_localDebug) qDebug() << "Fermeture EditeurParcoursWidget...";
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
+    m_listeMasquesFixes.clear();
+
 }
 
 void Editeur::on_btnParcours2_clicked()
@@ -945,6 +947,7 @@ void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
 
 void Editeur::slotLoadUnit()
 {
+    qDebug() << "ON CHARGE LES PARAMETRES";
     if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<m_abuleduFile->abeFileGetFileName().fileName();
     m_listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
@@ -975,13 +978,24 @@ void Editeur::slotLoadUnit()
     parametres.beginGroup("parcours");
     ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
-    ui->spinBoxParcoursMasque_1->setValue(parametres.value("parcours1/nbMasquesChoisis",7).toInt());
-    ui->spinBoxParcoursMasque_2->setValue(parametres.value("parcours2/nbMasquesChoisis",7).toInt());
-    ui->spinBoxParcoursMasque_3->setValue(parametres.value("parcours3/nbMasquesChoisis",7).toInt());
-    ui->spinBoxParcoursMasque_4->setValue(parametres.value("parcours4/nbMasquesChoisis",7).toInt());
-    ui->spinBoxParcoursMasque_5->setValue(parametres.value("parcours5/nbMasquesChoisis",7).toInt());
     ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
     ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
+
+    // Recupération nb masque pour remplissage ComboBox
+    parametres.beginGroup("parcours1");
+    ui->spinBoxParcoursMasque_1->setValue(parametres.childKeys().count());
+    parametres.endGroup();
+    parametres.beginGroup("parcours2");
+    ui->spinBoxParcoursMasque_2->setValue(parametres.childKeys().count());
+    parametres.endGroup();
+    parametres.beginGroup("parcours3");
+    ui->spinBoxParcoursMasque_3->setValue(parametres.childKeys().count());
+    parametres.endGroup();
+    parametres.beginGroup("parcours4");
+    ui->spinBoxParcoursMasque_4->setValue(parametres.childKeys().count());
+    parametres.endGroup();
+    parametres.beginGroup("parcours5");
+    ui->spinBoxParcoursMasque_5->setValue(parametres.childKeys().count());
     parametres.endGroup();
 
     ui->leTitre->setText(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralTitle(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()));
