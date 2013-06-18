@@ -76,6 +76,9 @@ public:
     /** Permet d'accéder à la page d'accueil */
     AbulEduPageAccueilV1* abeGetMyAbulEduAccueil();
 
+    AbulEduBoxFileManagerV1* abeGetMyAbulEduFileManager() { return m_abuleduFileManager;}
+
+
 public slots:
     /** Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif */
     void slotDemo();

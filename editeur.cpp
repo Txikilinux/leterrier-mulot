@@ -86,11 +86,15 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     MainWindow* parent = (MainWindow*) mw;
+    qDebug() << "PARENT :" << parent;
     connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,
             SLOT(show()), Qt::UniqueConnection);
     connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
             SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
             SLOT(hide()), Qt::UniqueConnection);
+
+    // Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module"
+    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
 
     if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
@@ -1130,6 +1134,15 @@ bool Editeur::preparerSauvegarde()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
+    // @todo mettre le boxManager en complet pour sauvegarde BUG #2995
+//    MainWindow* parent = (MainWindow*)m_parent;
+
+//    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
+
+//            m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
+
+
+
     if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
         if(ui->leTitre->text().trimmed().isEmpty())
@@ -1303,6 +1316,8 @@ bool Editeur::preparerSauvegarde()
     /// Creation .abe
     parametres.sync(); //pour forcer l'écriture du .conf
     m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+
+
     return true;
 }
 
