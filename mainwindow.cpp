@@ -48,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent) :
     creeMenuLangue();
     move(QApplication::desktop()->screen()->rect().center()-this->rect().center());
 
-    setAttribute( Qt::WA_DeleteOnClose );
+    setAttribute(Qt::WA_DeleteOnClose);
     m_exerciceEnCours = false;
 
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
@@ -80,7 +80,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)),ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
-    connect(m_abuleduFileManager,SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)));
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)));
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
+
 
     m_numberExoCalled = -1;
 
@@ -183,6 +185,7 @@ void MainWindow::slotFinDemo()
 
 void MainWindow::btnBoxClicked()
 {
+    ui->AbulEduBoxFileManager->abeSetSender(this);
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }
 
@@ -460,6 +463,14 @@ void MainWindow::slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbul
     {
         ui->stCentral->setCurrentWidget(ui->fr_principale);
     }
+}
+
+void MainWindow::btnQuitBoxFileManagerClicked()
+{
+    if(ui->AbulEduBoxFileManager->abeGetSender()->objectName() == "editeur")
+        ui->stCentral->setCurrentWidget(ui->pageEditeur);
+    else
+        ui->stCentral->setCurrentWidget(ui->fr_principale);
 }
 
 QSharedPointer<AbulEduFileV1> MainWindow::abeGetMyAbulEduFile()

@@ -182,6 +182,8 @@ private slots:
     /** Gère le comportement qui suit la sauvegarde un module */
     void slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation enumLocation, QString fileName, bool success);
 
+    /** Gère le comportement après la fermeture de l'AbulEduBoxFileManager*/
+    void btnQuitBoxFileManagerClicked();
 };
 
 #endif // MAINWINDOW_H
