@@ -736,6 +736,15 @@ QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
     return voisinsMasques;
 }
 
+void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
+{
+    if(m_localDebug) qDebug() << "Fermeture EditeurParcoursWidget...";
+    m_listeMasquesParcours.clear();
+    m_listeMasques.clear();
+    m_listeMasquesFixes.clear();
+
+}
+
 void Editeur::on_btnParcours1_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
@@ -768,15 +777,6 @@ void Editeur::on_btnParcours1_clicked()
 
     remplirGvParcours(m_numeroParcours);
     gv_AireParcours->show();
-}
-
-void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
-{
-    if(m_localDebug) qDebug() << "Fermeture EditeurParcoursWidget...";
-    m_listeMasquesParcours.clear();
-    m_listeMasques.clear();
-    m_listeMasquesFixes.clear();
-
 }
 
 void Editeur::on_btnParcours2_clicked()
@@ -1136,15 +1136,6 @@ void Editeur::on_btnModificationAutre_clicked()
 bool Editeur::preparerSauvegarde()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    // @todo mettre le boxManager en complet pour sauvegarde BUG #2995
-//    MainWindow* parent = (MainWindow*)m_parent;
-
-//    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
-
-//            m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
-
-
 
     if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
