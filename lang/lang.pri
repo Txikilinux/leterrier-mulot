@@ -5,5 +5,5 @@
 # mettez ici la liste des fichiers de traduction que vous voulez
 
 TRANSLATIONS += \
-    $$PWD/mulot_en.ts \
-    $$PWD/mulot_fr.ts
+    $$PWD/leterrier-mulot_en.ts \
+    $$PWD/leterrier-mulot_fr.ts

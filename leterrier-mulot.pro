@@ -71,6 +71,5 @@ include(lib/abuledusplashscreenv1/abuledusplashscreenv1.pri)
 
 #AbulEduLangV1
 include(lib/abuledulangv1/abuledulangv1.pri)
-include(lang/lang.pri)
 
 include(lib/abuleduidentitesv1/abuleduidentitesv1.pri)
