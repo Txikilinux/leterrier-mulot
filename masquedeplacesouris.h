@@ -79,12 +79,12 @@ public:
     /** Méthode qui retourne la couleur actuelle du masque
       * @return QColor, la couleur actuelle du masque
       */
-    QColor getColor() const;
+    QColor getColor() const{return m_couleur;}
 
     /** Méthode qui retourne le numero actuel du masque
       * @return QColor, le numero actuel du masque
       */
-    int getNumero() const;
+    int getNumero() const{ return m_numero;}
 
 private:
     /** Méthode qui dessine à l'écran le masque

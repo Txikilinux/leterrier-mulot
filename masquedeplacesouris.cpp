@@ -72,16 +72,6 @@ void MasqueDeplaceSouris::setIsEditable(bool isEditable)
     m_isEditable = isEditable;
 }
 
-QColor MasqueDeplaceSouris::getColor() const
-{
-    return m_couleur;
-}
-
-int MasqueDeplaceSouris::getNumero() const
-{
-    return m_numero;
-}
-
 void MasqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPainterPath zoneDessin;
