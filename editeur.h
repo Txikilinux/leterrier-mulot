@@ -144,7 +144,7 @@ private slots:
     void on_btnModificationAutre_clicked();
 
     /** Charge la position des masques en lisant le fichier de paramètre */
-    void chargerPositionMasque(int numeroParcours);
+    void chargerPositionMasque(const int numeroParcours);
 
     /** Gère la fermeture de l'editeur de parcours */
     void slotFermetureEditeurParcoursWidget(QCloseEvent*);
@@ -160,7 +160,7 @@ private slots:
     void slotSortieVisionneuse();
 
     /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
-    void slotAfficheEtatPublication(int code);
+    void slotAfficheEtatPublication(const int code);
 
 private:
     Ui::Editeur *ui;
@@ -226,14 +226,14 @@ private:
       * Si mode modification, la scène créera le parcours contenu dans l'abe courant
       * @param int, numeroParcours, le numéro du parcours à créer/modifier
       */
-    void remplirGvParcours(int numeroParcours);
+    void remplirGvParcours(const int numeroParcours);
 
 //    bool controleVoisinMasque(MasqueDeplaceSouris *masque);
 
     /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
       * @param bool yesNo, true = mode modification, false = mode création
       */
-    void setModeModificationAbe(bool yesNo);
+    void setModeModificationAbe(const bool yesNo);
 
     /** Gestion du drop
       * @param QDropEvent *event, un pointeur sur l'évènement drop
