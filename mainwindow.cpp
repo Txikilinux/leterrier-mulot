@@ -155,7 +155,7 @@ void MainWindow::slotDemo()
     }
     if (!m_exerciceEnCours && m_isDemoAvailable)
     {
-        qDebug() << "Affichage des bulles ";
+//        qDebug() << "Affichage des bulles ";
         m_abuleduaccueil->abePageAccueilMontreBulles(true);
         foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
         {
