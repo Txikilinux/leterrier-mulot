@@ -353,8 +353,7 @@ void Editeur::remplirGvParcours(const int numeroParcours)
     m_opt_nbMasquesLargeur = ui->spinBoxParcoursMasquesLargeur->value();
     m_opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
 
-    float largeurMasque = 0.00;
-    float hauteurMasque = 0.00;
+    float largeurMasque, hauteurMasque = 0.00;
 
     float largeurGv = static_cast<float>(gv_AireParcours->width())-1;
     float hauteurGv = static_cast<float>(gv_AireParcours->height())-1;
@@ -363,8 +362,7 @@ void Editeur::remplirGvParcours(const int numeroParcours)
     hauteurMasque = hauteurGv / m_opt_nbMasquesHauteur;
 
     int nbMasques = m_opt_nbMasquesLargeur * m_opt_nbMasquesHauteur;
-    qreal xMasque = 0.00;
-    qreal yMasque = 0.00;
+    qreal xMasque, yMasque = 0.00;
 
     if (m_localDebug)
     {
@@ -374,9 +372,9 @@ void Editeur::remplirGvParcours(const int numeroParcours)
     chargerPositionMasque(numeroParcours);
 
     int numeroMasque = 0;
-    for (float i=0; i<m_opt_nbMasquesHauteur;i++)
+    for (float i=0; i < m_opt_nbMasquesHauteur; i++)
     {
-        for (int j =0; j < m_opt_nbMasquesLargeur;j++)
+        for (int j=0; j < m_opt_nbMasquesLargeur; j++)
         {
             m_masque = new MasqueDeplaceSouris(0, numeroMasque);
             m_masque->setSize(largeurMasque, hauteurMasque);
@@ -410,10 +408,10 @@ void Editeur::remplirGvParcours(const int numeroParcours)
     if(m_modeModificationAbe)
     {
         /* Parcours de la QMap positionMasqueParcours */
-        int positionDepart  = 0;
-        int positionArrivee = 0;
+        int positionDepart, positionArrivee = 0;
+
         QList<int> positionParcours;
-        positionParcours.clear();
+//        positionParcours.clear();
         QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
         while (i != positionMasquesParcours.constEnd())
         {
@@ -433,8 +431,7 @@ void Editeur::remplirGvParcours(const int numeroParcours)
             qDebug() << "Position Parcours               : " << positionParcours;
         }
 
-        /* ****************************************************
-         * MODE MODIFICATION
+        /* MODE MODIFICATION
          * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
          */
         /* depart */

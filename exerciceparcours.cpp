@@ -47,10 +47,8 @@ ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     m_listeFichiers.clear();
     m_listeMasquesFixes.clear();
     m_listeMasquesParcours.clear();
-    m_nbImage = 0;
-    m_nbMasquesInteractifs = 0;
-    opt_nbMasquesLargeur = 0;
-    opt_nbMasquesHauteur = 0;
+
+    m_nbImage = m_nbMasquesInteractifs = opt_nbMasquesLargeur = opt_nbMasquesHauteur = 0;
     onPeutMettreEnPause = false;
 
     //pour l'affichage pause
@@ -68,7 +66,7 @@ ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     getAbeExerciceMessageV1()->setParent(gv_AireDeJeu);
 
     cheminConf  = m_theme + QDir::separator()+QString("conf")+QDir::separator() + QString("parametres.conf");
-    cheminImage = m_theme + QDir::separator() + QString("data") +QDir::separator() + QString("images") + QDir::separator()  ;
+    cheminImage = m_theme + QDir::separator() + QString("data") +QDir::separator() + QString("images") + QDir::separator();
 
     chargerOption();
 
