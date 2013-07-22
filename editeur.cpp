@@ -31,7 +31,7 @@ Editeur::Editeur(QWidget *parent) :
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_parent = parent;
-    m_localDebug = false;
+    m_localDebug = true;
 
     m_lastOpenDir = QDir::homePath();
 
@@ -93,7 +93,7 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
             SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
             SLOT(hide()), Qt::UniqueConnection);
 
-    // Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module"
+    /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
     parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
 
     if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
@@ -127,9 +127,10 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
 void Editeur::creationMenu()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-    // COMMUN
+
     QStyle* style =  QApplication::style(); // récupération du style systeme
-    // MENU LISTWIDGET (Supprimer)
+
+    /* MENU LISTWIDGET (Supprimer) */
     m_menuListWidget = new QMenu(ui->listWidgetImagesSelection);
     QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); //On récupère l'icône désiré
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer de la selection"),m_menuListWidget);
@@ -142,19 +143,17 @@ void Editeur::creationMenu()
 void Editeur::slotSupprimerImage()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-    if (m_listeFichiersImages.isEmpty()) // condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =)
-    {return;}
-
-    if (ui->listWidgetImagesSelection->selectedItems().isEmpty()) // Garde
-    { return;}
+    /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
+    if (m_listeFichiersImages.isEmpty()){return;}
+    if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
 
     if (m_localDebug) qDebug() << "Suppression ItemImage -> liste images avant : ";
     for (int i = 0; i < m_listeFichiersImages.count(); i++)
     {
         if (m_localDebug) qDebug() << i <<" "<<m_listeFichiersImages.at(i);
     }
-
-    for (int i = 0; i < ui->listWidgetImagesSelection->selectedItems().count(); i++)// Suppression de ma liste d'images
+    /* Suppression de ma liste d'images */
+    for (int i = 0; i < ui->listWidgetImagesSelection->selectedItems().count(); i++)
     {
         m_listeFichiersImages.removeOne(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString());
         QFileInfo fi(ui->listWidgetImagesSelection->selectedItems().at(i)->data(4).toString());
@@ -166,8 +165,8 @@ void Editeur::slotSupprimerImage()
             if (m_localDebug)qDebug() << "Suppr image du fichier temp ok";
         }
     }
-
-    foreach(QListWidgetItem *i, ui->listWidgetImagesSelection->selectedItems())// Suppression des items selectionné
+    /* Suppression des items selectionné */
+    foreach(const QListWidgetItem *i, ui->listWidgetImagesSelection->selectedItems())
     {
         delete i;
     }
