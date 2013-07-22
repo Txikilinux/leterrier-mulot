@@ -123,7 +123,7 @@ private:
     /** Charge la position des masques contenues dans le fichier de configuration (parametres.ini)
       * @param int numeroQuestion, le numero de la question afin de charger le bon parcours
       */
-    void chargerPositionMasque(int numeroQuestion);
+    void chargerPositionMasque(const int numeroQuestion);
 
     /** Méthode qui filtre les évènement
       * @param QObject *obj, un pointeur sur l'objet auteur de l'évènement
@@ -134,6 +134,11 @@ private:
     bool eventFilter(QObject *obj, QEvent *ev);
 
     void pause();
+
+    QList<int> masquesVoisins(const int numeroMasque, const int largeur, const int hauteur);
+
+    int NB_MASQUESATTENDUS;
+    int NB_MASQUESREELS;
 
 private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
@@ -208,6 +213,7 @@ private slots:
       * @brief Permet donc d'activer (de simuler) l'appui sur le bouton verifier de la telecommande
       */
     void slotAppuiAutoVerifier();
+
 
 signals:
     void exerciceExited();
