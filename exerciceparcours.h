@@ -135,8 +135,6 @@ private:
 
     void pause();
 
-    QList<int> masquesVoisins(const int numeroMasque, const int largeur, const int hauteur);
-
     int NB_MASQUESATTENDUS;
     int NB_MASQUESREELS;
 

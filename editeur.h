@@ -45,6 +45,7 @@
 #include "ui_editeur.h"
 #include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
+#include "abuledutools.h"
 
 namespace Ui {
 class Editeur;
@@ -101,7 +102,7 @@ private slots:
       * @param hauteur, int, le nombre de masques dans la hauteur du parcours
       * @return voisinsMasques, QList<Int>, la liste des voisins possibles (gauche, droite, haut, bas)
       */
-    QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
+//    QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
 
     /** Fait apparaitre sur le clic droit le menu contextuel créé dans la méthode creationMenu(); */
     void on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos);

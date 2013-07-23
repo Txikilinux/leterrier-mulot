@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     exerciceclic.cpp \
     exercicedoubleclic.cpp \
     lib/abuleduaproposv1/abuleduaproposv1.cpp \
-    editeurparcourswidget.cpp
+    editeurparcourswidget.cpp \
+    abuledutools.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     exerciceclic.h \
     exercicedoubleclic.h \
     lib/abuleduaproposv1/abuleduaproposv1.h \
-    editeurparcourswidget.h
+    editeurparcourswidget.h \
+    abuledutools.h
 
 FORMS    += mainwindow.ui \
     widgetdeplacesouris.ui \

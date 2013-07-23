@@ -22,6 +22,7 @@
 
 #include "exerciceparcours.h"
 #include <QVector>
+#include "abuledutools.h"
 
 ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme):
     AbulEduCommonStatesV1(parent)
@@ -214,40 +215,6 @@ void ExerciceParcours::chargerPositionMasque(const int numeroQuestion)
     }
     /* On enregistre le nombre de masques attendus */
     NB_MASQUESATTENDUS = positionMasquesParcours.count();
-}
-
-QList<int> ExerciceParcours::masquesVoisins(const int numeroMasque, const int largeur, const int hauteur)
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    QList<int> voisinsMasques;
-    const int nbTotal = largeur * hauteur;
-
-    int gauche, droite, bas, haut = 0;
-
-    /* calcul des différentes directions possibles */
-    gauche = numeroMasque - 1;
-    droite = numeroMasque + 1;
-    haut = numeroMasque - largeur;
-    bas  = numeroMasque + largeur;
-
-    /* Controle gauche et droite */
-    if ( ((gauche/largeur)%hauteur) == ((numeroMasque/largeur)%hauteur) && ( gauche >= 0) && (gauche <= nbTotal) ) // c'est la meme ligne
-    {
-        voisinsMasques << gauche;
-    }
-    if ( ((droite/largeur)%hauteur) == ((numeroMasque/largeur)%hauteur) && ( droite >= 0) && (droite <= nbTotal)) // c'est la meme ligne
-    {
-        voisinsMasques << droite;
-    }
-
-    /* Controle haut & bas */
-    if (haut >= 0 && haut <= nbTotal)
-        voisinsMasques << haut;
-    if (bas >= 0 && bas <= nbTotal)
-        voisinsMasques << bas;
-
-    return voisinsMasques;
 }
 
 void ExerciceParcours::slotSequenceEntered()
@@ -456,7 +423,7 @@ void ExerciceParcours::slotQuestionEntered()
         QList<int> voisinsPossibles;
         while (!positionMasquesParcours.isEmpty())
         {
-            voisinsPossibles = masquesVoisins(m_listeMasquesParcours.last()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
+            voisinsPossibles = AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), opt_nbMasquesLargeur, opt_nbMasquesHauteur);
             if(voisinsPossibles.contains(m_listeMasquesFixes.at(positionMasquesParcours.first())->getNumero()))
             {
                 /* Ce masque est ok, on y va */

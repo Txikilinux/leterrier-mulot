@@ -481,7 +481,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
             m_listeMasquesParcours << masque;
 
             /* ...& je coloris en gris les voisins */
-            listeVoisins = masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
+            listeVoisins = AbulEduTools::masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
             foreach(MasqueDeplaceSouris* var_masque, m_listeMasques)
             {
                 for (int i =0 ; i < listeVoisins.count(); i++)
@@ -499,7 +499,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
         {
             listeVoisins.clear();
             /* Je vais chercher les voisins du dernier masque posé */
-            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
+            listeVoisins = AbulEduTools::masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
 
             if (listeVoisins.contains(masque->getNumero())) /* Si le numero de ce masque est contenu ds mas liste de voisins = Ok */
             {
@@ -519,7 +519,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
                 m_listeMasquesParcours << masque;
 
                 /* ...& je coloris en gris les voisins */
-                listeVoisins = masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
+                listeVoisins = AbulEduTools::masquesVoisins(masque->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
                 foreach(MasqueDeplaceSouris* var_masque, m_listeMasques)
                 {
                     for (int i =0 ; i < listeVoisins.count(); i++)
@@ -535,7 +535,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
         }
         else if ( m_listeMasquesParcours.count() == (m_opt_nbMasquesChoisisParcours-1))
         {
-            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
+            listeVoisins = AbulEduTools::masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
 
             if (listeVoisins.contains(masque->getNumero())) // Si le numero de ce masque est contenu ds mas liste de voisins = Ok
             {
@@ -585,7 +585,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
          */
         if (!m_listeMasquesParcours.isEmpty())
         {
-            listeVoisins = masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
+            listeVoisins = AbulEduTools::masquesVoisins(m_listeMasquesParcours.back()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur);
             foreach(MasqueDeplaceSouris* var_masque, m_listeMasques)
             {
                 for (int i =0 ; i < listeVoisins.count(); i++)
@@ -705,40 +705,6 @@ void Editeur::sauvegarderParcours()
     alertBox->show();
 
     gv_AireParcours->close();
-}
-
-QList<int> Editeur::masquesVoisins(int numeroMasque, int largeur, int hauteur)
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    QList<int> voisinsMasques;
-    int nbTotal = largeur * hauteur;
-
-    int gauche, droite, bas, haut = 0;
-
-    /* calcul des différentes directions possibles */
-    gauche = numeroMasque - 1;
-    droite = numeroMasque + 1;
-    haut = numeroMasque - largeur;
-    bas  = numeroMasque + largeur;
-
-    /* Controle gauche et droite */
-    if ( ((gauche/largeur)%hauteur) == ((numeroMasque/largeur)%hauteur) && ( gauche >= 0) && (gauche <= nbTotal) ) // c'est la meme ligne
-    {
-        voisinsMasques << gauche;
-    }
-    if ( ((droite/largeur)%hauteur) == ((numeroMasque/largeur)%hauteur) && ( droite >= 0) && (droite <= nbTotal)) // c'est la meme ligne
-    {
-        voisinsMasques << droite;
-    }
-
-    /* Controle haut & bas */
-    if (haut >= 0 && haut <= nbTotal)
-        voisinsMasques << haut;
-    if (bas >= 0 && bas <= nbTotal)
-        voisinsMasques << bas;
-
-    return voisinsMasques;
 }
 
 void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
