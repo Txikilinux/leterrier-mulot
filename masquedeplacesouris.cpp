@@ -99,7 +99,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->buttons()== Qt::LeftButton)
     {
-        qDebug() << "clic gauche";
+        //qDebug() << "clic gauche";
         if(m_hideOnClick)
         {
             event->accept();
@@ -109,7 +109,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
         else if(m_isEditable)
         {
             event->accept();
-            qDebug() << "Click gauche masque";
+            //qDebug() << "Click gauche masque";
             emit signalPoseSurParcours(this);
         }
         else if (m_hideOnDoubleClick)
@@ -123,7 +123,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
             {
                 if (timerDoubleClic.elapsed() < QApplication::doubleClickInterval() )
                 {
-                    qDebug() << "Double Clic evenement";
+                    //qDebug() << "Double Clic evenement";
                     event->accept();
                     setVisible(false);
                     emit signalCacheMasque();
@@ -137,7 +137,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (event->buttons() == Qt::RightButton)
     {
-        qDebug() << "clic droit";
+        //qDebug() << "clic droit";
 //        if (m_isEditable)
 //        {
 //            m_menuMasque->popup(event->screenPos());
@@ -151,7 +151,7 @@ void MasqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
 
     if(m_hideOnDoubleClick)
     {
-        qDebug() << "DOUBLE CLIC";
+        //qDebug() << "DOUBLE CLIC";
         event->accept();
         setVisible(false);
         emit signalCacheMasque();
