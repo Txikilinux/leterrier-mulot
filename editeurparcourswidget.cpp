@@ -22,7 +22,7 @@
 #include "editeurparcourswidget.h"
 #include "ui_editeurparcourswidget.h"
 
-EditeurParcoursWidget::EditeurParcoursWidget(QWidget *parent) :
+EditeurParcoursWidget::EditeurParcoursWidget(int numeroParcours, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::EditeurParcoursWidget)
 {
@@ -31,6 +31,8 @@ EditeurParcoursWidget::EditeurParcoursWidget(QWidget *parent) :
 
     m_scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(m_scene);
+
+    m_numeroParcours = numeroParcours;
 }
 
 EditeurParcoursWidget::~EditeurParcoursWidget()
@@ -56,6 +58,11 @@ int EditeurParcoursWidget::getBoutonHeight() const
 int EditeurParcoursWidget::getBoutonWidth() const
 {
     return ui->btnReset->width();
+}
+
+int EditeurParcoursWidget::getNumeroParcours() const
+{
+    return m_numeroParcours;
 }
 
 QPushButton* EditeurParcoursWidget::getBtnReset() const

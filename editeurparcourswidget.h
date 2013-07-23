@@ -37,7 +37,7 @@ class EditeurParcoursWidget : public QWidget
     
 public:
     /** Constructeur de la classe EditeurParcoursWidget */
-    explicit EditeurParcoursWidget(QWidget *parent = 0);
+    explicit EditeurParcoursWidget( int numeroParcours, QWidget *parent = 0);
 
     /** Destructeur de la classe EditeurParcoursWidget */
     ~EditeurParcoursWidget();
@@ -72,6 +72,11 @@ public:
       */
     int getBoutonWidth() const;
 
+    /** Retourne le numero du parcours en cours d'edition
+      * @return int, le numero du parcours
+      */
+    int getNumeroParcours() const;
+
     /** Permet d'activer/desactiver le bouton sauvegarder
       * @param bool enable, true = bouton activé, false = bouton desactiver
       */
@@ -82,6 +87,8 @@ private:
     QGraphicsScene *m_scene;
 
     bool m_localDebug;
+
+    int m_numeroParcours;
 
 private slots:
     /** Méthode appelée lors de fermeture de la fenetre
