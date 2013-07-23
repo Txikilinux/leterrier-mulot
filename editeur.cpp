@@ -72,6 +72,9 @@ Editeur::Editeur(QWidget *parent) :
 
     QGraphicsScene* scene = new QGraphicsScene(this);
     ui->gvPageVisio->setScene(scene);
+
+    /* Mappage des signaux des 5 boutons de parcours */
+    mapSignalBtnParcours();
 }
 
 Editeur::~Editeur()
@@ -267,10 +270,6 @@ void Editeur::createAbe()
     }
 }
 
-
-
-
-
 /***********************************************************************************************************************************************************
                                                                PARCOURS
 **********************************************************************************************************************************************************/
@@ -359,7 +358,7 @@ void Editeur::remplirGvParcours(const int numeroParcours)
         int positionDepart, positionArrivee = 0;
 
         QList<int> positionParcours;
-//        positionParcours.clear();
+        //        positionParcours.clear();
         QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
         while (i != positionMasquesParcours.constEnd())
         {
@@ -661,18 +660,58 @@ void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
     m_listeMasquesFixes.clear();
-
 }
 
-void Editeur::on_btnParcours1_clicked()
+void Editeur::mapSignalBtnParcours()
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    QSignalMapper *signalMapper = new QSignalMapper(this);
+    connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(slotBtnParcours_clicked(int)), Qt::UniqueConnection);
 
-    m_numeroParcours = 1;
+    signalMapper->setMapping(ui->btnParcours1, 1);
+    signalMapper->setMapping(ui->btnParcours2, 2);
+    signalMapper->setMapping(ui->btnParcours3, 3);
+    signalMapper->setMapping(ui->btnParcours4, 4);
+    signalMapper->setMapping(ui->btnParcours5, 5);
+
+    connect(ui->btnParcours1, SIGNAL(clicked()), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->btnParcours2, SIGNAL(clicked()), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->btnParcours3, SIGNAL(clicked()), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->btnParcours4, SIGNAL(clicked()), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->btnParcours5, SIGNAL(clicked()), signalMapper, SLOT(map()), Qt::UniqueConnection);
+}
+
+void Editeur::slotBtnParcours_clicked(int numBtn)
+{
+    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << numBtn;
+
+    int nbMasque = 0;
     m_listeMasquesParcours.clear();
+    m_numeroParcours = numBtn;
+
+    switch(numBtn){
+    case 1:
+        nbMasque = ui->spinBoxParcoursMasque_1->value();
+        break;
+    case 2:
+        nbMasque = ui->spinBoxParcoursMasque_2->value();
+        break;
+    case 3:
+        nbMasque = ui->spinBoxParcoursMasque_3->value();
+        break;
+    case 4:
+        nbMasque = ui->spinBoxParcoursMasque_4->value();
+        break;
+    case 5:
+        nbMasque = ui->spinBoxParcoursMasque_5->value();
+        break;
+    default:
+        AbulEduMessageBoxV1 *alertBox = new AbulEduMessageBoxV1(trUtf8("Une erreur est survenue"),trUtf8("Relancer l'editeur."), true, this);
+        alertBox->show();
+        return;
+    }
 
     /* Verification du nombre de masque */
-    if (ui->spinBoxParcoursMasque_1->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
+    if (nbMasque >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
     {
         AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Nombre masques Parcours"),
                                                               trUtf8("Le nombre de masques de Parcours doit être inférieur ou égal au nombre de masques Largeur * nombre de masques Hauteur"), true, this);
@@ -680,9 +719,8 @@ void Editeur::on_btnParcours1_clicked()
         return;
     }
 
-    /// @todo parenter gv_AireParcours ou delete... A pister
     gv_AireParcours = new EditeurParcoursWidget();
-    gv_AireParcours->setWindowTitle(trUtf8("Parcours 1"));
+    gv_AireParcours->setWindowTitle(trUtf8("Parcours ")+QString::number(numBtn));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
     connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
@@ -698,147 +736,6 @@ void Editeur::on_btnParcours1_clicked()
     remplirGvParcours(m_numeroParcours);
     gv_AireParcours->show();
 }
-
-void Editeur::on_btnParcours2_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    m_numeroParcours = 2;
-    m_listeMasquesParcours.clear();
-
-    /* Verification du nombre de masque */
-    if (ui->spinBoxParcoursMasque_2->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
-    {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
-        alertBox->setWink();
-        alertBox->show();
-        return;
-    }
-
-    /// @todo parenter gv_AireParcours ou delete... A pister
-    gv_AireParcours = new EditeurParcoursWidget();
-    gv_AireParcours->setWindowTitle(trUtf8("Parcours 2"));
-    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
-
-    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)), Qt::UniqueConnection);
-
-    /* On centre la fenetre sur l'ecran de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
-
-    remplirGvParcours(m_numeroParcours);
-    gv_AireParcours->show();
-}
-
-void Editeur::on_btnParcours3_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    m_numeroParcours = 3;
-    m_listeMasquesParcours.clear();
-
-    /* Verification du nombre de masque */
-    if (ui->spinBoxParcoursMasque_3->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
-    {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
-        alertBox->setWink();
-        alertBox->show();
-        return;
-    }
-
-    /// @todo parenter gv_AireParcours ou delete... A pister
-    gv_AireParcours = new EditeurParcoursWidget();
-    gv_AireParcours->setWindowTitle(trUtf8("Parcours 3"));
-    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
-
-    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)), Qt::UniqueConnection);
-
-    /* On centre la fenetre sur l'ecran de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
-
-    remplirGvParcours(m_numeroParcours);
-    gv_AireParcours->show();
-}
-
-void Editeur::on_btnParcours4_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    m_numeroParcours = 4;
-    m_listeMasquesParcours.clear();
-
-    /* Verification du nombre de masque */
-    if (ui->spinBoxParcoursMasque_4->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
-    {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
-        alertBox->setWink();
-        alertBox->show();
-        return;
-    }
-
-    /// @todo parenter gv_AireParcours ou delete... A pister
-    gv_AireParcours = new EditeurParcoursWidget();
-    gv_AireParcours->setWindowTitle(trUtf8("Parcours 4"));
-    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
-
-    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)), Qt::UniqueConnection);
-
-    /* On centre la fenetre sur l'ecran de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
-
-    remplirGvParcours(m_numeroParcours);
-    gv_AireParcours->show();
-}
-
-void Editeur::on_btnParcours5_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    m_numeroParcours = 5;
-    m_listeMasquesParcours.clear();
-
-    /* Verification du nombre de masque */
-    if (ui->spinBoxParcoursMasque_5->value() >= (ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value()))
-    {
-        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
-        alertBox->setWink();
-        alertBox->show();
-        return;
-    }
-
-    /// @todo parenter gv_AireParcours ou delete... A pister
-    gv_AireParcours = new EditeurParcoursWidget();
-    gv_AireParcours->setWindowTitle(trUtf8("Parcours 5"));
-    gv_AireParcours->setWindowModality(Qt::ApplicationModal);
-
-    connect(gv_AireParcours->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()), Qt::UniqueConnection);
-    connect(gv_AireParcours, SIGNAL(signalCloseEvent(QCloseEvent*)), this, SLOT(slotFermetureEditeurParcoursWidget(QCloseEvent*)), Qt::UniqueConnection);
-
-    /* On centre la fenetre sur l'ecran de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
-
-    remplirGvParcours(m_numeroParcours);
-    gv_AireParcours->show();
-}
-
 
 /**********************************************************************************************************************************************************
                                                     GESTION MODE MODIFIER ABE
@@ -958,7 +855,6 @@ void Editeur::chargerPositionMasque(const int numeroParcours)
     }
 }
 
-
 /**********************************************************************************************************************************************************
                                                     WIDGET BARRE NAVIGATION
 **********************************************************************************************************************************************************/
@@ -993,7 +889,6 @@ void Editeur::on_btnQuitter_clicked()
     /// @todo Controle que l'utilisateur veut quitter sans sauvegarder
     emit editorExited();
 }
-
 
 /**********************************************************************************************************************************************************
                                                      GESTION DRAG & DROP

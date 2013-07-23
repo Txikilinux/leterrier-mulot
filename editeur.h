@@ -72,20 +72,8 @@ private slots:
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
 
-    /** Gère l'appui sur le bouton parcours 1*/
-    void on_btnParcours1_clicked();
-
-    /** Gère l'appui sur le bouton parcours 2*/
-    void on_btnParcours2_clicked();
-
-    /** Gère l'appui sur le bouton parcours 3*/
-    void on_btnParcours3_clicked();
-
-    /** Gère l'appui sur le bouton parcours 4*/
-    void on_btnParcours4_clicked();
-
-    /** Gère l'appui sur le bouton parcours 5*/
-    void on_btnParcours5_clicked();
+    /** Gère l'appui sur les boutons de parcours */
+    void slotBtnParcours_clicked(int);
 
     /** Réinitialise l'editeur de parcours */
     void reinitialiserGvParcours();
@@ -229,6 +217,11 @@ private:
 
     /** Publie le fichier édité sur la médiathèque */
     void releaseAbe();
+
+    /** Permet de mapper les signaux des boutons de parcours. (pour factorisation)
+      * @see QSignalMapper.
+      */
+    void mapSignalBtnParcours();
 
 signals:
     void editorExited();
