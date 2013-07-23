@@ -96,14 +96,6 @@ private slots:
     /** Gère la pose des masques dans l'éditeur de parcours */
     void masquePoseParcours(MasqueDeplaceSouris*);
 
-    /** Calcule et retourne la liste des voisins possibles d'un masque
-      * @param numeroMasque, int, le numero du masque courant
-      * @param largeur, int, le nombre de masques dans la largeur du parcours
-      * @param hauteur, int, le nombre de masques dans la hauteur du parcours
-      * @return voisinsMasques, QList<Int>, la liste des voisins possibles (gauche, droite, haut, bas)
-      */
-//    QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
-
     /** Fait apparaitre sur le clic droit le menu contextuel créé dans la méthode creationMenu(); */
     void on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos);
 
@@ -209,27 +201,12 @@ private:
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
 
-    /** Supprime un répertoire et tout son contenu
-      * Le répertoire passé en paramètre est aussi supprimé
-      * @param const QString& dirPath, le chemin du répertoire à supprimer (ex : "/home/user/monRepertoire")
-      * @return bool, true si suppression ok, false sinon
-      */
-    bool supprimerDir(const QString& dirPath);
-
-    /** Retourne une liste de chemin correspondant à l'arborescence située en dessous du dossier donné en paramètre
-      * @param const QString dossier, le chemin du dossier à analyser
-      * @return QStringList, la liste des chemins correspondant à l'arborescence descandante du dossier
-      */
-    QStringList parcoursRecursif(const QString& dossier);
-
     /** Remplie la scène de l'éditeur de parcours en fonction des paramètres définies (nombre de masques largeur/hauteur)
       * Si mode création, la scène n'aura pas de parcours
       * Si mode modification, la scène créera le parcours contenu dans l'abe courant
       * @param int, numeroParcours, le numéro du parcours à créer/modifier
       */
     void remplirGvParcours(const int numeroParcours);
-
-//    bool controleVoisinMasque(MasqueDeplaceSouris *masque);
 
     /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
       * @param bool yesNo, true = mode modification, false = mode création

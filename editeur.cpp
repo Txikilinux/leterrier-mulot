@@ -267,59 +267,7 @@ void Editeur::createAbe()
     }
 }
 
-bool Editeur::supprimerDir(const QString& dirPath)
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    QDir folder(dirPath);
-    /* On va lister dans ce répertoire tous les éléments différents de "." et ".." */
-    folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
-    foreach(QFileInfo fileInfo, folder.entryInfoList())
-    {
-        /* Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif */
-        if(fileInfo.isDir())
-        {
-            if(!supprimerDir(fileInfo.filePath())) //Si une erreur survient, on retourne false
-                return false;
-        }
-        /* Si l'élément est un fichier, on le supprime */
-        else if(fileInfo.isFile())
-        {
-            if(!QFile::remove(fileInfo.filePath()))
-            {
-                /* Si une erreur survient, on retourne false */
-                return false;
-            }
-        }
-    }
-    /* Le dossier est maintenant vide, on le supprime */
-    if(!folder.rmdir(dirPath))
-    {
-        /* Si une erreur survient, on retourne false */
-        return false;
-    }
-    /* Sinon, on retourne true */
-    return true;
-}
-
-QStringList Editeur::parcoursRecursif(const QString& dossier)
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    QStringList resultat;
-    QDir dir(dossier);
-    /* Attention a ne pas prendre le repertoire "." et ".." */
-    foreach(QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
-        if(fileInfo.isDir()) {
-            /* C'est ici que le parcours est récursif */
-            resultat << parcoursRecursif(fileInfo.absoluteFilePath());
-        }
-        else {
-            resultat << fileInfo.absoluteFilePath();
-        }
-    }
-    return resultat;
-}
 
 
 
@@ -1288,7 +1236,7 @@ bool Editeur::preparerSauvegarde()
 
     /* Creation .abe */
     parametres.sync(); //pour forcer l'écriture du .conf
-    m_abuleduFile->abeFileExportPrepare(parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+    m_abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
 
     return true;
 }

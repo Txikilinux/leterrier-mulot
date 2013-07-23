@@ -417,9 +417,7 @@ void ExerciceParcours::slotQuestionEntered()
         m_listeMasquesParcours << m_masqueDepart; // en premier
 
         /* Masque parcours (le reste de la liste) */
-        /*  Il faut cependant effectuer quelques petits contrôles afin de ne pas se retrouver avec des labyrinthes bizarres.
-          *
-          */
+        /*  Il faut cependant effectuer quelques petits contrôles afin de ne pas se retrouver avec des labyrinthes bizarres. */
         QList<int> voisinsPossibles;
         while (!positionMasquesParcours.isEmpty())
         {
