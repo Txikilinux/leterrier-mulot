@@ -28,6 +28,7 @@
 #include "abuleduetiquettesv1.h"
 #include "abuleducommonstatesv1.h"
 #include "masquedeplacesouris.h"
+#include "abuledutools.h"
 
 class ExerciceClic : public AbulEduCommonStatesV1
 {
@@ -95,16 +96,6 @@ private:
     bool onPeutMettreEnPause;
     QLabel *m_labelImagePause;
     QLabel *m_labelTextePause;
-
-    /** Méthode qui retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
-      * @param int monChiffre, le chiffre à calculer
-      * @return QPair<int, int>, la plus petite division d'entiers dont le resultat est supérieur à monChiffre
-      * @brief Elle sert au calcul de la taille des masques.
-      * @example Pour 11 masques, les divisions possibles sont 2*6 ou 3*4.
-      *          le QPair retourné sera 3*4, ce qui nous donne 12.
-      *          Donc à la première question, l'image sera divisé par 12 petits masques de taille identique (4 dans la largeur et 3 dans la hauteur)
-      */
-    QPair<int, int> plusPetiteDivision(int monChiffre);
 
     /** Redimensionne la consigne */
     void redimensionnerConsigne();

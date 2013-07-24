@@ -234,7 +234,7 @@ void ExerciceClic::slotRealisationExerciceEntered()
             }
             AbulEduCommonStatesV1::slotRealisationExerciceEntered();
 
-            QPair<int, int> divisionEcran = plusPetiteDivision(opt_nbMasquesChoisis);
+            QPair<int, int> divisionEcran = AbulEduTools::plusPetiteDivision(opt_nbMasquesChoisis);
             if (divisionEcran.first > divisionEcran.second)
             {
                 nbMasquesLargeur = divisionEcran.first;
@@ -589,52 +589,6 @@ void ExerciceClic::slotAppuiAutoVerifier()
 {
     if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
     emit appuiVerifier();
-}
-
-QPair<int, int> ExerciceClic::plusPetiteDivision(int monChiffre)
-{
-    QList<QPair<int,int> > listeResultat;
-    QPair<int,int> paire;
-
-    for (int a = 2; a<10; a++){
-        for (int b=2; b<10; b++)
-        {
-            if ((a*b) > monChiffre)
-            {
-                if (listeResultat.isEmpty())
-                {
-                    listeResultat << QPair<int,int>(a,b);
-                }
-                else
-                {
-                    if (a*b < listeResultat.first().first*listeResultat.first().second)
-                    {
-                        listeResultat.clear();
-                        listeResultat << QPair<int,int>(a,b);
-                    }
-                    else
-                    {
-                        if(a*b == listeResultat.first().first*listeResultat.first().second)
-                        {
-                            listeResultat << QPair<int,int>(a,b);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    if(m_localDebug) qDebug()  << listeResultat;
-    int mini = monChiffre;
-    for(int k = 0 ; k<listeResultat.size();k++)
-    {
-        if(qAbs((listeResultat[k].first - listeResultat[k].second)) < mini)
-        {
-            mini = qAbs((listeResultat[k].first - listeResultat[k].second));
-            paire = listeResultat[k];
-        }
-    }
-    if(m_localDebug) qDebug()<<paire;
-    return paire;
 }
 
 bool ExerciceClic::eventFilter(QObject *obj, QEvent *event)

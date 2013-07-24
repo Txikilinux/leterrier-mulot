@@ -32,6 +32,16 @@ public:
       * @return QStringList, la liste des chemins correspondant à l'arborescence descandante du dossier
       */
     static QStringList parcoursRecursif(const QString& dossier);
+
+    /** Méthode qui retourne la plus petite division d'entiers dont le résultat est supérieur à monChiffre
+      * @param int monChiffre, le chiffre à calculer
+      * @return QPair<int, int>, la plus petite division d'entiers dont le resultat est supérieur à monChiffre
+      * @brief Elle sert au calcul de la taille des masques.
+      * @example Pour 11 masques, les divisions possibles sont 2*6 ou 3*4.
+      *          le QPair retourné sera 3*4, ce qui nous donne 12.
+      *          Donc à la première question, l'image sera divisé par 12 petits masques de taille identique (4 dans la largeur et 3 dans la hauteur)
+      */
+    static QPair<int, int> plusPetiteDivision(const int& monChiffre);
 };
 
 #endif // ABULEDUTOOLS_H
