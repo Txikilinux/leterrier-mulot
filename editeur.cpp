@@ -251,8 +251,6 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    qDebug() << "on veut la visionneuse";
-
     item = ui->listWidgetImagesSelection->currentItem();
     AbulEduVisionneuseImageV1 *visio = new AbulEduVisionneuseImageV1(ui->tabWidgetImages);
     connect(visio, SIGNAL(destroyed()),this,SLOT(slotSortieVisionneuse()), Qt::UniqueConnection);
