@@ -94,7 +94,7 @@ private slots:
     void ajouterImage(QFileInfo monFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
-    void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, int success);
+    void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int &success);
 
     /** Passe à la page précédente */
     void on_btnPrecedent_clicked();
@@ -125,10 +125,7 @@ private slots:
     void on_btnModificationAutre_clicked();
 
     /** Charge la position des masques en lisant le fichier de paramètre */
-    void chargerPositionMasque(const int numeroParcours);
-
-    /** Gère la fermeture de l'editeur de parcours */
-    void slotFermetureEditeurParcoursWidget(QCloseEvent*);
+    bool chargerPositionMasque(const int& numeroParcours);
 
     void on_btnEssayer_clicked();
 
@@ -141,9 +138,7 @@ private slots:
     void slotSortieVisionneuse();
 
     /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
-    void slotAfficheEtatPublication(const int code);
-
-    int messageBox(QString title, QString info);
+    void slotAfficheEtatPublication(const int& code);
 
 private:
     Ui::Editeur *ui;
@@ -168,9 +163,9 @@ private:
     QMap<QString, int> positionMasquesParcours;
 
     QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
-    MasqueDeplaceSouris *m_masqueDepart;
-    MasqueDeplaceSouris *m_masqueArrivee;
-    MasqueDeplaceSouris *m_masqueParcours;
+    MasqueDeplaceSouris         *m_masqueDepart;
+    MasqueDeplaceSouris         *m_masqueArrivee;
+    MasqueDeplaceSouris         *m_masqueParcours;
 
     QDir *m_dir;
     QDir *m_dirAbe;
@@ -178,17 +173,12 @@ private:
     QList<QString> m_listeFichiersImages;
     QMenu *m_menuListWidget;
 
-    MasqueDeplaceSouris *m_masque;
-    QList<MasqueDeplaceSouris *> m_listeMasques;
-    QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
-    EditeurParcoursWidget *gv_AireParcours;
+    MasqueDeplaceSouris             *m_masque;
+    QList<MasqueDeplaceSouris *>    m_listeMasques;
+    QList<MasqueDeplaceSouris *>    m_listeMasquesParcours;
+    EditeurParcoursWidget           *m_editeurParcoursWidget;
 
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
-
-    /** Pour savoir si on quitte avec la croix ou avec le bouton sauvegarder
-      *  @brief true si on quitte avec le bouton sauvegarde, false sinon
-      */
-    bool m_closeStatus_ParcoursWidget;
 
     /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
     QWidget* m_parent;
@@ -202,12 +192,12 @@ private:
       * @param int, numeroParcours, le numéro du parcours à créer/modifier
       * @todo commenter le bool retour
       */
-    bool remplirGvParcours(const int numeroParcours);
+    bool remplirGvParcours(const int& numeroParcours);
 
     /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
       * @param bool yesNo, true = mode modification, false = mode création
       */
-    void setModeModificationAbe(const bool yesNo);
+    void setModeModificationAbe(const bool& yesNo);
 
     /** Gestion du drop
       * @param QDropEvent *event, un pointeur sur l'évènement drop
