@@ -631,8 +631,7 @@ void Editeur::sauvegarderParcours()
 {
     if(m_localDebug)
     {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-        qDebug() << "Numero de parcours :" << m_numeroParcours;
+        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << "-- Numero de parcours :" << m_numeroParcours;
     }
 
     switch (m_numeroParcours)
@@ -649,7 +648,6 @@ void Editeur::sauvegarderParcours()
         }
         ui->btnParcours1->setStyleSheet("color : green;");
         break;
-
     case 2:
         /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
         m_parametresParcours2.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
@@ -708,12 +706,11 @@ void Editeur::sauvegarderParcours()
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
 
+    /* Petit message */
     AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
     alertBox->setWink();
     alertBox->show();
-
-    qDebug() << "On demande a fermer";
-    //    m_editeurParcoursWidget->setSavedStatus(true);
+    /* Fermeture Aire de jeu */
     m_editeurParcoursWidget->close();
 }
 
