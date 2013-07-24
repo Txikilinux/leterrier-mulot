@@ -73,7 +73,7 @@ private slots:
     void createAbe();
 
     /** Gère l'appui sur les boutons de parcours */
-    void slotBtnParcours_clicked(int);
+    void slotBtnParcours_clicked(const int&);
 
     /** Réinitialise l'editeur de parcours */
     void reinitialiserGvParcours();

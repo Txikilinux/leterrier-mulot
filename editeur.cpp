@@ -732,7 +732,7 @@ void Editeur::mapSignalBtnParcours()
     connect(ui->btnParcours5, SIGNAL(clicked()), signalMapper, SLOT(map()), Qt::UniqueConnection);
 }
 
-void Editeur::slotBtnParcours_clicked(int numBtn)
+void Editeur::slotBtnParcours_clicked(const int &numBtn)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << numBtn;
 
@@ -777,7 +777,6 @@ void Editeur::slotBtnParcours_clicked(int numBtn)
 
     connect(m_editeurParcoursWidget->getBtnReset(), SIGNAL(clicked()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
     connect(m_editeurParcoursWidget->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()), Qt::UniqueConnection);
-    //    connect(m_editeurParcoursWidget, SIGNAL(signalReset()), this, SLOT(reinitialiserGvParcours()), Qt::UniqueConnection);
 
     /* On centre la fenetre sur l'ecran de l'utilisateur */
     QDesktopWidget *widget = QApplication::desktop();
@@ -786,11 +785,13 @@ void Editeur::slotBtnParcours_clicked(int numBtn)
     m_editeurParcoursWidget->move((desktop_width-m_editeurParcoursWidget->width())/2, (desktop_height-m_editeurParcoursWidget->height())/2);
 
     if(remplirGvParcours(m_numeroParcours)){
-        qDebug() << "Le remplissage s'est bien passé, on affiche l'editeur de parcours";
+        if(m_localDebug)
+            qDebug() << "Remplissage OK, Affichage editeur de parcours";
         m_editeurParcoursWidget->show();
     }
     else {
-        qDebug() << "Le remplissage ne s'est pas bien passé, on réinitialise le parcours";
+        if(m_localDebug)
+            qDebug() << "Remplissage KO, Réinitialisation parcours";
         reinitialiserGvParcours();
     }
 }
