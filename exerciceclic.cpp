@@ -286,10 +286,7 @@ void ExerciceClic::slotInitQuestionEntered()
         largeurMasque = largeurAireJeu / nbMasquesLargeur;
         hauteurMasque = hauteurAireJeu / nbMasquesHauteur;
 
-        const int nbMasques = nbMasquesLargeur * nbMasquesHauteur;
         qreal xMasque, yMasque = 0.00;
-
-        if (m_localDebug) qDebug()<<"Début boucle d'affichage : "<<nbMasques;
 
         for (float i=0; i<nbMasquesHauteur;i++)
         {
@@ -472,7 +469,6 @@ void ExerciceClic::setDimensionsWidgets()
 
     AbulEduCommonStatesV1::setDimensionsWidgets();
 }
-
 
 //------------------------------------------------------------------
 //                 Méthodes propres à la classe
