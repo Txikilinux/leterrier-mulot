@@ -75,6 +75,8 @@ Editeur::Editeur(QWidget *parent) :
 
     /* Mappage des signaux des 5 boutons de parcours */
     mapSignalBtnParcours();
+
+    m_closeStatus_ParcoursWidget = false;
 }
 
 Editeur::~Editeur()
@@ -274,7 +276,7 @@ void Editeur::createAbe()
                                                                PARCOURS
 **********************************************************************************************************************************************************/
 
-void Editeur::remplirGvParcours(const int numeroParcours)
+bool Editeur::remplirGvParcours(const int numeroParcours)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
@@ -356,58 +358,78 @@ void Editeur::remplirGvParcours(const int numeroParcours)
     {
         /* Parcours de la QMap positionMasqueParcours */
         int positionDepart, positionArrivee = 0;
-
         QList<int> positionParcours;
-        //        positionParcours.clear();
+
         QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
-        while (i != positionMasquesParcours.constEnd())
+
+        //        qDebug() << "TEST :: " << positionMasquesParcours;
+
+        if(!positionMasquesParcours.isEmpty()) /* Condition de garde si on reinitialise un parcours en mode modification */
         {
-            if(m_localDebug) qDebug() << i.key() << " " << i.value();
-            if (i.key() == "MasqueDepart")
-                positionDepart = i.value();
-            else if (i.key() == "MasqueArrivee")
-                positionArrivee = i.value();
-            else
-                positionParcours << i.value();
-            i ++;
+            while (i != positionMasquesParcours.constEnd())
+            {
+                if(m_localDebug) qDebug() << i.key() << " " << i.value();
+                if (i.key() == "MasqueDepart")
+                    positionDepart = i.value();
+                else if (i.key() == "MasqueArrivee")
+                    positionArrivee = i.value();
+                else
+                    positionParcours << i.value();
+                i ++;
+            }
+            if (m_localDebug)
+            {
+                qDebug() << "La liste des positions normales : " << positionMasquesParcours;
+                qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
+                qDebug() << "Position Parcours               : " << positionParcours;
+            }
+
+            /* MODE MODIFICATION
+             * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee */
+            /* depart */
+            m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
+            m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
+            m_listeMasquesParcours << m_listeMasques.at(positionDepart);
+
+            /* parcours */
+            while(!positionParcours.isEmpty())
+            {
+                if(!AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur).contains(positionParcours.first()))
+                {
+                    QString msg = "<td> " + trUtf8("Les paramètres du parcours ne sont pas valides.")+" <br />"
+                            + trUtf8("Les données relatives à ce module vont être <b>effacés</b>,") +" <br />"
+                            + trUtf8("veuillez éditer un nouveau parcours.") +" <br />"
+                            //                            + trUtf8("Le programme va quitter l'exercice.") +" <br />"
+                            +" </td>" ;
+                    AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, m_parent);
+                    messageBox->show();
+                    return false;
+                }
+
+                m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
+                m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
+                m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
+                positionParcours.removeFirst();
+            }
+
+            /* arrivee */
+            m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
+            m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
+            m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
+
+            /* Et j'active le menu Sauvegarder */
+            gv_AireParcours->connectBtnSave(true);
+
         }
-        if (m_localDebug)
-        {
-            qDebug() << "La liste des positions normales : " << positionMasquesParcours;
-            qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
-            qDebug() << "Position Parcours               : " << positionParcours;
-        }
-
-        /* MODE MODIFICATION
-         * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
-         */
-        /* depart */
-        m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
-        m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
-        m_listeMasquesParcours << m_listeMasques.at(positionDepart);
-
-        /* parcours */
-        while(!positionParcours.isEmpty())
-        {
-            m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
-            m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
-            m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
-            positionParcours.removeFirst();
-        }
-
-        /* arrivee */
-        m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
-        m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
-        m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
-
-        /* Et j'active le menu Sauvegarder */
-        gv_AireParcours->connectBtnSave(true);
+        return true;
     }
     /* Mode Creation */
     else
     {
         gv_AireParcours->connectBtnSave(false);
+        return true;
     }
+    return false;
 }
 
 void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
@@ -561,9 +583,33 @@ void Editeur::reinitialiserGvParcours()
         m_listeMasques.at(i)->setProperty("Role", trUtf8("Fixe"));
         m_listeMasques.at(i)->update();
     }
-    /* vider ma listeMasquesParcours */
+
+    /* Vider ma listeMasquesParcours */
     m_listeMasquesParcours.clear();
     gv_AireParcours->update();
+
+    /* Supprimer le parcours dans le .conf si on est en mode modification */
+    if(m_modeModificationAbe){
+
+        qDebug() << "Nous sommes en modification, donc nous avons deja des parcours";
+
+        QSettings parametresExistants(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+        parametresExistants.beginGroup("parcours");
+        parametresExistants.beginGroup("parcours"+QString::number(gv_AireParcours->getNumeroParcours()));
+
+        /* Suppression du groupe dans le QSettings */
+        parametresExistants.remove("");
+        parametresExistants.endGroup();
+        parametresExistants.sync();
+
+        /* Le bouton relatif au parcours ne doit plus etre vert*/
+        switch(m_numeroParcours){
+        case 1:
+            ui->btnParcours1->setStyleSheet("color : red;");
+            break;
+        }
+
+    }
 }
 
 void Editeur::sauvegarderParcours()
@@ -651,16 +697,69 @@ void Editeur::sauvegarderParcours()
     alertBox->setWink();
     alertBox->show();
 
+    m_closeStatus_ParcoursWidget = true;
     gv_AireParcours->close();
 }
 
-void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *)
+void Editeur::slotFermetureEditeurParcoursWidget(QCloseEvent *event)
 {
-    if(m_localDebug) qDebug() << "Fermeture EditeurParcoursWidget...";
-    m_listeMasquesParcours.clear();
-    m_listeMasques.clear();
-    m_listeMasquesFixes.clear();
+    if(!m_closeStatus_ParcoursWidget)
+    {
+        qDebug() << "On passe par la croix !";
+        int reponse = messageBox(trUtf8("Votre parcours ne sera pas sauvegardé ?"),trUtf8( "Êtes-vous sûr(e) ?"));
+        switch(reponse){
+        case 0: /* Reponse NO */
+            event->ignore();
+            break;
+        case 1: /* Reponse OK */
+            event->accept();
+            m_listeMasquesParcours.clear();
+            m_listeMasques.clear();
+            m_listeMasquesFixes.clear();
+            break;
+        }
+    }
+    else
+    {
+        qDebug() << "On passe par le btn Sauvegarder";
+        event->accept();
+//        m_listeMasquesParcours.clear();
+//        m_listeMasques.clear();
+//        m_listeMasquesFixes.clear();
+//        m_closeStatus_ParcoursWidget = false;
+    }
+
+    int reponse = messageBox(trUtf8("Votre parcours ne sera pas sauvegardé ?"),trUtf8( "Êtes-vous sûr(e) ?"));
+    switch(reponse){
+    case 0: /* Reponse NO */
+        event->ignore();
+        break;
+    case 1: /* Reponse OK */
+        event->accept();
+        m_listeMasquesParcours.clear();
+        m_listeMasques.clear();
+        m_listeMasquesFixes.clear();
+        break;
+    }
 }
+
+int Editeur::messageBox(QString title, QString info)
+{
+    QMessageBox *message = new QMessageBox(this);
+    QDesktopWidget *win = new QDesktopWidget();
+
+    message->setWindowModality(Qt::WindowModal);
+    message->setText(info);
+
+    message->addButton(trUtf8("Non"), QMessageBox::NoRole );
+    message->addButton(trUtf8("Oui"), QMessageBox::YesRole );
+    message->setWindowTitle(title);
+    message->show();
+    message->move( win->width() / 2 - message->width() / 2, win->height() / 2 - message->height() / 2 );
+
+    return message->exec();
+}
+
 
 void Editeur::mapSignalBtnParcours()
 {
@@ -719,7 +818,7 @@ void Editeur::slotBtnParcours_clicked(int numBtn)
         return;
     }
 
-    gv_AireParcours = new EditeurParcoursWidget();
+    gv_AireParcours = new EditeurParcoursWidget(m_numeroParcours);
     gv_AireParcours->setWindowTitle(trUtf8("Parcours ")+QString::number(numBtn));
     gv_AireParcours->setWindowModality(Qt::ApplicationModal);
 
@@ -733,8 +832,13 @@ void Editeur::slotBtnParcours_clicked(int numBtn)
     int desktop_height = widget->height();
     gv_AireParcours->move((desktop_width-gv_AireParcours->width())/2, (desktop_height-gv_AireParcours->height())/2);
 
-    remplirGvParcours(m_numeroParcours);
-    gv_AireParcours->show();
+    if(remplirGvParcours(m_numeroParcours)){
+        m_parent->topLevelWidget()->hide();
+        gv_AireParcours->show();
+    }
+    else {
+        reinitialiserGvParcours();
+    }
 }
 
 /**********************************************************************************************************************************************************

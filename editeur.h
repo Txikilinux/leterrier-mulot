@@ -143,6 +143,8 @@ private slots:
     /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
     void slotAfficheEtatPublication(const int code);
 
+    int messageBox(QString title, QString info);
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -183,6 +185,11 @@ private:
 
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
 
+    /** Pour savoir si on quitte avec la croix ou avec le bouton sauvegarder
+      *  @brief true si on quitte avec le bouton sauvegarde, false sinon
+      */
+    bool m_closeStatus_ParcoursWidget;
+
     /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
     QWidget* m_parent;
 
@@ -193,8 +200,9 @@ private:
       * Si mode création, la scène n'aura pas de parcours
       * Si mode modification, la scène créera le parcours contenu dans l'abe courant
       * @param int, numeroParcours, le numéro du parcours à créer/modifier
+      * @todo commenter le bool retour
       */
-    void remplirGvParcours(const int numeroParcours);
+    bool remplirGvParcours(const int numeroParcours);
 
     /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
       * @param bool yesNo, true = mode modification, false = mode création
