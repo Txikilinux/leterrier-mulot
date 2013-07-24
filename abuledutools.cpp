@@ -1,17 +1,15 @@
 #include "abuledutools.h"
 
-QList<int> AbulEduTools::masquesVoisins(int numeroMasque, int largeur, int hauteur)
+QList<int> AbulEduTools::masquesVoisins(const int &numeroMasque, const int &largeur, const int &hauteur)
 {
     QList<int> voisinsMasques;
     const int nbTotal = largeur * hauteur;
 
-    int gauche, droite, bas, haut = 0;
-
     /* calcul des différentes directions possibles */
-    gauche  = numeroMasque - 1;
-    droite  = numeroMasque + 1;
-    haut    = numeroMasque - largeur;
-    bas     = numeroMasque + largeur;
+    const int gauche  = numeroMasque - 1;
+    const int droite  = numeroMasque + 1;
+    const int haut    = numeroMasque - largeur;
+    const int bas     = numeroMasque + largeur;
 
     /* Controle gauche et droite */
     if ( ((gauche/largeur)%hauteur) == ((numeroMasque/largeur)%hauteur) && ( gauche >= 0) && (gauche <= nbTotal) ) // c'est la meme ligne
@@ -37,7 +35,7 @@ bool AbulEduTools::supprimerDir(const QString &dirPath)
     QDir folder(dirPath);
     /* On va lister dans ce répertoire tous les éléments différents de "." et ".." */
     folder.setFilter(QDir::NoDotAndDotDot | QDir::AllEntries);
-    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    foreach(const QFileInfo fileInfo, folder.entryInfoList())
     {
         /* Si l'élément est un répertoire, on applique la méthode courante à ce répertoire, c'est un appel récursif */
         if(fileInfo.isDir())
@@ -70,7 +68,7 @@ QStringList AbulEduTools::parcoursRecursif(const QString& dossier)
     QStringList resultat;
     QDir dir(dossier);
     /* Attention a ne pas prendre le repertoire "." et ".." */
-    foreach(QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+    foreach(const QFileInfo fileInfo, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
         if(fileInfo.isDir()) {
             /* C'est ici que le parcours est récursif */
             resultat << parcoursRecursif(fileInfo.absoluteFilePath());

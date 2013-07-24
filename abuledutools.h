@@ -3,19 +3,22 @@
 
 #include <QList>
 #include <QDir>
+#include <QMessageBox>
+#include <QDesktopWidget>
 
 class AbulEduTools
 {
+    Q_OBJECT
 
 public:
 
     /** Calcule et retourne la liste des voisins possibles d'un masque
-      * @param numeroMasque, int, le numero du masque courant
-      * @param largeur, int, le nombre de masques dans la largeur du parcours
-      * @param hauteur, int, le nombre de masques dans la hauteur du parcours
+      * @param numeroMasque,    int, le numero du masque courant
+      * @param largeur,         int, le nombre de masques dans la largeur du parcours
+      * @param hauteur,         int, le nombre de masques dans la hauteur du parcours
       * @return voisinsMasques, QList<Int>, la liste des voisins possibles (gauche, droite, haut, bas)
       */
-    static QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
+    static QList<int> masquesVoisins(const int& numeroMasque, const int& largeur, const int& hauteur);
 
     /** Supprime un répertoire et tout son contenu
       * Le répertoire passé en paramètre est aussi supprimé
@@ -29,8 +32,6 @@ public:
       * @return QStringList, la liste des chemins correspondant à l'arborescence descandante du dossier
       */
     static QStringList parcoursRecursif(const QString& dossier);
-
-
 };
 
 #endif // ABULEDUTOOLS_H
