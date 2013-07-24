@@ -830,7 +830,6 @@ void Editeur::on_btnCreationAbe_clicked()
     if(m_localDebug)
     {
         qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-        qDebug() << trUtf8("Mode Création sélectionné");
     }
 
     m_listeDossiers.clear();
@@ -840,20 +839,19 @@ void Editeur::on_btnCreationAbe_clicked()
     ui->listWidgetImagesSelection->clear();
 
     setModeModificationAbe(false);
-
-    ui->btnSuivant->click(); /* Clic sur le bouton suivant */
+    /* Clic sur le bouton suivant */
+    ui->btnSuivant->click();
 }
 
 void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     slotLoadUnit();
-    if (m_localDebug) qDebug() << trUtf8("Répertoire temporaire de dézippage de l'ABE choisi")  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    if (m_localDebug) qDebug() << "Répertoire Tmp dézippage de l'ABE : "  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
 }
 
 void Editeur::slotLoadUnit()
 {
-    qDebug() << "ON CHARGE LES PARAMETRES";
     if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<m_abuleduFile->abeFileGetFileName().fileName();
     m_listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
