@@ -139,8 +139,7 @@ void ExerciceParcours::chargerOption()
 
     if (m_localDebug)
     {
-        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
+        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n" << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
     }
 }
 
@@ -156,9 +155,10 @@ void ExerciceParcours::chargerPositionMasque(const int numeroQuestion)
 
     /* Recuperation des masques de départ et d'arrivée.. */
     int i = 0;
-    qDebug() << "Nombre de masques pour le parcours = " << parametres.childKeys().count();
-
-    qDebug() << "Recherche du départ et de l'arrivee";
+    if(m_localDebug) {
+        qDebug() << "Nombre de masques pour le parcours = " << parametres.childKeys().count();
+        qDebug() << "Recherche du départ et de l'arrivee";
+    }
     while(i < parametres.childKeys().count()){
         if(parametres.childKeys().at(i).contains("MasqueD") || parametres.childKeys().at(i).contains("MasqueA")){
             positionMasquesParcours << parametres.value(parametres.childKeys().at(i)).toInt();
@@ -186,7 +186,6 @@ void ExerciceParcours::chargerPositionMasque(const int numeroQuestion)
     i = 0;
     while(i < parametres.childKeys().count()){
         if(parametres.childKeys().at(i).contains("MasqueParcours")){
-            qDebug() <<"Test : " << parametres.childKeys().at(i) ;
             /* Remplissage d'un numero de masque pour le tri */
             listePosition << parametres.childKeys().at(i).split("MasqueParcours").at(1).toInt();
             ++i;
@@ -200,8 +199,8 @@ void ExerciceParcours::chargerPositionMasque(const int numeroQuestion)
     qSort(listePosition.begin(), listePosition.end(), qLess<int>());
 
     /* La liste listePosition est triée
-         * Il faut boucler dessus est recupéré les positions des masques corrspondantes
-         */
+     * Il faut boucler dessus est recupéré les positions des masques corrspondantes
+     */
     int pos;
     while(!listePosition.isEmpty()){
         pos = listePosition.takeFirst();
@@ -506,12 +505,8 @@ void ExerciceParcours::slotBilanExerciceEntered()
     if (m_localDebug)qDebug()<< "##########################  ExerciceParcours::slotBilanExerciceEntered()";
 
     /* Variables locales */
-    int m_minute;
-    int m_seconde;
-    QString debutTableau;
-    QString imagetete;
-    QString consigne;
-    QString finTableau;
+    int m_minute, m_seconde;
+    QString debutTableau, imagetete, consigne,finTableau;
 
     /* Les heures ne sont pas gérées, Arrondi à l'entier supérieur */
     m_tempsTotal = qCeil((m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
@@ -636,7 +631,9 @@ void ExerciceParcours::slotCacheMasque()
     //j'enleve le premier masque de la ma liste de parcours
     if(!m_listeMasquesParcours.isEmpty())
     {
-        qDebug() << "La liste avant : " << m_listeMasquesParcours.count();
+        if(m_localDebug)
+            qDebug() << "La liste avant : " << m_listeMasquesParcours.count();
+
         m_listeMasquesParcours.removeFirst();
 
         /* On colorie le suivant en bleu Attention, je fais un removeFirst, donc ma liste doit être
@@ -653,7 +650,8 @@ void ExerciceParcours::slotCacheMasque()
             else
                 m_listeMasquesParcours.first()->setHideOnMouseOver(true);
         }
-        qDebug() << "La liste apres : " << m_listeMasquesParcours.count();
+        if(m_localDebug)
+            qDebug() << "La liste apres : " << m_listeMasquesParcours.count();
     }
 
     if (m_listeMasquesParcours.isEmpty())
@@ -663,24 +661,24 @@ void ExerciceParcours::slotCacheMasque()
             var_masque->setVisible(false);
         }
 
-        // Faire tout ce qu'il faut qd j'ai plus de masque
-        // On peut mettre en pause
+        /* Faire tout ce qu'il faut qd j'ai plus de masque */
+        /* On peut mettre en pause */
         onPeutMettreEnPause = true;
 
-        // Appui sur le bouton vérifier
+        /* Appui sur le bouton vérifier */
         QTimer::singleShot(0,this,SLOT(slotAppuiAutoVerifier()));
 
         boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
         m_listeMasquesFixes.clear();
 
-        // Affichage du temps passé
+        /* Affichage du temps passé */
         if (m_localDebug)
         {
-            qDebug("Temps écoulé: %d ms",     m_chronometre->elapsed());
-            qDebug("Temps écoulé: %d sec",     (m_chronometre->elapsed())/1000);
+            qDebug("Temps écoulé: %d ms",m_chronometre->elapsed());
+            qDebug("Temps écoulé: %d sec",(m_chronometre->elapsed())/1000);
         }
 
-        // Enregistrement du temps passé pour chaque question
+        /* Enregistrement du temps passé pour chaque question */
         switch (getAbeNumQuestion()){
         case 1:
             m_tempsQuestion1 = m_chronometre->elapsed();
@@ -698,7 +696,8 @@ void ExerciceParcours::slotCacheMasque()
             m_tempsQuestion5 = m_chronometre->elapsed();
             break;
         default :
-            if (m_localDebug) qDebug("!!!!!!!! Case Default !!!!!! Temps écoulé: %d ms",     m_chronometre->elapsed());
+            if (m_localDebug)
+                qDebug("!!!!!!!! Case Default !!!!!! Temps écoulé: %d ms", m_chronometre->elapsed());
             break;
         }
     }
@@ -762,11 +761,13 @@ void ExerciceParcours::pause()
     else
     {
         m_timer->start();
-        if(m_localDebug) qDebug() << "Le timer repart   ";
+        if(m_localDebug)
+            qDebug() << "Le timer repart";
         m_labelImagePause->setVisible(false);
         m_labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
     }
 
-    if(m_localDebug) qDebug() << "Pause !";
+    if(m_localDebug)
+        qDebug() << "Pause !";
 }
