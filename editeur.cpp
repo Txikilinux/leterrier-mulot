@@ -283,7 +283,6 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    qDebug() << "Remplissage Editeur Parcours numero : " << numeroParcours;
     switch(numeroParcours)
     {
     case 1:
@@ -323,9 +322,6 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
         qDebug() << "Chargement position parcours : " << numeroParcours;
     }
 
-    // --------------------------------------------------------------------------------------------------------- //
-
-
     int numeroMasque = 0;
     for (float i=0; i < m_opt_nbMasquesHauteur; i++)
     {
@@ -360,8 +356,11 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                                          (hauteurMasque * m_opt_nbMasquesHauteur) + m_editeurParcoursWidget->getGraphicsView()->horizontalScrollBar()->height() + (m_editeurParcoursWidget->getBoutonHeight()) *2);
 
     if(chargerPositionMasque(numeroParcours) && m_modeModificationAbe){
-        qDebug() << "Nous avons des parcours dans le QSetting";
-        qDebug() << "Nous sommes en mode modification";
+
+        if(m_localDebug){
+            qDebug() << "Nous avons des parcours dans le QSetting & Mode modification = true";
+        }
+
         /* Parcours de la QMap positionMasqueParcours */
         int positionDepart, positionArrivee = 0;
         QList<int> positionParcours;
@@ -389,7 +388,8 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
             }
 
             /* MODE MODIFICATION
-                   * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee */
+             * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
+             */
             /* depart */
             m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
             m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
@@ -398,6 +398,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
             /* parcours */
             while(!positionParcours.isEmpty())
             {
+                /* Contrôle d'intégrité du parcours */
                 if(!AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur).contains(positionParcours.first()))
                 {
                     QString msg = "<td> " + trUtf8("Les paramètres du parcours ne sont pas valides.")+" <br />"
@@ -426,90 +427,12 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
             m_editeurParcoursWidget->connectBtnSave(true);
         }
         return true;
-
-
     }
     else{
-        qDebug() << "Nous n'avons pas de parcours dans le QSetting";
+        if(m_localDebug) qDebug() << "Nous n'avons pas de parcours dans le QSetting";
         m_editeurParcoursWidget->connectBtnSave(false);
         return true;
     }
-    /* Mode Modification */
-    //    if(m_modeModificationAbe)
-    //    {
-    //        qDebug() << "Nous sommes en mode modification";
-    //        /* Parcours de la QMap positionMasqueParcours */
-    //        int positionDepart, positionArrivee = 0;
-    //        QList<int> positionParcours;
-
-    //        QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
-    //        if(!positionMasquesParcours.isEmpty()) /* Condition de garde si on reinitialise un parcours en mode modification */
-    //        {
-    //            while (i != positionMasquesParcours.constEnd())
-    //            {
-    //                if(m_localDebug) qDebug() << i.key() << " " << i.value();
-    //                if (i.key() == "MasqueDepart")
-    //                    positionDepart = i.value();
-    //                else if (i.key() == "MasqueArrivee")
-    //                    positionArrivee = i.value();
-    //                else
-    //                    positionParcours << i.value();
-
-    //                i ++;
-    //            }
-    //            if (m_localDebug)
-    //            {
-    //                qDebug() << "La liste des positions normales : " << positionMasquesParcours;
-    //                qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
-    //                qDebug() << "Position Parcours               : " << positionParcours;
-    //            }
-
-    //            /* MODE MODIFICATION
-    //             * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee */
-    //            /* depart */
-    //            m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
-    //            m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
-    //            m_listeMasquesParcours << m_listeMasques.at(positionDepart);
-
-    //            /* parcours */
-    //            while(!positionParcours.isEmpty())
-    //            {
-    //                if(!AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur).contains(positionParcours.first()))
-    //                {
-    //                    QString msg = "<td> " + trUtf8("Les paramètres du parcours ne sont pas valides.")+" <br />"
-    //                            + trUtf8("Les données relatives à ce module vont être <b>effacés</b>,") +" <br />"
-    //                            + trUtf8("veuillez éditer un nouveau parcours.") +" <br />"
-    //                            //                            + trUtf8("Le programme va quitter l'exercice.") +" <br />"
-    //                            +" </td>" ;
-    //                    AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, m_parent);
-    //                    messageBox->show();
-    //                    reinitialiserGvParcours();
-    //                    return false;
-    //                }
-
-    //                m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
-    //                m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
-    //                m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
-    //                positionParcours.removeFirst();
-    //            }
-
-    //            /* arrivee */
-    //            m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
-    //            m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
-    //            m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
-
-    //            /* Et j'active le menu Sauvegarder */
-    //            m_editeurParcoursWidget->connectBtnSave(true);
-    //        }
-    //        return true;
-    //    }
-    //    /* Mode Creation */
-    //    else
-    //    {
-    //        m_editeurParcoursWidget->connectBtnSave(false);
-    //        return true;
-    //    }
-
     return false;
 }
 
