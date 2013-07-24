@@ -857,7 +857,7 @@ void Editeur::slotLoadUnit()
     ui->listWidgetImagesSelection->clear();
     QDir folder(QString(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
     folder.setFilter(QDir::NoDotAndDotDot | QDir::Files);
-    foreach(QFileInfo fileInfo, folder.entryInfoList())
+    foreach(const QFileInfo fileInfo, folder.entryInfoList())
     {
         ajouterImage(fileInfo.absoluteFilePath());
         m_lastOpenDir = fileInfo.absolutePath();
@@ -1140,7 +1140,6 @@ bool Editeur::preparerSauvegarde()
         parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
         if(!m_parametresParcours1.isEmpty())
         {
-            //            parametres.setValue("parcours1/nbMasquesChoisis", (ui->spinBoxParcoursMasque_1->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours1);
             while (i.hasNext()) {
                 i.next();
@@ -1149,7 +1148,6 @@ bool Editeur::preparerSauvegarde()
         }
         if(!m_parametresParcours2.isEmpty())
         {
-            //            parametres.setValue("parcours2/nbMasquesChoisis", (ui->spinBoxParcoursMasque_2->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours2);
             while (i.hasNext()) {
                 i.next();
@@ -1158,7 +1156,6 @@ bool Editeur::preparerSauvegarde()
         }
         if(!m_parametresParcours3.isEmpty())
         {
-            //            parametres.setValue("parcours3/nbMasquesChoisis", (ui->spinBoxParcoursMasque_3->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours3);
             while (i.hasNext()) {
                 i.next();
@@ -1167,7 +1164,6 @@ bool Editeur::preparerSauvegarde()
         }
         if(!m_parametresParcours4.isEmpty())
         {
-            //            parametres.setValue("parcours4/nbMasquesChoisis", (ui->spinBoxParcoursMasque_4->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours4);
             while (i.hasNext()) {
                 i.next();
@@ -1176,7 +1172,6 @@ bool Editeur::preparerSauvegarde()
         }
         if(!m_parametresParcours5.isEmpty())
         {
-            //            parametres.setValue("parcours5/nbMasquesChoisis", (ui->spinBoxParcoursMasque_5->value()));
             QMapIterator<QString, QVariant> i(m_parametresParcours5);
             while (i.hasNext()) {
                 i.next();
