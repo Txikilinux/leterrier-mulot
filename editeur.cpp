@@ -598,25 +598,13 @@ void Editeur::reinitialiserGvParcours()
         QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
         parametres.beginGroup("parcours");
         parametres.beginGroup("parcours"+QString::number(m_editeurParcoursWidget->getNumeroParcours()));
-        //        for (int i =0 ; i < parametres.childKeys().count(); i++)
-        //        {
-        //        }
+
         if(parametres.childKeys().count() > 0){ /* Si on a des entrées relatives à ce parcours, on les supprime */
-            qDebug() << "Nous avons des entrées dans le QSettins, on les supprime";
             parametres.remove("");
             parametres.endGroup();
             parametres.sync();
-            qDebug() << "Le parcours numero : " << m_editeurParcoursWidget->getNumeroParcours() << " vient d'etre efface du QSetting";
+            if(m_localDebug) qDebug() << "Parcours num : " <<m_editeurParcoursWidget->getNumeroParcours()<< " -> efface du conf";
         }
-
-
-
-        //        QSettings parametresExistants(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
-        //        parametresExistants.beginGroup("parcours"+QString::number(m_editeurParcoursWidget->getNumeroParcours()));
-        //        qDebug() << parametresExistants.beginReadArray("parcours"+QString::number(m_editeurParcoursWidget->getNumeroParcours()));
-        //        QStringList keys = parametresExistants.allKeys();
-        //        qDebug() << keys;
-
 
         /* Le bouton relatif au parcours ne doit plus etre vert*/
         switch(m_numeroParcours){
