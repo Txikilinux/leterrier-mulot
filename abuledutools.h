@@ -8,7 +8,6 @@
 
 class AbulEduTools
 {
-    Q_OBJECT
 
 public:
 
