@@ -16,3 +16,5 @@ qrc*
 ui_*
 debug
 release
+Makefile
+*.pro.user
