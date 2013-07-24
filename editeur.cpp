@@ -581,11 +581,10 @@ void Editeur::reinitialiserGvParcours()
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     /* Remettre tout mes masques d'origine ! */
-    for (int i = 0; i < m_listeMasques.count(); i++)
-    {
-        m_listeMasques.at(i)->setColor(QColor(Qt::white));
-        m_listeMasques.at(i)->setProperty("Role", trUtf8("Fixe"));
-        m_listeMasques.at(i)->update();
+    foreach (MasqueDeplaceSouris* var, m_listeMasques) {
+        var->setColor(QColor(Qt::white));
+        var->setProperty("Role", trUtf8("Fixe"));
+        var->update();
     }
 
     /* Vider ma listeMasquesParcours */
