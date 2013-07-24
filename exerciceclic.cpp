@@ -33,32 +33,30 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
 
     connect(m_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
-    //Création de l'aire de travail + propriétés
+    /* Création de l'aire de travail + propriétés */
     gv_AireDeJeu = new AbulEduEtiquettesV1(QPointF(0,0));
 
-    // On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget
+    /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
     proxy = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(gv_AireDeJeu) ;
     proxy->setGeometry(gv_AireDeJeu->rect());
     proxy->setZValue(-1) ;
 
-    // Instanciation des variables membres
+    /* Instanciation des variables membres */
     m_listeImage.clear();
     m_listeFichiers.clear();
     m_listeMasquesFixes.clear();
-    m_nbImage = 0;
-    m_nbMasquesInteractifs = 0;
-    nbMasquesLargeur = 0;
-    nbMasquesHauteur = 0;
+    m_nbImage = m_nbMasquesInteractifs = nbMasquesLargeur = nbMasquesHauteur = 0;
     onPeutMettreEnPause = false;
 
-    //pour l'affichage pause
-    m_labelImagePause =  new QLabel(m_parent);
+    /* Pour l'affichage de la pause */
+    m_labelImagePause = new QLabel(m_parent);
     m_labelTextePause = new QLabel(m_parent);
 
 
     gv_AireDeJeu->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     gv_AireDeJeu->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)"); // Fond transparent
+    /* Fond transparent */
+    gv_AireDeJeu->setStyleSheet("background-color: rgba(0,0,0,0)");
     gv_AireDeJeu->setFrameShape(QFrame::NoFrame);
 
     // 2012/09/29
@@ -71,9 +69,9 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
 
     chargerOption();
 
-    // Demarrage de la machine à états
+    /* Demarrage de la machine à états */
     sequenceMachine->start();
-    // Assignation des propriétés de la télécommande
+    /* Assignation des propriétés de la télécommande */
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
@@ -91,7 +89,7 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
     presentationSequence->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true);
     presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", true);
 
-    // Pour les appuis automatiques sur les touches
+    /* Pour les appuis automatiques sur les touches */
     connect(this, SIGNAL(appuiVerifier()),getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()), Qt::UniqueConnection);
     connect(this, SIGNAL(appuiSuivant()),getAbeExerciceTelecommandeV1()->ui->btnSuivant, SIGNAL(clicked()), Qt::UniqueConnection);
 
@@ -101,7 +99,7 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
         qDebug() << "Chemin des fichiers images" << cheminImage;
     }
 
-    /// Gestion Consignes & Aide
+    /* Gestion Consignes & Aide */
     onPeutPresenterExercice = false;
     onPeutPresenterSequence = false;
 
@@ -111,19 +109,19 @@ ExerciceClic::ExerciceClic(QWidget *parent, QString theme):
     connect(m_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
     keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
-
 }
 
 ExerciceClic::~ExerciceClic()
 {
     m_labelImagePause->deleteLater();
     m_labelTextePause->deleteLater();
-    emit exerciceExited(); // Permet à la MainWindow de savoir que l'exercice est terminé
+    /* Permet à la MainWindow de savoir que l'exercice est terminé */
+    emit exerciceExited();
 }
 
 void ExerciceClic::chargerOption()
 {
-    if (m_localDebug) qDebug() << "##########################  ExerciceClic::chargerOption()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
     QSettings parametres(cheminConf, QSettings::IniFormat);
     parametres.beginGroup("clic");
@@ -138,14 +136,13 @@ void ExerciceClic::chargerOption()
 
     if (m_localDebug)
     {
-        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"
-                 << "Nb Masques choisis :"   << opt_nbMasquesChoisis;
+        qDebug() << "Timer Suivant      :"   << opt_timerSuivant  << "\n"<< "Nb Masques choisis :"   << opt_nbMasquesChoisis;
     }
 }
 
 void ExerciceClic::slotSequenceEntered()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotSequenceEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
     if(!m_exerciceEnCours)
     {
@@ -187,37 +184,35 @@ void ExerciceClic::slotFermetureAide()
 
 void ExerciceClic::slotRealisationExerciceEntered()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotRealisationExerciceEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
     if (!m_exerciceEnCours)
     {
-        // Mettre tout ce qui est commun à chaque question
+        /* Mettre tout ce qui est commun à chaque question */
         m_nbImage = getAbeNbTotalQuestions(); // le nb image = le nb de question
         m_nbMasquesInteractifs = 0;
         boiteTetes->resetTetes(getAbeNbTotalQuestions());
 
-        // aller chercher le pack image
+        /* aller chercher le pack image */
         QDir dir(cheminImage);
         dir.setFilter(QDir::Files | QDir::NoSymLinks | QDir::NoDotAndDotDot);
 
-        // Si la dir est vide
-        if (dir.entryInfoList().count() <= 0)
-        {
+        /* Si la dir est vide */
+        if (dir.entryInfoList().count() <= 0){
             if (m_localDebug) qDebug() << "1. Verification des images <= 0";
             QMessageBox::critical(m_parent,trUtf8("Erreur"), trUtf8("L'exercice a rencontré un problème.")+
                                   QString("<strong>")+trUtf8("Veuillez vérifier votre fichier thème (.abe)")+ QString("</strong>"), 0,0);
             slotQuitterAccueil();
             return;
         }
-        else
-        {
-            QFileInfoList list = dir.entryInfoList();
+        else{
+            const QFileInfoList list = dir.entryInfoList();
             for(int i = 0; i < list.count(); i++)
             {
                 m_listeFichiers << list.at(i).absoluteFilePath();
             }
         }
-        // Si la liste de fichier est vide
+        /* Si la liste de fichier est vide */
         if (m_listeFichiers.size() <= 0 )
         {
             if (m_localDebug) qDebug() << "2. Verification de listeFichiers <= 0";
@@ -228,7 +223,8 @@ void ExerciceClic::slotRealisationExerciceEntered()
         }
         else
         {
-            for(int i = 0; i < m_nbImage; i++) // choisir 5 images au hasard dans le pack
+            /* choisir 5 images au hasard dans le pack */
+            for(int i = 0; i < m_nbImage; i++)
             {
                 qsrand(QDateTime::currentDateTime().toTime_t());
                 int n = (qrand() % (m_listeFichiers.size()));
@@ -255,7 +251,7 @@ void ExerciceClic::slotRealisationExerciceEntered()
 
 void ExerciceClic::slotInitQuestionEntered()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotInitQuestionEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
     onPeutMettreEnPause = false;
 
@@ -276,8 +272,7 @@ void ExerciceClic::slotInitQuestionEntered()
         getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(getAbeNumQuestion());
 
         //--------- Calcul de la taille des masques
-        float largeurMasque = 0.00;
-        float hauteurMasque = 0.00;
+        float largeurMasque, hauteurMasque = 0.00;
 
         if (m_localDebug)
         {
@@ -285,17 +280,16 @@ void ExerciceClic::slotInitQuestionEntered()
             qDebug() << "nb masques hauteur :" << nbMasquesHauteur ;
         }
 
-        float largeurAireJeu = static_cast<float>(gv_AireDeJeu->width())-1;
-        float hauteurAireJeu = static_cast<float>(gv_AireDeJeu->height())-1;
+        const float largeurAireJeu = static_cast<float>(gv_AireDeJeu->width())-1;
+        const float hauteurAireJeu = static_cast<float>(gv_AireDeJeu->height())-1;
 
         largeurMasque = largeurAireJeu / nbMasquesLargeur;
         hauteurMasque = hauteurAireJeu / nbMasquesHauteur;
 
-        int nbMasques = nbMasquesLargeur * nbMasquesHauteur;
-        qreal xMasque = 0.00;
-        qreal yMasque = 0.00;
+        const int nbMasques = nbMasquesLargeur * nbMasquesHauteur;
+        qreal xMasque, yMasque = 0.00;
 
-        if (m_localDebug) qDebug()<<" -------------------------- Début boucle d'affichage : "<<nbMasques;
+        if (m_localDebug) qDebug()<<"Début boucle d'affichage : "<<nbMasques;
 
         for (float i=0; i<nbMasquesHauteur;i++)
         {
@@ -320,9 +314,9 @@ void ExerciceClic::slotInitQuestionEntered()
 
 void ExerciceClic::slotQuestionEntered()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotQuestionEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
-    // Instanciation & Demarrage du chronometre
+    /* Instanciation & Demarrage du chronometre */
     m_chronometre = new QTime();
     m_chronometre->start();
 
@@ -332,15 +326,14 @@ void ExerciceClic::slotQuestionEntered()
     {
         m_itemImage->setVisible(true);
         m_nbMasquesInteractifs = 0;
-        if (m_localDebug) qDebug()<<"*******************//   Boucle des Clicables ";
+        int alea = 0;
 
         while (m_nbMasquesInteractifs < opt_nbMasquesChoisis)
         {
-            int alea = (qrand() % (m_listeMasquesFixes.count()));
+            alea = (qrand() % (m_listeMasquesFixes.count()));
             if (m_localDebug) qDebug() << "alea = " << alea;
             m_masqueInteractif = m_listeMasquesFixes.takeAt(alea);
             connect(m_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
-//            m_masqueInteractif->setHideOnMouseOver(true);
             m_masqueInteractif->setHideOnClick(true);
             m_masqueInteractif->setColor(QColor::fromRgb(0,0,0));
 
@@ -353,7 +346,7 @@ void ExerciceClic::slotQuestionEntered()
 
 void ExerciceClic::slotAfficheVerificationQuestionEntered()
 {
-    if (m_localDebug) qDebug()<< "##########################  ExerciceClic::slotAfficheVerificationQuestionEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
     if (m_exerciceEnCours)
     {
@@ -363,36 +356,35 @@ void ExerciceClic::slotAfficheVerificationQuestionEntered()
     abeStateMachineSetVerifieReponse(verifieReponse());
     AbulEduStateMachineV1::slotAfficheVerificationQuestionEntered();
 
-    //! Desactivation delai auto de la stateMachine
+    /* Desactivation delai auto de la stateMachine */
     if(sequenceMachine->cancelDelayedEvent(id_temporisation))
-        if(m_localDebug) qDebug() << "DESATIVATION DELAI OK";
+        if(m_localDebug) qDebug() << "DESACTIVATION DELAI OK";
 
 }
 
 void ExerciceClic::slotFinVerificationQuestionEntered()
 {
-    if (m_localDebug) qDebug()<< "##########################  ExerciceClic::slotFinVerificationQuestionEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
+
     AbulEduCommonStatesV1::slotFinVerificationQuestionEntered();
 
     m_listeMasquesFixes.clear();
-
     boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
 
-    // Vider itemImage
+    /* Vider itemImage */
     gv_AireDeJeu->scene()->removeItem(m_itemImage);
     gv_AireDeJeu->scene()->clear();
     gv_AireDeJeu->show();
     m_exerciceEnCours = false;
-
 }
 
 void ExerciceClic::slotFinQuestionEntered()
 {
-    if (m_localDebug)qDebug()<< "##########################  ExerciceClic::slotFinQuestionEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
-    // Affichage du temps passé Total
+    /* Affichage du temps passé Total */
     if (m_localDebug) qDebug() << "Temps écoulé en millisecondes: " << m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5;
-    // On ne veut pas un chronometre précis au millième près =)
+    /* On ne veut pas un chronometre précis au millième près =) */
     if (m_localDebug) qDebug() << "Temps écoulé en secondes: " << (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000;
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
@@ -400,20 +392,15 @@ void ExerciceClic::slotFinQuestionEntered()
 
 void ExerciceClic::slotBilanExerciceEntered()
 {
-    if (m_localDebug)qDebug()<< "##########################  ExerciceClic::slotBilanExerciceEntered()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
-    // Variables locales
-    int m_minute;
-    int m_seconde;
-    QString debutTableau;
-    QString imagetete;
-    QString consigne;
-    QString finTableau;
+    /* Variables locales */
+    int m_minute, m_seconde;
+    QString debutTableau, imagetete, consigne, finTableau;
 
-    // Les heures ne sont pas gérées
-    // Arrondi à l'entier supérieur
+    /* Les heures ne sont pas gérées ; Arrondi à l'entier supérieur */
     m_tempsTotal = qCeil((m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000);
-    // Cas ou le temps total (exprimé en secondes) est supérieur à une minute => conversion
+    /* Cas ou le temps total (exprimé en secondes) est supérieur à une minute => conversion */
     if(m_tempsTotal > 59)
     {
         m_seconde = m_tempsTotal %60;
@@ -428,9 +415,9 @@ void ExerciceClic::slotBilanExerciceEntered()
     debutTableau = "<tr>";
     imagetete = "<td> " + QString(" <img src=\":/evaluation/neutre\"></td>");
 
-    //-------------------------------------------
-    // Boucle pour l'affichage de la consigne !
-    //-------------------------------------------
+    /*-------------------------------------------
+       Boucle pour l'affichage de la consigne !
+     -------------------------------------------*/
     if (m_tempsTotal <= 59) // Affichage en secondes
     {
         consigne = "<td> " + trUtf8("Tu as fini l'exercice en %1 secondes.").arg( QString::number(m_tempsTotal)) +" </td>" ;
@@ -453,41 +440,37 @@ void ExerciceClic::slotBilanExerciceEntered()
     redimensionnerConsigne();
 }
 
-void ExerciceClic::slotQuitter() // ok
+void ExerciceClic::slotQuitter()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::slotQuitter";
-
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
     AbulEduCommonStatesV1::slotQuitter();
 }
 
 void ExerciceClic::setDimensionsWidgets()
 {
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::setDimensionsWidgets()---start";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
 
-    // Placement de AireDeTravailV1
-    float ratio = abeApp->getAbeApplicationDecorRatio();
+    /* Placement de AireDeTravailV1 */
+    const float ratio = abeApp->getAbeApplicationDecorRatio();
     getAbeExerciceAireDeTravailV1()->move(0,0);
 
-    // Placement de WidgetTelecommandeV1
+    /* Placement de WidgetTelecommandeV1 */
     getAbeExerciceTelecommandeV1()->abeTelecommandeResize();
     getAbeExerciceTelecommandeV1()->move(1550*ratio, 0);
 
-    // Placement de l'AireDeJeu
-    int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
-    int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
+    /* Placement de l'AireDeJeu */
+    const int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
+    const int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     gv_AireDeJeu->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
 
-    //        gv_AireDeJeu->move((170 * ratio) / 2,50 * ratio);
     gv_AireDeJeu->move(80 * ratio, 64 * ratio);
     m_tailleAireDejeu = gv_AireDeJeu->size();
-    // Placement des têtes
+
+    /* Placement des têtes */
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
 
-    // Redimensionne le widget de consignes
-    //  redimensionnerConsigne();
     AbulEduCommonStatesV1::setDimensionsWidgets();
-    if (m_localDebug) qDebug()<<"##########################  ExerciceClic::setDimensionsWidgets()---end";
 }
 
 
@@ -503,14 +486,15 @@ void ExerciceClic::redimensionnerConsigne()
 
 void ExerciceClic::redimensionnerImage()
 {
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
     if (m_localDebug) qDebug()<< m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
     int largeurImage = m_itemImage->pixmap().width();
     int hauteurImage = m_itemImage->pixmap().height();
 
-    //Redimensionner l'image avec condition de garde car peut lever une exception donc bug
+    /* Redimensionner l'image avec condition de garde car peut lever une exception donc bug */
     if(!m_itemImage->pixmap().isNull())
     {
-        //Si l'image est plus large que haute
+        /* Si l'image est plus large que haute */
         if (largeurImage > hauteurImage)
         {
             m_itemImage->setPixmap(m_itemImage->pixmap().scaledToHeight(gv_AireDeJeu->height(), Qt::SmoothTransformation));
@@ -520,13 +504,13 @@ void ExerciceClic::redimensionnerImage()
             m_itemImage->moveBy(differenceLargeur/2,0);
 
         }
-        // Si l'image est plus haute que large
-        else // largeurImage < hauteurImage
+        /* Si l'image est plus haute que large */
+        else
         {
             m_itemImage->setPixmap(m_itemImage->pixmap().scaledToWidth(gv_AireDeJeu->width(), Qt::SmoothTransformation));
             if (m_localDebug)  qDebug()<<"Redimm" <<m_itemImage->pixmap().width()<<" " << m_itemImage->pixmap().height();
             int differenceLargeur = (gv_AireDeJeu->width()) - (m_itemImage->pixmap().width());
-            // Centrage de l'image
+            /* Centrage de l'image */
             m_itemImage->moveBy(differenceLargeur/2,0);
         }
     }
@@ -536,7 +520,7 @@ void ExerciceClic::redimensionnerImage2()
 {
     m_itemImage->setPixmap(m_itemImage->pixmap().scaled(m_tailleAireDejeu, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     gv_AireDeJeu->setFixedSize(m_itemImage->boundingRect().size().toSize());
-    // positionner l'aire de jeu au centre */
+    /* positionner l'aire de jeu au centre */
     float ratio = abeApp->getAbeApplicationDecorRatio();
     gv_AireDeJeu->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()
                         -gv_AireDeJeu->width())/2 + 40 * ratio,
@@ -546,34 +530,33 @@ void ExerciceClic::redimensionnerImage2()
 
 void ExerciceClic::slotCacheMasque()
 {
-    if (m_localDebug) qDebug() << "##########################  ExerciceClic::slotCacheMasque : " << m_nbMasquesInteractifs;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
     m_nbMasquesInteractifs --;
 
     if(m_nbMasquesInteractifs == 0)
     {
-        //On affiche l'image en entier
+        /* On affiche l'image en entier */
         for(int i = 0; i < m_listeMasquesFixes.count(); i++)
         {
             m_listeMasquesFixes.at(i)->setVisible(false);
         }
 
-        // On peut mettre en pause
+        /* On peut mettre en pause */
         onPeutMettreEnPause = true;
-
-        // Appui sur le bouton vérifier
+        /* Appui sur le bouton vérifier */
         QTimer::singleShot(0, this, SLOT(slotAppuiAutoVerifier()));
 
         boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
         m_listeMasquesFixes.clear();
 
-        // Affichage du temps passé
+        /* Affichage du temps passé */
         if (m_localDebug)
         {
             qDebug("Temps écoulé: %d ms",     m_chronometre->elapsed());
             qDebug("Temps écoulé: %d sec",     (m_chronometre->elapsed())/1000);
         }
 
-        // Enregistrement du temps passé pour chaque question
+        /* Enregistrement du temps passé pour chaque question */
         switch (getAbeNumQuestion()){
         case 1:
             m_tempsQuestion1 = m_chronometre->elapsed();
@@ -599,20 +582,12 @@ void ExerciceClic::slotCacheMasque()
 
 void ExerciceClic::slotAppuiAutoSuivant()
 {
-//    if (m_localDebug) qDebug() << "##########################  ExerciceClic::slotAppuiAutoSuivant()";
-//    if(m_timer->isActive()) {
-//        qDebug() << "le timer est active, on peut passer à la suivante";
-        emit appuiSuivant();
-//    }
-//    else{
-//        qDebug() << "le timer n'est pas actif";
-//        return;
-//    }
+    emit appuiSuivant();
 }
 
 void ExerciceClic::slotAppuiAutoVerifier()
 {
-    if (m_localDebug) qDebug() << "##########################  ExerciceClic::slotAppuiAutoVerifier()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << __FILE__ << __LINE__;
     emit appuiVerifier();
 }
 
@@ -678,7 +653,6 @@ bool ExerciceClic::eventFilter(QObject *obj, QEvent *event)
     {
         QMouseEvent *castMouseEvent;
         castMouseEvent = dynamic_cast<QMouseEvent *>(event);
-        qDebug() << "Position :: " <<  castMouseEvent->pos();
         if(boiteTetes->geometry().contains(castMouseEvent->pos()) || m_labelImagePause->geometry().contains(castMouseEvent->pos()))
         {
             pause();
@@ -720,10 +694,9 @@ void ExerciceClic::pause()
     else
     {
         m_timer->start();
-        if(m_localDebug) qDebug() << "Le timer repart   ";
+        if(m_localDebug) qDebug() << "Le timer repart";
         m_labelImagePause->setVisible(false);
         m_labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
     }
-
 }
