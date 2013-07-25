@@ -85,12 +85,12 @@ private:
 
     // Chronometre
     QTime *m_chronometre;
-        float m_tempsQuestion1;
-        float m_tempsQuestion2;
-        float m_tempsQuestion3;
-        float m_tempsQuestion4;
-        float m_tempsQuestion5;
-        int m_tempsTotal;
+    float m_tempsQuestion1;
+    float m_tempsQuestion2;
+    float m_tempsQuestion3;
+    float m_tempsQuestion4;
+    float m_tempsQuestion5;
+    int m_tempsTotal;
 
     QTimer *m_timer;
     bool onPeutMettreEnPause;
