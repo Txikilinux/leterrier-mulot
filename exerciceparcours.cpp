@@ -39,10 +39,7 @@ void ExerciceParcours::slotQuestionEntered()
     if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
 
     /* Demarrage du chronometre */
-//    timer() = new QTime();
-//    timer()->stop();
-//    qDebug() << timer()->;
-    timer()->start();
+    chronometre()->start();
 
     AbulEduCommonStatesV1::slotQuestionEntered();
 
@@ -171,8 +168,8 @@ void ExerciceParcours::slotCacheMasque()
         //! @todo Temps ne fonctionne pas
         switch (getAbeNumQuestion()){
         case 1:
-            *tempsQuestion1() = chronometre()->elapsed();
-            qDebug() << *tempsQuestion1();
+//            *tempsQuestion1() = chronometre()->elapsed();
+//            qDebug() << *tempsQuestion1();
             break;
         case 2:
 //            m_tempsQuestion2 = chronometre()->elapsed();
