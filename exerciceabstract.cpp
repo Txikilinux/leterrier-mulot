@@ -3,18 +3,16 @@
 ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const ExerciceType &exerciceType):
     AbulEduCommonStatesV1(parent)
 {
-    if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
+    _parent         = parent;
+    _theme          = theme;
+    _exerciceType   = exerciceType;
+
+    if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << _parent <<" " << _theme << " " << exerciceType;;
 
     /* Ici sera defini tout ce qui est commun au 5 exercices */
     _localDebug         = true;
     _exerciceEnCours    = false;
 
-    _parent         = parent;
-    _theme          = theme;
-    _exerciceType   = exerciceType;
-
-    //! @test
-    if(_localDebug) qDebug() << "Abstract :: " << _parent <<" " << _theme << " " << exerciceType;
 
     connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
@@ -38,6 +36,7 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     _tailleAireTravail = QSize(0,0);
     _cheminConf  = _theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
     _cheminImage = _theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator()  ;
+    _chronometre = new QTime();
 
     /* Gestion Consignes & Aide */
     onPeutPresenterExercice = false;
@@ -48,7 +47,7 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     _timer->setSingleShot(true);
     connect(_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
-    keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
+    _keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
 
     /* Gestion graphiques de l'aire de travail */
     _aireTravail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -90,42 +89,41 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
 
 ExerciceAbstract::~ExerciceAbstract()
 {
+    //! @todo à tester dans toutes les conditions de fermeture.
+    //! rien à signaler pour l'instant
+
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
-    /* Permet à la MainWindow de savoir que l'exercice est terminé */
-    emit exerciceExited();
 
-    qDebug() << "delete label et texte image";
+    if(_localDebug) qDebug() << "delete label et texte image";
     _labelImagePause->deleteLater();
     _labelTextePause->deleteLater();
 
     /* Petit test car parfois j'ai un warning (p-ê dû au fait que j'utilise cet objet dans les classes dérivées)*/
-    qDebug() << "delete messagBox";
+    if(_localDebug) qDebug() << "delete messagBox";
     if(_messageBox != 0)
         _messageBox->deleteLater();
 
-    qDebug() << "delete timer";
+    if(_localDebug) qDebug() << "delete timer";
     _timer->deleteLater();
-    qDebug() << "delete aireTravail";
+    if(_localDebug) qDebug() << "delete aireTravail";
     _aireTravail->deleteLater();
-    qDebug() << "delete ProxyG";
+    if(_localDebug) qDebug() << "delete ProxyG";
     _proxyGraphique->deleteLater();
 
-    //! @todo à tester dans toutes les conditions de fermeture.
-    //! rien à signaler pour l'instant
-    qDebug() << "delete masque ds _listeMasqueFixes";
+    if(_localDebug) qDebug() << "delete masque ds _listeMasqueFixes";
     foreach (MasqueDeplaceSouris* var, _listeMasquesFixes) {
         var->deleteLater();
     }
-    qDebug() << "delete masque";
-    if(_masque)
-        _masque->deleteLater();
-    qDebug() << "delete masque interactif";
-    if(_masqueInteractif)
-        _masqueInteractif->deleteLater();
 
-    //! @test _parametres->deleteLater();
+    if(_localDebug) qDebug() << "delete parametres";
+    _parametres->deleteLater();
 
+    if(_localDebug) qDebug() << "delete timer";
+    _timer->deleteLater();
+
+    /* Permet à la MainWindow de savoir que l'exercice est terminé */
+    emit exerciceExited();
 }
 
 void ExerciceAbstract::slotSequenceEntered(){
@@ -316,8 +314,7 @@ void ExerciceAbstract::slotQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__ ;
 
-    /* Instanciation & Demarrage du chronometre */
-    _chronometre = new QTime();
+    /* Demarrage du chronometre */
     _chronometre->start();
 
     AbulEduCommonStatesV1::slotQuestionEntered();
@@ -334,7 +331,20 @@ void ExerciceAbstract::slotQuestionEntered()
             if(_localDebug) qDebug() << "alea = " << alea;
             _masqueInteractif = _listeMasquesFixes.takeAt(alea);
             connect(_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
-            _masqueInteractif->setHideOnClick(true);
+
+            switch(_exerciceType){
+            case Survol:
+                _masqueInteractif->setHideOnMouseOver(true);
+            case Clic:
+                _masqueInteractif->setHideOnClick(true);
+                break;
+            case DoubleClic:
+                _masqueInteractif->setHideOnDoubleClick(true);
+            default:/* rien pour parcours (géré dans sa classe)*/
+                break;
+
+            }
+
             _masqueInteractif->setColor(QColor::fromRgb(0,0,0));
 
             _nbMasquesInteractifs++;
@@ -514,6 +524,9 @@ void ExerciceAbstract::chargerOption()
         qDebug() << "Timer suivant : "   << _OPT_timerSuivant;
         qDebug() << "Nb masques choisis : "   << _OPT_nbMasquesChoisis;
     }
+
+    /* Important sinon le changement de groupe pour la lecture des positions de masque de parcours ne fonctionne pas*/
+    _parametres->endGroup();
 }
 
 void ExerciceAbstract::redimensionnerImage()
@@ -655,7 +668,7 @@ bool ExerciceAbstract::eventFilter(QObject *obj, QEvent *ev)
 //! @todo probleme affichage Aide + Pause --> Ticket à faire
 void ExerciceAbstract::slotFermetureAide()
 {
-    eventFilter(this, keySpace);
+    eventFilter(this, _keySpace);
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 

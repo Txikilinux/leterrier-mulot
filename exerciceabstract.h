@@ -29,14 +29,22 @@ public:
 
     QWidget* parent() const {return _parent;}
 
+    /* ***************************************************************************************************
+                            GETTERS & SETTERS
+      ****************************************************************************************************/
 
     /** Retourne un pointeur sur l'AbulEduMessageBoxV1 commune à tous les exercices */
     AbulEduMessageBoxV1* messageBox(){return _messageBox;}
     AbulEduMessageBoxV1* _messageBox; //! @todo A ameliorer pas satisfaisant point de vue implementation
 
+    /** Retourne un pointeur sur le timer */
     QTimer* timer() {return _timer;}
 
-    bool isExerciceRunnning() const{return _exerciceEnCours ;}
+    bool isExerciceRunning() const{return _exerciceEnCours ;}
+    void setExerciceRunning(const bool& yesNo){ _exerciceEnCours = yesNo;}
+
+    bool pauseAvailable() const{ return _onPeutMettreEnPause ;}
+    void setPauseAvailable(const bool& yesNo){ _onPeutMettreEnPause = yesNo ;}
 
     QGraphicsPixmapItem* itemImage() const{return _itemImage;}
 
@@ -49,7 +57,15 @@ public:
     int OPT_nbMasquesLargeur() const{ return _OPT_nbMasquesLargeur;}
     int OPT_nbMasquesHauteur() const{ return _OPT_nbMasquesHauteur;}
 
+    QList<MasqueDeplaceSouris*> listeMasquesFixes() const{return _listeMasquesFixes ;}
 
+    QTime* chronometre() const{return _chronometre;}
+    float* tempsQuestion1() {return &_tempsQuestion1;}
+//    float _tempsQuestion2;
+//    float _tempsQuestion3;
+//    float _tempsQuestion4;
+//    float _tempsQuestion5;
+//    int   _tempsTotal;
 
 public slots:
     /** Méthode qui filtre les évènement
@@ -87,11 +103,11 @@ private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotBilanExerciceEntered();
 
-    /** Méthode appelée à chaque interaction avec un masque interactif */
-    void slotCacheMasque();
-
     /** Méthode qui redimmensionne tous les éléments graphiques les uns par rapport aux autres */
     void setDimensionsWidgets();
+
+    /** Méthode appelée à chaque interaction avec un masque interactif */
+    virtual void slotCacheMasque();
 
     /** Redimensionne la consigne */
     void redimensionnerConsigne();
@@ -173,7 +189,7 @@ private:
     void chargerOption();
 
     /* C'est la touche espace, pour la pause */
-    QKeyEvent *keySpace;
+    QKeyEvent *_keySpace;
 
 };
 
