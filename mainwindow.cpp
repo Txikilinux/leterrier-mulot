@@ -22,12 +22,6 @@
 #include "mainwindow.h"
 #include "editeur.h"
 
-//! @test
-#include "exerciceclic.h"
-#include "exerciceparcours.h"
-#include "exercicedoubleclic2.h"
-#include "exercice"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)

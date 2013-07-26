@@ -36,10 +36,11 @@
 #include "lib/abuleduaproposv1/abuleduaproposv1.h"
 #include "ui_mainwindow.h"
 #include "exercicesurvol.h"
-#include "exerciceparcours.h"
-#include "exerciceclic.h"
-#include "exercicedoubleclic.h"
 #include "abuledusplashscreenv1.h"
+
+#include "exerciceclic.h"
+#include "exerciceparcours.h"
+#include "exercicedoubleclic2.h"
 
 namespace Ui {
     class MainWindow;
