@@ -16,14 +16,14 @@ SOURCES += main.cpp\
     exercicesurvol.cpp \
     editeur.cpp \
     visionneuseimage.cpp \
-    exerciceparcours.cpp \
-    exerciceclic.cpp \
     exercicedoubleclic.cpp \
     lib/abuleduaproposv1/abuleduaproposv1.cpp \
     editeurparcourswidget.cpp \
     abuledutools.cpp \
     exerciceabstract.cpp \
-    exerciceclic2.cpp \
+    exerciceclic.cpp \
+    exerciceparcours.cpp \
+    exercicedoubleclic2.cpp \
     exerciceparcours2.cpp
 
 HEADERS  += mainwindow.h \
@@ -32,14 +32,14 @@ HEADERS  += mainwindow.h \
     exercicesurvol.h \
     editeur.h \
     visionneuseimage.h \
-    exerciceparcours.h \
-    exerciceclic.h \
     exercicedoubleclic.h \
     lib/abuleduaproposv1/abuleduaproposv1.h \
     editeurparcourswidget.h \
     abuledutools.h \
     exerciceabstract.h \
-    exerciceclic2.h \
+    exerciceclic.h \
+    exerciceparcours.h \
+    exercicedoubleclic2.h \
     exerciceparcours2.h
 
 FORMS    += mainwindow.ui \

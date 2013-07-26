@@ -23,8 +23,10 @@
 #include "editeur.h"
 
 //! @test
-#include "exerciceclic2.h"
-#include "exerciceparcours2.h"
+#include "exerciceclic.h"
+#include "exerciceparcours.h"
+#include "exercicedoubleclic2.h"
+#include "exercice"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -219,7 +221,7 @@ void MainWindow::abeAiguillage()
     case 0:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
-        ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceSurvol2 *s = new ExerciceSurvol2(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
@@ -231,9 +233,7 @@ void MainWindow::abeAiguillage()
     case 1:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Clic";
-        //! @test
-        //        ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-        ExerciceClic2 *c = new ExerciceClic2(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
@@ -245,8 +245,7 @@ void MainWindow::abeAiguillage()
     case 3:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Parcours";
-//        ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
-        ExerciceParcours2 *p = new ExerciceParcours2(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
@@ -258,7 +257,7 @@ void MainWindow::abeAiguillage()
     case 4:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
-        ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceDoubleClic2 *d = new ExerciceDoubleClic2(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
