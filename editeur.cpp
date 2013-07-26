@@ -28,7 +28,7 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-    m_localDebug = true; /// mettre a false
+    m_localDebug = true; /// @todo mettre a false
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_parent = parent;
