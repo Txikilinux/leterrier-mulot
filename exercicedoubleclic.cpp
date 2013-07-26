@@ -24,7 +24,7 @@
 #include "exercicedoubleclic.h"
 
 ExerciceDoubleClic::ExerciceDoubleClic(QWidget *parent, QString theme)
-    : ExerciceAbstract(parent, theme, ExerciceAbstract::DoubleClic)
+    : AbstractExercice(parent, theme, AbstractExercice::DoubleClic)
 {
     if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__ << " " <<  parent << " " << theme;
 }

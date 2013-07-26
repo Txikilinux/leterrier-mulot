@@ -34,9 +34,9 @@ HEADERS  += mainwindow.h \
     lib/abuleduaproposv1/abuleduaproposv1.h \
     editeurparcourswidget.h \
     abuledutools.h \
-    exerciceabstract.h \
     exerciceclic.h \
     exerciceparcours.h \
+    abstractexercice.h
 
 FORMS    += mainwindow.ui \
     widgetdeplacesouris.ui \

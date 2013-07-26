@@ -21,11 +21,11 @@
 #ifndef EXERCICECLIC_H
 #define EXERCICECLIC_H
 
-#include "exerciceabstract.h"
+#include "abstractexercice.h"
 
-class ExerciceClic : public ExerciceAbstract
+class ExerciceClic : public AbstractExercice
 {
-    Q_INTERFACES(ExerciceAbstract)
+    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceClic(QWidget *parent, QString theme);

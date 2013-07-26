@@ -21,7 +21,7 @@
 #include "exerciceclic.h"
 
 ExerciceClic::ExerciceClic(QWidget *parent, QString theme)
-    : ExerciceAbstract(parent, theme, ExerciceAbstract::Clic)
+    : AbstractExercice(parent, theme, AbstractExercice::Clic)
 {
     if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__ << " " <<  parent << " " << theme;
 }

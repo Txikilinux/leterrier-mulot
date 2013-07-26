@@ -21,7 +21,7 @@
 #include "exerciceparcours.h"
 
 ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme)
-    : ExerciceAbstract(parent, theme, ExerciceAbstract::Parcours)
+    : AbstractExercice(parent, theme, AbstractExercice::Parcours)
 {
     if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__<< " " << parent <<" " << theme;
 

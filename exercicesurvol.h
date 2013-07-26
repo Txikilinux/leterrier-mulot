@@ -21,11 +21,11 @@
 #ifndef EXERCICESURVOL_H
 #define EXERCICESURVOL_H
 
-#include "exerciceabstract.h"
+#include "abstractexercice.h"
 
-class ExerciceSurvol : public ExerciceAbstract
+class ExerciceSurvol : public AbstractExercice
 {
-    Q_INTERFACES(ExerciceAbstract)
+    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceSurvol(QWidget *parent, QString theme);

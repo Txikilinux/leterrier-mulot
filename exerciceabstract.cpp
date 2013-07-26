@@ -1,5 +1,5 @@
-/** Classe ExerciceAbstract
-  * @file exerciceabstract.cpp
+/** Classe AbstractExercice
+  * @file abstractexercice.cpp
   * @see https://redmine.ryxeo.com/projects/
   * @author 2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -18,9 +18,9 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-#include "exerciceabstract.h"
+#include "abstractexercice.h"
 
-ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const ExerciceType &exerciceType):
+AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const ExerciceType &exerciceType):
     AbulEduCommonStatesV1(parent)
 {
     _parent         = parent;
@@ -103,7 +103,7 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
 
 }
 
-ExerciceAbstract::~ExerciceAbstract()
+AbstractExercice::~AbstractExercice()
 {
     //! @todo à tester dans toutes les conditions de fermeture.
     //! rien à signaler pour l'instant
@@ -142,7 +142,7 @@ ExerciceAbstract::~ExerciceAbstract()
     emit exerciceExited();
 }
 
-void ExerciceAbstract::slotSequenceEntered(){
+void AbstractExercice::slotSequenceEntered(){
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
     if(!_exerciceEnCours)
     {
@@ -157,7 +157,7 @@ void ExerciceAbstract::slotSequenceEntered(){
     }
 }
 
-void ExerciceAbstract::slotRealisationExerciceEntered()
+void AbstractExercice::slotRealisationExerciceEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -228,7 +228,7 @@ void ExerciceAbstract::slotRealisationExerciceEntered()
     }
 }
 
-void ExerciceAbstract::slotInitQuestionEntered()
+void AbstractExercice::slotInitQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -324,7 +324,7 @@ void ExerciceAbstract::slotInitQuestionEntered()
     }
 }
 
-void ExerciceAbstract::slotQuestionEntered()
+void AbstractExercice::slotQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__ ;
 
@@ -368,7 +368,7 @@ void ExerciceAbstract::slotQuestionEntered()
     _exerciceEnCours = true;
 }
 
-void ExerciceAbstract::slotAfficheVerificationQuestionEntered()
+void AbstractExercice::slotAfficheVerificationQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -387,7 +387,7 @@ void ExerciceAbstract::slotAfficheVerificationQuestionEntered()
         if(_localDebug) qDebug() << "desactivation delai sequence machine ok";
 }
 
-void ExerciceAbstract::slotFinQuestionEntered()
+void AbstractExercice::slotFinQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -401,7 +401,7 @@ void ExerciceAbstract::slotFinQuestionEntered()
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }
 
-void ExerciceAbstract::slotFinVerificationQuestionEntered()
+void AbstractExercice::slotFinVerificationQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -418,7 +418,7 @@ void ExerciceAbstract::slotFinVerificationQuestionEntered()
     _exerciceEnCours = false;
 }
 
-void ExerciceAbstract::slotBilanExerciceEntered()
+void AbstractExercice::slotBilanExerciceEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -487,7 +487,7 @@ void ExerciceAbstract::slotBilanExerciceEntered()
 
 
 //! @test chargement ok : clic, parcours,...
-void ExerciceAbstract::chargerOption()
+void AbstractExercice::chargerOption()
 {
     _parametres = new QSettings(_cheminConf, QSettings::IniFormat);
     QString exercice;
@@ -547,7 +547,7 @@ void ExerciceAbstract::chargerOption()
     _parametres->endGroup();
 }
 
-void ExerciceAbstract::redimensionnerImage()
+void AbstractExercice::redimensionnerImage()
 {
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
@@ -557,7 +557,7 @@ void ExerciceAbstract::redimensionnerImage()
                        (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()- 60 * ratio - _aireTravail->height())/2 + 32 * ratio);
 }
 
-void ExerciceAbstract::slotCacheMasque()
+void AbstractExercice::slotCacheMasque()
 {
     if (_localDebug) qDebug() << __PRETTY_FUNCTION__;
     _nbMasquesInteractifs --;
@@ -610,7 +610,7 @@ void ExerciceAbstract::slotCacheMasque()
     }
 }
 
-void ExerciceAbstract::setDimensionsWidgets()
+void AbstractExercice::setDimensionsWidgets()
 {
     if (_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
@@ -638,26 +638,26 @@ void ExerciceAbstract::setDimensionsWidgets()
     AbulEduCommonStatesV1::setDimensionsWidgets();
 }
 
-void ExerciceAbstract::redimensionnerConsigne()
+void AbstractExercice::redimensionnerConsigne()
 {
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->move((getAbeExerciceAireDeTravailV1()->width() - getAbeExerciceMessageV1()->width())/2,
                                     ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
 }
 
-void ExerciceAbstract::slotAppuiAutoSuivant()
+void AbstractExercice::slotAppuiAutoSuivant()
 {
     if (_localDebug) qDebug() << __PRETTY_FUNCTION__;
     emit appuiSuivant();
 }
 
-void ExerciceAbstract::slotAppuiAutoVerifier()
+void AbstractExercice::slotAppuiAutoVerifier()
 {
     if (_localDebug) qDebug() << __PRETTY_FUNCTION__;
     emit appuiVerifier();
 }
 
-bool ExerciceAbstract::eventFilter(QObject *obj, QEvent *ev)
+bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
     obj = this;
     if(ev->type() == QEvent::KeyRelease)
@@ -684,14 +684,14 @@ bool ExerciceAbstract::eventFilter(QObject *obj, QEvent *ev)
 }
 
 //! @todo probleme affichage Aide + Pause --> Ticket à faire
-void ExerciceAbstract::slotFermetureAide()
+void AbstractExercice::slotFermetureAide()
 {
     eventFilter(this, _keySpace);
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 
 //! @todo problème affichage image pause --> Ticket à faire
-void ExerciceAbstract::pause()
+void AbstractExercice::pause()
 {
     QPixmap pixPause(":/bouton/pause");
     const float ratio = abeApp->getAbeApplicationDecorRatio();

@@ -21,11 +21,11 @@
 #ifndef ExerciceParcours_H
 #define ExerciceParcours_H
 
-#include "exerciceabstract.h"
+#include "abstractexercice.h"
 
-class ExerciceParcours : public ExerciceAbstract
+class ExerciceParcours : public AbstractExercice
 {
-    Q_INTERFACES(ExerciceAbstract)
+    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceParcours(QWidget *parent, QString theme);
@@ -35,7 +35,7 @@ private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotQuestionEntered();
 
-    /** Méthode héritée @see ExerciceAbstract */
+    /** Méthode héritée @see AbstractExercice */
     void slotCacheMasque();
 
     /** Méthode héritée @see AbulEduCommonStatesV1 */

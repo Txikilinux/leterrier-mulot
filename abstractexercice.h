@@ -1,5 +1,5 @@
-/** Classe ExerciceAbstract
-  * @file exerciceabstract.h
+/** Classe AbstractExercice
+  * @file AbstractExercice.h
   * @see https://redmine.ryxeo.com/projects/
   * @author 2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -18,8 +18,8 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-#ifndef EXERCICEABSTRACT_H
-#define EXERCICEABSTRACT_H
+#ifndef ABSTRACTEXERCICE_H
+#define ABSTRACTEXERCICE_H
 
 #include <QObject>
 #include <QDebug>
@@ -29,7 +29,7 @@
 #include "masquedeplacesouris.h"
 #include "abuledutools.h"
 
-class ExerciceAbstract : public AbulEduCommonStatesV1
+class AbstractExercice : public AbulEduCommonStatesV1
 {
     Q_OBJECT
 
@@ -41,8 +41,8 @@ public:
         Parcours    = 0x8
     };
 
-    ExerciceAbstract(QWidget *parent, const QString& theme, const ExerciceType& exerciceType);
-    ~ExerciceAbstract() = 0;
+    AbstractExercice(QWidget *parent, const QString& theme, const ExerciceType& exerciceType);
+    ~AbstractExercice() = 0;
 
     /** Permet de définir le localDebug qu'une fois */
     bool debugAvailable() const{return _localDebug;}
@@ -209,5 +209,5 @@ private:
 
 };
 
-Q_DECLARE_INTERFACE(ExerciceAbstract, "ExerciceAbstract/1.0")
-#endif // EXERCICEABSTRACT_H
+Q_DECLARE_INTERFACE(AbstractExercice, "AbstractExercice/1.0")
+#endif // ABSTRACTEXERCICE_H

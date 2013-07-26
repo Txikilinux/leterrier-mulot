@@ -24,7 +24,7 @@
 #include "exercicesurvol.h"
 
 ExerciceSurvol::ExerciceSurvol(QWidget *parent, QString theme)
-    : ExerciceAbstract(parent, theme, ExerciceAbstract::Survol)
+    : AbstractExercice(parent, theme, AbstractExercice::Survol)
 {
     if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__ << " " <<  parent << " " << theme;
 }
