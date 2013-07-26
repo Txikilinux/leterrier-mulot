@@ -20,9 +20,9 @@ SOURCES += main.cpp\
     lib/abuleduaproposv1/abuleduaproposv1.cpp \
     editeurparcourswidget.cpp \
     abuledutools.cpp \
-    exerciceabstract.cpp \
     exerciceclic.cpp \
     exerciceparcours.cpp \
+    abstractexercice.cpp
 
 HEADERS  += mainwindow.h \
     version.h \
