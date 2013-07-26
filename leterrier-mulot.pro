@@ -23,7 +23,6 @@ SOURCES += main.cpp\
     exerciceabstract.cpp \
     exerciceclic.cpp \
     exerciceparcours.cpp \
-    exercicedoubleclic2.cpp \
 
 HEADERS  += mainwindow.h \
     version.h \
@@ -38,7 +37,6 @@ HEADERS  += mainwindow.h \
     exerciceabstract.h \
     exerciceclic.h \
     exerciceparcours.h \
-    exercicedoubleclic2.h \
 
 FORMS    += mainwindow.ui \
     widgetdeplacesouris.ui \

@@ -215,7 +215,7 @@ void MainWindow::abeAiguillage()
     case 0:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
-        ExerciceSurvol2 *s = new ExerciceSurvol2(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
@@ -251,7 +251,7 @@ void MainWindow::abeAiguillage()
     case 4:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
-        ExerciceDoubleClic2 *d = new ExerciceDoubleClic2(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+        ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
         m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice

@@ -40,7 +40,7 @@
 
 #include "exerciceclic.h"
 #include "exerciceparcours.h"
-#include "exercicedoubleclic2.h"
+#include "exercicedoubleclic.h"
 
 namespace Ui {
     class MainWindow;
