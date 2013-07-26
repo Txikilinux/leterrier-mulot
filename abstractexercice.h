@@ -80,7 +80,11 @@ public:
     QList<MasqueDeplaceSouris*> listeMasquesFixes() const{return _listeMasquesFixes ;}
 
     QTime* chronometre() const{return _chronometre;}
-//    float* tempsQuestion1() {return &_tempsQuestion1;}
+    float& tempsQuestion1() {return _tempsQuestion1;}
+    float& tempsQuestion2() {return _tempsQuestion2;}
+    float& tempsQuestion3() {return _tempsQuestion3;}
+    float& tempsQuestion4() {return _tempsQuestion4;}
+    float& tempsQuestion5() {return _tempsQuestion5;}
     /// @todo le reste du temps et meilleure gestion Parcours
 
 public slots:

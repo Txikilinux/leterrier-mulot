@@ -165,23 +165,21 @@ void ExerciceParcours::slotCacheMasque()
         }
 
         /* Enregistrement du temps passé pour chaque question */
-        //! @todo Temps ne fonctionne pas
         switch (getAbeNumQuestion()){
         case 1:
-//            *tempsQuestion1() = chronometre()->elapsed();
-//            qDebug() << *tempsQuestion1();
+            tempsQuestion1() = chronometre()->elapsed();
             break;
         case 2:
-//            m_tempsQuestion2 = chronometre()->elapsed();
+            tempsQuestion2() = chronometre()->elapsed();
             break;
         case 3:
-//            m_tempsQuestion3 = chronometre()->elapsed();
+            tempsQuestion3() = chronometre()->elapsed();
             break;
         case 4:
-//            m_tempsQuestion4 = chronometre()->elapsed();
+            tempsQuestion4() = chronometre()->elapsed();
             break;
         case 5:
-//            m_tempsQuestion5 = m_chronometre()->elapsed();
+            tempsQuestion5() = chronometre()->elapsed();
             break;
         default :
             if (debugAvailable()) qDebug("Case Default - Temps écoulé: %d ms", chronometre()->elapsed());
