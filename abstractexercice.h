@@ -81,7 +81,7 @@ public:
 
     QTime* chronometre() const{return _chronometre;}
     float* tempsQuestion1() {return &_tempsQuestion1;}
-    /// @todo le reste du temps
+    /// @todo le reste du temps et meilleure gestion Parcours
 
 public slots:
     /** Méthode qui filtre les évènement
@@ -204,7 +204,7 @@ private:
     /** Charge les options contenues dans le fichier de configuration (parametres.ini) */
     void chargerOption();
 
-    /* C'est la touche espace, pour la pause */
+    /** Touche clavier (espace) */
     QKeyEvent *_keySpace;
 
 };
