@@ -25,7 +25,6 @@
 
 class ExerciceDoubleClic : public AbstractExercice
 {
-    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceDoubleClic(QWidget *parent, QString theme);

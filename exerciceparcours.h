@@ -25,7 +25,6 @@
 
 class ExerciceParcours : public AbstractExercice
 {
-    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceParcours(QWidget *parent, QString theme);

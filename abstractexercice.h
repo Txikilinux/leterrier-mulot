@@ -209,5 +209,4 @@ private:
 
 };
 
-Q_DECLARE_INTERFACE(AbstractExercice, "AbstractExercice/1.0")
 #endif // ABSTRACTEXERCICE_H

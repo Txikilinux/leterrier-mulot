@@ -25,7 +25,6 @@
 
 class ExerciceClic : public AbstractExercice
 {
-    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceClic(QWidget *parent, QString theme);

@@ -25,7 +25,6 @@
 
 class ExerciceSurvol : public AbstractExercice
 {
-    Q_INTERFACES(AbstractExercice)
 
 public:
     ExerciceSurvol(QWidget *parent, QString theme);
