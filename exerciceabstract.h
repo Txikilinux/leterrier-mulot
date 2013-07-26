@@ -81,11 +81,7 @@ public:
 
     QTime* chronometre() const{return _chronometre;}
     float* tempsQuestion1() {return &_tempsQuestion1;}
-//    float _tempsQuestion2;
-//    float _tempsQuestion3;
-//    float _tempsQuestion4;
-//    float _tempsQuestion5;
-//    int   _tempsTotal;
+    /// @todo le reste du temps
 
 public slots:
     /** Méthode qui filtre les évènement
@@ -162,7 +158,7 @@ private:
     QGraphicsProxyWidget    *_proxyGraphique;
     QSize                   _tailleAireTravail;
 
-    // Paramètres Editeur
+    /* Paramètres Editeur */
     QSettings   *_parametres;
     int         _OPT_timerSuivant;
     int         _OPT_nbMasquesChoisis;
@@ -188,7 +184,7 @@ private:
     MasqueDeplaceSouris             *_masqueInteractif;
     QSize                           _taille;
 
-    // Chronometre
+    /* Chronometre */
     QTime *_chronometre;
     float _tempsQuestion1;
     float _tempsQuestion2;

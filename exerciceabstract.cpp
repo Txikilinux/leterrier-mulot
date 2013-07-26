@@ -27,12 +27,11 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     _theme          = theme;
     _exerciceType   = exerciceType;
 
-    if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << _parent <<" " << _theme << " " << exerciceType;;
+    if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << _parent <<" " << _theme << " " << exerciceType;
 
     /* Ici sera defini tout ce qui est commun au 5 exercices */
     _localDebug         = true;
     _exerciceEnCours    = false;
-
 
     connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
@@ -55,7 +54,7 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     _labelImagePause = _labelTextePause  = new QLabel(_parent);
     _tailleAireTravail = QSize(0,0);
     _cheminConf  = _theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
-    _cheminImage = _theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator()  ;
+    _cheminImage = _theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator();
     _chronometre = new QTime();
 
     /* Gestion Consignes & Aide */
@@ -63,9 +62,6 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     onPeutPresenterSequence = false;
 
     _timer = new QTimer(this);
-    _timer->setInterval(_OPT_timerSuivant*1000);
-    _timer->setSingleShot(true);
-    connect(_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
     _keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
 
@@ -273,7 +269,6 @@ void ExerciceAbstract::slotInitQuestionEntered()
 
     /* Petite difference de pose entre les exercices */
     switch(_exerciceType){
-
     case Parcours:
     {
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Parcours";
@@ -301,9 +296,8 @@ void ExerciceAbstract::slotInitQuestionEntered()
             yMasque += hauteurMasque;
         }
         break;
-
     }
-    default:
+    default: /* Tous les exercices sauf Parcours */
     {
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Tous les exercices sauf Parcours";
         for (float i = 0 ; i < _OPT_nbMasquesHauteur ; i++)
@@ -492,7 +486,7 @@ void ExerciceAbstract::slotBilanExerciceEntered()
 *********************************************************************************************************************************************/
 
 
-//! @test chargement ok : clic, parcours, ...
+//! @test chargement ok : clic, parcours,...
 void ExerciceAbstract::chargerOption()
 {
     _parametres = new QSettings(_cheminConf, QSettings::IniFormat);
@@ -544,6 +538,10 @@ void ExerciceAbstract::chargerOption()
         qDebug() << "Timer suivant : "   << _OPT_timerSuivant;
         qDebug() << "Nb masques choisis : "   << _OPT_nbMasquesChoisis;
     }
+
+    _timer->setInterval(_OPT_timerSuivant*1000);
+    _timer->setSingleShot(true);
+    connect(_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
     /* Important sinon le changement de groupe pour la lecture des positions de masque de parcours ne fonctionne pas*/
     _parametres->endGroup();
