@@ -27,8 +27,12 @@ public:
     /** Permet de définir le localDebug qu'une fois */
     bool debugAvailable() const{return _localDebug;}
 
+    QWidget* parent() const {return _parent;}
+
+
     /** Retourne un pointeur sur l'AbulEduMessageBoxV1 commune à tous les exercices */
     AbulEduMessageBoxV1* messageBox(){return _messageBox;}
+    AbulEduMessageBoxV1* _messageBox; //! @todo A ameliorer pas satisfaisant point de vue implementation
 
     QTimer* timer() {return _timer;}
 
@@ -36,7 +40,15 @@ public:
 
     QGraphicsPixmapItem* itemImage() const{return _itemImage;}
 
-    AbulEduMessageBoxV1* _messageBox;
+    int nbMasquesInteractifs() {return _nbMasquesInteractifs;}
+    void setNbMasquesInteractifs(const int& nb){ _nbMasquesInteractifs = nb;}
+
+    QSettings* parametres() const{return _parametres;}
+
+    int OPT_nbMasquesChoisis() const{ return _OPT_nbMasquesChoisis;}
+    int OPT_nbMasquesLargeur() const{ return _OPT_nbMasquesLargeur;}
+    int OPT_nbMasquesHauteur() const{ return _OPT_nbMasquesHauteur;}
+
 
 
 public slots:
@@ -116,24 +128,24 @@ private:
 
     // Paramètres Editeur
     QSettings   *_parametres;
-    int         OPT_timerSuivant;
-    int         OPT_nbMasquesChoisis;
+    int         _OPT_timerSuivant;
+    int         _OPT_nbMasquesChoisis;
+    float       _OPT_nbMasquesLargeur;
+    float       _OPT_nbMasquesHauteur;
     QString     _cheminConf;
     QString     _cheminImage;
 
-    QPixmap _image;
-    QGraphicsPixmapItem *_itemImage;
+    QPixmap                 _image;
+    QGraphicsPixmapItem     *_itemImage;
     /* ma liste d'images (choisies aleatoirement) */
-    QList<QPixmap>      _listeImage;
+    QList<QPixmap>          _listeImage;
     /* le nombre d'image = le nombre d'exercice */
-    int                 _nbImage;
+    int                     _nbImage;
     /* Le nombre de masques à interaction */
-    int                 _nbMasquesInteractifs;
+    int                     _nbMasquesInteractifs;
     /* la liste des fichiers présents dans le dossier pack image */
-    QStringList         _listeFichiers;
+    QStringList             _listeFichiers;
 
-    float OPT_nbMasquesLargeur;
-    float OPT_nbMasquesHauteur;
 
     QList<MasqueDeplaceSouris *>     _listeMasquesFixes;
     MasqueDeplaceSouris             *_masque;
@@ -153,9 +165,6 @@ private:
     bool    _onPeutMettreEnPause;
     QLabel  *_labelImagePause;
     QLabel  *_labelTextePause;
-
-    /** Redimensionne la consigne */
-//    void redimensionnerConsigne();
 
     /** Redimensionne l'image */
     void redimensionnerImage();

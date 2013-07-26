@@ -30,7 +30,7 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     _listeImage.clear();
     _listeFichiers.clear();
     _listeMasquesFixes.clear();
-    _nbImage = _nbMasquesInteractifs = OPT_nbMasquesLargeur = OPT_nbMasquesHauteur = OPT_timerSuivant = OPT_nbMasquesChoisis = 0;
+    _nbImage = _nbMasquesInteractifs = _OPT_nbMasquesLargeur = _OPT_nbMasquesHauteur = _OPT_timerSuivant = _OPT_nbMasquesChoisis = 0;
     _onPeutMettreEnPause = false;
     _messageBox =  0;
     _masque = _masqueInteractif = 0;
@@ -44,7 +44,7 @@ ExerciceAbstract::ExerciceAbstract(QWidget *parent, const QString &theme, const 
     onPeutPresenterSequence = false;
 
     _timer = new QTimer(this);
-    _timer->setInterval(OPT_timerSuivant*1000);
+    _timer->setInterval(_OPT_timerSuivant*1000);
     _timer->setSingleShot(true);
     connect(_timer, SIGNAL(timeout()), SLOT(slotAppuiAutoSuivant()), Qt::UniqueConnection);
 
@@ -95,25 +95,36 @@ ExerciceAbstract::~ExerciceAbstract()
     /* Permet à la MainWindow de savoir que l'exercice est terminé */
     emit exerciceExited();
 
+    qDebug() << "delete label et texte image";
     _labelImagePause->deleteLater();
     _labelTextePause->deleteLater();
 
     /* Petit test car parfois j'ai un warning (p-ê dû au fait que j'utilise cet objet dans les classes dérivées)*/
+    qDebug() << "delete messagBox";
     if(_messageBox != 0)
         _messageBox->deleteLater();
 
+    qDebug() << "delete timer";
     _timer->deleteLater();
+    qDebug() << "delete aireTravail";
     _aireTravail->deleteLater();
+    qDebug() << "delete ProxyG";
     _proxyGraphique->deleteLater();
 
     //! @todo à tester dans toutes les conditions de fermeture.
     //! rien à signaler pour l'instant
+    qDebug() << "delete masque ds _listeMasqueFixes";
     foreach (MasqueDeplaceSouris* var, _listeMasquesFixes) {
         var->deleteLater();
     }
-    _masque->deleteLater();
-    _masqueInteractif->deleteLater();
+    qDebug() << "delete masque";
+    if(_masque)
+        _masque->deleteLater();
+    qDebug() << "delete masque interactif";
+    if(_masqueInteractif)
+        _masqueInteractif->deleteLater();
 
+    //! @test _parametres->deleteLater();
 
 }
 
@@ -184,16 +195,20 @@ void ExerciceAbstract::slotRealisationExerciceEntered()
             }
             AbulEduCommonStatesV1::slotRealisationExerciceEntered();
 
-            const QPair<int, int> divisionEcran = AbulEduTools::plusPetiteDivision(OPT_nbMasquesChoisis);
-            if (divisionEcran.first > divisionEcran.second)
-            {
-                OPT_nbMasquesLargeur = divisionEcran.first;
-                OPT_nbMasquesHauteur = divisionEcran.second;
-            }
-            else
-            {
-                OPT_nbMasquesLargeur = divisionEcran.second;
-                OPT_nbMasquesHauteur = divisionEcran.first;
+            /* Spécificité Parcours à prendre en compte */
+            if(_exerciceType != Parcours){
+                if(_localDebug) qDebug() << "Tous les exercices sauf Parcours";
+                const QPair<int, int> divisionEcran = AbulEduTools::plusPetiteDivision(_OPT_nbMasquesChoisis);
+                if (divisionEcran.first > divisionEcran.second)
+                {
+                    _OPT_nbMasquesLargeur = divisionEcran.first;
+                    _OPT_nbMasquesHauteur = divisionEcran.second;
+                }
+                else
+                {
+                    _OPT_nbMasquesLargeur = divisionEcran.second;
+                    _OPT_nbMasquesHauteur = divisionEcran.first;
+                }
             }
         }
     }
@@ -226,44 +241,74 @@ void ExerciceAbstract::slotInitQuestionEntered()
 
     if (_localDebug)
     {
-        qDebug() << "nb masques largeur :" << OPT_nbMasquesLargeur ;
-        qDebug() << "nb masques hauteur :" << OPT_nbMasquesHauteur ;
+        qDebug() << "nb masques largeur :" << _OPT_nbMasquesLargeur ;
+        qDebug() << "nb masques hauteur :" << _OPT_nbMasquesHauteur ;
     }
 
     const float largeurAireJeu = static_cast<float>(_aireTravail->width())-1;
     const float hauteurAireJeu = static_cast<float>(_aireTravail->height())-1;
 
-    largeurMasque = largeurAireJeu / OPT_nbMasquesLargeur;
-    hauteurMasque = hauteurAireJeu / OPT_nbMasquesHauteur;
+    largeurMasque = largeurAireJeu / _OPT_nbMasquesLargeur;
+    hauteurMasque = hauteurAireJeu / _OPT_nbMasquesHauteur;
 
     qreal xMasque, yMasque = 0.00;
 
-    for (float i = 0 ; i < OPT_nbMasquesHauteur ; i++)
-    {
-        for (int j = 0 ; j < OPT_nbMasquesLargeur ; j++)
-        {
-            _masque = new MasqueDeplaceSouris();
-            _masque->setSize(largeurMasque, hauteurMasque);
-            _masque->setPos(xMasque, yMasque);
-            _masque->setColor(QColor::fromRgb(255,255,255));
-
-            xMasque += largeurMasque;
-            _aireTravail->scene()->addItem(_masque);
-            _listeMasquesFixes << _masque;
-        }
-        xMasque = 0;
-        yMasque += hauteurMasque;
-    }
     /* Petite difference de pose entre les exercices */
     switch(_exerciceType){
+
     case Parcours:
+    {
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Parcours";
+        int nbMasques = _OPT_nbMasquesLargeur * _OPT_nbMasquesHauteur;
+
+        if (_localDebug) qDebug() << "Début boucle d'affichage : " << nbMasques;
+
+        int numeroMasque = 0;
+        for (float i = 0; i < _OPT_nbMasquesHauteur ; i++)
+        {
+            for (int j = 0; j < _OPT_nbMasquesLargeur ; j++)
+            {
+                _masque = new MasqueDeplaceSouris(0, numeroMasque);
+                _masque->setSize(largeurMasque, hauteurMasque);
+
+                _masque->setPos(xMasque, yMasque);
+                _masque->setColor(QColor::fromRgb(255,255,255));
+
+                xMasque += largeurMasque;
+                _aireTravail->scene()->addItem(_masque);
+                _listeMasquesFixes << _masque;
+                numeroMasque ++;
+            }
+            xMasque = 0;
+            yMasque += hauteurMasque;
+        }
         break;
+
+    }
     default:
+    {
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Tous les exercices sauf Parcours";
-        OPT_nbMasquesLargeur += 2;
-        OPT_nbMasquesHauteur += 1;
+        for (float i = 0 ; i < _OPT_nbMasquesHauteur ; i++)
+        {
+            for (int j = 0 ; j < _OPT_nbMasquesLargeur ; j++)
+            {
+                _masque = new MasqueDeplaceSouris();
+                _masque->setSize(largeurMasque, hauteurMasque);
+                _masque->setPos(xMasque, yMasque);
+                _masque->setColor(QColor::fromRgb(255,255,255));
+
+                xMasque += largeurMasque;
+                _aireTravail->scene()->addItem(_masque);
+                _listeMasquesFixes << _masque;
+            }
+            xMasque = 0;
+            yMasque += hauteurMasque;
+        }
+
+        _OPT_nbMasquesLargeur += 2;
+        _OPT_nbMasquesHauteur += 1;
         break;
+    }
     }
 }
 
@@ -283,7 +328,7 @@ void ExerciceAbstract::slotQuestionEntered()
         _nbMasquesInteractifs = 0;
         int alea = 0;
 
-        while(_nbMasquesInteractifs < OPT_nbMasquesChoisis)
+        while(_nbMasquesInteractifs < _OPT_nbMasquesChoisis)
         {
             alea = (qrand() % (_listeMasquesFixes.count()));
             if(_localDebug) qDebug() << "alea = " << alea;
@@ -305,7 +350,7 @@ void ExerciceAbstract::slotAfficheVerificationQuestionEntered()
 
     if(_exerciceEnCours)
     {
-        if(_localDebug) qDebug()<< "Click bouton suivant automatique " << OPT_timerSuivant;
+        if(_localDebug) qDebug()<< "Click bouton suivant automatique " << _OPT_timerSuivant;
 
         _timer->start();
     }
@@ -420,35 +465,40 @@ void ExerciceAbstract::slotBilanExerciceEntered()
 //! @test chargement ok : clic, parcours, ...
 void ExerciceAbstract::chargerOption()
 {
-    QSettings parametres(_cheminConf, QSettings::IniFormat);
+    _parametres = new QSettings(_cheminConf, QSettings::IniFormat);
     QString exercice;
 
     switch(_exerciceType){
     case 0x0:
         exercice = trUtf8("Survol");
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
-        parametres.beginGroup("survol");
+        _parametres->beginGroup("survol");
         break;
     case 0x2:
         exercice = trUtf8("Clic");
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
-        parametres.beginGroup("clic");
+        _parametres->beginGroup("clic");
         break;
     case 0x4:
         exercice = trUtf8("Doucle Clic");
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
-        parametres.beginGroup("doubleClic");
+        _parametres->beginGroup("doubleClic");
         break;
     case 0x8:
         exercice = trUtf8("Parcours");
-        if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
-        parametres.beginGroup("parcours");
-        OPT_nbMasquesLargeur   = parametres.value("nbMasquesLargeur", 10).toInt();
-        OPT_nbMasquesHauteur   = parametres.value("nbMasquesHauteur", 5).toInt();
+        _parametres->beginGroup("parcours");
+        _OPT_nbMasquesLargeur   = _parametres->value("nbMasquesLargeur", 10).toInt();
+        _OPT_nbMasquesHauteur   = _parametres->value("nbMasquesHauteur", 5).toInt();
+        if(_localDebug){
+            qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
+            qDebug() << "Nombre masque largeur : " << _OPT_nbMasquesLargeur;
+            qDebug() << "Nombre masque hauteur : " << _OPT_nbMasquesHauteur;
+
+        }
         break;
     }
 
-    if (parametres.value("exerciceActive",false) == false)
+    if (_parametres->value("exerciceActive",false) == false)
     {
         AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),
                                                                   trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>%1</b>").arg(exercice));
@@ -456,12 +506,13 @@ void ExerciceAbstract::chargerOption()
         slotQuitterAccueil();
     }
 
-    OPT_timerSuivant     = parametres.value("timerSuivant", 7).toInt();
-    OPT_nbMasquesChoisis = parametres.value("nbMasquesChoisis", 7).toInt();
+    _OPT_timerSuivant     = _parametres->value("timerSuivant", 7).toInt();
+    _OPT_nbMasquesChoisis = _parametres->value("nbMasquesChoisis", 7).toInt();
 
     if (_localDebug)
     {
-        qDebug() << "Timer suivant : "   << OPT_timerSuivant  << " "<< "Nb masques choisis : "   << OPT_nbMasquesChoisis;
+        qDebug() << "Timer suivant : "   << _OPT_timerSuivant;
+        qDebug() << "Nb masques choisis : "   << _OPT_nbMasquesChoisis;
     }
 }
 
