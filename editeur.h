@@ -47,6 +47,7 @@
 #include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
 #include "abuledutools.h"
+//#include "mainwindow.h"
 
 namespace Ui {
 class Editeur;
@@ -56,6 +57,16 @@ class Editeur : public QWidget
 {
     Q_OBJECT
 
+    /* Enum pour les pages afin de ne pas se tromper de numero dans le code  */
+    enum Pages {
+        PageAccueil   = 0,
+        PageChoixMode = 1,
+        PageGestionImages = 2,
+        PageParametres = 3,
+        PageFin = 4
+//        PageVisio = 5
+    };
+
 public:
     /** Constructeur de la classe Editeur */
     explicit Editeur(QWidget *parent);
@@ -63,12 +74,20 @@ public:
     /** Destructeur de la classe Editeur */
     ~Editeur();
 
-    void abeEditeurSetMainWindow(QWidget* mw);
+//    void abeEditeurSetMainWindow(QWidget* mw);
+    void setAbeFile(const QSharedPointer<AbulEduFileV1>& abuleduFile){ _abuleduFile = abuleduFile ;}
+    const QSharedPointer<AbulEduFileV1> abeFile(){ return _abuleduFile ; }
+
+    QStackedWidget* stackedWidget(){ return ui->stackedWidgetEditeur ;}
+    QPushButton* btnModificationCourant(){ return ui->btnModificationCourant ;}
 
 private slots:
     /** Permet de supprimer une image du listWidgetImagesSelection
       * connecté à un menu contextuel appelé au clic droit sur le listWidgetImagesSelection */
     void slotSupprimerImage();
+
+    /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
+    void ajouterImage(QFileInfo monFichier);
 
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
@@ -91,27 +110,24 @@ private slots:
     /** Ouvre au double clic l'image dans la visionneuse */
     void on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item);
 
-    /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
-    void ajouterImage(QFileInfo monFichier);
-
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
     void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int &success);
 
-    /** Passe à la page précédente */
-    void on_btnPrecedent_clicked();
+//    /** Passe à la page précédente */
+//    void on_btnPrecedent_clicked();
 
-    /** Passe à la page suivante
-      * Dans le cas de la dernière page, le bouton a pris l'icône d'enregistrement, la fonction createAbe() est appelée et l'éditeur fermé */
-    void on_btnSuivant_clicked();
+//    /** Passe à la page suivante
+//      * Dans le cas de la dernière page, le bouton a pris l'icône d'enregistrement, la fonction createAbe() est appelée et l'éditeur fermé */
+//    void on_btnSuivant_clicked();
 
-    /** Ferme l'application au clic sur le bouton Quitter*/
-    void on_btnQuitter_clicked();
+//    /** Ferme l'application au clic sur le bouton Quitter*/
+//    void on_btnQuitter_clicked();
 
     /** Création du module à partir du contenu du répertoire temporaire de l'application */
     void on_btnCreationAbe_clicked();
 
-    /** Charge un fichier reçu de l'AbulEduFileManagerV1 et le passe à la MainWindow */
-    void slotOpenFile(QSharedPointer<AbulEduFileV1>);
+//    /** Charge un fichier reçu de l'AbulEduFileManagerV1 et le passe à la MainWindow */
+//    void slotOpenFile(QSharedPointer<AbulEduFileV1>);
 
     /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();
@@ -134,12 +150,15 @@ private slots:
 
     void on_btnPublier_clicked();
 
-    void on_stackedWidgetEditeur_currentChanged(int arg1);
-
     void slotSortieVisionneuse();
 
     /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
     void slotAfficheEtatPublication(const int& code);
+
+    //! MODIF ICHAM 29.07.13
+    void slotGestionPage(int);
+
+    void on_btnRetourAccueil_clicked();
 
 private:
     Ui::Editeur *ui;
@@ -179,7 +198,7 @@ private:
     QList<MasqueDeplaceSouris *>    m_listeMasquesParcours;
     EditeurParcoursWidget           *m_editeurParcoursWidget;
 
-    QSharedPointer<AbulEduFileV1> m_abuleduFile;
+    QSharedPointer<AbulEduFileV1> _abuleduFile;
 
     /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
     QWidget* m_parent;

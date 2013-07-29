@@ -22,7 +22,11 @@
   */
 
 #include "editeur.h"
-#include "mainwindow.h"
+/**
+  * @todo :
+  * - le raccourci "Control-E" appellé plein de fois change le titre de module en cours en ajoutant le titre à chaque fois...
+  */
+
 
 Editeur::Editeur(QWidget *parent) :
     QWidget(parent),
@@ -32,7 +36,6 @@ Editeur::Editeur(QWidget *parent) :
     m_localDebug = true; /// @todo mettre a false
     setAttribute(Qt::WA_DeleteOnClose);
 
-    m_parent = parent;
     m_lastOpenDir = QDir::homePath();
 
     /* Gestion AbulEduMediathequeGet */
@@ -45,6 +48,7 @@ Editeur::Editeur(QWidget *parent) :
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this,
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
+
     connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this,
             SLOT(slotAfficheEtatPublication(int)), Qt::UniqueConnection);
 
@@ -57,14 +61,14 @@ Editeur::Editeur(QWidget *parent) :
     /* Vidange des différentes listes */
     m_listeMasques.clear();
     m_listeMasquesParcours.clear();
+    m_listeFichiersImages.clear();
+
     m_parametresParcours1.clear();
     m_parametresParcours2.clear();
     m_parametresParcours3.clear();
     m_parametresParcours4.clear();
     m_parametresParcours5.clear();
-    m_listeFichiersImages.clear();
 
-    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
 
     setAcceptDrops(true);
 
@@ -78,55 +82,61 @@ Editeur::Editeur(QWidget *parent) :
 
     /* Mappage des signaux des 5 boutons de parcours */
     mapSignalBtnParcours();
+
+    // Gestion Navigation et Affichage des différents boutons contextualisé
+    connect(ui->stackedWidgetEditeur, SIGNAL(currentChanged(int)), this, SLOT(slotGestionPage(int)));
+
+    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
+    ui->btnModificationCourant->setEnabled(false);
 }
 
 Editeur::~Editeur()
 {
     /// @todo delete les objets sans parent
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
+    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << _abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     emit editorExited();
 }
 
-void Editeur::abeEditeurSetMainWindow(QWidget *mw)
-{
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+//void Editeur::abeEditeurSetMainWindow(QWidget *mw)
+//{
+    //    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    MainWindow* parent = (MainWindow*) mw;
-    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this, SLOT(show()), Qt::UniqueConnection);
-    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),
-            parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
+    //    MainWindow* parent = (MainWindow*) mw;
+    //    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this, SLOT(show()), Qt::UniqueConnection);
+    //    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),
+    //            parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
 
-    /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
-    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
+    //    /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
+    //    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
 
-    if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
-    {
-        m_abuleduFile = parent->abeGetMyAbulEduFile();
-        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+ "\n" + m_abuleduFile->abeFileGetFileName().fileName());
-        ui->btnModificationCourant->setEnabled(true);
-        ui->btnModificationCourant->setMinimumHeight(60);
-        ui->btnModificationAutre->setMinimumHeight(60);
-        ui->btnCreationAbe->setMinimumHeight(60);
-    }
-    else
-    {
-        m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
-        ui->btnModificationCourant->setEnabled(false);
-        parent->abeSetMyAbulEduFile(m_abuleduFile);
-    }
+    //    if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
+    //    {
+    //        _abuleduFile = parent->abeGetMyAbulEduFile();
+    //        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+ "\n" + _abuleduFile->abeFileGetFileName().fileName());
+    //        ui->btnModificationCourant->setEnabled(true);
+    //        ui->btnModificationCourant->setMinimumHeight(60);
+    //        ui->btnModificationAutre->setMinimumHeight(60);
+    //        ui->btnCreationAbe->setMinimumHeight(60);
+    //    }
+    //    else
+    //    {
+    //        _abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
+    //        ui->btnModificationCourant->setEnabled(false);
+    //        parent->abeSetMyAbulEduFile(_abuleduFile);
+    //    }
 
-    ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
+    //    ui->cbLangueRessource->addItems(_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
 
-    if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
-    }
-    else {
-        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
-        return;
-    }
-    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
-}
+    //    if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
+    //        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
+    //    }
+    //    else {
+    //        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
+    //        return;
+    //    }
+    //    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
+//}
 
 void Editeur::creationMenu()
 {
@@ -193,21 +203,21 @@ void Editeur::ajouterImage(QFileInfo monFichier)
     }
 
     /* Controle des insertions (éviter les doublons) */
-    if (m_listeFichiersImages.contains(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"))
+    if (m_listeFichiersImages.contains(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"))
     {
         if(m_localDebug) qDebug() << "Fichier deja présent";
         return;
     }
     else
     {
-        if (m_abuleduFile->resizeImage(&monFichier, 1024, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
+        if (_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
         {
             /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
-            m_listeFichiersImages << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
+            m_listeFichiersImages << _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
             /* Insertion dans mon listWidget */
             QListWidgetItem *item = new QListWidgetItem(QIcon(monFichier.absoluteFilePath()), monFichier.baseName());
 
-            item->setData(4, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
+            item->setData(4, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
             ui->listWidgetImagesSelection->insertItem(0, item);
         }
     }
@@ -220,7 +230,7 @@ void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierAB
     {
         ajouterImage(fichierABB->abeFileGetContent(0));
         /* Ajout des metadata */
-        m_abuleduFile->abeFileAddMetaDataFromABB(fichierABB->abeFileGetLOM(), fichierABB->abeFileGetContent(0).baseName());
+        _abuleduFile->abeFileAddMetaDataFromABB(fichierABB->abeFileGetLOM(), fichierABB->abeFileGetContent(0).baseName());
 
         if(m_localDebug) qDebug() << "Importation image depuis mediatheque... [OK]";
     }
@@ -588,7 +598,7 @@ void Editeur::reinitialiserGvParcours()
     if(m_modeModificationAbe){
         qDebug() << "Nous sommes en modification, on recherche les entrées dans le QSettings";
 
-        QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+        QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
         parametres.beginGroup("parcours");
         parametres.beginGroup("parcours"+QString::number(m_editeurParcoursWidget->getNumeroParcours()));
 
@@ -794,7 +804,7 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     positionMasquesParcours.clear();
-    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroParcours));
     for (int i =0 ; i < parametres.childKeys().count(); i++)
@@ -813,42 +823,68 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
 
 void Editeur::setModeModificationAbe(const bool &yesNo)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ << yesNo;
 
     m_modeModificationAbe = yesNo;
 }
 
 void Editeur::on_btnCreationAbe_clicked()
 {
-    if(m_localDebug)
-    {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
+
+    qDebug() << "Mon fichier abe : " << _abuleduFile;
+
+    /* Etape 1 : Le dossier temporaire doit être vide sinon problème d'enregistrement */
+    if(!_abuleduFile->abeFileGetFileList().isEmpty()){
+        if(m_localDebug) qDebug() << "Dossier Temporaire vide... [KO]";
+
+        /* Vidange du dossier */
+        if(AbulEduTools::supprimerDir(_abuleduFile->abeFileGetDirectoryTemp().absolutePath())){
+
+            /* La vidange du dossier s'est bien passée */
+            if(m_localDebug) qDebug() << "Vidange Dossier Temporaire... [OK]";
+
+            /* Il faut recréer l'arborescence data/images */
+            if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
+                if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
+            }
+            else {
+                if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
+                return;
+            }
+        }
     }
 
+    if(m_localDebug) qDebug() << "Dossier temporaire : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+
+    /* On vide les différentes listes */
     m_listeDossiers.clear();
     m_listeFichiersImages.clear();
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
     ui->listWidgetImagesSelection->clear();
 
+    /* Et on change le titre de la fenetre */
+
+
+
     setModeModificationAbe(false);
     /* Clic sur le bouton suivant */
-    ui->btnSuivant->click();
 }
 
-void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
-{
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-    slotLoadUnit();
-    if (m_localDebug) qDebug() << "Répertoire Tmp dézippage de l'ABE : "  << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
-}
+//void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
+//{
+//    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+//    slotLoadUnit();
+//    if (m_localDebug) qDebug() << "Répertoire Tmp dézippage de l'ABE : "  << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+//}
 
 void Editeur::slotLoadUnit()
 {
-    if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<m_abuleduFile->abeFileGetFileName().fileName();
+    if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<_abuleduFile->abeFileGetFileName().fileName();
     m_listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
-    QDir folder(QString(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
+    QDir folder(QString(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
     folder.setFilter(QDir::NoDotAndDotDot | QDir::Files);
     foreach(const QFileInfo fileInfo, folder.entryInfoList())
     {
@@ -856,7 +892,7 @@ void Editeur::slotLoadUnit()
         m_lastOpenDir = fileInfo.absolutePath();
     }
 
-    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("clic");
     ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
@@ -895,54 +931,20 @@ void Editeur::slotLoadUnit()
     ui->spinBoxParcoursMasque_5->setValue(parametres.childKeys().count());
     parametres.endGroup();
 
-    ui->leTitre->setText(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralTitle(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()));
+    ui->leTitre->setText(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralTitle(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()));
     if (abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus() == 1)
     {
         ui->leAuteur->setText(abeApp->getAbeIdentite()->abeGetPreNom()+" "+abeApp->getAbeIdentite()->abeGetNom());
     }
-    ui->teDescription->setPlainText(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralDescription(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()).first());
-    QString langueRessource = m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().value(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
+    ui->teDescription->setPlainText(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()).first());
+    QString langueRessource = _abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().value(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
     ui->cbLangueRessource->setCurrentIndex(ui->cbLangueRessource->findText(langueRessource));
-    QString licence = m_abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(m_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
+    QString licence = _abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
     ui->cbLicence->setCurrentIndex(ui->cbLicence->findText(licence));
 
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
 }
 
-/**********************************************************************************************************************************************************
-                                                    WIDGET BARRE NAVIGATION
-**********************************************************************************************************************************************************/
-
-void Editeur::on_btnPrecedent_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    ui->stackedWidgetEditeur->setCurrentIndex(ui->stackedWidgetEditeur->currentIndex() - 1);
-}
-
-void Editeur::on_btnSuivant_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    if(ui->stackedWidgetEditeur->currentWidget()->objectName() == "pageGestionImages") {
-        /* Condition de garde = m_listeFichiersImages < 5 */
-        if ( m_listeFichiersImages.count() < 5)
-        {
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Sauvegarder Thème"),trUtf8("Veuillez sélectionner au minimum 5 images"), true, this);
-            alertBox->show();
-            return;
-        }
-    }
-    ui->stackedWidgetEditeur->setCurrentIndex(ui->stackedWidgetEditeur->currentIndex() + 1);
-}
-
-void Editeur::on_btnQuitter_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    /// @todo Controle que l'utilisateur veut quitter sans sauvegarder
-    emit editorExited();
-}
 
 /**********************************************************************************************************************************************************
                                                      GESTION DRAG & DROP
@@ -1050,11 +1052,11 @@ bool Editeur::preparerSauvegarde()
         ui->leTitre->setStyleSheet("border:1px solid grey;border-radius:3px");
     }
 
-    QString codeLangue = m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().key(ui->cbLangueRessource->currentText());
+    QString codeLangue = _abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().key(ui->cbLangueRessource->currentText());
 
     /* Les informations pour LOM */
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralTitle(codeLangue,ui->leTitre->text());
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralDescription(codeLangue,ui->teDescription->document()->toPlainText());
+    _abuleduFile->abeFileGetLOM()->abeLOMsetGeneralTitle(codeLangue,ui->leTitre->text());
+    _abuleduFile->abeFileGetLOM()->abeLOMsetGeneralDescription(codeLangue,ui->teDescription->document()->toPlainText());
 
     vCard vcard;
     vCardProperty name_prop  = vCardProperty::createName(ui->leAuteur->text(), "");
@@ -1068,20 +1070,20 @@ bool Editeur::preparerSauvegarde()
     vCardProperty url_prop   = vCardProperty(VC_URL, "");
     vcard.addProperty(url_prop);
 
-    m_abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole("author", vcard, QDate::currentDate());
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsCost("no");
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsCopyrightAndOtherRestrictions("yes");
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription(codeLangue,ui->cbLicence->currentText());
+    _abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole("author", vcard, QDate::currentDate());
+    _abuleduFile->abeFileGetLOM()->abeLOMsetRightsCost("no");
+    _abuleduFile->abeFileGetLOM()->abeLOMsetRightsCopyrightAndOtherRestrictions("yes");
+    _abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription(codeLangue,ui->cbLicence->currentText());
 
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
-    m_abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
+    _abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
+    _abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
 
-    QString destTemp = m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    QString destTemp = _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     QDir().mkpath(destTemp + "/data/images");
     QDir().mkpath(destTemp + "/conf");
 
     /* Creation fichier Conf [@note les timers sont convertis en millisecondes] */
-    QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.setValue("version",abeApp->applicationVersion());
     /* Parametres Survol */
     parametres.beginGroup("survol");
@@ -1179,7 +1181,7 @@ bool Editeur::preparerSauvegarde()
 
     /* Creation .abe */
     parametres.sync(); //pour forcer l'écriture du .conf
-    m_abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), m_abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+    _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
 
     return true;
 }
@@ -1190,10 +1192,9 @@ void Editeur::releaseAbe()
     ui->listWidgetImagesSelection->clear();
     if (preparerSauvegarde())
     {
-        ui->stPageMediathequePush->abeSetFile(m_abuleduFile);
+        ui->stPageMediathequePush->abeSetFile(_abuleduFile);
         ui->stackedWidgetEditeur->setCurrentWidget(ui->stPageMediathequePush);
-        ui->btnPrecedent->hide();
-        ui->btnSuivant->hide();
+
     }
 }
 
@@ -1221,14 +1222,14 @@ void Editeur::on_btnPublier_clicked()
     releaseAbe();
 }
 
-void Editeur::on_stackedWidgetEditeur_currentChanged(int arg1)
-{
-    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidgetEditeur->currentWidget()->objectName()<<")";
-    ui->btnQuitter->setHidden(ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
-    ui->btnPrecedent->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
-    ui->btnSuivant->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
-    ui->btnSuivant->setDisabled((ui->stackedWidgetEditeur->currentWidget() == ui->pageFin));
-}
+//void Editeur::on_stackedWidgetEditeur_currentChanged(int arg1)
+//{
+//    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidgetEditeur->currentWidget()->objectName()<<")";
+//    ui->btnQuitter->setHidden(ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
+//    ui->btnPrecedent->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
+//    ui->btnSuivant->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
+//    ui->btnSuivant->setDisabled((ui->stackedWidgetEditeur->currentWidget() == ui->pageFin));
+//}
 
 void Editeur::slotSortieVisionneuse()
 {
@@ -1248,4 +1249,36 @@ void Editeur::slotAfficheEtatPublication(const int &code)
         AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Problème"), trUtf8("Un problème a empêché la publication de votre module sur AbulÉdu-Médiathèque..."), true, this);
         msgEnregistrement->show();
     }
+}
+
+void Editeur::slotGestionPage(int a)
+{
+    qDebug() << __PRETTY_FUNCTION__ << " " + QString::number(a);
+
+    switch(a){
+    case PageAccueil:
+        qDebug() << "c'est la page accueil";
+
+        break;
+    case PageChoixMode:
+        qDebug() << "c'est la page choixMode";
+        /* Ici je desactive les boutons de navigation pour forcer l'user à choisir une option */
+        break;
+    case PageGestionImages:
+        qDebug() << "c'est la page Gestion Images";
+    case PageParametres:
+        qDebug() << "C'est la page des parametres";
+    case PageFin:
+        qDebug() << "C'est la page fin";
+    }
+}
+
+void Editeur::on_btnRetourAccueil_clicked()
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    /* Remettre le titre par defaut du boutonModifier courant */
+    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
+
+    /* Vider les listes */
+    emit editorExited();
 }

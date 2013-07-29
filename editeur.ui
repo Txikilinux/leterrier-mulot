@@ -37,118 +37,17 @@
  }</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_6">
-   <item row="2" column="0">
-    <widget class="QWidget" name="widgetNavigation" native="true">
-     <property name="styleSheet">
-      <string notr="true">#widgetNavigation {
-border: 3px inset gray;
-border-radius: 40px;
-
-}
-
-QPushButton {
-color: gray;
-border-width: 1px;
-border-style: inset;
-border-radius: 7;
-padding: 3px;
-font-size: 10px;
-padding-left: 5px;
-padding-right: 5px;
-min-width: 50px;
-max-width: 50px;
-min-height: 50px;
-max-height: 50px;
-}</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_10">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="btnQuitter">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="ressources.qrc">
-          <normaloff>:/bouton/quitter</normaloff>:/bouton/quitter</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>498</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="0" column="3">
-       <widget class="QPushButton" name="btnPrecedent">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="ressources.qrc">
-          <normaloff>:/bouton/flecheG</normaloff>:/bouton/flecheG</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="5">
-       <widget class="QPushButton" name="btnSuivant">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="ressources.qrc">
-          <normaloff>:/bouton/flecheD</normaloff>:/bouton/flecheD</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>48</width>
-          <height>48</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QStackedWidget" name="stackedWidgetEditeur">
      <property name="styleSheet">
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="pageAccueil">
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
         <spacer name="verticalSpacer_9">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -161,20 +60,7 @@ max-height: 50px;
          </property>
         </spacer>
        </item>
-       <item row="1" column="0">
-        <spacer name="horizontalSpacer_9">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>85</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="1" colspan="2">
+       <item>
         <widget class="QLabel" name="lblAccueil">
          <property name="styleSheet">
           <string notr="true">#lblAccueil {
@@ -182,34 +68,33 @@ font : bold;
 }</string>
          </property>
          <property name="text">
-          <string>Bienvenue dans l'Éditeur d'exercices MULOT.
-Cet assistant va vous permettre de créer ou de modifier des modules exercice en 3 étapes.
-Cela ne vous prendra pas plus de 5 minutes.
-
-Choisissez entre la création ou la modification d'un thème déjà existant. 
-
-Étape 1 : Gestion des images
-
-Étape 2 : Gestion des paramètres d'exercices
-
-Étape 3 : Enregistrement du fichier abe créé</string>
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Sans'; font-size:10pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Bienvenue dans l'Éditeur d'exercices MULOT.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Cet assistant va vous permettre de créer ou de modifier des modules exercice en 3 étapes.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Choisissez entre la création ou la modification d'un thème déjà existant. &lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Étape 1 : Gestion des images&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Étape 2 : Gestion des paramètres d'exercices&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Étape 3 : Enregistrement du fichier abe créé&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Choississez un mode d'édition.&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;A tout moment il est possible de retourner à l'écran d'accueil du logiciel en cliquant sur le bouton &lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&amp;quot;Revenir à l'accueil&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
-       <item row="1" column="3">
-        <spacer name="horizontalSpacer_10">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>85</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="1">
+       <item>
         <spacer name="verticalSpacer_10">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -222,8 +107,8 @@ Choisissez entre la création ou la modification d'un thème déjà existant.
          </property>
         </spacer>
        </item>
-       <item row="3" column="0" colspan="4">
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <layout class="QHBoxLayout" name="layoutModeEdition">
          <item>
           <widget class="QPushButton" name="btnCreationAbe">
            <property name="focusPolicy">
@@ -1389,6 +1274,13 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
        </item>
       </layout>
      </widget>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btnRetourAccueil">
+     <property name="text">
+      <string>Revenir à l'Accueil</string>
+     </property>
     </widget>
    </item>
   </layout>

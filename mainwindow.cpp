@@ -73,13 +73,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()), Qt::UniqueConnection);
+
     m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
+
     m_abuleduFileManager = ui->AbulEduBoxFileManager;
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)),ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+//    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
 
@@ -92,10 +94,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
 
     connect(ui->editeur, SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
-    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
-    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
-            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
-    //        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
+//    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
+//    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
+//            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
+
+    /* On passe à l'éditeur l'abe courant */
+    ui->editeur->setAbeFile(m_abuleduFile);
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
@@ -114,6 +118,7 @@ void MainWindow::resizeEvent(QResizeEvent *)
 void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
 {
     m_abuleduFile = abeFile;
+    ui->editeur->setAbeFile(abeFile);
 }
 
 MainWindow::~MainWindow()
@@ -268,6 +273,7 @@ void MainWindow::abeAiguillage()
 void MainWindow::exerciceExited()
 {
     if (m_localDebug) qDebug()<< __PRETTY_FUNCTION__;
+
     ui->stCentral->setCurrentWidget(ui->fr_principale);
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
@@ -332,6 +338,13 @@ void MainWindow::on_actionEditeur_triggered()
     if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
+        qDebug() << "Affichage editeur";
+        /* Si le titre de l'abe n'est pas vide, on active le bouton de modification du module courant */
+        if(!m_abuleduFile->abeFileGetTitle().isEmpty()){
+//            ui->editeur->ui->btnModificationCourant->setEnabled(true);
+            ui->editeur->btnModificationCourant()->setEnabled(true);
+            ui->editeur->btnModificationCourant()->setText(ui->editeur->btnModificationCourant()->text().remove("en cours") + "\"" + m_abuleduFile->abeFileGetTitle()+"\"");
+        }
     }
     else /* On affiche un petit message... */
     {
