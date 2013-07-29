@@ -22,7 +22,6 @@
   */
 
 #include "mainwindow.h"
-#include "editeur.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -100,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
-    ui->editeur->abeEditeurSetMainWindow(this);
+//    ui->editeur->abeEditeurSetMainWindow(this);
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
