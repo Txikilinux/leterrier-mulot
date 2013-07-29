@@ -92,7 +92,7 @@ MainWindow::MainWindow(QWidget *parent) :
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
 
-    connect(ui->editeur,SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
+    connect(ui->editeur, SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
             this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
@@ -330,7 +330,6 @@ void MainWindow::on_action_Double_Clic_triggered()
 
 void MainWindow::on_actionEditeur_triggered()
 {
-    ui->editeur->abeEditeurSetMainWindow(this);
     if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
