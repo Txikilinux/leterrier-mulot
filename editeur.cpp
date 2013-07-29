@@ -64,7 +64,7 @@ Editeur::Editeur(QWidget *parent) :
     m_parametresParcours5.clear();
     m_listeFichiersImages.clear();
 
-    ui->stackedWidgetEditeur->setCurrentIndex(0);
+    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
 
     setAcceptDrops(true);
 
