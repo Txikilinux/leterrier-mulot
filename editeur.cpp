@@ -238,10 +238,6 @@ void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoi
     {
         m_menuListWidget->exec(ui->listWidgetImagesSelection->mapToGlobal(pos));
     }
-    else /* sinon je fais rien */
-    {
-        if(m_localDebug) qDebug() << "Pas d'item";
-    }
 }
 
 void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item)
