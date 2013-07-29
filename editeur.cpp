@@ -93,12 +93,9 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     MainWindow* parent = (MainWindow*) mw;
-    qDebug() << "PARENT :" << parent;
-    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,
-            SLOT(show()), Qt::UniqueConnection);
-    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
-            SIGNAL(clicked()),parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),
-            SLOT(hide()), Qt::UniqueConnection);
+    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this, SLOT(show()), Qt::UniqueConnection);
+    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),
+            parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
 
     /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
     parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
@@ -106,7 +103,7 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
     if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
     {
         m_abuleduFile = parent->abeGetMyAbulEduFile();
-        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+"\n"+m_abuleduFile->abeFileGetFileName().fileName());
+        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+ "\n" + m_abuleduFile->abeFileGetFileName().fileName());
         ui->btnModificationCourant->setEnabled(true);
         ui->btnModificationCourant->setMinimumHeight(60);
         ui->btnModificationAutre->setMinimumHeight(60);
@@ -122,10 +119,10 @@ void Editeur::abeEditeurSetMainWindow(QWidget *mw)
     ui->cbLangueRessource->addItems(m_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
 
     if(m_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-        if(m_localDebug) qDebug() << "Creation ok";
+        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
     }
     else {
-        if(m_localDebug) qDebug()<<"impossible de créer le dossier pour les images";
+        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
         return;
     }
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
@@ -169,11 +166,11 @@ void Editeur::slotSupprimerImage()
         m_listeFichiersImages.removeOne(i->data(4).toString());
         QFileInfo fi(i->data(4).toString());
         if(QFile::remove(fi.absoluteFilePath().replace(fi.suffix(), "xml").remove("/images"))){
-            if(m_localDebug) qDebug() << "Suppr XML OK";
+            if(m_localDebug) qDebug() << "Suppression du fichier XML accompagnant la ressource... [OK]";
         }
         if (QFile::remove(fi.absoluteFilePath()))
         {
-            if (m_localDebug)qDebug() << "Suppr image du fichier temp ok";
+            if (m_localDebug)qDebug() << "Suppression de l'image du fichier temporaire... [OK]";
         }
         delete i;
     }
@@ -192,8 +189,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
 {
     if (m_localDebug)
     {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-        qDebug() << "ajouterImage -> Chemin du fichier selectionné : " << monFichier.absoluteFilePath() <<" Nom du fichier : " << monFichier.fileName();
+        qDebug() << __PRETTY_FUNCTION__ << " Chemin du fichier selectionné : " << monFichier.absoluteFilePath() << " Nom du fichier : " << monFichier.fileName();
     }
 
     /* Controle des insertions (éviter les doublons) */
@@ -204,15 +200,13 @@ void Editeur::ajouterImage(QFileInfo monFichier)
     }
     else
     {
-        if (m_abuleduFile->resizeImage(&monFichier, 1024,m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
+        if (m_abuleduFile->resizeImage(&monFichier, 1024, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
         {
             /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
             m_listeFichiersImages << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
             /* Insertion dans mon listWidget */
-            QListWidgetItem *item = new QListWidgetItem();
-            QIcon icone(monFichier.absoluteFilePath());
-            item->setIcon(icone);
-            item->setText(monFichier.baseName());
+            QListWidgetItem *item = new QListWidgetItem(QIcon(monFichier.absoluteFilePath()), monFichier.baseName());
+
             item->setData(4, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
             ui->listWidgetImagesSelection->insertItem(0, item);
         }
@@ -221,16 +215,18 @@ void Editeur::ajouterImage(QFileInfo monFichier)
 
 void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int& success)
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     if(success > -1)
     {
         ajouterImage(fichierABB->abeFileGetContent(0));
         /* Ajout des metadata */
         m_abuleduFile->abeFileAddMetaDataFromABB(fichierABB->abeFileGetLOM(), fichierABB->abeFileGetContent(0).baseName());
+
+        if(m_localDebug) qDebug() << "Importation image depuis mediatheque... [OK]";
     }
     else
     {
-        if (m_localDebug) qDebug()<<"Probleme pour importer l'image";
+        if(m_localDebug) qDebug() << "Importation image depuis mediatheque... [KO]";
     }
 }
 
@@ -993,8 +989,7 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg *.svg *.bmp *.ppm *.xpm *.xbm)")); /* */
+    QString fileName = QFileDialog::getOpenFileName(this, trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg *.svg *.bmp *.ppm *.xpm *.xbm)"));
     QFileInfo fi(fileName);
     if(fi.exists()) {
         ajouterImage(fi.absoluteFilePath());
