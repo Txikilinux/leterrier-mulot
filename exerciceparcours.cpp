@@ -93,21 +93,21 @@ void ExerciceParcours::slotQuestionEntered()
             }
         }
 
-            _listeMasquesParcours << _masqueArrivee; // en dernier
-            setExerciceRunning(true);
+        _listeMasquesParcours << _masqueArrivee; // en dernier
+        setExerciceRunning(true);
 
-            NB_MASQUESREELS = _listeMasquesParcours.count();
-            if(NB_MASQUESATTENDUS != NB_MASQUESREELS){
-                // Message Box Alerte
-                QString msg = "<td> " + trUtf8("Les paramètres du module ne sont pas valides.")+" <br />"
-                        + trUtf8("Si ce module provient de la <b>Médiatheque</b>,") +" <br />"
-                        + trUtf8("merci de nous le signaler.") +" <br />"
-                        + trUtf8("Le programme va quitter l'exercice.") +" <br />"
-                        +" </td>" ;
-                _messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
-                _messageBox->show();
-                slotQuitterAccueil();
-            }
+        NB_MASQUESREELS = _listeMasquesParcours.count();
+        if(NB_MASQUESATTENDUS != NB_MASQUESREELS){
+            // Message Box Alerte
+            QString msg = "<td> " + trUtf8("Les paramètres du module ne sont pas valides.")+" <br />"
+                    + trUtf8("Si ce module provient de la <b>Médiatheque</b>,") +" <br />"
+                    + trUtf8("merci de nous le signaler.") +" <br />"
+                    + trUtf8("Le programme va quitter l'exercice.") +" <br />"
+                    +" </td>" ;
+            _messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
+            _messageBox->show();
+            slotQuitterAccueil();
+        }
     }
 }
 
@@ -167,19 +167,19 @@ void ExerciceParcours::slotCacheMasque()
         /* Enregistrement du temps passé pour chaque question */
         switch (getAbeNumQuestion()){
         case 1:
-            tempsQuestion1() = chronometre()->elapsed();
+            setTempsQuestion1(chronometre()->elapsed());
             break;
         case 2:
-            tempsQuestion2() = chronometre()->elapsed();
+            setTempsQuestion2(chronometre()->elapsed());
             break;
         case 3:
-            tempsQuestion3() = chronometre()->elapsed();
+            setTempsQuestion3(chronometre()->elapsed());
             break;
         case 4:
-            tempsQuestion4() = chronometre()->elapsed();
+            setTempsQuestion4(chronometre()->elapsed());
             break;
         case 5:
-            tempsQuestion5() = chronometre()->elapsed();
+            setTempsQuestion5(chronometre()->elapsed());
             break;
         default :
             if (debugAvailable()) qDebug("Case Default - Temps écoulé: %d ms", chronometre()->elapsed());
@@ -219,8 +219,8 @@ void ExerciceParcours::chargerPositionMasque(const int& numeroQuestion)
     qDebug() << "GROUP ap 1e begin :: " << parametres()->group();
     parametres()->beginGroup("parcours"+QString::number(numeroQuestion));
     qDebug() << "GROUP ap 2e begin :: " << parametres()->group();
-//    qDebug() << "TEST parametres";
-//    qDebug() << parametres()->childKeys();
+    //    qDebug() << "TEST parametres";
+    //    qDebug() << parametres()->childKeys();
 
     /* Recuperation des masques de départ et d'arrivée.. */
     int i = 0;
