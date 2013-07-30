@@ -828,6 +828,13 @@ void Editeur::setModeModificationAbe(const bool &yesNo)
     m_modeModificationAbe = yesNo;
 }
 
+/** Bouton création ABE
+    Probleme :
+    si je clique sur nouveau, je supprime le contenu du dossier temporaire (pour sauvegarde ultérieure et bug mix d'abe possible)
+    Il faut aussi supprimer le nom du module ouvert avant dan la barre des titres de la Mainwindows
+    Il faut également dire au logiciel = Attention l'Abe est vide (ce qui permettrait en sortant de l'éditeur après avoir cliqué sur nouveau de repasser par la box)
+
+*/
 void Editeur::on_btnCreationAbe_clicked()
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
@@ -864,13 +871,34 @@ void Editeur::on_btnCreationAbe_clicked()
     m_listeMasques.clear();
     ui->listWidgetImagesSelection->clear();
 
-    /* Et on change le titre de la fenetre */
+    /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
+    _abuleduFile->abeFileSetFilename("");
 
-
+    /* Et on lance un signal qui changera le titre de la mainwindows*/
+    emit editorNewAbe(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
     setModeModificationAbe(false);
-    /* Clic sur le bouton suivant */
+
+    /* Passer à la fenetre suivante */
 }
+
+/** Bouton modification courant ABE */
+void Editeur::on_btnModificationCourant_clicked()
+{
+    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+
+    setModeModificationAbe(true);
+    slotLoadUnit();
+}
+
+/** Bouton modification autre (ouverture box) */
+void Editeur::on_btnModificationAutre_clicked()
+{
+    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeOpen);
+    setModeModificationAbe(true);
+}
+
 
 //void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
 //{
@@ -993,21 +1021,6 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
         ajouterImage(fi.absoluteFilePath());
         m_lastOpenDir = fi.absolutePath();
     }
-}
-
-void Editeur::on_btnModificationCourant_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-    setModeModificationAbe(true);
-    slotLoadUnit();
-}
-
-void Editeur::on_btnModificationAutre_clicked()
-{
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-    emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeOpen);
-    setModeModificationAbe(true);
 }
 
 bool Editeur::preparerSauvegarde()
@@ -1279,6 +1292,10 @@ void Editeur::on_btnRetourAccueil_clicked()
     /* Remettre le titre par defaut du boutonModifier courant */
     ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
 
+    /* Remettre la page d'Accueil par defaut */
+    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
+
     /* Vider les listes */
+
     emit editorExited();
 }

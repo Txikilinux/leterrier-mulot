@@ -242,6 +242,7 @@ private:
     void mapSignalBtnParcours();
 
 signals:
+    void editorNewAbe(const int& newAbe);
     void editorExited();
     void editorTest();
     void editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave);
