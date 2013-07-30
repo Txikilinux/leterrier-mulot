@@ -79,6 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->editeur, SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorNewAbe(int)), SLOT(setTitle(int)), Qt::UniqueConnection);
+    /** @todo reconnecter les différents siganux petit à petit (après test de chaque fonctionnalité ) */
 //    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
 //    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
 //            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
@@ -393,6 +394,9 @@ void MainWindow::setTitle(int authStatus)
     if(!m_abuleduFile->abeFileGetFileName().fileName().isEmpty())
     {
         title.append(" -- "+m_abuleduFile->abeFileGetFileName().fileName());
+    }
+    else { /* On affiche que l'user n'a pas de module */
+        title.append(" -- " + trUtf8("Pas de module chargé"));
     }
     if(authStatus == 1)
     {
