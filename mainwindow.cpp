@@ -335,18 +335,21 @@ void MainWindow::on_action_Double_Clic_triggered()
 
 void MainWindow::on_actionEditeur_triggered()
 {
+    /* Petite protection, si l'editeur est la fenetre en cours, on zappe */
+    if(ui->editeur->isVisible())
+        return;
+
     if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
+        if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
-        qDebug() << "Affichage editeur";
         /* Si le titre de l'abe n'est pas vide, on active le bouton de modification du module courant */
         if(!m_abuleduFile->abeFileGetTitle().isEmpty()){
-//            ui->editeur->ui->btnModificationCourant->setEnabled(true);
             ui->editeur->btnModificationCourant()->setEnabled(true);
             ui->editeur->btnModificationCourant()->setText(ui->editeur->btnModificationCourant()->text().remove("en cours") + "\"" + m_abuleduFile->abeFileGetTitle()+"\"");
         }
     }
-    else /* On affiche un petit message... */
+    else /* On affiche un petit message */
     {
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
