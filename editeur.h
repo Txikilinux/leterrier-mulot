@@ -59,12 +59,11 @@ class Editeur : public QWidget
 
     /* Enum pour les pages afin de ne pas se tromper de numero dans le code  */
     enum Pages {
-        PageAccueil   = 0,
-        PageChoixMode = 1,
-        PageGestionImages = 2,
-        PageParametres = 3,
-        PageFin = 4
-//        PageVisio = 5
+        PageAccueil         = 0x0,
+        PageGestionImages   = 0x1,
+        PageParametres      = 0x2,
+        PageFin             = 0x3,
+        PageVisio           = 0x5
     };
 
 public:
@@ -160,6 +159,8 @@ private slots:
 
     void on_btnRetourAccueil_clicked();
 
+    void on_btnSuivantPageGestionImages_clicked();
+
 private:
     Ui::Editeur *ui;
     bool m_localDebug;
@@ -199,6 +200,12 @@ private:
     EditeurParcoursWidget           *m_editeurParcoursWidget;
 
     QSharedPointer<AbulEduFileV1> _abuleduFile;
+
+    QString _messageAidePageAccueil;
+    QString _messageAidePageGestionImages;
+    QString _messageAidePageParametres;
+    QString _messageAidePageFin;
+    QString _messageAidePageVisio;
 
     /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
     QWidget* m_parent;
@@ -241,6 +248,7 @@ private:
       */
     void mapSignalBtnParcours();
 
+    void initMessagesAide();
 signals:
     /** Sert à réinitialiser le titre dans la barre de la Mainwindow si jamais on créé un nouveau module, en ayant déjà un d'ouvert (et son nom dans la barre des titres) */
     void editorNewAbe(const int& newAbe);

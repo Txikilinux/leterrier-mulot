@@ -24,7 +24,6 @@
 #include "editeur.h"
 /**
   * @todo :
-  * - le raccourci "Control-E" appellé plein de fois change le titre de module en cours en ajoutant le titre à chaque fois...
   */
 
 
@@ -45,6 +44,9 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
+
+    //! @todo ne pas pousser si modif abuleduFile non acceptée
+//        ui->abuleduMediathequeGet->abeHideCloseBouton(true);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this,
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
@@ -83,11 +85,15 @@ Editeur::Editeur(QWidget *parent) :
     /* Mappage des signaux des 5 boutons de parcours */
     mapSignalBtnParcours();
 
-    // Gestion Navigation et Affichage des différents boutons contextualisé
+    /* Gestion Navigation et Affichage des différents boutons contextualisé */
     connect(ui->stackedWidgetEditeur, SIGNAL(currentChanged(int)), this, SLOT(slotGestionPage(int)));
 
-    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
+    /* Gestion des messages d'aide [à effectuer avant le setCurrentIndex(...)] */
+    initMessagesAide();
+
+    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
     ui->btnModificationCourant->setEnabled(false);
+
 }
 
 Editeur::~Editeur()
@@ -96,6 +102,26 @@ Editeur::~Editeur()
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << _abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     emit editorExited();
+}
+
+void Editeur::initMessagesAide()
+{
+    _messageAidePageAccueil = trUtf8("Je suis votre guide, je vous donnerai les consignes à chaque écran rencontré.\n")
+            + trUtf8("Choississez ci-dessous un mode d'édition.\n")
+            + trUtf8("Le bouton Revenir à l'accueil permet de retourner sur l'écran principal du logiciel.");
+
+    _messageAidePageGestionImages = trUtf8("Veuillez selectionner 5 images. Il est possible de selectionner ces images sur votre ordinateur (onglet \"Disque Local\")\n")
+            + trUtf8("ou sur la médiathèque d'AbulEdu (onglet \"AbulEdu Data\").\n")
+            + trUtf8("Pour passer à l'ecran suivant, la liste \"Images sélectionnées\" doit comporter 5 images.");
+
+
+    /*
+    QStaticText _messageAidePageGestionImages;
+    QStaticText _messageAidePageParametres;
+    QStaticText _messageAidePageFin;
+    QStaticText _messageAidePageVisio;*/
+
+
 }
 
 //void Editeur::abeEditeurSetMainWindow(QWidget *mw)
@@ -839,8 +865,6 @@ void Editeur::on_btnCreationAbe_clicked()
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
-    qDebug() << "Mon fichier abe : " << _abuleduFile;
-
     /* Etape 1 : Le dossier temporaire doit être vide sinon problème d'enregistrement */
     if(!_abuleduFile->abeFileGetFileList().isEmpty()){
         if(m_localDebug) qDebug() << "Dossier Temporaire vide... [KO]";
@@ -862,7 +886,7 @@ void Editeur::on_btnCreationAbe_clicked()
         }
     }
 
-    if(m_localDebug) qDebug() << "Dossier temporaire : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    if(m_localDebug) qDebug() << "Dossier temp abuleduFile : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
 
     /* On vide les différentes listes */
     m_listeDossiers.clear();
@@ -880,6 +904,7 @@ void Editeur::on_btnCreationAbe_clicked()
     setModeModificationAbe(false);
 
     /* Passer à la fenetre suivante */
+    ui->stackedWidgetEditeur->setCurrentIndex(PageGestionImages);
 }
 
 /** Bouton modification courant ABE */
@@ -1235,15 +1260,6 @@ void Editeur::on_btnPublier_clicked()
     releaseAbe();
 }
 
-//void Editeur::on_stackedWidgetEditeur_currentChanged(int arg1)
-//{
-//    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: Affichage du widget "<<arg1<<" ("<<ui->stackedWidgetEditeur->currentWidget()->objectName()<<")";
-//    ui->btnQuitter->setHidden(ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
-//    ui->btnPrecedent->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
-//    ui->btnSuivant->setHidden(arg1 == 0 || ui->stackedWidgetEditeur->currentWidget() == ui->pageVisio);
-//    ui->btnSuivant->setDisabled((ui->stackedWidgetEditeur->currentWidget() == ui->pageFin));
-//}
-
 void Editeur::slotSortieVisionneuse()
 {
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
@@ -1268,21 +1284,33 @@ void Editeur::slotGestionPage(int a)
 {
     qDebug() << __PRETTY_FUNCTION__ << " " + QString::number(a);
 
+    /** @todo Messages d'aide différent selon la page
+      */
+
     switch(a){
     case PageAccueil:
         qDebug() << "c'est la page accueil";
-
-        break;
-    case PageChoixMode:
-        qDebug() << "c'est la page choixMode";
-        /* Ici je desactive les boutons de navigation pour forcer l'user à choisir une option */
+        ui->lbAide->setText(_messageAidePageAccueil);
         break;
     case PageGestionImages:
         qDebug() << "c'est la page Gestion Images";
+        ui->lbAide->setText(_messageAidePageGestionImages);
+        break;
     case PageParametres:
         qDebug() << "C'est la page des parametres";
+        ui->lbAide->setText(_messageAidePageParametres);
+        break;
     case PageFin:
         qDebug() << "C'est la page fin";
+        ui->lbAide->setText(_messageAidePageFin);
+        break;
+    case PageVisio:
+        qDebug() << "C'est la page fin";
+        ui->lbAide->setText(_messageAidePageVisio);
+        break;
+    default:
+        if(m_localDebug) qDebug() << "Probleme Switch : " <<  __PRETTY_FUNCTION__;
+        break;
     }
 }
 
@@ -1298,4 +1326,9 @@ void Editeur::on_btnRetourAccueil_clicked()
     /* Vider les listes */
 
     emit editorExited();
+}
+
+void Editeur::on_btnSuivantPageGestionImages_clicked()
+{
+    ui->stackedWidgetEditeur->setCurrentIndex(PageParametres);
 }

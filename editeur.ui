@@ -36,14 +36,85 @@
                                        stop: 0 #FFOECE, stop: 1 #FFFFFF);
  }</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_6">
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="hlAide">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <item>
+      <widget class="QLabel" name="lbTetedeLapin">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>75</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px black solid;
+padding: 0 0 0 0px;
+border-radius: 10 0 0 10px;
+background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="ressources.qrc">:/icone/lapin</pixmap>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbAide">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px black solid;
+padding: 4 4 4 30px;
+border-radius: 0 10 10 0px;
+background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::AutoText</enum>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="1" column="0">
     <widget class="QStackedWidget" name="stackedWidgetEditeur">
      <property name="styleSheet">
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="pageAccueil">
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -165,49 +236,8 @@ p, li { white-space: pre-wrap; }
          <property name="title">
           <string>Gestion des Images</string>
          </property>
-         <layout class="QGridLayout" name="gridLayout_7">
-          <item row="0" column="1">
-           <widget class="QLabel" name="labelImagesSelectionnees">
-            <property name="text">
-             <string>Liste des images sélectionnées</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QListWidget" name="listWidgetImagesSelection">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>200</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="contextMenuPolicy">
-             <enum>Qt::CustomContextMenu</enum>
-            </property>
-            <property name="accessibleDescription">
-             <string/>
-            </property>
-            <property name="selectionMode">
-             <enum>QAbstractItemView::ExtendedSelection</enum>
-            </property>
-            <property name="viewMode">
-             <enum>QListView::ListMode</enum>
-            </property>
-            <property name="uniformItemSizes">
-             <bool>true</bool>
-            </property>
-            <property name="selectionRectVisible">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
+         <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="0" rowspan="3">
            <widget class="QTabWidget" name="tabWidgetImages">
             <property name="currentIndex">
              <number>1</number>
@@ -351,6 +381,54 @@ font : bold;
               </item>
              </layout>
             </widget>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="labelImagesSelectionnees">
+            <property name="text">
+             <string>Liste des images sélectionnées</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QListWidget" name="listWidgetImagesSelection">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="contextMenuPolicy">
+             <enum>Qt::CustomContextMenu</enum>
+            </property>
+            <property name="accessibleDescription">
+             <string/>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="viewMode">
+             <enum>QListView::ListMode</enum>
+            </property>
+            <property name="uniformItemSizes">
+             <bool>true</bool>
+            </property>
+            <property name="selectionRectVisible">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="btnSuivantPageGestionImages">
+            <property name="text">
+             <string>Suivant</string>
+            </property>
            </widget>
           </item>
          </layout>
@@ -1017,59 +1095,7 @@ font : bold;
      </widget>
      <widget class="QWidget" name="pageFin">
       <layout class="QGridLayout" name="gridLayout_14">
-       <item row="0" column="0">
-        <widget class="QLabel" name="lblEtVoilaCTermine">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>50</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>100</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border: 1px black solid;
-padding: 0 0 0 0px;
-border-radius: 10 0 0 10px;
-background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="pixmap">
-          <pixmap resource="ressources.qrc">:/icone/lapin</pixmap>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1" colspan="5">
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">border: 1px black solid;
-padding: 4 4 4 30px;
-border-radius: 0 10 10 0px;
-background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
-         </property>
-         <property name="text">
-          <string>Et voilà, c'est terminé !</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
+       <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="lblTitreModule">
          <property name="text">
           <string>Titre de votre module :  </string>
@@ -1079,24 +1105,24 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="2" colspan="2">
+       <item row="0" column="2" colspan="2">
         <widget class="QLineEdit" name="leTitre">
          <property name="flagModification" stdset="0">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="1" column="4">
+       <item row="0" column="4">
         <widget class="QLabel" name="lblLangueRessource">
          <property name="text">
           <string>  Langue de la ressource : </string>
          </property>
         </widget>
        </item>
-       <item row="1" column="5">
+       <item row="0" column="5">
         <widget class="QComboBox" name="cbLangueRessource"/>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="1" column="0" colspan="2">
         <widget class="QLabel" name="lblNom">
          <property name="text">
           <string>Votre nom :</string>
@@ -1106,7 +1132,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="2" colspan="2">
+       <item row="1" column="2" colspan="2">
         <widget class="QLineEdit" name="leAuteur">
          <property name="text">
           <string/>
@@ -1116,7 +1142,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="4">
+       <item row="1" column="4">
         <widget class="QLabel" name="lblLicence">
          <property name="text">
           <string>Licence :</string>
@@ -1129,7 +1155,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="5">
+       <item row="1" column="5">
         <widget class="QComboBox" name="cbLicence">
          <property name="flagModification" stdset="0">
           <bool>true</bool>
@@ -1166,7 +1192,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </item>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="2" column="0" colspan="2">
         <widget class="QLabel" name="label_3">
          <property name="text">
           <string>Description :</string>
@@ -1179,14 +1205,14 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="2" colspan="4">
+       <item row="2" column="2" colspan="4">
         <widget class="QPlainTextEdit" name="teDescription">
          <property name="flagModification" stdset="0">
           <bool>true</bool>
          </property>
         </widget>
        </item>
-       <item row="4" column="2">
+       <item row="3" column="2">
         <spacer name="horizontalSpacer_11">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -1199,7 +1225,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
          </property>
         </spacer>
        </item>
-       <item row="4" column="3" colspan="3">
+       <item row="3" column="3" colspan="3">
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <widget class="QPushButton" name="btnEssayer">
@@ -1261,16 +1287,6 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
       <layout class="QGridLayout" name="gridLayout_15">
        <item row="0" column="0">
         <widget class="QGraphicsView" name="gvPageVisio"/>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Cliquez n'importe où dans la zone de l'image pour revenir en arrière</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
        </item>
       </layout>
      </widget>
