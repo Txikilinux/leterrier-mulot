@@ -46,6 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
     creeMenuLangue();
+
+    /* Centrage de la fenetre sur le bureau de l'utilisateur */
     move(QApplication::desktop()->screen()->rect().center()-this->rect().center());
 
     setAttribute(Qt::WA_DeleteOnClose);
@@ -63,12 +65,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_abuleduaccueil = new AbulEduPageAccueilV1(&m_texteBulles, ui->fr_principale);
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
-
-    /* Centrage de la fenetre sur le bureau de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    this->move((desktop_width-this->width())/2, (desktop_height-this->height())/2);
 
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()), Qt::UniqueConnection);
