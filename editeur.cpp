@@ -114,6 +114,9 @@ void Editeur::initMessagesAide()
             + trUtf8("ou sur la médiathèque d'AbulEdu (onglet \"AbulEdu Data\").\n")
             + trUtf8("Pour passer à l'ecran suivant, la liste \"Images sélectionnées\" doit comporter 5 images.");
 
+    _messageAidePageParametres = trUtf8("Cochez les exercices désirés et réglez les différentes valeurs.\n")
+            + trUtf8("Pour passer à l'ecran suivant, au moins un exercice doit être activé.\n")
+            + trUtf8("Si l'exercice parcours est activé tous les boutons \"Parcours\" doivent être vert.");
 
     /*
     QStaticText _messageAidePageGestionImages;
