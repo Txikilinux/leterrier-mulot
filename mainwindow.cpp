@@ -45,6 +45,9 @@ MainWindow::MainWindow(QWidget *parent) :
 //    abeApp->installTranslator(&myappTranslator);
 
     ui->setupUi(this);
+    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    setMinimumSize(1024, 600);
+
     creeMenuLangue();
 
     /* Centrage de la fenetre sur le bureau de l'utilisateur */
@@ -211,7 +214,7 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
 
-    switch (m_numberExoCalled) {
+    switch(m_numberExoCalled) {
     case 0:
     {
         if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
@@ -275,8 +278,6 @@ void MainWindow::exerciceExited()
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     m_exerciceEnCours = false;
     m_numberExoCalled = -1;
-    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    setMinimumSize(1024, 600);
     m_isDemoAvailable = ui->actionMode_D_mo->isChecked();
     m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(true);
 
