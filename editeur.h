@@ -242,6 +242,7 @@ private:
     void mapSignalBtnParcours();
 
 signals:
+    /** Sert à réinitialiser le titre dans la barre de la Mainwindow si jamais on créé un nouveau module, en ayant déjà un d'ouvert (et son nom dans la barre des titres) */
     void editorNewAbe(const int& newAbe);
     void editorExited();
     void editorTest();
