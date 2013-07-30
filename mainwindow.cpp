@@ -30,20 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_localDebug = true;
     m_isDemoAvailable = true;
 
-//    /// Langue et Translator
-//    QString locale = QLocale::system().name().section('_', 0, 0);
-
-//    //Un 1er qtranslator pour prendre les traductions QT Systeme
-//    //c'est d'ailleur grace a ca qu'on est en RTL
-//    qtTranslator.load("qt_" + locale,
-//                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//    abeApp->installTranslator(&qtTranslator);
-
-//    //Et un second qtranslator pour les traductions specifiques du
-//    //logiciel
-//    myappTranslator.load("mulot_" + locale, "lang");
-//    abeApp->installTranslator(&myappTranslator);
-
     ui->setupUi(this);
     setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     setMinimumSize(1024, 600);
@@ -84,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
 
-
     m_numberExoCalled = -1;
 
     /* Utilisation de la boite aPropos */
@@ -93,6 +78,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
 
     connect(ui->editeur, SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
+    connect(ui->editeur, SIGNAL(editorNewAbe(int)), SLOT(setTitle(int)), Qt::UniqueConnection);
 //    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
 //    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
 //            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
@@ -196,10 +182,12 @@ void MainWindow::abeLanceExo(int numero)
     if(m_exerciceEnCours){return;}
 
     m_numberExoCalled = numero;
+
+    qDebug() << "Nom du fichier abe en cours : " << m_abuleduFile->abeFileGetFileName().fileName();
+
     if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty() && m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->isHidden())
     {
         on_actionOuvrir_un_exercice_triggered();
-        return;
     }
     else
         abeAiguillage();
@@ -217,7 +205,7 @@ void MainWindow::abeAiguillage()
     switch(m_numberExoCalled) {
     case 0:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
+        if (m_localDebug) qDebug() << "Exercice No : " << m_numberExoCalled << " Exercice Survol";
         ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -229,7 +217,7 @@ void MainWindow::abeAiguillage()
     }
     case 1:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Clic";
+        if (m_localDebug) qDebug() << "Exercice No : " << m_numberExoCalled << " Exercice Clic";
         ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -241,7 +229,7 @@ void MainWindow::abeAiguillage()
     }
     case 3:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Parcours";
+        if (m_localDebug) qDebug() << "Exercice No : "<< m_numberExoCalled << " Exercice Parcours";
         ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -253,7 +241,7 @@ void MainWindow::abeAiguillage()
     }
     case 4:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
+        if (m_localDebug) qDebug() << "Exercice No : " << m_numberExoCalled << " Exercice Double-Clic";
         ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -291,11 +279,6 @@ void MainWindow::on_actionOuvrir_un_exercice_triggered()
     btnBoxClicked();
 }
 
-void MainWindow::on_action_Survol_triggered()
-{
-    abeLanceExo(0);
-}
-
 void MainWindow::slotChangeLangue()
 {
     QString lang = sender()->objectName();
@@ -313,6 +296,11 @@ void MainWindow::slotChangeLangue()
     myappTranslator.load("mulot_" + lang, "lang");
     abeApp->installTranslator(&myappTranslator);
     ui->retranslateUi(this);
+}
+
+void MainWindow::on_action_Survol_triggered()
+{
+    abeLanceExo(0);
 }
 
 void MainWindow::on_actionClic_triggered()
@@ -394,9 +382,11 @@ void MainWindow::slotSessionAuthenticated(bool enable)
 
 void MainWindow::setTitle(int authStatus)
 {
-    if (m_localDebug) qDebug()<<  __PRETTY_FUNCTION__ << " " << authStatus;
+    if(m_localDebug) qDebug()<<  __PRETTY_FUNCTION__ << " " << authStatus;
+
     QString title = abeApp->getAbeApplicationLongName();
-    if (m_numberExoCalled >=0)
+
+    if(m_numberExoCalled >=0)
     {
         title.append(" -- "+m_texteBulles[m_numberExoCalled]);
     }
@@ -404,7 +394,7 @@ void MainWindow::setTitle(int authStatus)
     {
         title.append(" -- "+m_abuleduFile->abeFileGetFileName().fileName());
     }
-    if (authStatus == 1)
+    if(authStatus == 1)
     {
         title.append(" -- "+abeApp->getAbeNetworkAccessManager()->abeGetSSOLogin());
     }
