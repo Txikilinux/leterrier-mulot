@@ -157,6 +157,9 @@ void Editeur::slotEditorChangePageRequested(int page)
         if(m_localDebug) qDebug() << "PAGE Visio";
         ui->stackedWidgetEditeur->setCurrentIndex(PageVisio);
         ui->lbAide->setText(_messageAidePageVisio);
+        _assistantEtapes->abeWidgetAssistantEnablePrecedent(false);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        _assistantEtapes->abeWidgetAssistantEnableClick(false);
         break;
     default:
         break;
@@ -1355,6 +1358,8 @@ void Editeur::on_btnPublier_clicked()
 void Editeur::slotSortieVisionneuse()
 {
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
+    /* Activation de la naviguation en fonction */
+    controlNumberOfImages();
 }
 
 void Editeur::slotAfficheEtatPublication(const int &code)
