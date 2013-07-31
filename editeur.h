@@ -163,12 +163,12 @@ private slots:
 
 private:
     Ui::Editeur *ui;
+    QMenu *m_menuListWidget;
+
     bool m_localDebug;
     bool m_modeModificationAbe;
 
     QString m_lastOpenDir;
-
-    QStringList m_listeDossiers;
 
     int m_opt_nbMasquesChoisisParcours;
     int m_opt_nbMasquesLargeur;
@@ -191,8 +191,7 @@ private:
     QDir *m_dir;
     QDir *m_dirAbe;
 
-    QList<QString> m_listeFichiersImages;
-    QMenu *m_menuListWidget;
+    QList<QString> _listeFichiersImages;
 
     MasqueDeplaceSouris             *m_masque;
     QList<MasqueDeplaceSouris *>    m_listeMasques;

@@ -63,7 +63,7 @@ Editeur::Editeur(QWidget *parent) :
     /* Vidange des différentes listes */
     m_listeMasques.clear();
     m_listeMasquesParcours.clear();
-    m_listeFichiersImages.clear();
+    _listeFichiersImages.clear();
 
     m_parametresParcours1.clear();
     m_parametresParcours2.clear();
@@ -127,7 +127,9 @@ void Editeur::slotEditorChangePageRequested(int page)
         if(m_localDebug) qDebug() << "PAGE Accueil";
         ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
         _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
-        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+        _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->setEnabled(false);
+        _assistantEtapes->abeWidgetAssistantGetButton(PageParametres)->setEnabled(false);
+        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(false);
         ui->lbAide->setText(_messageAidePageAccueil);
         break;
     case PageGestionImages:
@@ -135,6 +137,8 @@ void Editeur::slotEditorChangePageRequested(int page)
         ui->stackedWidgetEditeur->setCurrentIndex(PageGestionImages);
         _assistantEtapes->abeWidgetAssistantEnablePrecedent(false);
         _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->setEnabled(true);
+        _assistantEtapes->abeWidgetAssistantGetButton(PageAccueil)->setEnabled(false);
         ui->lbAide->setText(_messageAidePageGestionImages);
         /* Contrôle 5 images = bouton suivant ok */
         controlNumberOfImages();
@@ -143,8 +147,12 @@ void Editeur::slotEditorChangePageRequested(int page)
         if(m_localDebug) qDebug() << "PAGE Parametres";
         ui->stackedWidgetEditeur->setCurrentIndex(PageParametres);
         _assistantEtapes->abeWidgetAssistantEnablePrecedent(true);
-        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->setEnabled(true);
+//        _assistantEtapes->abeWidgetAssistantEnableClick(false);
         ui->lbAide->setText(_messageAidePageParametres);
+
+        qDebug() << "Le bouton prècédent est : " << _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages);
         break;
     case PageFin:
         if(m_localDebug) qDebug() << "PAGE Fin";
@@ -204,14 +212,20 @@ void Editeur::initMessagesAide()
 
 void Editeur::controlNumberOfImages()
 {
-    if(m_listeFichiersImages.count() >= 5)
+    if(_listeFichiersImages.count() >= 5)
     {
-        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        /* Il faut activer seulement le bouton suivant */
+        qDebug() << "Bouton Page Parametres actif" ;
+        _assistantEtapes->abeWidgetAssistantGetButton(PageParametres)->setEnabled(true);
+        qDebug() << "Bouton Suivant activé" ;
         _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+        _assistantEtapes->abeWidgetAssistantEnableClick(true);
     }
     else
     {
-        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+        qDebug() << "Bouton Page Parametres desactif" ;
+        _assistantEtapes->abeWidgetAssistantGetButton(PageParametres)->setEnabled(false);
+        qDebug() << "Bouton Page Parametres desactif" ;
         _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
     }
 }
@@ -277,22 +291,22 @@ void Editeur::slotSupprimerImage()
 {
     if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
     /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
-    if (m_listeFichiersImages.isEmpty()){return;}
+    if (_listeFichiersImages.isEmpty()){return;}
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
 
     /* Debug avant suppression*/
     if (m_localDebug){
         qDebug() << "Suppression ItemImage -> liste images avant : ";
-        for (int i = 0; i < m_listeFichiersImages.count(); i++)
+        for (int i = 0; i < _listeFichiersImages.count(); i++)
         {
-            qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+            qDebug() << i <<" "<<_listeFichiersImages.at(i);
         }
     }
 
     /* Suppression des items selectionnés */
     foreach(QListWidgetItem *i, ui->listWidgetImagesSelection->selectedItems())
     {
-        m_listeFichiersImages.removeOne(i->data(4).toString());
+        _listeFichiersImages.removeOne(i->data(4).toString());
         QFileInfo fi(i->data(4).toString());
         if(QFile::remove(fi.absoluteFilePath().replace(fi.suffix(), "xml").remove("/images"))){
             if(m_localDebug) qDebug() << "Suppression du fichier XML accompagnant la ressource... [OK]";
@@ -307,9 +321,9 @@ void Editeur::slotSupprimerImage()
     /* Debug apres suppression*/
     if (m_localDebug){
         qDebug() << "Suppression ItemImage -> liste images apres : ";
-        for (int i = 0; i < m_listeFichiersImages.count(); i++)
+        for (int i = 0; i < _listeFichiersImages.count(); i++)
         {
-            if (m_localDebug) qDebug() << i <<" "<<m_listeFichiersImages.at(i);
+            if (m_localDebug) qDebug() << i <<" "<<_listeFichiersImages.at(i);
         }
     }
 
@@ -322,7 +336,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
     if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " Chemin : " << monFichier.absoluteFilePath() << "Nom : " << monFichier.fileName();
 
     /* Controle des insertions (éviter les doublons) */
-    if (m_listeFichiersImages.contains(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"))
+    if (_listeFichiersImages.contains(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"))
     {
         if(m_localDebug) qDebug() << "Fichier deja présent";
         return;
@@ -332,7 +346,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
     if(_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
     {
         /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
-        m_listeFichiersImages << _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
+        _listeFichiersImages << _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
         /* Insertion dans mon listWidget */
         QListWidgetItem *item = new QListWidgetItem(QIcon(monFichier.absoluteFilePath()), monFichier.baseName());
         item->setData(4, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
@@ -983,8 +997,7 @@ void Editeur::on_btnCreationAbe_clicked()
     if(m_localDebug) qDebug() << "Dossier temp abuleduFile : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
 
     /* On vide les différentes listes */
-    m_listeDossiers.clear();
-    m_listeFichiersImages.clear();
+    _listeFichiersImages.clear();
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
     ui->listWidgetImagesSelection->clear();
@@ -1030,7 +1043,7 @@ void Editeur::on_btnModificationAutre_clicked()
 void Editeur::slotLoadUnit()
 {
     if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<_abuleduFile->abeFileGetFileName().fileName();
-    m_listeFichiersImages.clear();
+    _listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
     QDir folder(QString(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
     folder.setFilter(QDir::NoDotAndDotDot | QDir::Files);
