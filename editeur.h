@@ -47,6 +47,8 @@
 #include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
 #include "abuledutools.h"
+#include "abuleduwidgetassistantetapesv1.h"
+
 //#include "mainwindow.h"
 
 namespace Ui {
@@ -87,6 +89,7 @@ private slots:
 
     /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
     void ajouterImage(QFileInfo monFichier);
+
 
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
@@ -157,7 +160,9 @@ private slots:
     //! MODIF ICHAM 29.07.13
     void slotGestionPage(int);
 
-    void on_btnRetourAccueil_clicked();
+    void slotCloseEditeur();
+
+//    void on_btnRetourAccueil_clicked();
 
     void on_btnSuivantPageGestionImages_clicked();
 
@@ -209,6 +214,8 @@ private:
 
     /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
     QWidget* m_parent;
+
+    AbulEduWidgetAssistantEtapesV1 *_assistantEtapes;
 
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();

@@ -46,7 +46,7 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
     //! @todo ne pas pousser si modif abuleduFile non acceptée
-//        ui->abuleduMediathequeGet->abeHideCloseBouton(true);
+    ui->abuleduMediathequeGet->abeHideCloseBouton(true);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this,
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
@@ -71,7 +71,6 @@ Editeur::Editeur(QWidget *parent) :
     m_parametresParcours4.clear();
     m_parametresParcours5.clear();
 
-
     setAcceptDrops(true);
 
     creationMenu();
@@ -91,9 +90,41 @@ Editeur::Editeur(QWidget *parent) :
     /* Gestion des messages d'aide [à effectuer avant le setCurrentIndex(...)] */
     initMessagesAide();
 
-    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
     ui->btnModificationCourant->setEnabled(false);
 
+    /* Gestion Assistant Etape */
+    QList<QPair<QString, QString> > listeEtapes;
+   listeEtapes.append(qMakePair(trUtf8("Accueil"), trUtf8("Accueil","For short")));
+   listeEtapes.append(qMakePair(trUtf8("Gérer les images"), trUtf8("Images","For short")));
+   listeEtapes.append(qMakePair(trUtf8("Régler les paramètres"), trUtf8("Paramètres","For short")));
+   listeEtapes.append(qMakePair(trUtf8("Sauvegarder"), trUtf8("Sauvegarder","For short")));
+
+   _assistantEtapes = new AbulEduWidgetAssistantEtapesV1(listeEtapes);
+   _assistantEtapes->abeWidgetAssistantSetFontSize(12, 16, 20);
+   _assistantEtapes->abeWidgetAssistantEnableClick(false);
+   ui->hlFilAriane->addWidget(_assistantEtapes);
+
+   _assistantEtapes->abeWidgetAssistantEnableClick(false);
+//   _assistantEtapes->setStyleSheet(QString("background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #69cc5e, stop:1 #72a2e6)")); // Ne marche pas
+//   connect(_assistantEtapes, SIGNAL(signalEtapeHasChanged(int)), this, SLOT(slotChangementPageRequested(int)));
+   connect(_assistantEtapes, SIGNAL(signalQuitterRequested()), this, SLOT(slotCloseEditeur()));
+
+
+    slotGestionPage(PageAccueil);
+}
+
+void Editeur::slotCloseEditeur()
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    /* Remettre le titre par defaut du boutonModifier courant */
+    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
+
+    /* Remettre la page d'Accueil par defaut */
+    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
+
+    /* Vider les listes */
+
+    emit editorExited();
 }
 
 Editeur::~Editeur()
@@ -1317,19 +1348,19 @@ void Editeur::slotGestionPage(int a)
     }
 }
 
-void Editeur::on_btnRetourAccueil_clicked()
-{
-    qDebug() << __PRETTY_FUNCTION__;
-    /* Remettre le titre par defaut du boutonModifier courant */
-    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
+//void Editeur::on_btnRetourAccueil_clicked()
+//{
+//    qDebug() << __PRETTY_FUNCTION__;
+//    /* Remettre le titre par defaut du boutonModifier courant */
+//    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
 
-    /* Remettre la page d'Accueil par defaut */
-    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
+//    /* Remettre la page d'Accueil par defaut */
+//    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
 
-    /* Vider les listes */
+//    /* Vider les listes */
 
-    emit editorExited();
-}
+//    emit editorExited();
+//}
 
 void Editeur::on_btnSuivantPageGestionImages_clicked()
 {
