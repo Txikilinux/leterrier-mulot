@@ -155,6 +155,7 @@ void Editeur::slotEditorChangePageRequested(int page)
         break;
     case PageVisio:
         if(m_localDebug) qDebug() << "PAGE Visio";
+        ui->stackedWidgetEditeur->setCurrentIndex(PageVisio);
         ui->lbAide->setText(_messageAidePageVisio);
         break;
     default:
@@ -370,7 +371,6 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    item = ui->listWidgetImagesSelection->currentItem();
     AbulEduVisionneuseImageV1 *visio = new AbulEduVisionneuseImageV1(ui->tabWidgetImages);
     connect(visio, SIGNAL(destroyed()),this,SLOT(slotSortieVisionneuse()), Qt::UniqueConnection);
     visio->setAttribute(Qt::WA_DeleteOnClose);
@@ -379,7 +379,9 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     prox->grabMouse();
     visio->ouvrirFicher(item->data(4).toString());
     visio->ajusterFenetreAuMieux();
-    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageVisio);
+
+    slotEditorChangePageRequested(PageVisio);
+
 }
 
 void Editeur::createAbe()
