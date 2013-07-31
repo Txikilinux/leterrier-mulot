@@ -158,13 +158,8 @@ private slots:
     void slotAfficheEtatPublication(const int& code);
 
     //! MODIF ICHAM 29.07.13
-    void slotGestionPage(int);
-
-    void slotCloseEditeur();
-
-//    void on_btnRetourAccueil_clicked();
-
-    void on_btnSuivantPageGestionImages_clicked();
+    void slotEditorChangePageRequested(int);
+    void slotCloseEditor();
 
 private:
     Ui::Editeur *ui;

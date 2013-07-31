@@ -84,47 +84,27 @@ Editeur::Editeur(QWidget *parent) :
     /* Mappage des signaux des 5 boutons de parcours */
     mapSignalBtnParcours();
 
-    /* Gestion Navigation et Affichage des différents boutons contextualisé */
-    connect(ui->stackedWidgetEditeur, SIGNAL(currentChanged(int)), this, SLOT(slotGestionPage(int)));
 
     /* Gestion des messages d'aide [à effectuer avant le setCurrentIndex(...)] */
     initMessagesAide();
-
     ui->btnModificationCourant->setEnabled(false);
 
     /* Gestion Assistant Etape */
     QList<QPair<QString, QString> > listeEtapes;
-   listeEtapes.append(qMakePair(trUtf8("Accueil"), trUtf8("Accueil","For short")));
-   listeEtapes.append(qMakePair(trUtf8("Gérer les images"), trUtf8("Images","For short")));
-   listeEtapes.append(qMakePair(trUtf8("Régler les paramètres"), trUtf8("Paramètres","For short")));
-   listeEtapes.append(qMakePair(trUtf8("Sauvegarder"), trUtf8("Sauvegarder","For short")));
+    listeEtapes.append(qMakePair(trUtf8("Accueil"),                 trUtf8("Accueil","For short")));
+    listeEtapes.append(qMakePair(trUtf8("Gérer les images"),        trUtf8("Images","For short")));
+    listeEtapes.append(qMakePair(trUtf8("Régler les paramètres"),   trUtf8("Paramètres","For short")));
+    listeEtapes.append(qMakePair(trUtf8("Sauvegarder"),             trUtf8("Sauvegarder","For short")));
 
-   _assistantEtapes = new AbulEduWidgetAssistantEtapesV1(listeEtapes);
-   _assistantEtapes->abeWidgetAssistantSetFontSize(12, 16, 20);
-   _assistantEtapes->abeWidgetAssistantEnableClick(false);
-   ui->hlFilAriane->addWidget(_assistantEtapes);
+    _assistantEtapes = new AbulEduWidgetAssistantEtapesV1(listeEtapes);
+    _assistantEtapes->abeWidgetAssistantSetFontSize(12, 16, 20);
+    _assistantEtapes->abeWidgetAssistantEnableClick(false);
+    ui->hlFilAriane->addWidget(_assistantEtapes);
 
-   _assistantEtapes->abeWidgetAssistantEnableClick(false);
-//   _assistantEtapes->setStyleSheet(QString("background-color: qlineargradient( x1:0 y1:0, x2:1 y2:0, stop:0 #69cc5e, stop:1 #72a2e6)")); // Ne marche pas
-//   connect(_assistantEtapes, SIGNAL(signalEtapeHasChanged(int)), this, SLOT(slotChangementPageRequested(int)));
-   connect(_assistantEtapes, SIGNAL(signalQuitterRequested()), this, SLOT(slotCloseEditeur()));
+    connect(_assistantEtapes, SIGNAL(signalEtapeHasChanged(int)), this, SLOT(slotEditorChangePageRequested(int)), Qt::UniqueConnection);
+    connect(_assistantEtapes, SIGNAL(signalQuitterRequested()), this, SLOT(slotCloseEditor()), Qt::UniqueConnection);
 
-
-    slotGestionPage(PageAccueil);
-}
-
-void Editeur::slotCloseEditeur()
-{
-    qDebug() << __PRETTY_FUNCTION__;
-    /* Remettre le titre par defaut du boutonModifier courant */
-    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
-
-    /* Remettre la page d'Accueil par defaut */
-    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
-
-    /* Vider les listes */
-
-    emit editorExited();
+    slotEditorChangePageRequested(PageAccueil);
 }
 
 Editeur::~Editeur()
@@ -135,6 +115,69 @@ Editeur::~Editeur()
     emit editorExited();
 }
 
+/*****************************************************************************************************************
+                                    GESTION NAVIGATION
+  ****************************************************************************************************************/
+void Editeur::slotEditorChangePageRequested(int page)
+{
+    if (m_localDebug) qDebug()<<__PRETTY_FUNCTION__ << " " << page ;
+
+    switch(page)
+    {
+    case PageAccueil:
+        if(m_localDebug) qDebug() << "PAGE Accueil";
+        ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+        ui->lbAide->setText(_messageAidePageAccueil);
+        break;
+    case PageGestionImages:
+        if(m_localDebug) qDebug() << "PAGE Images";
+        ui->stackedWidgetEditeur->setCurrentIndex(PageGestionImages);
+        _assistantEtapes->abeWidgetAssistantEnablePrecedent(false);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+        ui->lbAide->setText(_messageAidePageGestionImages);
+        break;
+    case PageParametres:
+        if(m_localDebug) qDebug() << "PAGE Parametres";
+        ui->stackedWidgetEditeur->setCurrentIndex(PageParametres);
+        _assistantEtapes->abeWidgetAssistantEnablePrecedent(true);
+        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        ui->lbAide->setText(_messageAidePageParametres);
+        break;
+    case PageFin:
+        if(m_localDebug) qDebug() << "PAGE Fin";
+        ui->stackedWidgetEditeur->setCurrentIndex(PageFin);
+        _assistantEtapes->abeWidgetAssistantEnablePrecedent(true);
+        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        ui->lbAide->setText(_messageAidePageFin);
+        break;
+    case PageVisio:
+        if(m_localDebug) qDebug() << "PAGE Visio";
+        ui->lbAide->setText(_messageAidePageVisio);
+        break;
+    default:
+        break;
+    }
+
+}
+
+void Editeur::slotCloseEditor()
+{
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
+    /* Remettre le titre par defaut du boutonModifier courant */
+    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
+    /* Remettre la page d'Accueil par defaut */
+    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
+    _assistantEtapes->abeWidgetAssistantSetEtapeCourante(PageAccueil);
+    /* Vider les listes */
+
+    emit editorExited();
+}
+
+/*********************
+
+  ********************/
 void Editeur::initMessagesAide()
 {
     _messageAidePageAccueil = trUtf8("Je suis votre guide, je vous donnerai les consignes à chaque écran rencontré.\n")
@@ -160,42 +203,42 @@ void Editeur::initMessagesAide()
 
 //void Editeur::abeEditeurSetMainWindow(QWidget *mw)
 //{
-    //    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+//    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    //    MainWindow* parent = (MainWindow*) mw;
-    //    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this, SLOT(show()), Qt::UniqueConnection);
-    //    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),
-    //            parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
+//    MainWindow* parent = (MainWindow*) mw;
+//    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this, SLOT(show()), Qt::UniqueConnection);
+//    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),
+//            parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
 
-    //    /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
-    //    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
+//    /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
+//    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
 
-    //    if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
-    //    {
-    //        _abuleduFile = parent->abeGetMyAbulEduFile();
-    //        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+ "\n" + _abuleduFile->abeFileGetFileName().fileName());
-    //        ui->btnModificationCourant->setEnabled(true);
-    //        ui->btnModificationCourant->setMinimumHeight(60);
-    //        ui->btnModificationAutre->setMinimumHeight(60);
-    //        ui->btnCreationAbe->setMinimumHeight(60);
-    //    }
-    //    else
-    //    {
-    //        _abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
-    //        ui->btnModificationCourant->setEnabled(false);
-    //        parent->abeSetMyAbulEduFile(_abuleduFile);
-    //    }
+//    if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
+//    {
+//        _abuleduFile = parent->abeGetMyAbulEduFile();
+//        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+ "\n" + _abuleduFile->abeFileGetFileName().fileName());
+//        ui->btnModificationCourant->setEnabled(true);
+//        ui->btnModificationCourant->setMinimumHeight(60);
+//        ui->btnModificationAutre->setMinimumHeight(60);
+//        ui->btnCreationAbe->setMinimumHeight(60);
+//    }
+//    else
+//    {
+//        _abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
+//        ui->btnModificationCourant->setEnabled(false);
+//        parent->abeSetMyAbulEduFile(_abuleduFile);
+//    }
 
-    //    ui->cbLangueRessource->addItems(_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
+//    ui->cbLangueRessource->addItems(_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
 
-    //    if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-    //        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
-    //    }
-    //    else {
-    //        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
-    //        return;
-    //    }
-    //    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
+//    if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
+//        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
+//    }
+//    else {
+//        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
+//        return;
+//    }
+//    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
 //}
 
 void Editeur::creationMenu()
@@ -939,6 +982,7 @@ void Editeur::on_btnCreationAbe_clicked()
 
     /* Passer à la fenetre suivante */
     ui->stackedWidgetEditeur->setCurrentIndex(PageGestionImages);
+    _assistantEtapes->abeWidgetAssistantSetEtapeCourante(PageGestionImages);
 }
 
 /** Bouton modification courant ABE */
@@ -1314,55 +1358,3 @@ void Editeur::slotAfficheEtatPublication(const int &code)
     }
 }
 
-void Editeur::slotGestionPage(int a)
-{
-    qDebug() << __PRETTY_FUNCTION__ << " " + QString::number(a);
-
-    /** @todo Messages d'aide différent selon la page
-      */
-
-    switch(a){
-    case PageAccueil:
-        qDebug() << "c'est la page accueil";
-        ui->lbAide->setText(_messageAidePageAccueil);
-        break;
-    case PageGestionImages:
-        qDebug() << "c'est la page Gestion Images";
-        ui->lbAide->setText(_messageAidePageGestionImages);
-        break;
-    case PageParametres:
-        qDebug() << "C'est la page des parametres";
-        ui->lbAide->setText(_messageAidePageParametres);
-        break;
-    case PageFin:
-        qDebug() << "C'est la page fin";
-        ui->lbAide->setText(_messageAidePageFin);
-        break;
-    case PageVisio:
-        qDebug() << "C'est la page fin";
-        ui->lbAide->setText(_messageAidePageVisio);
-        break;
-    default:
-        if(m_localDebug) qDebug() << "Probleme Switch : " <<  __PRETTY_FUNCTION__;
-        break;
-    }
-}
-
-//void Editeur::on_btnRetourAccueil_clicked()
-//{
-//    qDebug() << __PRETTY_FUNCTION__;
-//    /* Remettre le titre par defaut du boutonModifier courant */
-//    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
-
-//    /* Remettre la page d'Accueil par defaut */
-//    ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
-
-//    /* Vider les listes */
-
-//    emit editorExited();
-//}
-
-void Editeur::on_btnSuivantPageGestionImages_clicked()
-{
-    ui->stackedWidgetEditeur->setCurrentIndex(PageParametres);
-}
