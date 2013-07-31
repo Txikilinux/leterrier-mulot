@@ -48,7 +48,7 @@ Editeur::Editeur(QWidget *parent) :
     //! @todo ne pas pousser si modif abuleduFile non acceptée
     ui->abuleduMediathequeGet->abeHideCloseBouton(true);
 
-    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>,int)), this,
+    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>, int)), this,
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
 
     connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this,
@@ -83,7 +83,6 @@ Editeur::Editeur(QWidget *parent) :
 
     /* Mappage des signaux des 5 boutons de parcours */
     mapSignalBtnParcours();
-
 
     /* Gestion des messages d'aide [à effectuer avant le setCurrentIndex(...)] */
     initMessagesAide();
@@ -135,7 +134,7 @@ void Editeur::slotEditorChangePageRequested(int page)
         if(m_localDebug) qDebug() << "PAGE Images";
         ui->stackedWidgetEditeur->setCurrentIndex(PageGestionImages);
         _assistantEtapes->abeWidgetAssistantEnablePrecedent(false);
-        _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
         ui->lbAide->setText(_messageAidePageGestionImages);
         break;
     case PageParametres:
@@ -175,9 +174,9 @@ void Editeur::slotCloseEditor()
     emit editorExited();
 }
 
-/*********************
+/*********************************************************************************************************
 
-  ********************/
+  ********************************************************************************************************/
 void Editeur::initMessagesAide()
 {
     _messageAidePageAccueil = trUtf8("Je suis votre guide, je vous donnerai les consignes à chaque écran rencontré.\n")
@@ -300,10 +299,7 @@ void Editeur::slotSupprimerImage()
 
 void Editeur::ajouterImage(QFileInfo monFichier)
 {
-    if (m_localDebug)
-    {
-        qDebug() << __PRETTY_FUNCTION__ << " Chemin du fichier selectionné : " << monFichier.absoluteFilePath() << " Nom du fichier : " << monFichier.fileName();
-    }
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " Chemin : " << monFichier.absoluteFilePath() << "Nom : " << monFichier.fileName();
 
     /* Controle des insertions (éviter les doublons) */
     if (m_listeFichiersImages.contains(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"))
@@ -311,19 +307,21 @@ void Editeur::ajouterImage(QFileInfo monFichier)
         if(m_localDebug) qDebug() << "Fichier deja présent";
         return;
     }
-    else
-    {
-        if (_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
-        {
-            /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
-            m_listeFichiersImages << _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
-            /* Insertion dans mon listWidget */
-            QListWidgetItem *item = new QListWidgetItem(QIcon(monFichier.absoluteFilePath()), monFichier.baseName());
 
-            item->setData(4, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
-            ui->listWidgetImagesSelection->insertItem(0, item);
-        }
+    qDebug() << "Chemin d'enregistrement : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/data/images/" ;
+    if(_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
+    {
+        /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
+        m_listeFichiersImages << _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
+        /* Insertion dans mon listWidget */
+        QListWidgetItem *item = new QListWidgetItem(QIcon(monFichier.absoluteFilePath()), monFichier.baseName());
+        item->setData(4, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
+        ui->listWidgetImagesSelection->insertItem(0, item);
     }
+    else
+        qDebug() << "la resize n'a pas fonctionnee....";
+    qDebug() << "ma liste d'image : " << m_listeFichiersImages.count();
+    qDebug() << "nombre d'item    : " << ui->listWidgetImagesSelection->count();
 }
 
 void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int& success)
@@ -946,21 +944,30 @@ void Editeur::on_btnCreationAbe_clicked()
     if(!_abuleduFile->abeFileGetFileList().isEmpty()){
         if(m_localDebug) qDebug() << "Dossier Temporaire vide... [KO]";
 
+
         /* Vidange du dossier */
         if(AbulEduTools::supprimerDir(_abuleduFile->abeFileGetDirectoryTemp().absolutePath())){
 
             /* La vidange du dossier s'est bien passée */
             if(m_localDebug) qDebug() << "Vidange Dossier Temporaire... [OK]";
 
-            /* Il faut recréer l'arborescence data/images */
-            if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-                if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
-            }
-            else {
-                if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
-                return;
-            }
+            //            if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
+            //                if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
+            //            }
+            //            else {
+            //                if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
+            //                return;
+            //            }
+            //        }
         }
+    }
+    /* Il faut recréer l'arborescence data/images */
+    if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
+        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
+    }
+    else {
+        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
+        return;
     }
 
     if(m_localDebug) qDebug() << "Dossier temp abuleduFile : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
@@ -975,7 +982,7 @@ void Editeur::on_btnCreationAbe_clicked()
     /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
     _abuleduFile->abeFileSetFilename("");
 
-    /* Et on lance un signal qui changera le titre de la mainwindows*/
+    /* Et on lance un signal qui changera le titre de la mainwindows */
     emit editorNewAbe(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
     setModeModificationAbe(false);
