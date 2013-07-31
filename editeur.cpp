@@ -136,6 +136,8 @@ void Editeur::slotEditorChangePageRequested(int page)
         _assistantEtapes->abeWidgetAssistantEnablePrecedent(false);
         _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
         ui->lbAide->setText(_messageAidePageGestionImages);
+        /* Contrôle 5 images = bouton suivant ok */
+        controlNumberOfImages();
         break;
     case PageParametres:
         if(m_localDebug) qDebug() << "PAGE Parametres";
@@ -181,9 +183,9 @@ void Editeur::initMessagesAide()
 {
     _messageAidePageAccueil = trUtf8("Je suis votre guide, je vous donnerai les consignes à chaque écran rencontré.\n")
             + trUtf8("Choississez ci-dessous un mode d'édition.\n")
-            + trUtf8("Le bouton Revenir à l'accueil permet de retourner sur l'écran principal du logiciel.");
+            + trUtf8("Les étapes sont bloquantes tant que les paramètres ne sont convenables.");
 
-    _messageAidePageGestionImages = trUtf8("Veuillez selectionner 5 images. Il est possible de selectionner ces images sur votre ordinateur (onglet \"Disque Local\")\n")
+    _messageAidePageGestionImages = trUtf8("Veuillez sélectionner 5 images. Il est possible de selectionner ces images sur votre ordinateur (onglet \"Disque Local\")\n")
             + trUtf8("ou sur la médiathèque d'AbulEdu (onglet \"AbulEdu Data\").\n")
             + trUtf8("Pour passer à l'ecran suivant, la liste \"Images sélectionnées\" doit comporter 5 images.");
 
@@ -191,14 +193,25 @@ void Editeur::initMessagesAide()
             + trUtf8("Pour passer à l'ecran suivant, au moins un exercice doit être activé.\n")
             + trUtf8("Si l'exercice parcours est activé, tous les boutons \"Parcours\" doivent être vert.");
 
-    /*
-    QStaticText _messageAidePageGestionImages;
-    QStaticText _messageAidePageParametres;
-    QStaticText _messageAidePageFin;
-    QStaticText _messageAidePageVisio;*/
+    _messageAidePageFin = "";
 
-
+    _messageAidePageVisio = trUtf8("Pour revenir à l'écran précédent, cliquez sur l'image.");
 }
+
+void Editeur::controlNumberOfImages()
+{
+    if(m_listeFichiersImages.count() >= 5)
+    {
+        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+    }
+    else
+    {
+        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+    }
+}
+
 
 //void Editeur::abeEditeurSetMainWindow(QWidget *mw)
 //{
@@ -295,6 +308,9 @@ void Editeur::slotSupprimerImage()
             if (m_localDebug) qDebug() << i <<" "<<m_listeFichiersImages.at(i);
         }
     }
+
+    /* Contrôle 5 images = bouton suivant ok */
+    controlNumberOfImages();
 }
 
 void Editeur::ajouterImage(QFileInfo monFichier)
@@ -318,10 +334,9 @@ void Editeur::ajouterImage(QFileInfo monFichier)
         item->setData(4, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
         ui->listWidgetImagesSelection->insertItem(0, item);
     }
-    else
-        qDebug() << "la resize n'a pas fonctionnee....";
-    qDebug() << "ma liste d'image : " << m_listeFichiersImages.count();
-    qDebug() << "nombre d'item    : " << ui->listWidgetImagesSelection->count();
+
+    /* Contrôle 5 images = bouton suivant ok */
+    controlNumberOfImages();
 }
 
 void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int& success)
@@ -944,23 +959,13 @@ void Editeur::on_btnCreationAbe_clicked()
     if(!_abuleduFile->abeFileGetFileList().isEmpty()){
         if(m_localDebug) qDebug() << "Dossier Temporaire vide... [KO]";
 
-
         /* Vidange du dossier */
         if(AbulEduTools::supprimerDir(_abuleduFile->abeFileGetDirectoryTemp().absolutePath())){
-
             /* La vidange du dossier s'est bien passée */
             if(m_localDebug) qDebug() << "Vidange Dossier Temporaire... [OK]";
-
-            //            if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-            //                if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
-            //            }
-            //            else {
-            //                if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
-            //                return;
-            //            }
-            //        }
         }
     }
+
     /* Il faut recréer l'arborescence data/images */
     if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
         if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
