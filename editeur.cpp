@@ -22,10 +22,6 @@
   */
 
 #include "editeur.h"
-/**
-  * @todo :
-  */
-
 
 Editeur::Editeur(QWidget *parent) :
     QWidget(parent),
@@ -56,7 +52,7 @@ Editeur::Editeur(QWidget *parent) :
     QShortcut *shortcutSupprimeChoix = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listWidgetImagesSelection, 0, 0, Qt::WidgetShortcut);
     connect(shortcutSupprimeChoix, SIGNAL(activated()), this, SLOT(slotSupprimerImage()), Qt::UniqueConnection);
 
-    m_opt_nbMasquesChoisisParcours = m_opt_nbMasquesLargeur = m_opt_nbMasquesHauteur = m_numeroParcours = 0;
+    m_opt_nbMasquesChoisisParcours = m_opt_nbMasquesLargeur = m_opt_nbMasquesHauteur = m_numeroParcours = _nombreParcoursSave = 0;
 
     /* Vidange des différentes listes */
     m_listeMasques.clear();
@@ -105,12 +101,15 @@ Editeur::Editeur(QWidget *parent) :
 
     /* Ceci sert à mettre la page d'accueil par dféfaut au démarrage, donc initialisation du 1er message d'aide */
     slotEditorChangePageRequested(PageAccueil);
+
+    /* Je connecte les méthodes qui vont gérées l'intégrité des parcours */
+    connect(this, SIGNAL(signalParcoursSave()), SLOT(slotParcoursSave()), Qt::UniqueConnection);
 }
 
 Editeur::~Editeur()
 {
     /// @todo delete les objets sans parent
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << _abuleduFile->abeFileGetFileName().baseName();
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << _abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     emit editorExited();
 }
@@ -148,10 +147,10 @@ void Editeur::slotEditorChangePageRequested(int page)
         if(m_localDebug) qDebug() << "PAGE Parametres";
         ui->stackedWidgetEditeur->setCurrentIndex(PageParametres);
         _assistantEtapes->abeWidgetAssistantEnablePrecedent(true);
-        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        /* Obligé d'avoir un int pour le connect mais je ne m'en sers pas */
+        slotCheckBoxParametres_clicked(0);
         _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->setEnabled(true);
         ui->lbAide->setText(_messageAidePageParametres);
-        qDebug() << "Le bouton prècédent est : " << _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages);
         break;
     case PageFin:
         if(m_localDebug) qDebug() << "PAGE Fin";
@@ -214,9 +213,7 @@ void Editeur::controlNumberOfImages()
     if(_listeFichiersImages.count() >= 5)
     {
         /* Il faut activer seulement le bouton suivant */
-        qDebug() << "Bouton Page Parametres actif" ;
         _assistantEtapes->abeWidgetAssistantGetButton(PageParametres)->setEnabled(true);
-        qDebug() << "Bouton Suivant activé" ;
         _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
         _assistantEtapes->abeWidgetAssistantEnableClick(true);
         /* Afin d'afficher le bouton comme il faut dans la riviere */
@@ -224,57 +221,14 @@ void Editeur::controlNumberOfImages()
     }
     else
     {
-        qDebug() << "Bouton Page Parametres desactif" ;
         _assistantEtapes->abeWidgetAssistantGetButton(PageParametres)->setEnabled(false);
-        qDebug() << "Bouton Page Parametres desactif" ;
         _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
     }
 }
 
-
-//void Editeur::abeEditeurSetMainWindow(QWidget *mw)
-//{
-//    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-
-//    MainWindow* parent = (MainWindow*) mw;
-//    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this, SLOT(show()), Qt::UniqueConnection);
-//    connect(parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),
-//            parent->abeGetMyAbulEduAccueil()->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
-
-//    /* Sauvegarde -> BoxManager en version complète pour afficher le champ "Titre du Module" */
-//    parent->abeGetMyAbulEduFileManager()->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
-
-//    if(!parent->abeGetMyAbulEduFile()->abeFileGetFileName().baseName().isEmpty())
-//    {
-//        _abuleduFile = parent->abeGetMyAbulEduFile();
-//        ui->btnModificationCourant->setText(trUtf8("Editer le module ")+ "\n" + _abuleduFile->abeFileGetFileName().fileName());
-//        ui->btnModificationCourant->setEnabled(true);
-//        ui->btnModificationCourant->setMinimumHeight(60);
-//        ui->btnModificationAutre->setMinimumHeight(60);
-//        ui->btnCreationAbe->setMinimumHeight(60);
-//    }
-//    else
-//    {
-//        _abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
-//        ui->btnModificationCourant->setEnabled(false);
-//        parent->abeSetMyAbulEduFile(_abuleduFile);
-//    }
-
-//    ui->cbLangueRessource->addItems(_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
-
-//    if(_abuleduFile->abeFileGetDirectoryTemp().mkpath("data/images")) {
-//        if(m_localDebug) qDebug() << "Creation dossier data/images... [OK]";
-//    }
-//    else {
-//        if(m_localDebug) qDebug() << "Creation dossier data/images... [KO]";
-//        return;
-//    }
-//    ui->stackedWidgetEditeur->setCurrentWidget(ui->pageAccueil);
-//}
-
 void Editeur::creationMenu()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     QStyle* style =  QApplication::style(); /* récupération du style systeme */
 
@@ -290,7 +244,7 @@ void Editeur::creationMenu()
 
 void Editeur::slotSupprimerImage()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
     if (_listeFichiersImages.isEmpty()){return;}
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
@@ -314,7 +268,7 @@ void Editeur::slotSupprimerImage()
         }
         if (QFile::remove(fi.absoluteFilePath()))
         {
-            if (m_localDebug)qDebug() << "Suppression de l'image du fichier temporaire... [OK]";
+            if (m_localDebug) qDebug() << "Suppression de l'image du fichier temporaire... [OK]";
         }
         delete i;
     }
@@ -343,7 +297,6 @@ void Editeur::ajouterImage(QFileInfo monFichier)
         return;
     }
 
-    qDebug() << "Chemin d'enregistrement : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/data/images/" ;
     if(_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/"))
     {
         /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
@@ -360,7 +313,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
 
 void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int& success)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     if(success > -1)
     {
         ajouterImage(fichierABB->abeFileGetContent(0));
@@ -387,7 +340,7 @@ void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoi
 
 void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     AbulEduVisionneuseImageV1 *visio = new AbulEduVisionneuseImageV1(ui->tabWidgetImages);
     connect(visio, SIGNAL(destroyed()),this,SLOT(slotSortieVisionneuse()), Qt::UniqueConnection);
@@ -404,7 +357,7 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 
 void Editeur::createAbe()
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     ui->listWidgetImagesSelection->clear();
 
@@ -420,7 +373,7 @@ void Editeur::createAbe()
 
 bool Editeur::remplirGvParcours(const int &numeroParcours)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() <<__PRETTY_FUNCTION__;
 
     switch(numeroParcours)
     {
@@ -444,25 +397,18 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
     m_opt_nbMasquesLargeur = ui->spinBoxParcoursMasquesLargeur->value();
     m_opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
 
-    float largeurMasque, hauteurMasque = 0.00;
-
     float largeurGv = static_cast<float>(m_editeurParcoursWidget->width())-1;
     float hauteurGv = static_cast<float>(m_editeurParcoursWidget->height())-1;
 
-    largeurMasque = largeurGv / m_opt_nbMasquesLargeur;
-    hauteurMasque = hauteurGv / m_opt_nbMasquesHauteur;
+    const float largeurMasque = largeurGv / m_opt_nbMasquesLargeur;
+    const float hauteurMasque = hauteurGv / m_opt_nbMasquesHauteur;
 
     int nbMasques = m_opt_nbMasquesLargeur * m_opt_nbMasquesHauteur;
     qreal xMasque, yMasque = 0.00;
 
-    if (m_localDebug)
-    {
-        qDebug()<<" -------------------------- Début boucle d'affichage : " << nbMasques;
-        qDebug() << "Chargement position parcours : " << numeroParcours;
-    }
-
     int numeroMasque = 0;
-    for (float i=0; i < m_opt_nbMasquesHauteur; i++)
+    /* Pose de masque normaux pour remplissage */
+    for(float i=0; i < m_opt_nbMasquesHauteur; i++)
     {
         for (int j=0; j < m_opt_nbMasquesLargeur; j++)
         {
@@ -494,11 +440,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                                          (largeurMasque * m_opt_nbMasquesLargeur) + m_editeurParcoursWidget->getGraphicsView()->verticalScrollBar()->width(),
                                          (hauteurMasque * m_opt_nbMasquesHauteur) + m_editeurParcoursWidget->getGraphicsView()->horizontalScrollBar()->height() + (m_editeurParcoursWidget->getBoutonHeight()) *2);
 
-    if(chargerPositionMasque(numeroParcours) && m_modeModificationAbe){
-
-        if(m_localDebug){
-            qDebug() << "Nous avons des parcours dans le QSetting & Mode modification = true";
-        }
+    if(chargerPositionMasque(numeroParcours)){
 
         /* Parcours de la QMap positionMasqueParcours */
         int positionDepart, positionArrivee = 0;
@@ -526,7 +468,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                 qDebug() << "Position Parcours               : " << positionParcours;
             }
 
-            /* MODE MODIFICATION
+            /*
              * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
              */
             /* depart */
@@ -537,20 +479,6 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
             /* parcours */
             while(!positionParcours.isEmpty())
             {
-                /* Contrôle d'intégrité du parcours */
-                if(!AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur).contains(positionParcours.first()))
-                {
-                    QString msg = "<td> " + trUtf8("Les paramètres du parcours ne sont pas valides.")+" <br />"
-                            + trUtf8("Les données relatives à ce module vont être <b>effacés</b>,") +" <br />"
-                            + trUtf8("veuillez éditer un nouveau parcours.") +" <br />"
-                            //                            + trUtf8("Le programme va quitter l'exercice.") +" <br />"
-                            +" </td>" ;
-                    AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, m_parent);
-                    messageBox->show();
-                    reinitialiserGvParcours();
-                    return false;
-                }
-
                 m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
                 m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
                 m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
@@ -568,7 +496,6 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
         return true;
     }
     else{
-        if(m_localDebug) qDebug() << "Nous n'avons pas de parcours dans le QSetting";
         m_editeurParcoursWidget->connectBtnSave(false);
         return true;
     }
@@ -577,7 +504,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
 
 void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     QList<int> listeVoisins;
 
@@ -717,7 +644,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
 
 void Editeur::reinitialiserGvParcours()
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     /* Remettre tout mes masques d'origine ! */
     foreach (MasqueDeplaceSouris* var, m_listeMasques) {
@@ -732,7 +659,7 @@ void Editeur::reinitialiserGvParcours()
 
     /* Supprimer le parcours dans le .conf si on est en mode modification */
     if(m_modeModificationAbe){
-        qDebug() << "Nous sommes en modification, on recherche les entrées dans le QSettings";
+        if(m_localDebug) qDebug() << "Nous sommes en modification, on recherche les entrées dans le QSettings";
 
         QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
         parametres.beginGroup("parcours");
@@ -768,10 +695,7 @@ void Editeur::reinitialiserGvParcours()
 
 void Editeur::sauvegarderParcours()
 {
-    if(m_localDebug)
-    {
-        qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << "-- Numero de parcours :" << m_numeroParcours;
-    }
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " parcours :" << m_numeroParcours;
 
     switch (m_numeroParcours)
     {
@@ -787,6 +711,7 @@ void Editeur::sauvegarderParcours()
         }
         ui->btnParcours1->setStyleSheet("color : green;");
         break;
+
     case 2:
         /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
         m_parametresParcours2.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
@@ -849,6 +774,8 @@ void Editeur::sauvegarderParcours()
     AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
     alertBox->setWink();
     alertBox->show();
+    /* Emission du signal pour gestion d'intégrité (et de navigation)*/
+    emit signalParcoursSave();
     /* Fermeture Aire de jeu */
     m_editeurParcoursWidget->close();
 }
@@ -869,7 +796,7 @@ void Editeur::mapSignalCheckBoxParametres()
     connect(ui->groupBoxParcours, SIGNAL(clicked(bool)), signalMapper, SLOT(map()), Qt::UniqueConnection);
 }
 
-void Editeur::slotCheckBoxParametres_clicked(int a)
+bool Editeur::slotCheckBoxParametres_clicked(int)
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ ;
 
@@ -880,21 +807,49 @@ void Editeur::slotCheckBoxParametres_clicked(int a)
         _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(true);
         _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
         _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        return true;
     }
     else if(ui->groupBoxParcours->isChecked())
     {
-        /* Controler les 5 boutons mais par précaution je desactive la page de sauvegarde */
-        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(false);
-        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
-        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+        if(chargerPositionMasque(1)
+                && chargerPositionMasque(2)
+                && chargerPositionMasque(3)
+                && chargerPositionMasque(4)
+                && chargerPositionMasque(5))
+        {
+            if(m_localDebug) qDebug() << "Réglages parcours... [OK]";
+            _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(true);
+            _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+            _assistantEtapes->abeWidgetAssistantEnableClick(true);
+            return true;
+        }
+        else
+        {
+            if(m_localDebug) qDebug() << "Réglages parcours... [KO]";
+            return false;
+        }
+    }
+    _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(false);
+    _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+    _assistantEtapes->abeWidgetAssistantEnableClick(false);
+    return false;
+}
 
-    }
-    else
+/*  Il faut que _nombreParcoursSave soit égale à 5 pour que les données soient viables.
+  * Permet également d'activé l'écran de sauvegarde.
+  */
+bool Editeur::slotParcoursSave()
+{
+    _nombreParcoursSave ++;
+    if(_nombreParcoursSave == 5)
     {
-        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(false);
-        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
-        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+        if(m_localDebug) qDebug() << "On peut activer la page de Fin";
+        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(true);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        return true;
     }
+    return false;
 }
 
 void Editeur::mapSignalBtnParcours()
@@ -917,10 +872,9 @@ void Editeur::mapSignalBtnParcours()
 
 void Editeur::slotBtnParcours_clicked(const int &numBtn)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__ << numBtn;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ <<" "<< numBtn;
 
     int nbMasque = 0;
-    m_listeMasquesParcours.clear();
     m_numeroParcours = numBtn;
 
     switch(numBtn){
@@ -967,21 +921,86 @@ void Editeur::slotBtnParcours_clicked(const int &numBtn)
 
     if(remplirGvParcours(m_numeroParcours)){
         if(m_localDebug)
-            qDebug() << "Remplissage OK, Affichage editeur de parcours";
+            qDebug() << "Remplissage... [OK], Affichage editeur de parcours";
         m_editeurParcoursWidget->show();
     }
     else {
         if(m_localDebug)
-            qDebug() << "Remplissage KO, Réinitialisation parcours";
+            qDebug() << "Remplissage... [KO], Réinitialisation parcours";
         reinitialiserGvParcours();
     }
 }
 
 bool Editeur::chargerPositionMasque(const int &numeroParcours)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
-    positionMasquesParcours.clear();
+    /* Controle parcours deja edite = Chargement par _parametresParcours* */
+    switch(numeroParcours)
+    {
+    case 1:
+        if(!m_parametresParcours1.isEmpty())
+        {
+            if(m_localDebug) qDebug() << "Le parcours 1 a deja etait fait";
+            QMap<QString, QVariant>::const_iterator i = m_parametresParcours1.begin();
+            while (i != m_parametresParcours1.constEnd()) {
+                positionMasquesParcours.insert(i.key(), i.value().toInt());
+                ++i;
+            }
+            return true;
+        }
+        break;
+    case 2:
+        if(!m_parametresParcours2.isEmpty())
+        {
+            if(m_localDebug) qDebug() << "Le parcours 2 a deja etait fait";
+            QMap<QString, QVariant>::const_iterator i = m_parametresParcours2.begin();
+            while (i != m_parametresParcours2.constEnd()) {
+                positionMasquesParcours.insert(i.key(), i.value().toInt());
+                ++i;
+            }
+            return true;
+        }
+        break;
+    case 3:
+        if(!m_parametresParcours3.isEmpty())
+        {
+            if(m_localDebug) qDebug() << "Le parcours 3 a deja etait fait";
+            QMap<QString, QVariant>::const_iterator i = m_parametresParcours3.begin();
+            while (i != m_parametresParcours3.constEnd()) {
+                positionMasquesParcours.insert(i.key(), i.value().toInt());
+                ++i;
+            }
+            return true;
+        }
+        break;
+    case 4:
+        if(!m_parametresParcours4.isEmpty())
+        {
+            if(m_localDebug) qDebug() << "Le parcours 4 a deja etait fait";
+            QMap<QString, QVariant>::const_iterator i = m_parametresParcours4.begin();
+            while (i != m_parametresParcours4.constEnd()) {
+                positionMasquesParcours.insert(i.key(), i.value().toInt());
+                ++i;
+            }
+            return true;
+        }
+        break;
+    case 5:
+        if(!m_parametresParcours5.isEmpty())
+        {
+            if(m_localDebug) qDebug() << "Le parcours 5 a deja etait fait";
+            QMap<QString, QVariant>::const_iterator i = m_parametresParcours5.begin();
+            while (i != m_parametresParcours5.constEnd()) {
+                positionMasquesParcours.insert(i.key(), i.value().toInt());
+                ++i;
+            }
+            return true;
+        }
+        break;
+    }
+
+    /* Chargement par QSetting */
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroParcours));
@@ -1045,6 +1064,13 @@ void Editeur::on_btnCreationAbe_clicked()
     m_listeMasques.clear();
     ui->listWidgetImagesSelection->clear();
 
+    /* Style des Boutons */
+    ui->btnParcours1->setStyleSheet("color : gray;");
+    ui->btnParcours2->setStyleSheet("color : gray;");
+    ui->btnParcours3->setStyleSheet("color : gray;");
+    ui->btnParcours4->setStyleSheet("color : gray;");
+    ui->btnParcours5->setStyleSheet("color : gray;");
+
     /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
     _abuleduFile->abeFileSetFilename("");
 
@@ -1065,7 +1091,6 @@ void Editeur::on_btnModificationCourant_clicked()
 
     setModeModificationAbe(true);
     slotEditorChangePageRequested(PageGestionImages);
-//    _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->click();
     slotLoadUnit();
 }
 
@@ -1076,14 +1101,6 @@ void Editeur::on_btnModificationAutre_clicked()
     emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeOpen);
     setModeModificationAbe(true);
 }
-
-
-//void Editeur::slotOpenFile(QSharedPointer<AbulEduFileV1>)
-//{
-//    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
-//    slotLoadUnit();
-//    if (m_localDebug) qDebug() << "Répertoire Tmp dézippage de l'ABE : "  << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
-//}
 
 void Editeur::slotLoadUnit()
 {
@@ -1098,7 +1115,7 @@ void Editeur::slotLoadUnit()
         m_lastOpenDir = fileInfo.absolutePath();
     }
 
-    QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("clic");
     ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
@@ -1115,27 +1132,80 @@ void Editeur::slotLoadUnit()
     ui->spinBoxSurvolMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
     parametres.beginGroup("parcours");
-    ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
-    ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
-    ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
-    ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
+    if(parametres.value("exerciceActive",true).toBool())
+    {
+        ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
+        ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
+        ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
+        ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
 
-    /* Recupération nb masque pour remplissage ComboBox */
-    parametres.beginGroup("parcours1");
-    ui->spinBoxParcoursMasque_1->setValue(parametres.childKeys().count());
-    parametres.endGroup();
-    parametres.beginGroup("parcours2");
-    ui->spinBoxParcoursMasque_2->setValue(parametres.childKeys().count());
-    parametres.endGroup();
-    parametres.beginGroup("parcours3");
-    ui->spinBoxParcoursMasque_3->setValue(parametres.childKeys().count());
-    parametres.endGroup();
-    parametres.beginGroup("parcours4");
-    ui->spinBoxParcoursMasque_4->setValue(parametres.childKeys().count());
-    parametres.endGroup();
-    parametres.beginGroup("parcours5");
-    ui->spinBoxParcoursMasque_5->setValue(parametres.childKeys().count());
-    parametres.endGroup();
+        /* Recupération nb masque pour remplissage ComboBox */
+        parametres.beginGroup("parcours1");
+        ui->spinBoxParcoursMasque_1->setValue(parametres.childKeys().count());
+        /** signal parcours save */
+        if(chargerPositionMasque(1)){
+            qDebug() << "Le parcours 1...[OK]";
+            ui->btnParcours1->setStyleSheet("color : green;");
+            emit signalParcoursSave();
+        }
+        else{
+            ui->btnParcours1->setStyleSheet("color : red;");
+            qDebug() << "Le parcours 1...[KO]";
+        }
+        parametres.endGroup();
+        parametres.beginGroup("parcours2");
+        ui->spinBoxParcoursMasque_2->setValue(parametres.childKeys().count());
+        /** Controle position + Bouton Vert + signal parcours save */
+        if(chargerPositionMasque(2)){
+            qDebug() << "Le parcours 2...[OK]";
+            ui->btnParcours2->setStyleSheet("color : green;");
+            emit signalParcoursSave();
+        }
+        else{
+            ui->btnParcours2->setStyleSheet("color : red;");
+            qDebug() << "Le parcours 2...[KO]";
+        }
+        parametres.endGroup();
+        parametres.beginGroup("parcours3");
+        ui->spinBoxParcoursMasque_3->setValue(parametres.childKeys().count());
+        /** Controle position + Bouton Vert + signal parcours save */
+        if(chargerPositionMasque(3)){
+            qDebug() << "Le parcours 3...[OK]";
+            ui->btnParcours3->setStyleSheet("color : green;");
+            emit signalParcoursSave();
+        }
+        else{
+            ui->btnParcours3->setStyleSheet("color : red;");
+            qDebug() << "Le parcours 1...[KO]";
+        }
+        parametres.endGroup();
+        parametres.beginGroup("parcours4");
+        ui->spinBoxParcoursMasque_4->setValue(parametres.childKeys().count());
+        /** Controle position + Bouton Vert + signal parcours save */
+        if(chargerPositionMasque(4)){
+            qDebug() << "Le parcours 4...[OK]";
+            ui->btnParcours4->setStyleSheet("color : green;");
+            emit signalParcoursSave();
+        }
+        else{
+            ui->btnParcours4->setStyleSheet("color : red;");
+            qDebug() << "Le parcours 1...[KO]";
+        }
+        parametres.endGroup();
+        parametres.beginGroup("parcours5");
+        ui->spinBoxParcoursMasque_5->setValue(parametres.childKeys().count());
+        /** Controle position + Bouton Vert + signal parcours save */
+        if(chargerPositionMasque(5)){
+            qDebug() << "Le parcours 5...[OK]";
+            ui->btnParcours5->setStyleSheet("color : green;");
+            emit signalParcoursSave();
+        }
+        else{
+            ui->btnParcours5->setStyleSheet("color : red;");
+            qDebug() << "Le parcours 1...[KO]";
+        }
+        parametres.endGroup();
+    }
 
     ui->leTitre->setText(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralTitle(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()));
     if (abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus() == 1)
@@ -1150,7 +1220,6 @@ void Editeur::slotLoadUnit()
 
     ui->stackedWidgetEditeur->setCurrentWidget(ui->pageGestionImages);
 }
-
 
 /**********************************************************************************************************************************************************
                                                      GESTION DRAG & DROP
@@ -1191,7 +1260,7 @@ void Editeur::dragEnterEvent(QDragEnterEvent *event)
 
 void Editeur::on_btnAjouterImageQFileDialog_clicked()
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     QString fileName = QFileDialog::getOpenFileName(this, trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg *.svg *.bmp *.ppm *.xpm *.xbm)"));
     QFileInfo fi(fileName);
@@ -1203,7 +1272,7 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
 
 bool Editeur::preparerSauvegarde()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
@@ -1379,7 +1448,7 @@ bool Editeur::preparerSauvegarde()
 
 void Editeur::releaseAbe()
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     ui->listWidgetImagesSelection->clear();
     if (preparerSauvegarde())
     {
@@ -1391,7 +1460,7 @@ void Editeur::releaseAbe()
 
 void Editeur::on_btnEssayer_clicked()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     if (preparerSauvegarde())
     {
         emit editorTest();
@@ -1403,13 +1472,13 @@ void Editeur::on_btnEssayer_clicked()
 
 void Editeur::on_btnEnregistrer_clicked()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     createAbe();
 }
 
 void Editeur::on_btnPublier_clicked()
 {
-    if (m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     releaseAbe();
 }
 

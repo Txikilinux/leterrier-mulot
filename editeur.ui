@@ -117,7 +117,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="pageAccueil">
       <layout class="QGridLayout" name="gridLayout_7">
@@ -250,60 +250,6 @@ p, li { white-space: pre-wrap; }
      </widget>
      <widget class="QWidget" name="pageGestionImages">
       <layout class="QGridLayout" name="gridLayout_8">
-       <item row="0" column="1">
-        <layout class="QVBoxLayout" name="vl_ImagesSelectionnees">
-         <item>
-          <widget class="QLabel" name="labelImagesSelectionnees">
-           <property name="text">
-            <string>Images sélectionnées</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QListWidget" name="listWidgetImagesSelection">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>200</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="contextMenuPolicy">
-            <enum>Qt::CustomContextMenu</enum>
-           </property>
-           <property name="accessibleDescription">
-            <string/>
-           </property>
-           <property name="selectionMode">
-            <enum>QAbstractItemView::ExtendedSelection</enum>
-           </property>
-           <property name="viewMode">
-            <enum>QListView::ListMode</enum>
-           </property>
-           <property name="uniformItemSizes">
-            <bool>true</bool>
-           </property>
-           <property name="selectionRectVisible">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
        <item row="0" column="0">
         <widget class="QTabWidget" name="tabWidgetImages">
          <property name="currentIndex">
@@ -450,10 +396,61 @@ font : bold;
          </widget>
         </widget>
        </item>
+       <item row="0" column="1">
+        <layout class="QVBoxLayout" name="vl_ImagesSelectionnees">
+         <item>
+          <widget class="QLabel" name="labelImagesSelectionnees">
+           <property name="text">
+            <string>Images sélectionnées</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QListWidget" name="listWidgetImagesSelection">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
+           <property name="accessibleDescription">
+            <string/>
+           </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+           <property name="viewMode">
+            <enum>QListView::ListMode</enum>
+           </property>
+           <property name="uniformItemSizes">
+            <bool>true</bool>
+           </property>
+           <property name="selectionRectVisible">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
       </layout>
-      <zorder>tabWidgetImages</zorder>
-      <zorder>listWidgetImagesSelection</zorder>
-      <zorder>labelImagesSelectionnees</zorder>
      </widget>
      <widget class="QWidget" name="pageParametres">
       <layout class="QGridLayout" name="gridLayout_11">

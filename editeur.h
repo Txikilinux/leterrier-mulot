@@ -49,8 +49,6 @@
 #include "abuledutools.h"
 #include "abuleduwidgetassistantetapesv1.h"
 
-//#include "mainwindow.h"
-
 namespace Ui {
 class Editeur;
 }
@@ -90,7 +88,6 @@ private slots:
     /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
     void ajouterImage(QFileInfo monFichier);
 
-
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
 
@@ -114,16 +111,6 @@ private slots:
 
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
     void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int &success);
-
-//    /** Passe à la page précédente */
-//    void on_btnPrecedent_clicked();
-
-//    /** Passe à la page suivante
-//      * Dans le cas de la dernière page, le bouton a pris l'icône d'enregistrement, la fonction createAbe() est appelée et l'éditeur fermé */
-//    void on_btnSuivant_clicked();
-
-//    /** Ferme l'application au clic sur le bouton Quitter*/
-//    void on_btnQuitter_clicked();
 
     /** Création du module à partir du contenu du répertoire temporaire de l'application */
     void on_btnCreationAbe_clicked();
@@ -161,9 +148,10 @@ private slots:
     void slotEditorChangePageRequested(int);
     void slotCloseEditor();
 
-    void slotCheckBoxParametres_clicked(int);
+    bool slotCheckBoxParametres_clicked(int);
 
-
+    /** Sert au controle de l'intégrité des parcours */
+    bool slotParcoursSave();
 private:
     Ui::Editeur *ui;
     QMenu *m_menuListWidget;
@@ -209,10 +197,9 @@ private:
     QString _messageAidePageFin;
     QString _messageAidePageVisio;
 
-    /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
-    QWidget* m_parent;
-
     AbulEduWidgetAssistantEtapesV1 *_assistantEtapes;
+
+    int _nombreParcoursSave;
 
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
@@ -266,6 +253,9 @@ signals:
     void editorExited();
     void editorTest();
     void editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave);
+
+    /** Ce signal sert à la gestion de l'intégrité des parcours */
+    void signalParcoursSave();
 };
 
 #endif // EDITEUR_H
