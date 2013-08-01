@@ -161,6 +161,9 @@ private slots:
     void slotEditorChangePageRequested(int);
     void slotCloseEditor();
 
+    void slotCheckBoxParametres_clicked(int);
+
+
 private:
     Ui::Editeur *ui;
     QMenu *m_menuListWidget;
@@ -248,6 +251,11 @@ private:
       * @see QSignalMapper.
       */
     void mapSignalBtnParcours();
+
+    /** Permet de mapper les signaux des checkBox de parametres. (pour factorisation)
+      * @see QSignalMapper.
+      */
+    void mapSignalCheckBoxParametres();
 
     void initMessagesAide();
 

@@ -45,7 +45,6 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideInfoPanel(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
-    //! @todo ne pas pousser si modif abuleduFile non acceptée
     ui->abuleduMediathequeGet->abeHideCloseBouton(true);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>, int)), this,
@@ -53,7 +52,6 @@ Editeur::Editeur(QWidget *parent) :
 
     connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this,
             SLOT(slotAfficheEtatPublication(int)), Qt::UniqueConnection);
-
 
     QShortcut *shortcutSupprimeChoix = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listWidgetImagesSelection, 0, 0, Qt::WidgetShortcut);
     connect(shortcutSupprimeChoix, SIGNAL(activated()), this, SLOT(slotSupprimerImage()), Qt::UniqueConnection);
@@ -78,11 +76,13 @@ Editeur::Editeur(QWidget *parent) :
     /* Affichage de la mediatheque par defaut */
     ui->tabWidgetImages->setCurrentWidget(ui->pageMediatheque);
 
-    QGraphicsScene* scene = new QGraphicsScene(this);
-    ui->gvPageVisio->setScene(scene);
+    ui->gvPageVisio->setScene(new QGraphicsScene(this));
 
     /* Mappage des signaux des 5 boutons de parcours */
     mapSignalBtnParcours();
+
+    /* Mappage des signaux des CheckBox parametres pour controler la navigation dans l'editeur */
+    mapSignalCheckBoxParametres();
 
     /* Gestion des messages d'aide [à effectuer avant le setCurrentIndex(...)] */
     initMessagesAide();
@@ -103,6 +103,7 @@ Editeur::Editeur(QWidget *parent) :
     connect(_assistantEtapes, SIGNAL(signalEtapeHasChanged(int)), this, SLOT(slotEditorChangePageRequested(int)), Qt::UniqueConnection);
     connect(_assistantEtapes, SIGNAL(signalQuitterRequested()), this, SLOT(slotCloseEditor()), Qt::UniqueConnection);
 
+    /* Ceci sert à mettre la page d'accueil par dféfaut au démarrage, donc initialisation du 1er message d'aide */
     slotEditorChangePageRequested(PageAccueil);
 }
 
@@ -149,9 +150,7 @@ void Editeur::slotEditorChangePageRequested(int page)
         _assistantEtapes->abeWidgetAssistantEnablePrecedent(true);
         _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
         _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->setEnabled(true);
-//        _assistantEtapes->abeWidgetAssistantEnableClick(false);
         ui->lbAide->setText(_messageAidePageParametres);
-
         qDebug() << "Le bouton prècédent est : " << _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages);
         break;
     case PageFin:
@@ -179,7 +178,7 @@ void Editeur::slotCloseEditor()
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     /* Remettre le titre par defaut du boutonModifier courant */
-    ui->btnModificationCourant->setText(trUtf8("&Editer le module en cours"));
+    ui->btnModificationCourant->setText(trUtf8("Editer le module en cours"));
     /* Remettre la page d'Accueil par defaut */
     ui->stackedWidgetEditeur->setCurrentIndex(PageAccueil);
     _assistantEtapes->abeWidgetAssistantSetEtapeCourante(PageAccueil);
@@ -220,6 +219,8 @@ void Editeur::controlNumberOfImages()
         qDebug() << "Bouton Suivant activé" ;
         _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
         _assistantEtapes->abeWidgetAssistantEnableClick(true);
+        /* Afin d'afficher le bouton comme il faut dans la riviere */
+        _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->click();
     }
     else
     {
@@ -343,7 +344,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
     }
 
     qDebug() << "Chemin d'enregistrement : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/data/images/" ;
-    if(_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" ))
+    if(_abuleduFile->resizeImage(&monFichier, 1024, _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/"))
     {
         /* je range le chemin de l'image dans ma liste (celui du fichier temp) */
         _listeFichiersImages << _abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg";
@@ -376,7 +377,7 @@ void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierAB
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
 {
-    if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     /* Si j'ai un item à cet endroit, j'appelle mon menu */
     if (ui->listWidgetImagesSelection->itemAt(pos) != NULL)
     {
@@ -852,6 +853,50 @@ void Editeur::sauvegarderParcours()
     m_editeurParcoursWidget->close();
 }
 
+void Editeur::mapSignalCheckBoxParametres()
+{
+    QSignalMapper *signalMapper = new QSignalMapper(this);
+    connect(signalMapper, SIGNAL(mapped(int)), SLOT(slotCheckBoxParametres_clicked(int)), Qt::UniqueConnection);
+
+    signalMapper->setMapping(ui->groupBoxSurvol,        1);
+    signalMapper->setMapping(ui->groupBoxClic,          2);
+    signalMapper->setMapping(ui->groupBoxDoubleClic,    3);
+    signalMapper->setMapping(ui->groupBoxParcours,      4);
+
+    connect(ui->groupBoxSurvol, SIGNAL(clicked(bool)), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->groupBoxClic, SIGNAL(clicked(bool)), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->groupBoxDoubleClic, SIGNAL(clicked(bool)), signalMapper, SLOT(map()), Qt::UniqueConnection);
+    connect(ui->groupBoxParcours, SIGNAL(clicked(bool)), signalMapper, SLOT(map()), Qt::UniqueConnection);
+}
+
+void Editeur::slotCheckBoxParametres_clicked(int a)
+{
+    if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ ;
+
+    /* Si n'importe lequel des exercices est checké sauf parcours == on dit oui */
+    if((ui->groupBoxSurvol->isChecked() || ui->groupBoxClic->isChecked() || ui->groupBoxDoubleClic->isChecked())
+            && !ui->groupBoxParcours->isChecked())
+    {
+        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(true);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(true);
+        _assistantEtapes->abeWidgetAssistantEnableClick(true);
+    }
+    else if(ui->groupBoxParcours->isChecked())
+    {
+        /* Controler les 5 boutons mais par précaution je desactive la page de sauvegarde */
+        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(false);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+
+    }
+    else
+    {
+        _assistantEtapes->abeWidgetAssistantGetButton(PageFin)->setEnabled(false);
+        _assistantEtapes->abeWidgetAssistantEnableSuivant(false);
+        _assistantEtapes->abeWidgetAssistantEnableClick(false);
+    }
+}
+
 void Editeur::mapSignalBtnParcours()
 {
     QSignalMapper *signalMapper = new QSignalMapper(this);
@@ -917,10 +962,8 @@ void Editeur::slotBtnParcours_clicked(const int &numBtn)
     connect(m_editeurParcoursWidget->getBtnSave(), SIGNAL(clicked()), this, SLOT(sauvegarderParcours()), Qt::UniqueConnection);
 
     /* On centre la fenetre sur l'ecran de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    m_editeurParcoursWidget->move((desktop_width-m_editeurParcoursWidget->width())/2, (desktop_height-m_editeurParcoursWidget->height())/2);
+    m_editeurParcoursWidget->move((QApplication::desktop()->width()  - m_editeurParcoursWidget->width())/2,
+                                  (QApplication::desktop()->height() - m_editeurParcoursWidget->height())/2);
 
     if(remplirGvParcours(m_numeroParcours)){
         if(m_localDebug)
@@ -1021,6 +1064,8 @@ void Editeur::on_btnModificationCourant_clicked()
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
     setModeModificationAbe(true);
+    slotEditorChangePageRequested(PageGestionImages);
+//    _assistantEtapes->abeWidgetAssistantGetButton(PageGestionImages)->click();
     slotLoadUnit();
 }
 
@@ -1389,4 +1434,3 @@ void Editeur::slotAfficheEtatPublication(const int &code)
         msgEnregistrement->show();
     }
 }
-
