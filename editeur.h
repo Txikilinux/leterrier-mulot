@@ -44,7 +44,6 @@
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "ui_editeur.h"
-#include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
 #include "abuledutools.h"
 #include "abuleduwidgetassistantetapesv1.h"
@@ -57,13 +56,18 @@ class Editeur : public QWidget
 {
     Q_OBJECT
 
-    /* Enum pour les pages afin de ne pas se tromper de numero dans le code  */
+    /* Enum pour les pages afin de ne pas se tromper de numero dans le code
+     * Attention, ne pas toucher la numérotation des pageEtape*
+     */
     enum Pages {
-        PageAccueil         = 0x0,
-        PageGestionImages   = 0x1,
-        PageParametres      = 0x2,
-        PageFin             = 0x3,
-        PageVisio           = 0x5
+        PageEtapeAccueil         = 0x0,
+        PageEtapeGestionImages   = 0x1,
+        PageEtapeParametres      = 0x2,
+        PageEtapeFin             = 0x3,
+
+        PageParcours        = 0x4,
+        /* @todo page MediathequePush */
+        PageVisio           = 0x6
     };
 
 public:
@@ -93,12 +97,6 @@ private slots:
 
     /** Gère l'appui sur les boutons de parcours */
     void slotBtnParcours_clicked(const int&);
-
-    /** Réinitialise l'editeur de parcours */
-    void reinitialiserGvParcours();
-
-    /** Sauvegarde le parcours conçu avec l'éditeur de parcours */
-    void sauvegarderParcours();
 
     /** Gère la pose des masques dans l'éditeur de parcours */
     void masquePoseParcours(MasqueDeplaceSouris*);
@@ -152,6 +150,17 @@ private slots:
 
     /** Sert au controle de l'intégrité des parcours */
     bool slotParcoursSave();
+
+    void slotSetNombreMasquesParcours(int);
+
+    /** Réinitialise l'editeur de parcours */
+    void on_btnResetParcours_clicked();
+
+    /** Sauvegarde le parcours conçu avec l'éditeur de parcours */
+    void on_btnSaveParcours_clicked();
+
+    void on_sbParcoursMasque_valueChanged(int arg1);
+
 private:
     Ui::Editeur *ui;
     QMenu *m_menuListWidget;
@@ -161,7 +170,7 @@ private:
 
     QString m_lastOpenDir;
 
-    int m_opt_nbMasquesChoisisParcours;
+    int _OPT_nbMasquesChoisisParcours;
     int m_opt_nbMasquesLargeur;
     int m_opt_nbMasquesHauteur;
     int m_numeroParcours;
@@ -187,13 +196,13 @@ private:
     MasqueDeplaceSouris             *m_masque;
     QList<MasqueDeplaceSouris *>    m_listeMasques;
     QList<MasqueDeplaceSouris *>    m_listeMasquesParcours;
-    EditeurParcoursWidget           *m_editeurParcoursWidget;
 
     QSharedPointer<AbulEduFileV1> _abuleduFile;
 
     QString _messageAidePageAccueil;
     QString _messageAidePageGestionImages;
     QString _messageAidePageParametres;
+    QString _messageAidePageParcours;
     QString _messageAidePageFin;
     QString _messageAidePageVisio;
 
