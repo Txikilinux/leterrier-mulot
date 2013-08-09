@@ -240,7 +240,8 @@ void AbstractExercice::slotInitQuestionEntered()
     if (!_exerciceEnCours)
     {
         getAbeExerciceMessageV1()->setVisible(false);
-        _itemImage = new QGraphicsPixmapItem(0, _aireTravail->scene());
+        _itemImage = new QGraphicsPixmapItem();
+        _aireTravail->scene()->addItem(_itemImage);
         _itemImage->setPixmap(_listeImage.takeAt(0));
         _itemImage->setVisible(false);
 
