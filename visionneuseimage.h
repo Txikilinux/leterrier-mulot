@@ -26,6 +26,16 @@
 #include <QMainWindow>
 #include <QPrinter>
 #include <QtGui>
+#include <QLabel>
+#include <QScrollArea>
+#include <QFileDialog>
+#include <QAction>
+#include <QMessageBox>
+#include <QPrintDialog>
+#include <QMenu>
+#include <QMenuBar>
+#include <QScrollBar>
+
 
 class QAction;
 class QLabel;
