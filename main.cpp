@@ -36,6 +36,10 @@ int main(int argc, char *argv[])
     translator.load("leterrier-mulot_"+locale, "./conf/lang");
     a.installTranslator(&translator);
 
+#if defined(Q_OS_ANDROID)
+    MainWindow *w  = new MainWindow(0);
+    w->showFullScreen();
+#else
     MainWindow *w;
 
     /// Splashscreen
@@ -45,6 +49,7 @@ int main(int argc, char *argv[])
     splash->setMainWindow(w);
     //pour les developpeurs presses, remplacer le 10000 par 1000
     splash->launch(1000);
+#endif
 
     //Permet de detecter qu'il n'y a aucune activite et lance le mode "demo" du logiciel
     //note: expérimental Eric S. 2012 en attendant de voir, je teste dans ce logiciel
