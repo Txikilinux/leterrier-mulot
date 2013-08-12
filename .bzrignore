@@ -1,16 +1,7 @@
-./exemples
-./lib/abuledufilev1
-./lib/abuleduapplicationv1
-./lib/abuleduconstantesv1
-./lib/abuleduflatboutonv1
-./lib/abuledugraphicsmenuv1
-./lib/abuledugraphicmenuv1
-./lib/abuledulabelv1
-./lib/maia
-./lib/abuledunetworkaccessmanagerv1
-./lib/abuleduidentitesv1
-./lib/abuledumessageboxv1
-./lib/abuleduvirtualkeyboardv1
+./exemples/*
+./lib/*
+./build/*
+
 moc*
 qrc*
 ui_*
@@ -18,3 +9,5 @@ debug
 release
 Makefile
 *.pro.user
+
+
