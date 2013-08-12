@@ -23,6 +23,16 @@
 
 #include "editeur.h"
 
+
+/**   @todo
+
+    Suppression des structures de données volatiles
+    Utilisation des QSettings à la sauvegarde directement.
+    Enregistrement du 0 si < 10 (pour le QSetting)
+
+*/
+
+
 Editeur::Editeur(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Editeur)
@@ -398,8 +408,6 @@ void Editeur::slotBtnParcours_clicked(const int &numBtn)
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ <<" "<< numBtn;
 
     m_numeroParcours = numBtn;
-
-    qDebug() << "J'appel la page Parcours : " << PageParcours;
     slotEditorChangePageRequested(PageParcours);
 
     if(remplirGvParcours(m_numeroParcours)){
@@ -414,7 +422,6 @@ void Editeur::slotBtnParcours_clicked(const int &numBtn)
 
     /* Petite protection, le nb de masque choisi ne peut pas etre superieur au nb total de masque */
     ui->sbParcoursMasque->setMaximum(ui->spinBoxParcoursMasqueHauteur->value() * ui->spinBoxParcoursMasquesLargeur->value());
-
 }
 
 bool Editeur::remplirGvParcours(const int &numeroParcours)
@@ -469,75 +476,70 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
     //                                             (largeurMasque * m_opt_nbMasquesLargeur) + m_editeurParcoursWidget->getGraphicsView()->verticalScrollBar()->width(),
     //                                             (hauteurMasque * m_opt_nbMasquesHauteur) + m_editeurParcoursWidget->getGraphicsView()->horizontalScrollBar()->height() + (m_editeurParcoursWidget->getBoutonHeight()) *2);
 
+
     if(chargerPositionMasque(numeroParcours)){
-        qDebug() << "On a reussi a charger le parcours n: " << numeroParcours;
+
+        ui->sbParcoursMasque->setValue(positionMasquesParcours.count());
+
+        /* Parcours de la QMap positionMasqueParcours */
+        int positionDepart, positionArrivee = 0;
+        QList<int> positionParcours;
+
+        QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
+        if(!positionMasquesParcours.isEmpty()) /* Condition de garde si on reinitialise un parcours en mode modification */
+        {
+            while (i != positionMasquesParcours.constEnd())
+            {
+                if(m_localDebug) qDebug() << i.key() << " " << i.value();
+                if (i.key() == "MasqueDepart")
+                    positionDepart = i.value();
+                else if (i.key() == "MasqueArrivee")
+                    positionArrivee = i.value();
+                else
+                    positionParcours << i.value();
+
+                i ++;
+            }
+            if (m_localDebug)
+            {
+                qDebug() << "La liste des positions normales : " << positionMasquesParcours;
+                qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
+                qDebug() << "Position Parcours               : " << positionParcours;
+            }
+
+            /*
+                     * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
+                     */
+            /* depart */
+            m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
+            m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
+            m_listeMasquesParcours << m_listeMasques.at(positionDepart);
+
+            /* parcours */
+            while(!positionParcours.isEmpty())
+            {
+                m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
+                m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
+                m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
+                positionParcours.removeFirst();
+            }
+
+            /* arrivee */
+            m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
+            m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
+            m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
+
+            /* Et j'active le menu Sauvegarder */
+            ui->btnSaveParcours->setEnabled(true);
+            ui->sbParcoursMasque->setEnabled(false);
+        }
+        return true;
     }
-    else
-        qDebug() << "On a pas reussi a charger le parcours n: " << numeroParcours;
-    //    if(chargerPositionMasque(numeroParcours)){
-
-    //        ui->sbParcoursMasque->setValue(positionMasquesParcours.count());
-
-    //        /* Parcours de la QMap positionMasqueParcours */
-    //        int positionDepart, positionArrivee = 0;
-    //        QList<int> positionParcours;
-
-    //        QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
-    //        if(!positionMasquesParcours.isEmpty()) /* Condition de garde si on reinitialise un parcours en mode modification */
-    //        {
-    //            while (i != positionMasquesParcours.constEnd())
-    //            {
-    //                if(m_localDebug) qDebug() << i.key() << " " << i.value();
-    //                if (i.key() == "MasqueDepart")
-    //                    positionDepart = i.value();
-    //                else if (i.key() == "MasqueArrivee")
-    //                    positionArrivee = i.value();
-    //                else
-    //                    positionParcours << i.value();
-
-    //                i ++;
-    //            }
-    //            if (m_localDebug)
-    //            {
-    //                qDebug() << "La liste des positions normales : " << positionMasquesParcours;
-    //                qDebug() << "Position Depart/Arrivee         : " << positionDepart << "/" << positionArrivee;
-    //                qDebug() << "Position Parcours               : " << positionParcours;
-    //            }
-
-    //            /*
-    //                 * Ici on a toutes les positions necessaires, plus qu'à les mettre dans l'ordre : depart, parcours, arrivee
-    //                 */
-    //            /* depart */
-    //            m_listeMasques.at(positionDepart)->setColor(QColor(Qt::green));
-    //            m_listeMasques.at(positionDepart)->setProperty("Role", trUtf8("Depart"));
-    //            m_listeMasquesParcours << m_listeMasques.at(positionDepart);
-
-    //            /* parcours */
-    //            while(!positionParcours.isEmpty())
-    //            {
-    //                m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
-    //                m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
-    //                m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
-    //                positionParcours.removeFirst();
-    //            }
-
-    //            /* arrivee */
-    //            m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
-    //            m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
-    //            m_listeMasquesParcours << m_listeMasques.at(positionArrivee);
-
-    //            /* Et j'active le menu Sauvegarder */
-    //            ui->btnSaveParcours->setEnabled(true);
-    //            ui->sbParcoursMasque->setEnabled(false);
-    //        }
-    //        return true;
-    //    }
-    //    else{
-    //        ui->btnSaveParcours->setEnabled(false);
-    //        ui->sbParcoursMasque->setEnabled(true);
-    //        return true;
-    //    }
-    //    return false;
+    else{
+        ui->btnSaveParcours->setEnabled(false);
+        ui->sbParcoursMasque->setEnabled(true);
+        return false;
+    }
 }
 
 void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
@@ -781,99 +783,6 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << numeroParcours;
 
-    /* Controle parcours deja edite = Chargement par _parametresParcours* */
-    switch(numeroParcours)
-    {
-    case 1:
-        if(m_localDebug) qDebug() << "Controle parcours 1";
-        if(!m_parametresParcours1.isEmpty())
-        {
-            if(m_localDebug) qDebug() << "Le parcours 1 a deja etait fait";
-            _OPT_nbMasquesChoisisParcours = m_parametresParcours1.count();
-            //            m_editeurParcoursWidget->setNombreMasqueParcours(_OPT_nbMasquesChoisisParcours);
-            //            m_editeurParcoursWidget->getSpinBoxMasque()->setValue(_OPT_nbMasquesChoisisParcours);
-            QMap<QString, QVariant>::const_iterator i = m_parametresParcours1.begin();
-            while (i != m_parametresParcours1.constEnd()) {
-                positionMasquesParcours.insert(i.key(), i.value().toInt());
-                ++i;
-            }
-            return true;
-        }
-        if(m_localDebug) qDebug() << "Parcours 1 vide";
-        return false;
-        break;
-    case 2:
-        if(m_localDebug) qDebug() << "Controle parcours 2";
-        if(!m_parametresParcours2.isEmpty())
-        {
-            if(m_localDebug) qDebug() << "Le parcours 2 a deja etait fait";
-            _OPT_nbMasquesChoisisParcours = m_parametresParcours2.count();
-            //            m_editeurParcoursWidget->getSpinBoxMasque()->setValue(_OPT_nbMasquesChoisisParcours);
-            QMap<QString, QVariant>::const_iterator i = m_parametresParcours2.begin();
-            while (i != m_parametresParcours2.constEnd()) {
-                positionMasquesParcours.insert(i.key(), i.value().toInt());
-                ++i;
-            }
-            return true;
-        }
-        if(m_localDebug) qDebug() << "Parcours 2 vide";
-        return false;
-        break;
-    case 3:
-        if(m_localDebug) qDebug() << "Controle parcours 3";
-        if(!m_parametresParcours3.isEmpty())
-        {
-            if(m_localDebug) qDebug() << "Le parcours 3 a deja etait fait";
-            _OPT_nbMasquesChoisisParcours = m_parametresParcours3.count();
-            //            m_editeurParcoursWidget->getSpinBoxMasque()->setValue(_OPT_nbMasquesChoisisParcours);
-            QMap<QString, QVariant>::const_iterator i = m_parametresParcours3.begin();
-            while (i != m_parametresParcours3.constEnd()) {
-                positionMasquesParcours.insert(i.key(), i.value().toInt());
-                ++i;
-            }
-            return true;
-        }
-        if(m_localDebug) qDebug() << "Parcours 3 vide";
-        return false;
-        break;
-    case 4:
-        if(m_localDebug) qDebug() << "Controle parcours 4";
-        _OPT_nbMasquesChoisisParcours = m_parametresParcours4.count();
-        //        m_editeurParcoursWidget->getSpinBoxMasque()->setValue(_OPT_nbMasquesChoisisParcours);
-        if(!m_parametresParcours4.isEmpty())
-        {
-            if(m_localDebug) qDebug() << "Le parcours 4 a deja etait fait";
-            QMap<QString, QVariant>::const_iterator i = m_parametresParcours4.begin();
-            while (i != m_parametresParcours4.constEnd()) {
-                positionMasquesParcours.insert(i.key(), i.value().toInt());
-                ++i;
-            }
-            return true;
-        }
-        if(m_localDebug) qDebug() << "Parcours 4 vide";
-        return false;
-        break;
-    case 5:
-        if(m_localDebug) qDebug() << "Controle parcours 5";
-        _OPT_nbMasquesChoisisParcours = m_parametresParcours5.count();
-        //        m_editeurParcoursWidget->getSpinBoxMasque()->setValue(_OPT_nbMasquesChoisisParcours);
-        if(!m_parametresParcours5.isEmpty())
-        {
-            if(m_localDebug) qDebug() << "Le parcours 5 a deja etait fait";
-            QMap<QString, QVariant>::const_iterator i = m_parametresParcours5.begin();
-            while (i != m_parametresParcours5.constEnd()) {
-                positionMasquesParcours.insert(i.key(), i.value().toInt());
-                ++i;
-            }
-            return true;
-        }
-        if(m_localDebug) qDebug() << "Parcours 5 vide";
-        return false;
-        break;
-    }
-
-    /* Chargement par QSetting */
-    qDebug() << "Nous Allons voir le QSetting";
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroParcours));
@@ -881,10 +790,13 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
     {
         positionMasquesParcours.insert(parametres.childKeys().at(i),parametres.value(parametres.childKeys().at(i)).toInt());
     }
-    if(positionMasquesParcours.isEmpty())
-        return false;
-    else
+    if(!positionMasquesParcours.isEmpty())
         return true;
+    else
+    {
+        qDebug() << __FUNCTION__ << " Aucune entree dans le QSettings. ";
+        return false;
+    }
 
 }
 
@@ -949,22 +861,22 @@ void Editeur::on_btnSaveParcours_clicked()
     qDebug() << "A LA SauveGarde" << ui->gv_editeurParcours->rect();
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " parcours :" << m_numeroParcours;
 
-        switch (m_numeroParcours)
+    switch (m_numeroParcours)
+    {
+    case 1:
+        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
+        m_parametresParcours1.clear();
+        m_parametresParcours1.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        m_parametresParcours1.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        /* Il reste que des masques "Parcours" dans la liste */
+        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
         {
-        case 1:
-            /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
-            m_parametresParcours1.clear();
-            m_parametresParcours1.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
-            m_parametresParcours1.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
-            /* Il reste que des masques "Parcours" dans la liste */
-            if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
-            for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-            {
-                m_parametresParcours1.insert("MasqueParcours" + QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
-            }
-            ui->btnParcours1->setStyleSheet("color : green;");
-            break;
+            m_parametresParcours1.insert("MasqueParcours" + QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
+        ui->btnParcours1->setStyleSheet("color : green;");
+        break;
+    }
 
     //    case 2:
     //        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
