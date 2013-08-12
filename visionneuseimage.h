@@ -1,4 +1,5 @@
 /** Classe VisionneuseImage
+  * @file visionneuseimage.h
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
@@ -25,6 +26,16 @@
 #include <QMainWindow>
 #include <QPrinter>
 #include <QtGui>
+#include <QLabel>
+#include <QScrollArea>
+#include <QFileDialog>
+#include <QAction>
+#include <QMessageBox>
+#include <QPrintDialog>
+#include <QMenu>
+#include <QMenuBar>
+#include <QScrollBar>
+
 
 class QAction;
 class QLabel;

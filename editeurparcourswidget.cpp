@@ -1,7 +1,7 @@
 /** Classe EditeurParcoursWidget
   * @file editeurparcourswidget.cpp
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012/2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -22,30 +22,27 @@
 #include "editeurparcourswidget.h"
 #include "ui_editeurparcourswidget.h"
 
-EditeurParcoursWidget::EditeurParcoursWidget(QWidget *parent) :
+EditeurParcoursWidget::EditeurParcoursWidget(const int& numeroParcours, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::EditeurParcoursWidget)
 {
     ui->setupUi(this);
     m_localDebug = true;
 
+    m_numeroParcours = numeroParcours;
+
     m_scene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(m_scene);
+    m_graphicsView = ui->graphicsView;
+    m_graphicsView->setScene(m_scene);
+
+    /* Pour ne pas avoir la croix de fermeture dans la barre de fenetre */
+    setWindowFlags(Qt::WindowMaximizeButtonHint);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 EditeurParcoursWidget::~EditeurParcoursWidget()
 {
     delete ui;
-}
-
-QGraphicsScene* EditeurParcoursWidget::getScene() const
-{
-    return m_scene;
-}
-
-QGraphicsView* EditeurParcoursWidget::getGraphicsView() const
-{
-    return ui->graphicsView;
 }
 
 int EditeurParcoursWidget::getBoutonHeight() const
@@ -68,17 +65,12 @@ QPushButton* EditeurParcoursWidget::getBtnSave() const
     return ui->btnSave;
 }
 
-void EditeurParcoursWidget::connectBtnSave(bool enable)
+void EditeurParcoursWidget::connectBtnSave(const bool &enable)
 {
     if(enable)
         ui->btnSave->setEnabled(true);
     else
         ui->btnSave->setEnabled(false);
-}
-
-void EditeurParcoursWidget::closeEvent(QCloseEvent *event)
-{
-    emit signalCloseEvent(event);
 }
 
 void EditeurParcoursWidget::on_btnReset_clicked()

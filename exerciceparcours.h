@@ -1,9 +1,8 @@
 /** Classe ExerciceParcours
+  * @file exerciceparcours.h
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
-  *
-  *
   *
   * This program is free software; you can redistribute it and/or modify
   * it under the terms of the GNU General Public License as published by
@@ -19,200 +18,46 @@
   * with this program. If not, see <http://www.gnu.org/licenses/>.
   */
 
-#ifndef EXERCICEPARCOURS_H
-#define EXERCICEPARCOURS_H
+#ifndef ExerciceParcours_H
+#define ExerciceParcours_H
 
-#include <QGraphicsProxyWidget>
-#include "abuleduetiquettesv1.h"
-#include "abuleducommonstatesv1.h"
-#include "masquedeplacesouris.h"
+#include "abstractexercice.h"
 
-class ExerciceParcours : public AbulEduCommonStatesV1
+class ExerciceParcours : public AbstractExercice
 {
-    Q_OBJECT
 
 public:
-    /** Constructeur de la classe ExerciceParcours
-      * @param QWidget *parent = 0, le parent de cet objet, instancié par défaut à 0 (aucun objet)
-      * @param QString theme = "" , le chemin vers le thème utilisé (abe), instancié à vide ("")
-      */
-    ExerciceParcours(QWidget *parent = 0, QString theme ="");
-
-    /** Destructeur de la classe ExerciceClic */
+    ExerciceParcours(QWidget *parent, QString theme);
     ~ExerciceParcours();
 
-protected:
-    /** Fonction qui doit être implémentée pour cause d'héritage. Ici pas de vraie vérification, et pas d'erreur possible
-      * @todo créer une évaluation de l'activité, pourquoi pas en fonction du temps mis */
-    inline int verifieReponse(){return 0;}
+private slots:
+    /** Méthode héritée @see AbulEduCommonStatesV1 */
+    void slotQuestionEntered();
 
-    /** Fonction qui doit être implémentée pour cause d'héritage. Ici pas de bonne réponse à afficher */
-    inline int donneReponse() {return -1;}
+    /** Méthode héritée @see AbstractExercice */
+    void slotCacheMasque();
 
-private:
-
-    AbulEduEtiquettesV1 *gv_AireDeJeu;
-    QGraphicsProxyWidget *proxy;
-    QWidget *m_parent;
-    bool m_localDebug;
-    bool m_exerciceEnCours;
-
-    // Paramètres Editeur
-    QSettings *m_parametres;
-    int opt_timerSuivant;
-    int opt_nbMasquesChoisis;
-    float opt_nbMasquesLargeur;
-    float opt_nbMasquesHauteur;
-
-    QString m_theme;
-    QString cheminConf;
-    QString cheminImage;
-
-    QPixmap m_image;
-    QGraphicsPixmapItem *m_itemImage;
-    QList<QPixmap> m_listeImage;        // ma liste d'images (choisies aleatoirement)
-    int m_nbImage;                      // le nombre d'image = le nombre d'exercice
-    int m_nbMasquesInteractifs;         // = à 7
-    QStringList m_listeFichiers;        // la liste des fichiers présents dans le dossier pack image
-
-    QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
-    QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
-    MasqueDeplaceSouris *m_masqueDepart;
-    MasqueDeplaceSouris *m_masqueArrivee;
-    MasqueDeplaceSouris *m_masqueParcours;
-    MasqueDeplaceSouris *m_masque;
-    QSize m_taille;
-
-    QList<int> positionMasquesParcours;
-
-    // Chronometre
-    QTime *m_chronometre;
-        float m_tempsQuestion1;
-        float m_tempsQuestion2;
-        float m_tempsQuestion3;
-        float m_tempsQuestion4;
-        float m_tempsQuestion5;
-        int m_tempsTotal;
-
-    QTimer *m_timer;
-    bool onPeutMettreEnPause;
-    QLabel *m_labelImagePause;
-    QLabel *m_labelTextePause;
-
-    // jlf 2012/09/29
-    // Dimensions de l'aire de jeu
-    QSize m_tailleAireDejeu;
-
-    AbulEduMessageBoxV1* m_messageBox;
-    QKeyEvent *keySpace; /** C'est la touche espace, pour la pause */
-
-    /** Redimensionne la consigne */
-    void redimensionnerConsigne();
-
-    /** Redimensionne l'image par rapport à sa largeur ou sa hauteur.
-      * @obsolete mais conserver au cas où
-      */
-    void redimensionnerImage();
-
-    /** Redimensionne l'image (2e méthode) */
-    void redimensionnerImage2();
-
-    /** Charge les options contenues dans le fichier de configuration (parametres.ini) */
-    void chargerOption();
+    /** Méthode héritée @see AbulEduCommonStatesV1 */
+    void slotAide();
 
     /** Charge la position des masques contenues dans le fichier de configuration (parametres.ini)
       * @param int numeroQuestion, le numero de la question afin de charger le bon parcours
       */
-    void chargerPositionMasque(int numeroQuestion);
+    void chargerPositionMasque(const int &numeroQuestion);
 
-    /** Méthode qui filtre les évènement
-      * @param QObject *obj, un pointeur sur l'objet auteur de l'évènement
-      * @param QEvent *ev  , un pointeur sur l'évènement filtré
-      * @brief Capture l'appui sur la barre espace lorsque le booléen "onPeutMettreEnPause" est à "true".
-      *        C'est le cas lorsque tous les masques sont découvert.
-      */
-    bool eventFilter(QObject *obj, QEvent *ev);
+private:
+    QList<int> _listePositionMasquesParcours;
+    QList<MasqueDeplaceSouris *> _listeMasquesParcours;
 
-    void pause();
+    int NB_MASQUESATTENDUS;
+    int NB_MASQUESREELS;
 
-private slots:
-    /** Méthode héritée @see AbulEduCommonStatesV1 */
-    void slotSequenceEntered();
+    MasqueDeplaceSouris *_masqueDepart;
+    MasqueDeplaceSouris *_masqueArrivee;
+    MasqueDeplaceSouris *_masqueParcours;
+    MasqueDeplaceSouris *_masque;
+    QSize _taille;
 
-    /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Affichage de l'aide
-      */
-    void slotAide();
-
-    /** Méthode appelée à la fermeture de l'aire
-      * @see AbulEduMessageBoxV1::signalAbeMessageBoxCloseOrHide()
-      */
-    void slotFermetureAide();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Mettre tout ce qui est commun à chaque question
-      *        Aller chercher le pack image
-      *        Choisir 5 images au hasard dans le pack
-      *        Condition de garde .abe
-      */
-    void slotRealisationExerciceEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Affichage de l'image
-      *        Calcul et mise en place des masques
-      */
-    void slotInitQuestionEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Choix aléatoire du positionnement des masques interactifs
-      *        Connexion du slot cacheMasque sur chaque masque interactif
-      */
-    void slotQuestionEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1 */
-    void slotFinQuestionEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1 */
-    void slotFinVerificationQuestionEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1
-      * @brief Appeler pour appuyer automatiquement sur le bouton suivant
-      */
-    void slotAfficheVerificationQuestionEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1
-      * @todo mettre en place une boucle pour l'affichage des tetes en fonct° des résultats
-      */
-    void slotBilanExerciceEntered();
-
-    /** Méthode héritée @see AbulEduCommonStatesV1 */
-    void slotQuitter();
-
-    /** Méthode qui redimmensionne tous les éléments graphiques les uns par rapport aux autres */
-    void setDimensionsWidgets();
-
-    /** Méthode appelée à chaque interaction avec un masque interactif
-      * @brief A chaque passage sur un masque interactif, on décremente le nombre de masques interactifs.
-      *        Dès que les masques interactifs sont tous cliqués, on affiche l'image.
-      *        On affiche la tête dans la boiteTete.
-      *        On vide m_listeMasquesFixes
-      */
-    void slotCacheMasque();
-
-    /** Méthode qui emet le signal appuiSuivant
-      * @brief Permet donc d'activer (de simuler) l'appui sur le bouton suivant de la telecommande
-      */
-    void slotAppuiAutoSuivant();
-
-    /** Cette méthode emet le signal appuiVerifier
-      * @brief Permet donc d'activer (de simuler) l'appui sur le bouton verifier de la telecommande
-      */
-    void slotAppuiAutoVerifier();
-
-signals:
-    void exerciceExited();
-    void appuiSuivant();
-    void appuiVerifier();
 };
 
-#endif // EXERCICEPARCOURS_H
+#endif // ExerciceParcours_H

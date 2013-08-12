@@ -1,7 +1,7 @@
 /** Classe EditeurParcoursWidget
   * @file editeurparcourswidget.h
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012/2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -37,20 +37,31 @@ class EditeurParcoursWidget : public QWidget
     
 public:
     /** Constructeur de la classe EditeurParcoursWidget */
-    explicit EditeurParcoursWidget(QWidget *parent = 0);
+    explicit EditeurParcoursWidget( const int &numeroParcours, QWidget *parent = 0);
 
     /** Destructeur de la classe EditeurParcoursWidget */
     ~EditeurParcoursWidget();
-    
+
+    /** Permet d'activer/desactiver le bouton sauvegarder
+      * @param bool enable, true = bouton activé, false = bouton desactiver
+      */
+    void connectBtnSave(const bool& enable);
+
+    /* GETTERS */
     /** Retourne la QGraphicsScene contenue dans la QGraphicsView
       * @return QGraphicsScene *, un pointeur sur la scene
       */
-    QGraphicsScene *getScene() const;
+    QGraphicsScene *getScene() const{ return m_scene;}
 
     /** Retourne la QGraphicsView
       * @return QGraphicsView *, un pointeur sur la vue
       */
-    QGraphicsView *getGraphicsView() const;
+    QGraphicsView *getGraphicsView() const{ return m_graphicsView;}
+
+    /** Retourne le numero du parcours en cours d'edition
+      * @return int, le numero du parcours
+      */
+    int getNumeroParcours() const{ return m_numeroParcours;}
 
     /** Retourne le bouton sauvegarder
       * @return QPushButton *, un pointeur sur le bouton sauvegarder
@@ -72,32 +83,19 @@ public:
       */
     int getBoutonWidth() const;
 
-    /** Permet d'activer/desactiver le bouton sauvegarder
-      * @param bool enable, true = bouton activé, false = bouton desactiver
-      */
-    void connectBtnSave(bool enable);
 
 private:
-    Ui::EditeurParcoursWidget *ui;
-    QGraphicsScene *m_scene;
-
-    bool m_localDebug;
+    Ui::EditeurParcoursWidget   *ui;
+    QGraphicsScene              *m_scene;
+    QGraphicsView               *m_graphicsView;
+    bool                        m_localDebug;
+    int                         m_numeroParcours;
 
 private slots:
-    /** Méthode appelée lors de fermeture de la fenetre
-      * @param QCloseEvent *event, un pointeur sur l'évènement fermeture
-      */
-    void closeEvent(QCloseEvent *event);
 
     /** Méthode appelée lors d'un click sur le bouton réinitialiser
       */
     void on_btnReset_clicked();
-
-signals:
-    /** Signal émis lors de la fermeture de la fenetre
-      * @param QCloseEvent *event, un pointeur sur l'évènement fermeture
-      */
-    void signalCloseEvent(QCloseEvent *event);
 };
 
 #endif // EDITEURPARCOURSWIDGET_H

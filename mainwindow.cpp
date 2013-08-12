@@ -1,6 +1,8 @@
 /** Classe MainWindow
+  * @file mainwindow.cpp
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
+  * @author 2012/2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -22,7 +24,6 @@
 #include "mainwindow.h"
 #include "editeur.h"
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -30,19 +31,19 @@ MainWindow::MainWindow(QWidget *parent) :
     m_localDebug = true;
     m_isDemoAvailable = true;
 
-    /// Langue et Translator
-    QString locale = QLocale::system().name().section('_', 0, 0);
+//    /// Langue et Translator
+//    QString locale = QLocale::system().name().section('_', 0, 0);
 
-    //Un 1er qtranslator pour prendre les traductions QT Systeme
-    //c'est d'ailleur grace a ca qu'on est en RTL
-    qtTranslator.load("qt_" + locale,
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    abeApp->installTranslator(&qtTranslator);
+//    //Un 1er qtranslator pour prendre les traductions QT Systeme
+//    //c'est d'ailleur grace a ca qu'on est en RTL
+//    qtTranslator.load("qt_" + locale,
+//                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+//    abeApp->installTranslator(&qtTranslator);
 
-    //Et un second qtranslator pour les traductions specifiques du
-    //logiciel
-    myappTranslator.load("mulot_" + locale, "lang");
-    abeApp->installTranslator(&myappTranslator);
+//    //Et un second qtranslator pour les traductions specifiques du
+//    //logiciel
+//    myappTranslator.load("mulot_" + locale, "lang");
+//    abeApp->installTranslator(&myappTranslator);
 
     ui->setupUi(this);
     creeMenuLangue();
@@ -53,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
-    /// Gestion bulles page d'accueil
+    /* Gestion bulles page d'accueil */
     m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol"));
     m_texteBulles.insert(1, trUtf8("Clic"));
@@ -64,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduaccueil = new AbulEduPageAccueilV1(&m_texteBulles, ui->fr_principale);
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
 
-    /// Centrage de la fenetre sur le bureau de l'utilisateur
+    /* Centrage de la fenetre sur le bureau de l'utilisateur */
     QDesktopWidget *widget = QApplication::desktop();
     int desktop_width = widget->width();
     int desktop_height = widget->height();
@@ -80,13 +81,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)),ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)));
+    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
 
 
     m_numberExoCalled = -1;
 
-    /// Utilisation de la boite aPropos
+    /* Utilisation de la boite aPropos */
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
@@ -97,7 +98,6 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
     //        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
 
-    /// Ajout de l'anglais & français dans le menu langues
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
     ui->editeur->abeEditeurSetMainWindow(this);
@@ -119,7 +119,7 @@ void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
 
 MainWindow::~MainWindow()
 {
-    if (m_localDebug) qDebug() << "##########################  MainWindow::~MainWindow()";
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
     delete ui;
 }
 
@@ -144,7 +144,7 @@ void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
     {
         ui->stCentral->setCurrentWidget(ui->fr_principale);
     }
-    if (m_localDebug) qDebug() << trUtf8("Nom du fichier passé :") << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+    if (m_localDebug) qDebug() << "Nom du fichier abe :" << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
     abeAiguillage();
 }
 
@@ -155,7 +155,6 @@ void MainWindow::slotDemo()
     }
     if (!m_exerciceEnCours && m_isDemoAvailable)
     {
-        qDebug() << "Affichage des bulles ";
         m_abuleduaccueil->abePageAccueilMontreBulles(true);
         foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
         {
@@ -219,9 +218,9 @@ void MainWindow::abeAiguillage()
         ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); /* cache la barre de menu en mode exercice */
         m_exerciceEnCours = true;
-        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        setFixedSize(this->width(), this->height()); /* redimensionnement interdit */
         installEventFilter(s);
         break;
     }
@@ -231,9 +230,9 @@ void MainWindow::abeAiguillage()
         ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide();
         m_exerciceEnCours = true;
-        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        setFixedSize(this->width(), this->height());
         installEventFilter(c);
         break;
     }
@@ -243,9 +242,9 @@ void MainWindow::abeAiguillage()
         ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide();
         m_exerciceEnCours = true;
-        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        setFixedSize(this->width(), this->height());
         installEventFilter(p);
         break;
     }
@@ -255,9 +254,9 @@ void MainWindow::abeAiguillage()
         ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); // cache la barre de menu en mode exercice
+        m_abuleduaccueil->abePageAccueilGetMenu()->hide();
         m_exerciceEnCours = true;
-        setFixedSize(this->width(), this->height()); // redimensionnement interdit
+        setFixedSize(this->width(), this->height());
         installEventFilter(d);
         break;
     }
@@ -269,7 +268,7 @@ void MainWindow::abeAiguillage()
 
 void MainWindow::exerciceExited()
 {
-    if (m_localDebug) qDebug()<<"Exercice Exited";
+    if (m_localDebug) qDebug()<< __PRETTY_FUNCTION__;
     ui->stCentral->setCurrentWidget(ui->fr_principale);
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
@@ -332,11 +331,11 @@ void MainWindow::on_action_Double_Clic_triggered()
 void MainWindow::on_actionEditeur_triggered()
 {
     ui->editeur->abeEditeurSetMainWindow(this);
-    if (!m_exerciceEnCours) // si on est en exercice pas d'éditeur
+    if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
     }
-    else // On affiche un petit message...
+    else /* On affiche un petit message... */
     {
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
@@ -368,7 +367,7 @@ void MainWindow::changeEvent(QEvent *e)
 
 void MainWindow::slotSessionAuthenticated(bool enable)
 {
-    if (m_localDebug) qDebug() << "MainWindow::slotSessionAuthenticated" << enable;
+    if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << enable;
     if(enable) {
         abeApp->getAbeNetworkAccessManager()->abeSSOLogin();
     }
@@ -384,7 +383,7 @@ void MainWindow::slotSessionAuthenticated(bool enable)
 
 void MainWindow::setTitle(int authStatus)
 {
-    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__<<authStatus;
+    if (m_localDebug) qDebug()<<  __PRETTY_FUNCTION__ << " " << authStatus;
     QString title = abeApp->getAbeApplicationLongName();
     if (m_numberExoCalled >=0)
     {

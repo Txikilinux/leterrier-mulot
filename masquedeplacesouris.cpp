@@ -1,7 +1,8 @@
 /** Classe MasqueDeplaceSouris
+  * @file masquedeplacesouris.cpp
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
-  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -32,7 +33,7 @@ MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_hideOnDoubleClick = false;
     m_isEditable = false;
     m_numero = numero;
-    setAcceptsHoverEvents(true);
+    setAcceptHoverEvents(true);
 
     cptClic = 0;
     QApplication::setDoubleClickInterval(1000);
@@ -72,16 +73,6 @@ void MasqueDeplaceSouris::setIsEditable(bool isEditable)
     m_isEditable = isEditable;
 }
 
-QColor MasqueDeplaceSouris::getColor() const
-{
-    return m_couleur;
-}
-
-int MasqueDeplaceSouris::getNumero() const
-{
-    return m_numero;
-}
-
 void MasqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QPainterPath zoneDessin;
@@ -109,7 +100,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (event->buttons()== Qt::LeftButton)
     {
-        qDebug() << "clic gauche";
+        //qDebug() << "clic gauche";
         if(m_hideOnClick)
         {
             event->accept();
@@ -119,7 +110,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
         else if(m_isEditable)
         {
             event->accept();
-            qDebug() << "Click gauche masque";
+            //qDebug() << "Click gauche masque";
             emit signalPoseSurParcours(this);
         }
         else if (m_hideOnDoubleClick)
@@ -133,7 +124,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
             {
                 if (timerDoubleClic.elapsed() < QApplication::doubleClickInterval() )
                 {
-                    qDebug() << "Double Clic evenement";
+                    //qDebug() << "Double Clic evenement";
                     event->accept();
                     setVisible(false);
                     emit signalCacheMasque();
@@ -147,7 +138,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
     }
     else if (event->buttons() == Qt::RightButton)
     {
-        qDebug() << "clic droit";
+        //qDebug() << "clic droit";
 //        if (m_isEditable)
 //        {
 //            m_menuMasque->popup(event->screenPos());
@@ -161,7 +152,7 @@ void MasqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
 
     if(m_hideOnDoubleClick)
     {
-        qDebug() << "DOUBLE CLIC";
+        //qDebug() << "DOUBLE CLIC";
         event->accept();
         setVisible(false);
         emit signalCacheMasque();

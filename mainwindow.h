@@ -1,7 +1,8 @@
 /** Classe MainWindow
+  * @file mainwindow.h
   * @see https://redmine.ryxeo.com/projects/
   * @author 2012 Eric Seigne <eric.seigne@ryxeo.com>
-  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012/2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   *
@@ -36,10 +37,11 @@
 #include "lib/abuleduaproposv1/abuleduaproposv1.h"
 #include "ui_mainwindow.h"
 #include "exercicesurvol.h"
-#include "exerciceparcours.h"
-#include "exerciceclic.h"
-#include "exercicedoubleclic.h"
 #include "abuledusplashscreenv1.h"
+
+#include "exerciceclic.h"
+#include "exerciceparcours.h"
+#include "exercicedoubleclic.h"
 
 namespace Ui {
     class MainWindow;

@@ -1,6 +1,7 @@
 /** Classe Editeur
+  * @file editeur.h
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2012 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012/2013 Icham Sirat <icham.sirat@ryxeo.com>
   * @author 2012 Philippe Cadaugade <philippe.cadaugade@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
@@ -45,6 +46,7 @@
 #include "ui_editeur.h"
 #include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
+#include "abuledutools.h"
 
 namespace Ui {
 class Editeur;
@@ -71,20 +73,8 @@ private slots:
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
 
-    /** Gère l'appui sur le bouton parcours 1*/
-    void on_btnParcours1_clicked();
-
-    /** Gère l'appui sur le bouton parcours 2*/
-    void on_btnParcours2_clicked();
-
-    /** Gère l'appui sur le bouton parcours 3*/
-    void on_btnParcours3_clicked();
-
-    /** Gère l'appui sur le bouton parcours 4*/
-    void on_btnParcours4_clicked();
-
-    /** Gère l'appui sur le bouton parcours 5*/
-    void on_btnParcours5_clicked();
+    /** Gère l'appui sur les boutons de parcours */
+    void slotBtnParcours_clicked(const int&);
 
     /** Réinitialise l'editeur de parcours */
     void reinitialiserGvParcours();
@@ -94,14 +84,6 @@ private slots:
 
     /** Gère la pose des masques dans l'éditeur de parcours */
     void masquePoseParcours(MasqueDeplaceSouris*);
-
-    /** Calcule et retourne la liste des voisins possibles d'un masque
-      * @param numeroMasque, int, le numero du masque courant
-      * @param largeur, int, le nombre de masques dans la largeur du parcours
-      * @param hauteur, int, le nombre de masques dans la hauteur du parcours
-      * @return voisinsMasques, QList<Int>, la liste des voisins possibles (gauche, droite, haut, bas)
-      */
-    QList<int> masquesVoisins(int numeroMasque, int largeur, int hauteur);
 
     /** Fait apparaitre sur le clic droit le menu contextuel créé dans la méthode creationMenu(); */
     void on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos);
@@ -113,7 +95,7 @@ private slots:
     void ajouterImage(QFileInfo monFichier);
 
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
-    void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, int success);
+    void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int &success);
 
     /** Passe à la page précédente */
     void on_btnPrecedent_clicked();
@@ -144,10 +126,7 @@ private slots:
     void on_btnModificationAutre_clicked();
 
     /** Charge la position des masques en lisant le fichier de paramètre */
-    void chargerPositionMasque(int numeroParcours);
-
-    /** Gère la fermeture de l'editeur de parcours */
-    void slotFermetureEditeurParcoursWidget(QCloseEvent*);
+    bool chargerPositionMasque(const int& numeroParcours);
 
     void on_btnEssayer_clicked();
 
@@ -160,7 +139,7 @@ private slots:
     void slotSortieVisionneuse();
 
     /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
-    void slotAfficheEtatPublication(int code);
+    void slotAfficheEtatPublication(const int& code);
 
 private:
     Ui::Editeur *ui;
@@ -185,9 +164,9 @@ private:
     QMap<QString, int> positionMasquesParcours;
 
     QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
-    MasqueDeplaceSouris *m_masqueDepart;
-    MasqueDeplaceSouris *m_masqueArrivee;
-    MasqueDeplaceSouris *m_masqueParcours;
+    MasqueDeplaceSouris         *m_masqueDepart;
+    MasqueDeplaceSouris         *m_masqueArrivee;
+    MasqueDeplaceSouris         *m_masqueParcours;
 
     QDir *m_dir;
     QDir *m_dirAbe;
@@ -195,10 +174,10 @@ private:
     QList<QString> m_listeFichiersImages;
     QMenu *m_menuListWidget;
 
-    MasqueDeplaceSouris *m_masque;
-    QList<MasqueDeplaceSouris *> m_listeMasques;
-    QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
-    EditeurParcoursWidget *gv_AireParcours;
+    MasqueDeplaceSouris             *m_masque;
+    QList<MasqueDeplaceSouris *>    m_listeMasques;
+    QList<MasqueDeplaceSouris *>    m_listeMasquesParcours;
+    EditeurParcoursWidget           *m_editeurParcoursWidget;
 
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
 
@@ -208,32 +187,18 @@ private:
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
 
-    /** Supprime un répertoire et tout son contenu
-      * Le répertoire passé en paramètre est aussi supprimé
-      * @param const QString& dirPath, le chemin du répertoire à supprimer (ex : "/home/user/monRepertoire")
-      * @return bool, true si suppression ok, false sinon
-      */
-    bool supprimerDir(const QString& dirPath);
-
-    /** Retourne une liste de chemin correspondant à l'arborescence située en dessous du dossier donné en paramètre
-      * @param const QString dossier, le chemin du dossier à analyser
-      * @return QStringList, la liste des chemins correspondant à l'arborescence descandante du dossier
-      */
-    QStringList parcoursRecursif(const QString& dossier);
-
     /** Remplie la scène de l'éditeur de parcours en fonction des paramètres définies (nombre de masques largeur/hauteur)
       * Si mode création, la scène n'aura pas de parcours
       * Si mode modification, la scène créera le parcours contenu dans l'abe courant
       * @param int, numeroParcours, le numéro du parcours à créer/modifier
+      * @todo commenter le bool retour
       */
-    void remplirGvParcours(int numeroParcours);
-
-//    bool controleVoisinMasque(MasqueDeplaceSouris *masque);
+    bool remplirGvParcours(const int& numeroParcours);
 
     /** Définit le mode de l'éditeur (création/modification) bool m_modeModificationAbe
       * @param bool yesNo, true = mode modification, false = mode création
       */
-    void setModeModificationAbe(bool yesNo);
+    void setModeModificationAbe(const bool& yesNo);
 
     /** Gestion du drop
       * @param QDropEvent *event, un pointeur sur l'évènement drop
@@ -251,6 +216,11 @@ private:
 
     /** Publie le fichier édité sur la médiathèque */
     void releaseAbe();
+
+    /** Permet de mapper les signaux des boutons de parcours. (pour factorisation)
+      * @see QSignalMapper.
+      */
+    void mapSignalBtnParcours();
 
 signals:
     void editorExited();
