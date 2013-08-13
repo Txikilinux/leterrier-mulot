@@ -33,7 +33,7 @@ MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_hideOnDoubleClick = false;
     m_isEditable = false;
     m_numero = numero;
-    setAcceptsHoverEvents(true);
+    setAcceptHoverEvents(true);
 
     cptClic = 0;
     QApplication::setDoubleClickInterval(1000);
