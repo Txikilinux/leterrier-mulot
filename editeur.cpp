@@ -214,6 +214,11 @@ void Editeur::slotCloseEditor()
     //    m_parametresParcours4.clear();
     //    m_parametresParcours5.clear();
 
+    /** @todo Quitter oui/non ? */
+    /* Pour l'instant, en quittant on supprime tout */
+    qDebug() << "NETTOYAGE TEMPORAIRE DE : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    _abuleduFile->abeCleanDirectoryRecursively(_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+
     emit editorExited();
 }
 
@@ -1158,61 +1163,61 @@ void Editeur::slotLoadUnit()
         parametres.beginGroup("parcours1");
         /** signal parcours save */
         if(chargerPositionMasque(1)){
-            qDebug() << "Le parcours 1...[OK]";
+            if(m_localDebug) qDebug() << "Le parcours 1...[OK]";
             ui->btnParcours1->setStyleSheet("color : green;");
             emit signalParcoursSave();
         }
         else{
+            if(m_localDebug) qDebug() << "Le parcours 1...[KO]";
             ui->btnParcours1->setStyleSheet("color : red;");
-            qDebug() << "Le parcours 1...[KO]";
         }
         parametres.endGroup();
         parametres.beginGroup("parcours2");
         /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(2)){
-            qDebug() << "Le parcours 2...[OK]";
+            if(m_localDebug) qDebug() << "Le parcours 2...[OK]";
             ui->btnParcours2->setStyleSheet("color : green;");
             emit signalParcoursSave();
         }
         else{
+            if(m_localDebug) qDebug() << "Le parcours 2...[KO]";
             ui->btnParcours2->setStyleSheet("color : red;");
-            qDebug() << "Le parcours 2...[KO]";
         }
         parametres.endGroup();
         parametres.beginGroup("parcours3");
         /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(3)){
-            qDebug() << "Le parcours 3...[OK]";
+            if(m_localDebug)  qDebug() << "Le parcours 3...[OK]";
             ui->btnParcours3->setStyleSheet("color : green;");
             emit signalParcoursSave();
         }
         else{
+            if(m_localDebug) qDebug() << "Le parcours 3...[KO]";
             ui->btnParcours3->setStyleSheet("color : red;");
-            qDebug() << "Le parcours 1...[KO]";
         }
         parametres.endGroup();
         parametres.beginGroup("parcours4");
         /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(4)){
-            qDebug() << "Le parcours 4...[OK]";
+            if(m_localDebug) qDebug() << "Le parcours 4...[OK]";
             ui->btnParcours4->setStyleSheet("color : green;");
             emit signalParcoursSave();
         }
         else{
+            if(m_localDebug) qDebug() << "Le parcours 4...[KO]";
             ui->btnParcours4->setStyleSheet("color : red;");
-            qDebug() << "Le parcours 1...[KO]";
         }
         parametres.endGroup();
         parametres.beginGroup("parcours5");
         /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(5)){
-            qDebug() << "Le parcours 5...[OK]";
+            if(m_localDebug) qDebug() << "Le parcours 5...[OK]";
             ui->btnParcours5->setStyleSheet("color : green;");
             emit signalParcoursSave();
         }
         else{
+            if(m_localDebug) qDebug() << "Le parcours 5...[KO]";
             ui->btnParcours5->setStyleSheet("color : red;");
-            qDebug() << "Le parcours 1...[KO]";
         }
         parametres.endGroup();
     }
@@ -1237,23 +1242,18 @@ void Editeur::slotLoadUnit()
 
 void Editeur::dropEvent(QDropEvent *event)
 {
-    if(m_localDebug)
-    {
+    if(m_localDebug){
         qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
         qDebug() <<  event->source() << " " << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
     }
-
-    if (event->source()->objectName() == "treeViewArborescence" && ui->listWidgetImagesSelection->geometry().contains(event->pos()))
-    {
+    if(event->source()->objectName() == "treeViewArborescence" && ui->listWidgetImagesSelection->geometry().contains(event->pos())){
         if(m_localDebug) qDebug() << "SOURCE == treeViewArbo";
         /* Controle que c'est bien une image */
-        if(event->mimeData()->hasImage())
-        {
+        if(event->mimeData()->hasImage()){
             if (m_localDebug) qDebug() << "C'est une image";
         }
     }
-    else if(event->source()->objectName() == "lwSimple" && ui->listWidgetImagesSelection->geometry().contains(event->pos()))
-    {
+    else if(event->source()->objectName() == "lwSimple" && ui->listWidgetImagesSelection->geometry().contains(event->pos())){
         if (m_localDebug) qDebug() << "SOURCE == mediathequeGet";
 
         ui->abuleduMediathequeGet->abeStartDownload();
@@ -1389,6 +1389,9 @@ bool Editeur::preparerSauvegarde()
     parametres.endGroup();
 
     /* Paramètres Parcours */
+/** @todo toutes les sauvegardes de parcours ont été déplacées.
+    Reflechir à ce qu'il faut faire ici (contrôle ou rien)
+*/
     parametres.beginGroup("parcours");
     if (ui->groupBoxParcours->isChecked())
     {
