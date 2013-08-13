@@ -87,8 +87,7 @@ include(lang/lang.pri)
 
 include(lib/abuleduidentitesv1/abuleduidentitesv1.pri)
 
-android {
-  OTHER_FILES += \
+OTHER_FILES += \
     android/version.xml \
     android/res/values-zh-rCN/strings.xml \
     android/res/values/strings.xml \
@@ -116,13 +115,5 @@ android {
     android/src/org/qtproject/qt5/android/bindings/QtActivity.java \
     android/src/org/kde/necessitas/ministro/IMinistroCallback.aidl \
     android/src/org/kde/necessitas/ministro/IMinistro.aidl \
-    android/AndroidManifest.xml \
-    android/version.xml
-
-#    deployment.files =  exemples/Plage_+Parcours.abe
-#                        exemples/Animaux_familiers_+Parcours.abe
-#    deployment.path=/assets
-#    INSTALLS += deployment
-}
-
+    android/AndroidManifest.xml
 
