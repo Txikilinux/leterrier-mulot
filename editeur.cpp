@@ -23,15 +23,9 @@
 
 #include "editeur.h"
 
-
-/**   @todo
-
-    Suppression des structures de données volatiles
-    Utilisation des QSettings à la sauvegarde directement.
-    Enregistrement du 0 si < 10 (pour le QSetting)
-
+/** @todo
+    à mediter :Enregistrement du 0 si < 10 (pour le QSetting)
 */
-
 
 Editeur::Editeur(QWidget *parent) :
     QWidget(parent),
@@ -68,11 +62,6 @@ Editeur::Editeur(QWidget *parent) :
     m_listeMasques.clear();
     m_listeMasquesParcours.clear();
     _listeFichiersImages.clear();
-    //    m_parametresParcours1.clear();
-    //    m_parametresParcours2.clear();
-    //    m_parametresParcours3.clear();
-    //    m_parametresParcours4.clear();
-    //    m_parametresParcours5.clear();
 
     setAcceptDrops(true);
 
@@ -206,12 +195,6 @@ void Editeur::slotCloseEditor()
     /* Remettre la page d'Accueil par defaut */
     ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeAccueil);
     _assistantEtapes->abeWidgetAssistantSetEtapeCourante(PageEtapeAccueil);
-    /* Vider les listes */
-    //    m_parametresParcours1.clear();
-    //    m_parametresParcours2.clear();
-    //    m_parametresParcours3.clear();
-    //    m_parametresParcours4.clear();
-    //    m_parametresParcours5.clear();
 
     /** @todo Quitter oui/non ? */
     /* Pour l'instant, en quittant on supprime tout */
@@ -221,7 +204,6 @@ void Editeur::slotCloseEditor()
     /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
     _abuleduFile->abeFileSetFilename("");
     _abuleduFile->abeFileSetTitle("");
-
 
     emit editorExited();
 }
@@ -272,11 +254,9 @@ void Editeur::creationMenu()
 {
     if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
-    QStyle* style =  QApplication::style(); /* récupération du style systeme */
-
     /* MENU LISTWIDGET (Supprimer) */
     m_menuListWidget = new QMenu(ui->listWidgetImagesSelection);
-    QIcon iconSupprimer = style->standardIcon(QStyle::SP_DialogResetButton); /* On récupère l'icône désiré */
+    QIcon iconSupprimer = QApplication::style()->standardIcon(QStyle::SP_DialogResetButton); /* On récupère l'icône désiré */
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer de la selection"),m_menuListWidget);
     a_supprimer->setIcon(iconSupprimer);
     a_supprimer->setIconVisibleInMenu(true);
@@ -359,13 +339,10 @@ void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierAB
         ajouterImage(fichierABB->abeFileGetContent(0));
         /* Ajout des metadata */
         _abuleduFile->abeFileAddMetaDataFromABB(fichierABB->abeFileGetLOM(), fichierABB->abeFileGetContent(0).baseName());
-
         if(m_localDebug) qDebug() << "Importation image depuis mediatheque... [OK]";
     }
     else
-    {
         if(m_localDebug) qDebug() << "Importation image depuis mediatheque... [KO]";
-    }
 }
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
@@ -392,7 +369,6 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     visio->ajusterFenetreAuMieux();
 
     slotEditorChangePageRequested(PageVisio);
-
 }
 
 void Editeur::createAbe()
@@ -400,7 +376,6 @@ void Editeur::createAbe()
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
     ui->listWidgetImagesSelection->clear();
-
     if (preparerSauvegarde())
     {
         emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeSave);
@@ -424,6 +399,7 @@ void Editeur::slotBtnParcours_clicked(const int &numBtn)
     else {
         if(m_localDebug)
             qDebug() << "Remplissage... [KO], Réinitialisation parcours";
+
         //        reinitialiserGvParcours();
     }
 
@@ -440,14 +416,14 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
     m_opt_nbMasquesLargeur = ui->spinBoxParcoursMasquesLargeur->value();
     m_opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
 
-    float largeurGv = ui->gv_editeurParcours->rect().width() -1;
-    float hauteurGv = ui->gv_editeurParcours->rect().height()-1;
+    /** @todo SCROLLBAR */
+    float largeurGv = ui->gv_editeurParcours->rect().width()  - ui->gv_editeurParcours->verticalScrollBar()->width();
+    float hauteurGv = ui->gv_editeurParcours->rect().height() - ui->gv_editeurParcours->horizontalScrollBar()->height();
 
     const qreal largeurMasque = largeurGv / m_opt_nbMasquesLargeur;
     const qreal hauteurMasque = hauteurGv / m_opt_nbMasquesHauteur;
 
     qreal xMasque, yMasque = 0.00;
-
 
     int numeroMasque = 0;
     /* Pose de masque normaux pour remplissage */
@@ -483,7 +459,6 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
     //                                             (largeurMasque * m_opt_nbMasquesLargeur) + m_editeurParcoursWidget->getGraphicsView()->verticalScrollBar()->width(),
     //                                             (hauteurMasque * m_opt_nbMasquesHauteur) + m_editeurParcoursWidget->getGraphicsView()->horizontalScrollBar()->height() + (m_editeurParcoursWidget->getBoutonHeight()) *2);
 
-
     if(chargerPositionMasque(numeroParcours)){
 
         ui->sbParcoursMasque->setValue(positionMasquesParcours.count());
@@ -516,10 +491,10 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                 if(masque.contains(masqueP)){
                     listePosition << masque.split(masqueP).last().toInt();
                 }
-                    i++;
+                i++;
             }
 
-            /* Ici, j'ai tout les numéros des masques sont dans la liste, il faut effectuer un tri croissant */
+            /* Tout les numéros des masques sont dans la liste, il faut effectuer un tri croissant */
             qSort(listePosition.begin(), listePosition.end(), qLess<int>());
 
             int pos;
@@ -533,7 +508,6 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                     }
                 }
             }
-
 
             if (m_localDebug) {
                 qDebug() << "La liste des positions normales : " << positionMasquesParcours;
@@ -551,15 +525,17 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
             while(!positionParcours.isEmpty())
             {
                 if(AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur).contains(positionParcours.first()))
-                    qDebug() << "Voisin ok ";
-                else
-                    qDebug() << "PROBLEME VOISINAGE";
+                {
+                    if(m_localDebug) qDebug() << "Voisin ok ";
+                }
+                else{
+                    if(m_localDebug) qDebug() << "PROBLEME VOISINAGE";
+                }
                 m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
                 m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
                 m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
                 positionParcours.removeFirst();
             }
-
             /* arrivee */
             m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
             m_listeMasques.at(positionArrivee)->setProperty("Role", trUtf8("Arrivee"));
@@ -818,13 +794,12 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
 
     positionMasquesParcours.clear();
 
-    qDebug() << "Parametres charges depuis : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
-
-    qDebug() << "Existence Fichier Conf :: " << QFile::exists(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf");
+    if(m_localDebug){
+        qDebug() << "Parametres charges depuis : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+        qDebug() << "Existence Fichier Conf :: " << QFile::exists(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf");
+    }
 
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
-    qDebug() << "CHARGEMENT : " << parametres.childKeys() ;
-
     parametres.beginGroup("parcours");
     parametres.beginGroup("parcours"+QString::number(numeroParcours));
     for (int i =0 ; i < parametres.childKeys().count(); i++)
@@ -832,25 +807,19 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
         positionMasquesParcours.insert(parametres.childKeys().at(i),parametres.value(parametres.childKeys().at(i)).toInt());
     }
     parametres.endGroup();
-    qDebug() << "NOUS AVONS : " << positionMasquesParcours.count() << " MASQUES !";
-
     if(!positionMasquesParcours.isEmpty())
         return true;
     else
     {
-        qDebug() << __FUNCTION__ << " Aucune entree dans le QSettings. ";
+        if(m_localDebug) qDebug() << __FUNCTION__ << " Aucune entree dans le QSettings. ";
         return false;
     }
-
 }
 
 /* Gestion reinitialisation parcours */
 void Editeur::on_btnResetParcours_clicked()
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
-
-    ui->sbParcoursMasque->setEnabled(true);
-
     /* Remettre tout mes masques d'origine ! */
     foreach (MasqueDeplaceSouris* var, m_listeMasques) {
         var->setColor(QColor(Qt::white));
@@ -858,66 +827,42 @@ void Editeur::on_btnResetParcours_clicked()
         var->update();
     }
 
-    /* Vider ma listeMasquesParcours */
+    /* Vider listeMasquesParcours */
     m_listeMasquesParcours.clear();
 
     /* Supprimer les entrées correspondantes dans le QSettings */
     if(m_localDebug) qDebug() << "Suppression Entrées dans le QSettings";
-    switch(m_numeroParcours){
-    case 1:
-        QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
-        parametres.beginGroup("parcours");
-        parametres.beginGroup("parcours"+QString::number(m_numeroParcours));
-
-        if(parametres.childKeys().count() > 0){ /* Si on a des entrées relatives à ce parcours, on les supprime */
-            parametres.remove("");
-            parametres.endGroup();
-            parametres.sync();
-            if(m_localDebug) qDebug() << "Parcours num : " <<m_numeroParcours<< " -> efface du conf";
-        }
-        /* bouton parcours correspondant en rouge */
-        ui->btnParcours1->setStyleSheet("color : red;");
-
-        break;
-
+    QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
+    parametres.beginGroup("parcours");
+    parametres.beginGroup("parcours"+QString::number(m_numeroParcours));
+    if(parametres.childKeys().count() > 0){ /* Si on a des entrées relatives à ce parcours, on les supprime */
+        parametres.remove("");
+        parametres.endGroup();
+        parametres.sync();
+        if(m_localDebug) qDebug() << "Parcours num : " <<m_numeroParcours<< " -> efface du conf";
     }
 
-    //    ui->gv_editeurParcours->update();
+    /* bouton parcours correspondant en rouge */
+    switch(m_numeroParcours){
+    case 1:
+        ui->btnParcours1->setStyleSheet("color : red;");
+        break;
+    case 2:
+        ui->btnParcours2->setStyleSheet("color : red;");
+        break;
+    case 3:
+        ui->btnParcours3->setStyleSheet("color : red;");
+        break;
+    case 4:
+        ui->btnParcours4->setStyleSheet("color : red;");
+        break;
+    case 5:
+        ui->btnParcours5->setStyleSheet("color : red;");
+        break;
+    }
 
-    //    /* Supprimer le parcours dans le .conf si on est en mode modification */
-    //    if(m_modeModificationAbe){
-    //        if(m_localDebug) qDebug() << "Nous sommes en modification, on recherche les entrées dans le QSettings";
-
-    //        QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
-    //        parametres.beginGroup("parcours");
-    //        parametres.beginGroup("parcours"+QString::number(m_numeroParcours));
-
-    //        if(parametres.childKeys().count() > 0){ /* Si on a des entrées relatives à ce parcours, on les supprime */
-    //            parametres.remove("");
-    //            parametres.endGroup();
-    //            parametres.sync();
-    //            if(m_localDebug) qDebug() << "Parcours num : " <<m_numeroParcours<< " -> efface du conf";
-    //        }
-
-    //        /* Le bouton relatif au parcours ne doit plus etre vert*/
-    //        switch(m_numeroParcours){
-    //        case 1:
-    //            ui->btnParcours1->setStyleSheet("color : red;");
-    //            break;
-    //        case 2:
-    //            ui->btnParcours2->setStyleSheet("color : red;");
-    //            break;
-    //        case 3:
-    //            ui->btnParcours3->setStyleSheet("color : red;");
-    //            break;
-    //        case 4:
-    //            ui->btnParcours4->setStyleSheet("color : red;");
-    //            break;
-    //        case 5:
-    //            ui->btnParcours5->setStyleSheet("color : red;");
-    //            break;
-    //        }
-    //    }
+    ui->btnSaveParcours->setEnabled(false);
+    ui->sbParcoursMasque->setEnabled(true);
 }
 
 /* Gestion sauvegarde parcours */
@@ -926,7 +871,6 @@ void Editeur::on_btnSaveParcours_clicked()
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__ << " parcours :" << m_numeroParcours;
 
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/conf/parametres.conf", QSettings::IniFormat);
-//    qDebug() << "Parametres enregistres dans : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     switch (m_numeroParcours)
     {
     case 1:
@@ -939,7 +883,7 @@ void Editeur::on_btnSaveParcours_clicked()
             parametres.setValue("parcours1/MasqueParcours"+QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours1->setStyleSheet("color : green;");
-//        qDebug() << "SAUVEGARDE : " << parametres.childKeys();
+        //        qDebug() << "SAUVEGARDE : " << parametres.childKeys();
 
         parametres.endGroup();
         parametres.sync();
@@ -1145,21 +1089,25 @@ void Editeur::slotLoadUnit()
     }
 
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/conf/parametres.conf", QSettings::IniFormat);
+    /* Exercice Clic */
     parametres.beginGroup("clic");
     ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
+    /* Exercice Double-Clic */
     parametres.beginGroup("doubleClic");
     ui->groupBoxDoubleClic->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxDoubleClicSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxDoubleClicMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
+    /* Exercice Survol */
     parametres.beginGroup("survol");
     ui->groupBoxSurvol->setChecked(parametres.value("exerciceActive",true).toBool());
     ui->spinBoxSurvolSuivant->setValue(parametres.value("timerSuivant",7).toInt());
     ui->spinBoxSurvolMasque->setValue(parametres.value("nbMasquesChoisis",7).toInt());
     parametres.endGroup();
+    /* Exercice Parcours */
     parametres.beginGroup("parcours");
     if(parametres.value("exerciceActive",true).toBool())
     {
@@ -1169,8 +1117,8 @@ void Editeur::slotLoadUnit()
         ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
 
         /* Recupération nb masque pour remplissage ComboBox */
+        /* Parcours 1 */
         parametres.beginGroup("parcours1");
-        /** signal parcours save */
         if(chargerPositionMasque(1)){
             if(m_localDebug) qDebug() << "Le parcours 1...[OK]";
             ui->btnParcours1->setStyleSheet("color : green;");
@@ -1181,8 +1129,8 @@ void Editeur::slotLoadUnit()
             ui->btnParcours1->setStyleSheet("color : red;");
         }
         parametres.endGroup();
+        /* Parcours 2 */
         parametres.beginGroup("parcours2");
-        /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(2)){
             if(m_localDebug) qDebug() << "Le parcours 2...[OK]";
             ui->btnParcours2->setStyleSheet("color : green;");
@@ -1193,8 +1141,8 @@ void Editeur::slotLoadUnit()
             ui->btnParcours2->setStyleSheet("color : red;");
         }
         parametres.endGroup();
+        /* Parcours 3 */
         parametres.beginGroup("parcours3");
-        /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(3)){
             if(m_localDebug)  qDebug() << "Le parcours 3...[OK]";
             ui->btnParcours3->setStyleSheet("color : green;");
@@ -1205,8 +1153,8 @@ void Editeur::slotLoadUnit()
             ui->btnParcours3->setStyleSheet("color : red;");
         }
         parametres.endGroup();
+        /* Parcours 4 */
         parametres.beginGroup("parcours4");
-        /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(4)){
             if(m_localDebug) qDebug() << "Le parcours 4...[OK]";
             ui->btnParcours4->setStyleSheet("color : green;");
@@ -1217,8 +1165,8 @@ void Editeur::slotLoadUnit()
             ui->btnParcours4->setStyleSheet("color : red;");
         }
         parametres.endGroup();
+        /* Parcours 5 */
         parametres.beginGroup("parcours5");
-        /** Controle position + Bouton Vert + signal parcours save */
         if(chargerPositionMasque(5)){
             if(m_localDebug) qDebug() << "Le parcours 5...[OK]";
             ui->btnParcours5->setStyleSheet("color : green;");
@@ -1358,10 +1306,10 @@ bool Editeur::preparerSauvegarde()
     _abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
     _abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
 
-//    QString destTemp = _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+    //    QString destTemp = _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
 
-//    QDir().mkpath(destTemp + "/data/images");
-//    QDir().mkpath(destTemp + "/conf");
+    //    QDir().mkpath(destTemp + "/data/images");
+    //    QDir().mkpath(destTemp + "/conf");
 
     /* Creation fichier Conf [@note les timers sont convertis en millisecondes] */
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
@@ -1400,7 +1348,7 @@ bool Editeur::preparerSauvegarde()
     parametres.endGroup();
 
     /* Paramètres Parcours */
-/** @todo toutes les sauvegardes de parcours ont été déplacées.
+    /** @todo toutes les sauvegardes de parcours ont été déplacées.
     Reflechir à ce qu'il faut faire ici (contrôle ou rien)
 */
     parametres.beginGroup("parcours");
@@ -1456,8 +1404,8 @@ bool Editeur::preparerSauvegarde()
     /* Creation .abe */
     parametres.sync(); //pour forcer l'écriture du .conf
 
-/** @todo return booleen abuledufile */
-//    _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+    /** @todo return booleen abuledufile */
+    //    _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
     return true;
 }
 
@@ -1525,4 +1473,3 @@ void Editeur::slotAfficheEtatPublication(const int &code)
         msgEnregistrement->show();
     }
 }
-
