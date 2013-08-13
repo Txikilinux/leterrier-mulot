@@ -3,7 +3,7 @@
  <class>Editeur</class>
  <widget class="QWidget" name="Editeur">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
