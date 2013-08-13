@@ -18,42 +18,38 @@ android {
 TARGET = leterrier-mulot
 TEMPLATE = app
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    masquedeplacesouris.cpp \
-    exercicesurvol.cpp \
-    editeur.cpp \
-    visionneuseimage.cpp \
-    exercicedoubleclic.cpp \
-    lib/abuleduaproposv1/abuleduaproposv1.cpp \
-    editeurparcourswidget.cpp \
-    abuledutools.cpp \
-    exerciceclic.cpp \
-    exerciceparcours.cpp \
-    abstractexercice.cpp
+SOURCES +=  main.cpp\
+            mainwindow.cpp \
+            masquedeplacesouris.cpp \
+            exercicesurvol.cpp \
+            editeur.cpp \
+            visionneuseimage.cpp \
+            exercicedoubleclic.cpp \
+            lib/abuleduaproposv1/abuleduaproposv1.cpp \
+            abuledutools.cpp \
+            exerciceclic.cpp \
+            exerciceparcours.cpp \
+            abstractexercice.cpp
 
 HEADERS  += mainwindow.h \
-    version.h \
-    masquedeplacesouris.h \
-    exercicesurvol.h \
-    editeur.h \
-    visionneuseimage.h \
-    exercicedoubleclic.h \
-    lib/abuleduaproposv1/abuleduaproposv1.h \
-    editeurparcourswidget.h \
-    abuledutools.h \
-    exerciceclic.h \
-    exerciceparcours.h \
-    abstractexercice.h
+            version.h \
+            masquedeplacesouris.h \
+            exercicesurvol.h \
+            editeur.h \
+            visionneuseimage.h \
+            exercicedoubleclic.h \
+            lib/abuleduaproposv1/abuleduaproposv1.h \
+            abuledutools.h \
+            exerciceclic.h \
+            exerciceparcours.h \
+            abstractexercice.h
 
 FORMS    += mainwindow.ui \
-    widgetdeplacesouris.ui \
-    editeur.ui \
-    lib/abuleduaproposv1/abuleduaproposv1.ui \
-    editeurparcourswidget.ui
+            widgetdeplacesouris.ui \
+            editeur.ui \
+            lib/abuleduaproposv1/abuleduaproposv1.ui
 
-RESOURCES += \
-    ressources.qrc
+RESOURCES += ressources.qrc
 
 win32 {
     OTHER_FILES  += windows/windows.rc
@@ -80,12 +76,13 @@ include(lib/abuleduetiquettesv1/abuleduetiquettesv1.pri)
 include(lib/abuledufilev1/abuledufilev1.pri)
 include(lib/abuledumessageboxv1/abuledumessageboxv1.pri)
 include(lib/abuledusplashscreenv1/abuledusplashscreenv1.pri)
+include(lib/abuleduidentitesv1/abuleduidentitesv1.pri)
+include(lib/abuleduwidgetassistantetapesv1/abuleduwidgetassistantetapesv1.pri)
 
 #AbulEduLangV1
 include(lib/abuledulangv1/abuledulangv1.pri)
 include(lang/lang.pri)
 
-include(lib/abuleduidentitesv1/abuleduidentitesv1.pri)
 
 android {
   OTHER_FILES += \
