@@ -101,7 +101,6 @@ Editeur::Editeur(QWidget *parent) :
     listeEtapes.append(qMakePair(trUtf8("Sauvegarder"),             trUtf8("Sauvegarder","For short")));
 
     _assistantEtapes = new AbulEduWidgetAssistantEtapesV1(listeEtapes, 12, 16, 20, this);
-//    _assistantEtapes->abeWidgetAssistantSetFontSize(12, 16, 20);
     _assistantEtapes->abeWidgetAssistantEnableClick(false);
     ui->hlFilAriane->addWidget(_assistantEtapes);
 
@@ -218,6 +217,11 @@ void Editeur::slotCloseEditor()
     /* Pour l'instant, en quittant on supprime tout */
     qDebug() << "NETTOYAGE TEMPORAIRE DE : " << _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
     _abuleduFile->abeCleanDirectoryRecursively(_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
+
+    /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
+    _abuleduFile->abeFileSetFilename("");
+    _abuleduFile->abeFileSetTitle("");
+
 
     emit editorExited();
 }
@@ -1286,18 +1290,18 @@ bool Editeur::preparerSauvegarde()
 
     if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
-        if(ui->leTitre->text().trimmed().isEmpty())
-        {
+        if(ui->leTitre->text().trimmed().isEmpty()){
             AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"), true, this);
             alertBox->show();
             ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeFin);
             ui->lblTitreModule->setStyleSheet("color:red");
             ui->leTitre->setStyleSheet("border:1px solid red;border-radius:3px");
         }
-        else
-        {
+        else{
             ui->lblTitreModule->setStyleSheet("color:black");
             ui->leTitre->setStyleSheet("border:1px solid grey;border-radius:3px");
+            /* Le fichier abe porte le titre que l'utilisateur lui donne */
+            _abuleduFile->abeFileSetTitle(ui->lblTitreModule->text());
         }
         if(ui->leAuteur->text().trimmed().isEmpty())
         {
@@ -1314,8 +1318,7 @@ bool Editeur::preparerSauvegarde()
         }
         return false;
     }
-    else
-    {
+    else{
         ui->lblNom->setStyleSheet("color:black");
         ui->leAuteur->setStyleSheet("border:1px solid grey;border-radius:3px");
         ui->lblTitreModule->setStyleSheet("color:black");
@@ -1348,9 +1351,10 @@ bool Editeur::preparerSauvegarde()
     _abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
     _abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
 
-    QString destTemp = _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
-    QDir().mkpath(destTemp + "/data/images");
-    QDir().mkpath(destTemp + "/conf");
+//    QString destTemp = _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
+
+//    QDir().mkpath(destTemp + "/data/images");
+//    QDir().mkpath(destTemp + "/conf");
 
     /* Creation fichier Conf [@note les timers sont convertis en millisecondes] */
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
@@ -1393,8 +1397,7 @@ bool Editeur::preparerSauvegarde()
     Reflechir à ce qu'il faut faire ici (contrôle ou rien)
 */
     parametres.beginGroup("parcours");
-    if (ui->groupBoxParcours->isChecked())
-    {
+    if (ui->groupBoxParcours->isChecked()){
         parametres.setValue("exerciceActive",true);
         parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
         parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
@@ -1447,7 +1450,7 @@ bool Editeur::preparerSauvegarde()
     parametres.sync(); //pour forcer l'écriture du .conf
 
 /** @todo return booleen abuledufile */
-    _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+//    _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
     return true;
 }
 
@@ -1466,13 +1469,15 @@ void Editeur::releaseAbe()
 void Editeur::on_btnEssayer_clicked()
 {
     if (m_localDebug) qDebug() << __PRETTY_FUNCTION__;
-    if (preparerSauvegarde())
-    {
-        emit editorTest();
+
+    if(preparerSauvegarde()){
         AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),
                                                               trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."), true, this);
         alertBox->show();
+        emit editorTest();
     }
+    else
+        qDebug() << "TEST Impossible ! ";
 }
 
 void Editeur::on_btnEnregistrer_clicked()

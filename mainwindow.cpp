@@ -80,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->editeur, SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorNewAbe(int)), SLOT(setTitle(int)), Qt::UniqueConnection);
     /** @todo reconnecter les différents siganux petit à petit (après test de chaque fonctionnalité ) */
-//    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
+    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
 //    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
 //            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
 
@@ -483,27 +483,22 @@ void MainWindow::btnQuitBoxFileManagerClicked()
         ui->stCentral->setCurrentWidget(ui->fr_principale);
 }
 
-QSharedPointer<AbulEduFileV1> MainWindow::abeGetMyAbulEduFile()
-{
-    return m_abuleduFile;
-}
-
-AbulEduPageAccueilV1 *MainWindow::abeGetMyAbulEduAccueil()
-{
-    return m_abuleduaccueil;
-}
-
 void MainWindow::debutTestParametres()
 {
     m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
     connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(afficheEditeur()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
     ui->stCentral->setCurrentWidget(ui->fr_principale);
+
+    setWindowTitle(abeApp->getAbeApplicationLongName() +" -- " + m_abuleduFile->abeFileGetFileName().fileName() + " -- MODE TEST");
 }
 
 void MainWindow::afficheEditeur()
 {
     ui->stCentral->setCurrentWidget(ui->pageEditeur);
+    if(windowTitle().contains("MODE TEST")){
+        setWindowTitle(windowTitle().split(" -- MODE TEST").first());
+    }
 }
 
 void MainWindow::afficheFrPrincipale()
