@@ -1049,7 +1049,6 @@ void Editeur::setModeModificationAbe(const bool &yesNo)
 /** Bouton création ABE
     Probleme :
     Il faut également dire au logiciel = Attention l'Abe est vide (ce qui permettrait en sortant de l'éditeur après avoir cliqué sur nouveau de repasser par la box)
-
 */
 void Editeur::on_btnCreationAbe_clicked()
 {
@@ -1084,11 +1083,17 @@ void Editeur::on_btnCreationAbe_clicked()
     ui->listWidgetImagesSelection->clear();
 
     /* Style des Boutons */
-    ui->btnParcours1->setStyleSheet("color : gray;");
-    ui->btnParcours2->setStyleSheet("color : gray;");
-    ui->btnParcours3->setStyleSheet("color : gray;");
-    ui->btnParcours4->setStyleSheet("color : gray;");
-    ui->btnParcours5->setStyleSheet("color : gray;");
+    ui->btnParcours1->setStyleSheet(styleSheet());
+    ui->btnParcours2->setStyleSheet(styleSheet());
+    ui->btnParcours3->setStyleSheet(styleSheet());
+    ui->btnParcours4->setStyleSheet(styleSheet());
+    ui->btnParcours5->setStyleSheet(styleSheet());
+
+    /* CheckBox des différents exercices */
+    ui->groupBoxSurvol->setChecked(false);
+    ui->groupBoxClic->setChecked(false);
+    ui->groupBoxDoubleClic->setChecked(false);
+    ui->groupBoxParcours->setChecked(false);
 
     /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
     _abuleduFile->abeFileSetFilename("");
@@ -1100,7 +1105,6 @@ void Editeur::on_btnCreationAbe_clicked()
     setModeModificationAbe(false);
 
     /* Si modification abe disponible */
-    qDebug() << "BTN MODIF EN COURS REINIT";
     ui->btnModificationCourant->setText(trUtf8("Editer le module en cours"));
     ui->btnModificationCourant->setEnabled(false);
 
