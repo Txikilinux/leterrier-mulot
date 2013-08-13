@@ -873,88 +873,73 @@ void Editeur::on_btnSaveParcours_clicked()
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/conf/parametres.conf", QSettings::IniFormat);
     switch (m_numeroParcours)
     {
+    /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
     case 1:
-        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
         parametres.beginGroup("parcours");
         parametres.setValue("parcours1/MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
         parametres.setValue("parcours1/MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
-        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-        {
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ ){
             parametres.setValue("parcours1/MasqueParcours"+QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
         }
         ui->btnParcours1->setStyleSheet("color : green;");
-        //        qDebug() << "SAUVEGARDE : " << parametres.childKeys();
-
+        parametres.endGroup();
+        parametres.sync();
+        break;
+    case 2:
+        parametres.beginGroup("parcours");
+        parametres.setValue("parcours2/MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        parametres.setValue("parcours2/MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ ){
+            parametres.setValue("parcours2/MasqueParcours"+QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
+        }
+        ui->btnParcours2->setStyleSheet("color : green;");
+        parametres.endGroup();
+        parametres.sync();
+        break;
+    case 3:
+        parametres.beginGroup("parcours");
+        parametres.setValue("parcours3/MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        parametres.setValue("parcours3/MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ ){
+            parametres.setValue("parcours3/MasqueParcours"+QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
+        }
+        ui->btnParcours3->setStyleSheet("color : green;");
+        parametres.endGroup();
+        parametres.sync();
+        break;
+    case 4:
+        parametres.beginGroup("parcours");
+        parametres.setValue("parcours4/MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        parametres.setValue("parcours4/MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ ){
+            parametres.setValue("parcours4/MasqueParcours"+QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
+        }
+        ui->btnParcours4->setStyleSheet("color : green;");
+        parametres.endGroup();
+        parametres.sync();
+        break;
+    case 5:
+        parametres.beginGroup("parcours");
+        parametres.setValue("parcours5/MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
+        parametres.setValue("parcours5/MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
+        for (int i =0; i < m_listeMasquesParcours.count(); i++ ){
+            parametres.setValue("parcours5/MasqueParcours"+QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
+        }
+        ui->btnParcours5->setStyleSheet("color : green;");
         parametres.endGroup();
         parametres.sync();
         break;
     }
-
-    //    case 2:
-    //        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
-    //        m_parametresParcours2.clear();
-    //        m_parametresParcours2.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
-    //        m_parametresParcours2.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
-    //        /* Il reste que des masques "Parcours" dans la liste */
-    //        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
-    //        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-    //        {
-    //            m_parametresParcours2.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
-    //        }
-    //        ui->btnParcours2->setStyleSheet("color : green;");
-    //        break;
-
-    //    case 3:
-    //        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
-    //        m_parametresParcours3.clear();
-    //        m_parametresParcours3.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
-    //        m_parametresParcours3.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
-    //        /* Il reste que des masques "Parcours" dans la liste */
-    //        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
-    //        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-    //        {
-    //            m_parametresParcours3.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
-    //        }
-    //        ui->btnParcours3->setStyleSheet("color : green;");
-    //        break;
-
-    //    case 4:
-    //        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
-    //        m_parametresParcours4.clear();
-    //        m_parametresParcours4.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
-    //        m_parametresParcours4.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
-    //        /* Il reste que des masques "Parcours" dans la liste */
-    //        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
-    //        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-    //        {
-    //            m_parametresParcours4.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
-    //        }
-    //        ui->btnParcours4->setStyleSheet("color : green;");
-    //        break;
-
-    //    case 5:
-    //        /* Depart = 1er de la liste; Arrivee = dernier de la liste; Parcours = tout le reste */
-    //        m_parametresParcours5.clear();
-    //        m_parametresParcours5.insert("MasqueDepart", m_listeMasquesParcours.takeFirst()->getNumero());
-    //        m_parametresParcours5.insert("MasqueArrivee", m_listeMasquesParcours.takeLast()->getNumero());
-    //        /* Il reste que des masques "Parcours" dans la liste */
-    //        if(m_localDebug) qDebug() << m_listeMasquesParcours.count();
-    //        for (int i =0; i < m_listeMasquesParcours.count(); i++ )
-    //        {
-    //            m_parametresParcours5.insert("MasqueParcours"+ QString::number(i), m_listeMasquesParcours.at(i)->getNumero());
-    //        }
-    //        ui->btnParcours5->setStyleSheet("color : green;");
-    //        break;
-    //    default:
-    //        return;
-    //    }
-
     /***************************
-            Commun apres sauvegarde
-      **************************/
+        Commun apres sauvegarde
+    ****************************/
     m_listeMasquesFixes.clear();
     m_listeMasquesParcours.clear();
     m_listeMasques.clear();
+    /* Nettoyage scene */
+    ui->gv_editeurParcours->scene()->clear();
+    ui->sbParcoursMasque->setEnabled(true);
+
     ui->gv_editeurParcours->scene()->clear();
 
     /* Petit message */
@@ -964,10 +949,6 @@ void Editeur::on_btnSaveParcours_clicked()
     alertBox->show();
     /* Emission du signal pour gestion d'intégrité (et de navigation)*/
     emit signalParcoursSave();
-
-    /* Nettoyage scene */
-    ui->gv_editeurParcours->scene()->clear();
-    ui->sbParcoursMasque->setEnabled(true);
 
     /* Revenir sur l'écran des parametres */
     slotEditorChangePageRequested(PageEtapeParametres);
