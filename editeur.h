@@ -37,6 +37,7 @@
 #include <QDesktopWidget>
 #include <QFileSystemModel>
 #include <QImageReader>
+#include <QRegExp>
 
 #include "abuledufilev1.h"
 #include "visionneuseimage.h"
@@ -64,8 +65,7 @@ class Editeur : public QWidget
         PageEtapeGestionImages   = 0x1,
         PageEtapeParametres      = 0x2,
         PageEtapeFin             = 0x3,
-
-        PageParcours        = 0x4,
+        PageParcours             = 0x4,
         /* @todo page MediathequePush */
         PageVisio           = 0x6
     };
@@ -175,11 +175,11 @@ private:
     int m_opt_nbMasquesHauteur;
     int m_numeroParcours;
 
-    QMap<QString, QVariant> m_parametresParcours1;
-    QMap<QString, QVariant> m_parametresParcours2;
-    QMap<QString, QVariant> m_parametresParcours3;
-    QMap<QString, QVariant> m_parametresParcours4;
-    QMap<QString, QVariant> m_parametresParcours5;
+//    QMap<QString, QVariant> m_parametresParcours1;
+//    QMap<QString, QVariant> m_parametresParcours2;
+//    QMap<QString, QVariant> m_parametresParcours3;
+//    QMap<QString, QVariant> m_parametresParcours4;
+//    QMap<QString, QVariant> m_parametresParcours5;
 
     QMap<QString, int> positionMasquesParcours;
 

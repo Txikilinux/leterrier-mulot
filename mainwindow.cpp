@@ -331,8 +331,14 @@ void MainWindow::on_actionEditeur_triggered()
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
         /* Si le titre de l'abe n'est pas vide, on active le bouton de modification du module courant */
         if(!m_abuleduFile->abeFileGetTitle().isEmpty()){
+            qDebug() << "Le titre ABE n'est pas vide !";
             ui->editeur->btnModificationCourant()->setEnabled(true);
             ui->editeur->btnModificationCourant()->setText(ui->editeur->btnModificationCourant()->text().remove("en cours") + "\"" + m_abuleduFile->abeFileGetTitle()+"\"");
+        }
+        else
+        {
+            ui->editeur->btnModificationCourant()->setText(trUtf8("Editer le module en cours"));
+            ui->editeur->btnModificationCourant()->setEnabled(false);
         }
     }
     else /* On affiche un petit message */
