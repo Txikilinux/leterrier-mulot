@@ -100,7 +100,7 @@ Editeur::Editeur(QWidget *parent) :
     listeEtapes.append(qMakePair(trUtf8("Régler les paramètres"),   trUtf8("Paramètres","For short")));
     listeEtapes.append(qMakePair(trUtf8("Sauvegarder"),             trUtf8("Sauvegarder","For short")));
 
-    _assistantEtapes = new AbulEduWidgetAssistantEtapesV1(listeEtapes);
+    _assistantEtapes = new AbulEduWidgetAssistantEtapesV1(listeEtapes, 12, 16, 20, this);
     _assistantEtapes->abeWidgetAssistantSetFontSize(12, 16, 20);
     _assistantEtapes->abeWidgetAssistantEnableClick(false);
     ui->hlFilAriane->addWidget(_assistantEtapes);
