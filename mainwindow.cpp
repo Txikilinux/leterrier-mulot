@@ -45,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
     /* Gestion bulles page d'accueil */
-    m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol"));
     m_texteBulles.insert(1, trUtf8("Clic"));
     m_texteBulles.insert(2, trUtf8("Molette"));
@@ -53,9 +52,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_texteBulles.insert(4, trUtf8("Double-clic"));
 
     m_abuleduaccueil = new AbulEduPageAccueilV1(&m_texteBulles, ui->fr_principale);
-    connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
-
     m_abuleduaccueil->setDimensionsWidgets();
+    connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()), Qt::UniqueConnection);
 
@@ -66,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
-//    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+    //    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
 
@@ -81,15 +79,15 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->editeur, SIGNAL(editorNewAbe(int)), SLOT(setTitle(int)), Qt::UniqueConnection);
     /** @todo reconnecter les différents siganux petit à petit (après test de chaque fonctionnalité ) */
     connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
-//    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
-//            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
+    //    connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
+    //            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
 
     /* On passe à l'éditeur l'abe courant */
     ui->editeur->setAbeFile(m_abuleduFile);
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
-//    ui->editeur->abeEditeurSetMainWindow(this);
+    //    ui->editeur->abeEditeurSetMainWindow(this);
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
@@ -101,11 +99,11 @@ void MainWindow::resizeEvent(QResizeEvent *)
     m_abuleduaccueil->setDimensionsWidgets();
 }
 
-void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
-{
-    m_abuleduFile = abeFile;
-    ui->editeur->setAbeFile(abeFile);
-}
+//void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
+//{
+//    m_abuleduFile = abeFile;
+//    ui->editeur->setAbeFile(abeFile);
+//}
 
 MainWindow::~MainWindow()
 {
@@ -113,7 +111,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
+void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
 {
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = qsp_AbulEduFileV1;
@@ -460,6 +458,7 @@ void MainWindow::slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbul
         message = trUtf8("Votre fichier n'a pas pu être enregistré...");
     }
     AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), message);
+    msgEnregistrement->setWindowModality(Qt::ApplicationModal);
     if (reussite == true)
     {
         msgEnregistrement->setWink();
@@ -496,6 +495,7 @@ void MainWindow::debutTestParametres()
 void MainWindow::afficheEditeur()
 {
     ui->stCentral->setCurrentWidget(ui->pageEditeur);
+    /* On enleve le "MODE TEST" de la barre des titres quand on revient dans l'editeur */
     if(windowTitle().contains("MODE TEST")){
         setWindowTitle(windowTitle().split(" -- MODE TEST").first());
     }
