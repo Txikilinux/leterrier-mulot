@@ -1386,8 +1386,7 @@ bool Editeur::preparerSauvegarde()
     parametres.sync(); //pour forcer l'écriture du .conf
 
     /** @todo return booleen abuledufile */
-    //    _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
-    return true;
+    return _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
 }
 
 void Editeur::releaseAbe()
