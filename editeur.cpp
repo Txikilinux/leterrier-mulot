@@ -375,9 +375,9 @@ void Editeur::createAbe()
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
-    ui->listWidgetImagesSelection->clear();
     if (preparerSauvegarde())
     {
+//        ui->listWidgetImagesSelection->clear();
         emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeSave);
     }
 }

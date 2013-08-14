@@ -38,9 +38,9 @@
 #include <QFileSystemModel>
 #include <QImageReader>
 #include <QRegExp>
+#include <QGraphicsProxyWidget>
 
 #include "abuledufilev1.h"
-#include "visionneuseimage.h"
 #include "masquedeplacesouris.h"
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
