@@ -23,7 +23,6 @@ SOURCES +=  main.cpp\
             masquedeplacesouris.cpp \
             exercicesurvol.cpp \
             editeur.cpp \
-            visionneuseimage.cpp \
             exercicedoubleclic.cpp \
             lib/abuleduaproposv1/abuleduaproposv1.cpp \
             abuledutools.cpp \
@@ -36,7 +35,6 @@ HEADERS  += mainwindow.h \
             masquedeplacesouris.h \
             exercicesurvol.h \
             editeur.h \
-            visionneuseimage.h \
             exercicedoubleclic.h \
             lib/abuleduaproposv1/abuleduaproposv1.h \
             abuledutools.h \
