@@ -24,7 +24,10 @@
 #include "editeur.h"
 
 /** @todo
-    à mediter :Enregistrement du 0 si < 10 (pour le QSetting)
+    à mediter :Enregistrement du 0 si < 10 (pour le QSetting) ;
+    localDebug = false ;
+    tracer les objets sans parents ;
+    Niveau de diff à la place de licence ;
 */
 
 Editeur::Editeur(QWidget *parent) :
@@ -32,7 +35,7 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
-    m_localDebug = true; /// @todo mettre a false
+    m_localDebug = true;
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_lastOpenDir = QDir::homePath();
@@ -107,7 +110,6 @@ Editeur::Editeur(QWidget *parent) :
 
 Editeur::~Editeur()
 {
-    /// @todo delete les objets sans parent
     if (m_localDebug) qDebug() << __PRETTY_FUNCTION__ << _abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     emit editorExited();
@@ -1070,6 +1072,8 @@ void Editeur::slotLoadUnit()
     }
 
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/conf/parametres.conf", QSettings::IniFormat);
+    ui->cbNiveauDifficulte->setCurrentIndex(parametres.value("niveauDifficulte",0).toInt());
+
     /* Exercice Clic */
     parametres.beginGroup("clic");
     ui->groupBoxClic->setChecked(parametres.value("exerciceActive",true).toBool());
@@ -1168,8 +1172,8 @@ void Editeur::slotLoadUnit()
     ui->teDescription->setPlainText(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()).first());
     QString langueRessource = _abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().value(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
     ui->cbLangueRessource->setCurrentIndex(ui->cbLangueRessource->findText(langueRessource));
-    QString licence = _abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
-    ui->cbLicence->setCurrentIndex(ui->cbLicence->findText(licence));
+//    QString licence = _abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
+//    ui->cbLicence->setCurrentIndex(ui->cbLicence->findText(licence));
 
     ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeGestionImages);
 }
@@ -1282,21 +1286,21 @@ bool Editeur::preparerSauvegarde()
     _abuleduFile->abeFileGetLOM()->abeLOMaddLifeCycleContributionRole("author", vcard, QDate::currentDate());
     _abuleduFile->abeFileGetLOM()->abeLOMsetRightsCost("no");
     _abuleduFile->abeFileGetLOM()->abeLOMsetRightsCopyrightAndOtherRestrictions("yes");
-    _abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription(codeLangue,ui->cbLicence->currentText());
+//    _abuleduFile->abeFileGetLOM()->abeLOMsetRightsDescription(codeLangue,ui->cbLicence->currentText());
+    _abuleduFile->abeFileGetLOM()->abeLOMsetEducationalDifficulty(ui->cbNiveauDifficulte->currentText());
+
 
     _abuleduFile->abeFileGetLOM()->abeLOMsetAnnotationDate(QDate::currentDate());
     _abuleduFile->abeFileGetLOM()->abeLOMsetGeneralLanguage(codeLangue);
 
-    //    QString destTemp = _abuleduFile->abeFileGetDirectoryTemp().absolutePath();
-
-    //    QDir().mkpath(destTemp + "/data/images");
-    //    QDir().mkpath(destTemp + "/conf");
-
     /* Creation fichier Conf [@note les timers sont convertis en millisecondes] */
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
     parametres.setValue("version",abeApp->applicationVersion());
+    parametres.setValue("niveauDifficulte",ui->cbNiveauDifficulte->currentIndex());
+
     /* Parametres Survol */
     parametres.beginGroup("survol");
+    qDebug() << "____________________________  : (survol) : "  << ui->groupBoxSurvol->isChecked();
     if (ui->groupBoxSurvol->isChecked())
     {
         parametres.setValue("exerciceActive",true);
@@ -1319,7 +1323,7 @@ bool Editeur::preparerSauvegarde()
 
     /* Parametres Double-Clic */
     parametres.beginGroup("doubleClic");
-    if (ui->groupBoxClic->isChecked())
+    if (ui->groupBoxDoubleClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
         parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
@@ -1330,54 +1334,14 @@ bool Editeur::preparerSauvegarde()
 
     /* Paramètres Parcours */
     /** @todo toutes les sauvegardes de parcours ont été déplacées.
-    Reflechir à ce qu'il faut faire ici (contrôle ou rien)
-*/
+        Reflechir à ce qu'il faut faire ici (contrôle ou rien)
+    */
     parametres.beginGroup("parcours");
     if (ui->groupBoxParcours->isChecked()){
         parametres.setValue("exerciceActive",true);
         parametres.setValue("timerSuivant", (ui->spinBoxParcoursSuivant->value()));
         parametres.setValue("nbMasquesLargeur", (ui->spinBoxParcoursMasquesLargeur->value()));
         parametres.setValue("nbMasquesHauteur", (ui->spinBoxParcoursMasqueHauteur->value()));
-        //        if(!m_parametresParcours1.isEmpty())
-        //        {
-        //            QMapIterator<QString, QVariant> i(m_parametresParcours1);
-        //            while (i.hasNext()) {
-        //                i.next();
-        //                parametres.setValue("parcours1/"+ i.key(), i.value());
-        //            }
-        //        }
-        //        if(!m_parametresParcours2.isEmpty())
-        //        {
-        //            QMapIterator<QString, QVariant> i(m_parametresParcours2);
-        //            while (i.hasNext()) {
-        //                i.next();
-        //                parametres.setValue("parcours2/"+ i.key(), i.value());
-        //            }
-        //        }
-        //        if(!m_parametresParcours3.isEmpty())
-        //        {
-        //            QMapIterator<QString, QVariant> i(m_parametresParcours3);
-        //            while (i.hasNext()) {
-        //                i.next();
-        //                parametres.setValue("parcours3/"+ i.key(), i.value());
-        //            }
-        //        }
-        //        if(!m_parametresParcours4.isEmpty())
-        //        {
-        //            QMapIterator<QString, QVariant> i(m_parametresParcours4);
-        //            while (i.hasNext()) {
-        //                i.next();
-        //                parametres.setValue("parcours4/"+ i.key(), i.value());
-        //            }
-        //        }
-        //        if(!m_parametresParcours5.isEmpty())
-        //        {
-        //            QMapIterator<QString, QVariant> i(m_parametresParcours5);
-        //            while (i.hasNext()) {
-        //                i.next();
-        //                parametres.setValue("parcours5/"+ i.key(), i.value());
-        //            }
-        //        }
     }
     else{parametres.setValue("exerciceActive",false);}
     parametres.endGroup();
