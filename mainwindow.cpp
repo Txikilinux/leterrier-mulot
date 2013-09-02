@@ -87,8 +87,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
-    //    ui->editeur->abeEditeurSetMainWindow(this);
-
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
 #endif
@@ -117,6 +115,7 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
     m_abuleduFile = qsp_AbulEduFileV1;
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
 
+    qDebug() << "TEST :: " << box->abeGetSender()->objectName();
     if (box->abeGetSender() > 0)
     {
         if (box->abeGetSender()->objectName() == "editeur")
@@ -172,7 +171,8 @@ void MainWindow::slotFinDemo()
 
 void MainWindow::btnBoxClicked()
 {
-    ui->AbulEduBoxFileManager->abeSetSender(this);
+    /* Permet de remettre AbulEduBoxFileManager en mode Open */
+    afficheBoxFileManager(AbulEduBoxFileManagerV1::abeOpen);
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }
 
