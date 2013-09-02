@@ -227,9 +227,13 @@ void Editeur::initMessagesAide()
             + trUtf8("Pour passer à l'ecran suivant, au moins un exercice doit être activé.\n")
             + trUtf8("Si l'exercice parcours est activé, tous les boutons \"Parcours\" doivent être vert.");
 
-    _messageAidePageParcours = trUtf8("Message d'aide à venir");
+    _messageAidePageParcours = trUtf8("Sélectionnez le nombre de masques pour votre parcours. Le bouton \"Sauvegarder\" sera actif lorsque\n")
+            + trUtf8("tous les masques seront posés en cliquant sur une case valide (n'importe où pour le départ, grisé pour le reste).\n")
+            + trUtf8("Il est également possible de recommencer votre parcours en cliquant sur \"Réinitialiser\" à tout moment.");
 
-    _messageAidePageFin = trUtf8("Message d'aide à venir");
+    _messageAidePageFin = trUtf8("Veuillez remplir au minimum le titre de votre module, ainsi que votre nom.\n")
+            + trUtf8("Il vous est possible de tester votre module en cliquant sur \"Essayer\".\n")
+            + trUtf8("Si les paramètres vous semblent correctes, sauvegardez votre module en cliquant sur \"Enregistrer\".");
 
     _messageAidePageVisio = trUtf8("Pour revenir à l'écran précédent, cliquez sur l'image.");
 }
