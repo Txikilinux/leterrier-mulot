@@ -271,6 +271,10 @@ void MainWindow::exerciceExited()
     ui->menuBar->setEnabled(true);
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
+
+    // on peut redimmensionner la fenetre
+    setMaximumSize(QSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX));
+    setMinimumSize(1024,600);
 }
 
 void MainWindow::on_actionOuvrir_un_exercice_triggered()
