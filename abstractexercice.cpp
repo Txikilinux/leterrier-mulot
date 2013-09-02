@@ -37,11 +37,14 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 
     /* Création de l'aire de travail + propriétés */
     _aireTravail = new AbulEduEtiquettesV1(QPointF(0,0));
+    connect(_aireTravail, SIGNAL(wheelTurn(int)), SLOT(wheelTurn(int)));
+    _aireTravail->setFocusPolicy( Qt::NoFocus );
 
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
     _proxyGraphique = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(_aireTravail);
     _proxyGraphique->setGeometry(_aireTravail->rect());
     _proxyGraphique->setZValue(-1) ;
+    _proxyGraphique->setFocusPolicy(Qt::NoFocus);
 
     /* Instanciation des variables membres */
     _listeImage.clear();
@@ -627,7 +630,7 @@ void AbstractExercice::setDimensionsWidgets()
     const int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     const int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     _aireTravail->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
-    _aireTravail->move(80 * ratio, 64 * ratio);
+//    _aireTravail->move(80 * ratio, 64 * ratio);
 
     _tailleAireTravail = _aireTravail->size();
 
@@ -661,6 +664,11 @@ void AbstractExercice::slotAppuiAutoVerifier()
 bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
     obj = this;
+
+    /* Afin de bloquer les wheelEvents qui bouge l'aire de jeu */
+    if(ev->type() == QEvent::Wheel )
+        return true;
+
     if(ev->type() == QEvent::KeyRelease)
     {
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(ev);
@@ -727,5 +735,4 @@ void AbstractExercice::pause()
         _labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
     }
-
 }
