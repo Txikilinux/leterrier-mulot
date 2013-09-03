@@ -82,15 +82,12 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     sequenceMachine->start();
     /* Assignation des propriétés de la télécommande */
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
 
