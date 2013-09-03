@@ -46,9 +46,9 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
     ui->abuleduMediathequeGet->abeHideInfoPanel(false);
+    ui->abuleduMediathequeGet->abeHideCloseBouton(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
-    ui->abuleduMediathequeGet->abeHideCloseBouton(true);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>, int)), this,
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
@@ -423,8 +423,8 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
     m_opt_nbMasquesHauteur = ui->spinBoxParcoursMasqueHauteur->value();
 
     /** @todo SCROLLBAR */
-    float largeurGv = ui->gv_editeurParcours->rect().width()  - ui->gv_editeurParcours->verticalScrollBar()->width();
-    float hauteurGv = ui->gv_editeurParcours->rect().height() - ui->gv_editeurParcours->horizontalScrollBar()->height();
+    float largeurGv = ui->gv_editeurParcours->width()  - ui->gv_editeurParcours->verticalScrollBar()->width();
+    float hauteurGv = ui->gv_editeurParcours->height() - ui->gv_editeurParcours->horizontalScrollBar()->height();
 
     const qreal largeurMasque = largeurGv / m_opt_nbMasquesLargeur;
     const qreal hauteurMasque = hauteurGv / m_opt_nbMasquesHauteur;

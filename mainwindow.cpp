@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduFileManager = ui->AbulEduBoxFileManager;
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
+    m_abuleduFileManager->abeMediathequeGetHideCloseBouton(true);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
 //    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
