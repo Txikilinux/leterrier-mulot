@@ -1398,7 +1398,7 @@ void Editeur::on_btnPublier_clicked()
 
 void Editeur::slotSortieVisionneuse()
 {
-    ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeGestionImages);
+    slotEditorChangePageRequested(PageEtapeGestionImages);
     /* Activation de la naviguation en fonction */
     controlNumberOfImages();
 }
