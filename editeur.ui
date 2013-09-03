@@ -117,10 +117,13 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="pageAccueil">
       <layout class="QGridLayout" name="gridLayout_7">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0" colspan="3">
         <spacer name="verticalSpacer_9">
          <property name="orientation">
@@ -250,6 +253,9 @@ p, li { white-space: pre-wrap; }
      </widget>
      <widget class="QWidget" name="pageGestionImages">
       <layout class="QGridLayout" name="gridLayout_8">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0">
         <widget class="QTabWidget" name="tabWidgetImages">
          <property name="currentIndex">
@@ -270,6 +276,9 @@ p, li { white-space: pre-wrap; }
            <string>Disque local</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_6">
+           <property name="margin">
+            <number>0</number>
+           </property>
            <item row="0" column="2">
             <spacer name="verticalSpacer_7">
              <property name="orientation">
@@ -983,6 +992,9 @@ font : bold;
      </widget>
      <widget class="QWidget" name="pageFin">
       <layout class="QGridLayout" name="gridLayout_14">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0" colspan="2">
         <widget class="QLabel" name="lblTitreModule">
          <property name="text">
@@ -1167,6 +1179,9 @@ font : bold;
      </widget>
      <widget class="QWidget" name="pageParcours">
       <layout class="QGridLayout" name="gridLayout_10">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0">
         <widget class="QGraphicsView" name="gv_editeurParcours">
          <property name="transformationAnchor">
@@ -1239,6 +1254,9 @@ font : bold;
      <widget class="AbulEduMediathequePushV1" name="stPageMediathequePush"/>
      <widget class="QWidget" name="pageVisio">
       <layout class="QGridLayout" name="gridLayout_15">
+       <property name="margin">
+        <number>0</number>
+       </property>
        <item row="0" column="0">
         <widget class="QGraphicsView" name="gvPageVisio"/>
        </item>
