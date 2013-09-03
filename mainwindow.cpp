@@ -126,14 +126,13 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         if (box->abeGetSender()->objectName() == "editeur")
         {
             ui->stCentral->setCurrentWidget(ui->pageEditeur);
-            ui->editeur->btnModificationCourant()->click();
+            ui->editeur->on_btnModificationCourant_clicked();
         }
         else
         {
             ui->stCentral->setCurrentWidget(ui->fr_principale);
         }
     }
-
     abeAiguillage();
 }
 
@@ -175,7 +174,7 @@ void MainWindow::btnBoxClicked()
 {
     /* Permet de remettre AbulEduBoxFileManager en mode Open */
     afficheBoxFileManager(AbulEduBoxFileManagerV1::abeOpen);
-    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
+//    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }
 
 void MainWindow::abeLanceExo(int numero)

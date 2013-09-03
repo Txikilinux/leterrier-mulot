@@ -84,6 +84,9 @@ public:
     QStackedWidget* stackedWidget(){ return ui->stackedWidgetEditeur ;}
     QPushButton* btnModificationCourant(){ return ui->btnModificationCourant ;}
 
+    /** Appelle la fonction slotLoadUnit */
+    void on_btnModificationCourant_clicked();
+
 private slots:
     /** Permet de supprimer une image du listWidgetImagesSelection
       * connecté à un menu contextuel appelé au clic droit sur le listWidgetImagesSelection */
@@ -122,8 +125,6 @@ private slots:
     /** Appelle la fonction ajouterImage pour une image provenant du parcours du disque dur */
     void on_btnAjouterImageQFileDialog_clicked();
 
-    /** Appelle la fonction slotLoadUnit */
-    void on_btnModificationCourant_clicked();
 
     /** Fait apparaitre l'AbulEduFileManagerV1, dont le signal signalAbeFileSelected lance slotOpenFile, et donc slotLoadUnit */
     void on_btnModificationAutre_clicked();
