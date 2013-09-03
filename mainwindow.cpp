@@ -65,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduFileManager->abeMediathequeGetHideCloseBouton(true);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
-//    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+//    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(on_btnModificationCourant_clicked()/*(QSharedPointer<AbulEduFileV1>)*/), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
 
@@ -114,6 +114,10 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
 {
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = qsp_AbulEduFileV1;
+
+    if (m_localDebug) qDebug() << "Nom du fichier abe :" << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+
+
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
 
     qDebug() << "TEST :: " << box->abeGetSender()->objectName();
@@ -122,17 +126,14 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         if (box->abeGetSender()->objectName() == "editeur")
         {
             ui->stCentral->setCurrentWidget(ui->pageEditeur);
+            ui->editeur->btnModificationCourant()->click();
         }
         else
         {
             ui->stCentral->setCurrentWidget(ui->fr_principale);
         }
     }
-    else
-    {
-        ui->stCentral->setCurrentWidget(ui->fr_principale);
-    }
-    if (m_localDebug) qDebug() << "Nom du fichier abe :" << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+
     abeAiguillage();
 }
 
