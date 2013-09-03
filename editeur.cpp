@@ -45,7 +45,7 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeSetCustomBouton1(trUtf8("Importer l'image"));
     ui->abuleduMediathequeGet->abeHideBoutonTelecharger();
     ui->abuleduMediathequeGet->abeCustomBouton1SetDownload(true);
-    ui->abuleduMediathequeGet->abeHideInfoPanel(true);
+    ui->abuleduMediathequeGet->abeHideInfoPanel(false);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
     ui->abuleduMediathequeGet->abeHideCloseBouton(true);

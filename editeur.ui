@@ -117,7 +117,7 @@ background: #ddf url(&quot;:/aide&quot;) no-repeat;</string>
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>3</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="pageAccueil">
       <layout class="QGridLayout" name="gridLayout_7">
@@ -382,6 +382,9 @@ font : bold;
            <string>AbulÉdu Data</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_9">
+           <property name="margin">
+            <number>0</number>
+           </property>
            <item row="0" column="0">
             <widget class="AbulEduMediathequeGetV1" name="abuleduMediathequeGet" native="true">
              <property name="minimumSize">
