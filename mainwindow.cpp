@@ -126,7 +126,7 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         if (box->abeGetSender()->objectName() == "editeur")
         {
             ui->stCentral->setCurrentWidget(ui->pageEditeur);
-            ui->editeur->on_btnModificationCourant_clicked();
+            ui->editeur->modificationAbe();
         }
         else
         {

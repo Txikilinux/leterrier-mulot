@@ -1046,14 +1046,19 @@ void Editeur::on_btnCreationAbe_clicked()
     _assistantEtapes->abeWidgetAssistantSetEtapeCourante(PageEtapeGestionImages);
 }
 
+void Editeur::modificationAbe()
+{
+    setModeModificationAbe(true);
+    slotEditorChangePageRequested(PageEtapeGestionImages);
+    slotLoadUnit();
+}
+
 /** Bouton modification courant ABE */
 void Editeur::on_btnModificationCourant_clicked()
 {
     if(m_localDebug) qDebug() << __FILE__ <<  __LINE__ << __FUNCTION__;
 
-    setModeModificationAbe(true);
-    slotEditorChangePageRequested(PageEtapeGestionImages);
-    slotLoadUnit();
+    modificationAbe();
 }
 
 /** Bouton modification autre (ouverture box) */
