@@ -225,7 +225,7 @@ void Editeur::initMessagesAide()
 
     _messageAidePageParametres = trUtf8("Cochez les exercices désirés et réglez les différentes valeurs.\n")
             + trUtf8("Pour passer à l'ecran suivant, au moins un exercice doit être activé.\n")
-            + trUtf8("Si l'exercice parcours est activé, tous les boutons \"Parcours\" doivent être vert.");
+            + trUtf8("Si l'exercice parcours est activé, tous les boutons \"Parcours\" doivent être verts.");
 
     _messageAidePageParcours = trUtf8("Sélectionnez le nombre de masques pour votre parcours. Le bouton \"Sauvegarder\" sera actif lorsque\n")
             + trUtf8("tous les masques seront posés en cliquant sur une case valide (n'importe où pour le départ, grisé pour le reste).\n")
