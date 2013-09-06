@@ -37,7 +37,6 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 
     /* Création de l'aire de travail + propriétés */
     _aireTravail = new AbulEduEtiquettesV1(QPointF(0,0));
-    connect(_aireTravail, SIGNAL(wheelTurn(int)), SLOT(wheelTurn(int)));
     _aireTravail->setFocusPolicy( Qt::NoFocus );
 
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
