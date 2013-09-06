@@ -1326,8 +1326,8 @@ bool Editeur::preparerSauvegarde()
     if (ui->groupBoxClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
-        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+        parametres.setValue("timerSuivant", (ui->spinBoxClicSuivant->value()));
+        parametres.setValue("nbMasquesChoisis", (ui->spinBoxClicMasque->value()));
     }
     else{parametres.setValue("exerciceActive",false);}
     parametres.endGroup();
@@ -1337,8 +1337,8 @@ bool Editeur::preparerSauvegarde()
     if (ui->groupBoxDoubleClic->isChecked())
     {
         parametres.setValue("exerciceActive",true);
-        parametres.setValue("timerSuivant", (ui->spinBoxSurvolSuivant->value()));
-        parametres.setValue("nbMasquesChoisis", (ui->spinBoxSurvolMasque->value()));
+        parametres.setValue("timerSuivant", (ui->spinBoxDoubleClicSuivant->value()));
+        parametres.setValue("nbMasquesChoisis", (ui->spinBoxDoubleClicMasque->value()));
     }
     else{parametres.setValue("exerciceActive",false);}
     parametres.endGroup();
