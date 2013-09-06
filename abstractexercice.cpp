@@ -234,6 +234,10 @@ void AbstractExercice::slotInitQuestionEntered()
 
     _onPeutMettreEnPause = false;
 
+    /* PEtit nettoyage suite #3127 */
+    _aireTravail->scene()->clear();
+    _aireTravail->scene()->update();
+
     if(_listeImage.isEmpty()) {return;}
 
     AbulEduCommonStatesV1::slotInitQuestionEntered();
@@ -244,7 +248,6 @@ void AbstractExercice::slotInitQuestionEntered()
         _aireTravail->scene()->addItem(_itemImage);
         _itemImage->setPixmap(_listeImage.takeAt(0));
         _itemImage->setVisible(false);
-
     }
     redimensionnerImage();
 
