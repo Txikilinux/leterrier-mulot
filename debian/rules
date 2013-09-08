@@ -9,35 +9,24 @@ QTPLUGINS=/usr/lib/qt4/plugins
 #QMAKE=qmake-qt4 #apres jaunty
 CFLAGS=-O3
 CXXFLAGS=-O3
-DEST=/usr/share/leterrier-mulot
-EXECDEST=/usr/lib/leterrier-mulot
-BUILDTEMP=$(CURDIR)/debian/leterrier-mulot
+EXECNAME=leterrier-mulot
+DEST=/usr/share/$(EXECNAME)
+EXECDEST=/usr/lib/$(EXECNAME)
+BUILDTEMP=$(CURDIR)/debian/$(EXECNAME)
 
-MANPAGES := $(CURDIR)/debian/leterrier-mulot.1
+MANPAGES := $(CURDIR)/debian/$(EXECNAME).1
 
-install/leterrier-mulot::
+install/$(EXECNAME)::
 	install -d -m 755 $(BUILDTEMP)/usr/bin/
 	install -d -m 755 $(BUILDTEMP)/$(EXECDEST)
-	install -d -m 755 $(BUILDTEMP)/$(DEST)/data
+	install -d -m 755 $(BUILDTEMP)/$(DEST)/data/icones
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/conf
+	install -d -m 755 $(BUILDTEMP)/$(DEST)/lang
 	install -d -m 755  $(BUILDTEMP)/usr/share/applications
-	install -d -m 755 $(BUILDTEMP)/$(DEST)/data/icones/
-	install -m 755 $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/${EXEC}
+	install -m 755 $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/${EXECNAME}
 	install -m 644 $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
-	#install -m 644 $(CURDIR)/data/*.abe $(BUILDTEMP)/$(DEST)/data
-	install -m 644 $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data
-	install -s -m 755 $(CURDIR)/leterrier-mulot $(BUILDTEMP)/$(EXECDEST)/
-	install -m 644 $(CURDIR)/data/icones/*$(EXECNAME)*.png $(BUILDTEMP)/$(DEST)/
-
-#	install -D --mode=0755 $(QTDIR)/lib/libQtCore.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-#	install -D --mode=0755 $(QTDIR)/lib/libQtXml.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-#	install -D --mode=0755 $(QTDIR)/lib/libQtNetwork.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-#	install -D --mode=0755 $(QTDIR)/lib/libQtGui.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-#	install -D --mode=0755 $(QTDIR)/lib/libQtScript.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-#	install -D --mode=0755 $(QTDIR)/lib/libQtDesigner.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-#	install -D --mode=0755 $(QTDIR)/lib/libQtSvg.so.4 $(CURDIR)/debian/leterrier-mulot/usr/lib/leterrier-mulot
-
-	#and plugins (phonon backend, jpeg and co)
-#	cp -a $(QTPLUGINS)/imageformats $(BUILDTEMP)/$(EXECDEST)/
-#	mkdir -p $(BUILDTEMP)/$(EXECDEST)/phonon_backend
-
+	install -m 644 $(CURDIR)/data/*.abe $(BUILDTEMP)/$(DEST)/data || true
+	install -m 644 $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data || true
+	install -s -m 755 $(CURDIR)/$(EXECNAME) $(BUILDTEMP)/$(EXECDEST)/
+	install -m 644 $(CURDIR)/data/icones/*$(EXECNAME)*-256.png $(BUILDTEMP)/$(DEST)/
+	install -m 644 $(CURDIR)/lang/*.qm $(BUILDTEMP)/$(DEST)/lang || true

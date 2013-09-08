@@ -22,7 +22,6 @@
   */
 
 #include "mainwindow.h"
-#include "editeur.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,22 +30,13 @@ MainWindow::MainWindow(QWidget *parent) :
     m_localDebug = true;
     m_isDemoAvailable = true;
 
-//    /// Langue et Translator
-//    QString locale = QLocale::system().name().section('_', 0, 0);
-
-//    //Un 1er qtranslator pour prendre les traductions QT Systeme
-//    //c'est d'ailleur grace a ca qu'on est en RTL
-//    qtTranslator.load("qt_" + locale,
-//                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-//    abeApp->installTranslator(&qtTranslator);
-
-//    //Et un second qtranslator pour les traductions specifiques du
-//    //logiciel
-//    myappTranslator.load("mulot_" + locale, "lang");
-//    abeApp->installTranslator(&myappTranslator);
-
     ui->setupUi(this);
+    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    setMinimumSize(1024, 600);
+
     creeMenuLangue();
+
+    /* Centrage de la fenetre sur le bureau de l'utilisateur */
     move(QApplication::desktop()->screen()->rect().center()-this->rect().center());
 
     setAttribute(Qt::WA_DeleteOnClose);
@@ -55,7 +45,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->fr_principale->setMinimumSize(QSize(1000, 500));
 
     /* Gestion bulles page d'accueil */
-    m_texteBulles.clear();
     m_texteBulles.insert(0, trUtf8("Survol"));
     m_texteBulles.insert(1, trUtf8("Clic"));
     m_texteBulles.insert(2, trUtf8("Molette"));
@@ -63,27 +52,22 @@ MainWindow::MainWindow(QWidget *parent) :
     m_texteBulles.insert(4, trUtf8("Double-clic"));
 
     m_abuleduaccueil = new AbulEduPageAccueilV1(&m_texteBulles, ui->fr_principale);
-    connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
-
-    /* Centrage de la fenetre sur le bureau de l'utilisateur */
-    QDesktopWidget *widget = QApplication::desktop();
-    int desktop_width = widget->width();
-    int desktop_height = widget->height();
-    this->move((desktop_width-this->width())/2, (desktop_height-this->height())/2);
-
     m_abuleduaccueil->setDimensionsWidgets();
+    connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()), Qt::UniqueConnection);
+
     m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1, &QObject::deleteLater);
+
     m_abuleduFileManager = ui->AbulEduBoxFileManager;
     m_abuleduFileManager->abeSetFile(m_abuleduFile);
     m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
+    m_abuleduFileManager->abeMediathequeGetHideCloseBouton(true);
 
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)),ui->editeur, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+//    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(on_btnModificationCourant_clicked()/*(QSharedPointer<AbulEduFileV1>)*/), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
     connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
-
 
     m_numberExoCalled = -1;
 
@@ -92,15 +76,17 @@ MainWindow::MainWindow(QWidget *parent) :
     monAide->hide();
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
 
-    connect(ui->editeur,SIGNAL(editorExited()),this, SLOT(exerciceExited()), Qt::UniqueConnection);
-    connect(ui->editeur, SIGNAL(editorTest()),this, SLOT(debutTestParametres()), Qt::UniqueConnection);
+    connect(ui->editeur, SIGNAL(editorExited()), SLOT(exerciceExited()), Qt::UniqueConnection);
+    connect(ui->editeur, SIGNAL(editorNewAbe(int)), SLOT(setTitle(int)), Qt::UniqueConnection);
+    /** @todo reconnecter les différents siganux petit à petit (après test de chaque fonctionnalité ) */
+    connect(ui->editeur, SIGNAL(editorTest()), SLOT(debutTestParametres()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)),
-            this, SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
-    //        connect(ui->editeur, SIGNAL(editorNew()),this, SLOT(setNewTitle()));
+            SLOT(afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave)), Qt::UniqueConnection);
+
+    /* On passe à l'éditeur l'abe courant */
+    ui->editeur->setAbeFile(m_abuleduFile);
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
-
-    ui->editeur->abeEditeurSetMainWindow(this);
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
@@ -112,10 +98,11 @@ void MainWindow::resizeEvent(QResizeEvent *)
     m_abuleduaccueil->setDimensionsWidgets();
 }
 
-void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
-{
-    m_abuleduFile = abeFile;
-}
+//void MainWindow::abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile)
+//{
+//    m_abuleduFile = abeFile;
+//    ui->editeur->setAbeFile(abeFile);
+//}
 
 MainWindow::~MainWindow()
 {
@@ -123,28 +110,29 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
+void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1)
 {
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = qsp_AbulEduFileV1;
+
+    if (m_localDebug) qDebug() << "Nom du fichier abe :" << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+
+
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
 
+    qDebug() << "TEST :: " << box->abeGetSender()->objectName();
     if (box->abeGetSender() > 0)
     {
         if (box->abeGetSender()->objectName() == "editeur")
         {
             ui->stCentral->setCurrentWidget(ui->pageEditeur);
+            ui->editeur->modificationAbe();
         }
         else
         {
             ui->stCentral->setCurrentWidget(ui->fr_principale);
         }
     }
-    else
-    {
-        ui->stCentral->setCurrentWidget(ui->fr_principale);
-    }
-    if (m_localDebug) qDebug() << "Nom du fichier abe :" << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
     abeAiguillage();
 }
 
@@ -184,8 +172,9 @@ void MainWindow::slotFinDemo()
 
 void MainWindow::btnBoxClicked()
 {
-    ui->AbulEduBoxFileManager->abeSetSender(this);
-    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
+    /* Permet de remettre AbulEduBoxFileManager en mode Open */
+    afficheBoxFileManager(AbulEduBoxFileManagerV1::abeOpen);
+//    ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }
 
 void MainWindow::abeLanceExo(int numero)
@@ -193,10 +182,12 @@ void MainWindow::abeLanceExo(int numero)
     if(m_exerciceEnCours){return;}
 
     m_numberExoCalled = numero;
+
+    qDebug() << "Nom du fichier abe en cours : " << m_abuleduFile->abeFileGetFileName().fileName();
+
     if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty() && m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->isHidden())
     {
         on_actionOuvrir_un_exercice_triggered();
-        return;
     }
     else
         abeAiguillage();
@@ -211,10 +202,10 @@ void MainWindow::abeAiguillage()
         m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(false);
     }
 
-    switch (m_numberExoCalled) {
+    switch(m_numberExoCalled) {
     case 0:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Survol";
+        if (m_localDebug) qDebug() << "Exercice No : " << m_numberExoCalled << " Exercice Survol";
         ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -226,7 +217,7 @@ void MainWindow::abeAiguillage()
     }
     case 1:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Clic";
+        if (m_localDebug) qDebug() << "Exercice No : " << m_numberExoCalled << " Exercice Clic";
         ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -238,7 +229,7 @@ void MainWindow::abeAiguillage()
     }
     case 3:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Parcours";
+        if (m_localDebug) qDebug() << "Exercice No : "<< m_numberExoCalled << " Exercice Parcours";
         ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -250,7 +241,7 @@ void MainWindow::abeAiguillage()
     }
     case 4:
     {
-        if (m_localDebug) qDebug()<<"Exercice No :"<< m_numberExoCalled<<" Exercice Double-Clic";
+        if (m_localDebug) qDebug() << "Exercice No : " << m_numberExoCalled << " Exercice Double-Clic";
         ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
@@ -269,29 +260,27 @@ void MainWindow::abeAiguillage()
 void MainWindow::exerciceExited()
 {
     if (m_localDebug) qDebug()<< __PRETTY_FUNCTION__;
+
     ui->stCentral->setCurrentWidget(ui->fr_principale);
     m_abuleduaccueil->abePageAccueilDesactiveZones(false);
     m_abuleduaccueil->abePageAccueilGetMenu()->show();
     m_exerciceEnCours = false;
     m_numberExoCalled = -1;
-    setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
-    setMinimumSize(1024, 600);
     m_isDemoAvailable = ui->actionMode_D_mo->isChecked();
     m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setEnabled(true);
 
     ui->menuBar->setEnabled(true);
 
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
+
+    // on peut redimmensionner la fenetre
+    setMaximumSize(QSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX));
+    setMinimumSize(1024,600);
 }
 
 void MainWindow::on_actionOuvrir_un_exercice_triggered()
 {
     btnBoxClicked();
-}
-
-void MainWindow::on_action_Survol_triggered()
-{
-    abeLanceExo(0);
 }
 
 void MainWindow::slotChangeLangue()
@@ -313,6 +302,11 @@ void MainWindow::slotChangeLangue()
     ui->retranslateUi(this);
 }
 
+void MainWindow::on_action_Survol_triggered()
+{
+    abeLanceExo(0);
+}
+
 void MainWindow::on_actionClic_triggered()
 {
     abeLanceExo(1);
@@ -330,12 +324,27 @@ void MainWindow::on_action_Double_Clic_triggered()
 
 void MainWindow::on_actionEditeur_triggered()
 {
-    ui->editeur->abeEditeurSetMainWindow(this);
+    /* Petite protection, si l'editeur est la fenetre en cours, on zappe */
+    if(ui->editeur->isVisible())
+        return;
+
     if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
+        if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
+        /* Si le titre de l'abe n'est pas vide, on active le bouton de modification du module courant */
+        if(!m_abuleduFile->abeFileGetTitle().isEmpty()){
+            if(m_localDebug) qDebug() << "Le titre ABE n'est pas vide, edition possible";
+            ui->editeur->btnModificationCourant()->setEnabled(true);
+            ui->editeur->btnModificationCourant()->setText(ui->editeur->btnModificationCourant()->text().remove("en cours") + "\"" + m_abuleduFile->abeFileGetTitle()+"\"");
+        }
+        else {
+            if(m_localDebug) qDebug() << "Le titre ABE est vide, pas d'edition";
+            ui->editeur->btnModificationCourant()->setText(trUtf8("Editer le module en cours"));
+            ui->editeur->btnModificationCourant()->setEnabled(false);
+        }
     }
-    else /* On affiche un petit message... */
+    else /* On affiche un petit message */
     {
         QMessageBox::critical(this,"Ouverture Editeur", trUtf8("Veuillez quitter l'exercice avant d'ouvrir l'éditeur"),0,0);
     }
@@ -383,9 +392,11 @@ void MainWindow::slotSessionAuthenticated(bool enable)
 
 void MainWindow::setTitle(int authStatus)
 {
-    if (m_localDebug) qDebug()<<  __PRETTY_FUNCTION__ << " " << authStatus;
+    if(m_localDebug) qDebug()<<  __PRETTY_FUNCTION__ << " " << authStatus;
+
     QString title = abeApp->getAbeApplicationLongName();
-    if (m_numberExoCalled >=0)
+
+    if(m_numberExoCalled >=0)
     {
         title.append(" -- "+m_texteBulles[m_numberExoCalled]);
     }
@@ -393,7 +404,10 @@ void MainWindow::setTitle(int authStatus)
     {
         title.append(" -- "+m_abuleduFile->abeFileGetFileName().fileName());
     }
-    if (authStatus == 1)
+    else { /* On affiche que l'user n'a pas de module */
+        title.append(" -- " + trUtf8("Pas de module chargé"));
+    }
+    if(authStatus == 1)
     {
         title.append(" -- "+abeApp->getAbeNetworkAccessManager()->abeGetSSOLogin());
     }
@@ -449,6 +463,7 @@ void MainWindow::slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbul
         message = trUtf8("Votre fichier n'a pas pu être enregistré...");
     }
     AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), message);
+    msgEnregistrement->setWindowModality(Qt::ApplicationModal);
     if (reussite == true)
     {
         msgEnregistrement->setWink();
@@ -472,27 +487,23 @@ void MainWindow::btnQuitBoxFileManagerClicked()
         ui->stCentral->setCurrentWidget(ui->fr_principale);
 }
 
-QSharedPointer<AbulEduFileV1> MainWindow::abeGetMyAbulEduFile()
-{
-    return m_abuleduFile;
-}
-
-AbulEduPageAccueilV1 *MainWindow::abeGetMyAbulEduAccueil()
-{
-    return m_abuleduaccueil;
-}
-
 void MainWindow::debutTestParametres()
 {
     m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->setVisible(true);
-    connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),this,SLOT(afficheEditeur()), Qt::UniqueConnection);
+    connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()), SLOT(afficheEditeur()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
     ui->stCentral->setCurrentWidget(ui->fr_principale);
+
+    setWindowTitle(abeApp->getAbeApplicationLongName() +" -- " + m_abuleduFile->abeFileGetFileName().fileName() + " -- MODE TEST");
 }
 
 void MainWindow::afficheEditeur()
 {
     ui->stCentral->setCurrentWidget(ui->pageEditeur);
+    /* On enleve le "MODE TEST" de la barre des titres quand on revient dans l'editeur */
+    if(windowTitle().contains("MODE TEST")){
+        setWindowTitle(windowTitle().split(" -- MODE TEST").first());
+    }
 }
 
 void MainWindow::afficheFrPrincipale()
@@ -502,9 +513,10 @@ void MainWindow::afficheFrPrincipale()
 
 void MainWindow::afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave)
 {
-    ui->AbulEduBoxFileManager->abeSetOpenOrSaveEnum(openOrSave);
-    ui->AbulEduBoxFileManager->abeSetFile(m_abuleduFile);
-    ui->AbulEduBoxFileManager->abeRefresh(AbulEduBoxFileManagerV1::abePC);
-    ui->AbulEduBoxFileManager->abeSetSender(sender());
+    m_abuleduFileManager->abeSetOpenOrSaveEnum(openOrSave);
+    m_abuleduFileManager->abeSetFile(m_abuleduFile);
+    m_abuleduFileManager->abeRefresh(AbulEduBoxFileManagerV1::abePC);
+    m_abuleduFileManager->abeSetSender(sender());
+    m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }

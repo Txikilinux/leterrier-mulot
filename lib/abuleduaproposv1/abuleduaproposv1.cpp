@@ -43,7 +43,7 @@ AbulEduAproposV1::AbulEduAproposV1(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lblVersion->setText(abeApp->applicationVersion());
-    ui->lblVersion->setText("alors, ducon ?");
+    //ui->lblVersion->setText("alors, ducon ?");
     ui->lblNomAppli->setText(abeApp->getAbeApplicationLongName());
 //    qDebug()<<" version : "<<abeApp->applicationVersion();
     this->setWindowTitle(trUtf8("A propos de")+" "+abeApp->getAbeApplicationLongName()+" "+abeApp->applicationVersion());

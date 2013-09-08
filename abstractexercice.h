@@ -216,7 +216,6 @@ private:
 
     /** Touche clavier (espace) */
     QKeyEvent *_keySpace;
-
 };
 
 #endif // ABSTRACTEXERCICE_H

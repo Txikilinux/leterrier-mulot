@@ -1,0 +1,8 @@
+#!/bin/bash
+ICON=leterrier-mulot.desktop
+ALACARTEDIR=/usr/share/abuledu-alacarte/data/profile1.applications
+
+#alacarte
+if [ -f "${ALACARTEDIR}/${ICON}" ]; then
+    rm -f ${ALACARTEDIR}/${ICON}
+fi

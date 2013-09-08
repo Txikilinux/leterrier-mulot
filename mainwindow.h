@@ -68,17 +68,17 @@ public:
     /** Méthode qui définit l'abe courant
       * @param AbulEduFileV1* abeFile, l'objet abulEduFile
       */
-    void abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile);
+//    void abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile);
 
     /** Méthode qui retourne l'abe courant
       * @return AbulEduFileV1 *, un pointeur sur l'objet abuledufile
       */
-    QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile();
+//    const QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile(){return m_abuleduFile;}
 
     /** Permet d'accéder à la page d'accueil */
-    AbulEduPageAccueilV1* abeGetMyAbulEduAccueil();
+//    const AbulEduPageAccueilV1* abeGetMyAbulEduAccueil(){return m_abuleduaccueil;}
 
-    AbulEduBoxFileManagerV1* abeGetMyAbulEduFileManager() { return m_abuleduFileManager;}
+//    const AbulEduBoxFileManagerV1* abeGetMyAbulEduFileManager() { return m_abuleduFileManager;}
 
 
 public slots:
@@ -168,7 +168,7 @@ private slots:
     void btnBoxClicked();
 
     /** Méthode appelée lors du choix d'un abe @see AbulEduBoxFileManagerV1 */
-    void slotOpenFile(QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1);
+    void slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFileV1);
 
     /** Méthode qui gère le mode démo
       * @param bool checked, true mode demo, false mode normal

@@ -37,11 +37,13 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 
     /* Création de l'aire de travail + propriétés */
     _aireTravail = new AbulEduEtiquettesV1(QPointF(0,0));
+    _aireTravail->setFocusPolicy( Qt::NoFocus );
 
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
     _proxyGraphique = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(_aireTravail);
     _proxyGraphique->setGeometry(_aireTravail->rect());
     _proxyGraphique->setZValue(-1) ;
+    _proxyGraphique->setFocusPolicy(Qt::NoFocus);
 
     /* Instanciation des variables membres */
     _listeImage.clear();
@@ -79,15 +81,12 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     sequenceMachine->start();
     /* Assignation des propriétés de la télécommande */
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     question->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnNiveau  , "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
 
@@ -234,6 +233,10 @@ void AbstractExercice::slotInitQuestionEntered()
 
     _onPeutMettreEnPause = false;
 
+    /* PEtit nettoyage suite #3127 */
+    _aireTravail->scene()->clear();
+    _aireTravail->scene()->update();
+
     if(_listeImage.isEmpty()) {return;}
 
     AbulEduCommonStatesV1::slotInitQuestionEntered();
@@ -244,7 +247,6 @@ void AbstractExercice::slotInitQuestionEntered()
         _aireTravail->scene()->addItem(_itemImage);
         _itemImage->setPixmap(_listeImage.takeAt(0));
         _itemImage->setVisible(false);
-
     }
     redimensionnerImage();
 
@@ -627,7 +629,7 @@ void AbstractExercice::setDimensionsWidgets()
     const int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     const int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     _aireTravail->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
-    _aireTravail->move(80 * ratio, 64 * ratio);
+//    _aireTravail->move(80 * ratio, 64 * ratio);
 
     _tailleAireTravail = _aireTravail->size();
 
@@ -661,6 +663,11 @@ void AbstractExercice::slotAppuiAutoVerifier()
 bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
     obj = this;
+
+    /* Afin de bloquer les wheelEvents qui bouge l'aire de jeu */
+    if(ev->type() == QEvent::Wheel )
+        return true;
+
     if(ev->type() == QEvent::KeyRelease)
     {
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(ev);
@@ -727,5 +734,4 @@ void AbstractExercice::pause()
         _labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
     }
-
 }

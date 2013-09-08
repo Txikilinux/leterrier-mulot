@@ -116,7 +116,6 @@ void ExerciceParcours::slotCacheMasque()
     if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
 
     //j'enleve le premier masque de la ma liste de parcours
-    qDebug()  <<"TEST " << _listeMasquesParcours.count();
     if(!_listeMasquesParcours.isEmpty())
     {
         if(debugAvailable()) qDebug() << "La liste avant : " << _listeMasquesParcours.count();
@@ -212,15 +211,9 @@ void ExerciceParcours::slotAide()
 void ExerciceParcours::chargerPositionMasque(const int& numeroQuestion)
 {
     _listePositionMasquesParcours.clear();
-
-    qDebug() << "GROUP av chargement " << parametres()->group();
     QList<int> listePosition;
     parametres()->beginGroup("parcours");
-    qDebug() << "GROUP ap 1e begin :: " << parametres()->group();
     parametres()->beginGroup("parcours"+QString::number(numeroQuestion));
-    qDebug() << "GROUP ap 2e begin :: " << parametres()->group();
-    //    qDebug() << "TEST parametres";
-    //    qDebug() << parametres()->childKeys();
 
     /* Recuperation des masques de départ et d'arrivée.. */
     int i = 0;
@@ -281,11 +274,8 @@ void ExerciceParcours::chargerPositionMasque(const int& numeroQuestion)
             }
         }
     }
-    qDebug() << "GROUP av END:: " << parametres()->group();
     parametres()->endGroup();
-    qDebug() << "GROUP ap END 1:: " << parametres()->group();
     parametres()->endGroup();
-    qDebug() << "GROUP ap END 2:: " << parametres()->group();
 
     /* On enregistre le nombre de masques attendus */
     NB_MASQUESATTENDUS = _listePositionMasquesParcours.count();

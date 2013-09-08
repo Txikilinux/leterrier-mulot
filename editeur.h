@@ -37,16 +37,17 @@
 #include <QDesktopWidget>
 #include <QFileSystemModel>
 #include <QImageReader>
+#include <QRegExp>
+#include <QGraphicsProxyWidget>
 
 #include "abuledufilev1.h"
-#include "visionneuseimage.h"
 #include "masquedeplacesouris.h"
 #include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "ui_editeur.h"
-#include "editeurparcourswidget.h"
 #include "abuledumediathequepushv1.h"
 #include "abuledutools.h"
+#include "abuleduwidgetassistantetapesv1.h"
 
 namespace Ui {
 class Editeur;
@@ -56,6 +57,19 @@ class Editeur : public QWidget
 {
     Q_OBJECT
 
+    /* Enum pour les pages afin de ne pas se tromper de numero dans le code
+     * Attention, ne pas toucher la numérotation des pageEtape*
+     */
+    enum Pages {
+        PageEtapeAccueil         = 0x0,
+        PageEtapeGestionImages   = 0x1,
+        PageEtapeParametres      = 0x2,
+        PageEtapeFin             = 0x3,
+        PageParcours             = 0x4,
+        /* @todo page MediathequePush */
+        PageVisio           = 0x6
+    };
+
 public:
     /** Constructeur de la classe Editeur */
     explicit Editeur(QWidget *parent);
@@ -63,24 +77,29 @@ public:
     /** Destructeur de la classe Editeur */
     ~Editeur();
 
-    void abeEditeurSetMainWindow(QWidget* mw);
+//    void abeEditeurSetMainWindow(QWidget* mw);
+    void setAbeFile(const QSharedPointer<AbulEduFileV1>& abuleduFile){ _abuleduFile = abuleduFile ;}
+    const QSharedPointer<AbulEduFileV1> abeFile(){ return _abuleduFile ; }
+
+    QStackedWidget* stackedWidget(){ return ui->stackedWidgetEditeur ;}
+    QPushButton* btnModificationCourant(){ return ui->btnModificationCourant ;}
+
+    /** Méthode de bind pour avoir la possibilité de charger un module existant dans l'editeur. */
+    void modificationAbe();
 
 private slots:
     /** Permet de supprimer une image du listWidgetImagesSelection
       * connecté à un menu contextuel appelé au clic droit sur le listWidgetImagesSelection */
     void slotSupprimerImage();
 
+    /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
+    void ajouterImage(QFileInfo monFichier);
+
     /** Crée un module à partir du contenu du dossier temporaire de l'application */
     void createAbe();
 
     /** Gère l'appui sur les boutons de parcours */
     void slotBtnParcours_clicked(const int&);
-
-    /** Réinitialise l'editeur de parcours */
-    void reinitialiserGvParcours();
-
-    /** Sauvegarde le parcours conçu avec l'éditeur de parcours */
-    void sauvegarderParcours();
 
     /** Gère la pose des masques dans l'éditeur de parcours */
     void masquePoseParcours(MasqueDeplaceSouris*);
@@ -91,27 +110,14 @@ private slots:
     /** Ouvre au double clic l'image dans la visionneuse */
     void on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item);
 
-    /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
-    void ajouterImage(QFileInfo monFichier);
-
     /** Appelle la fonction ajouterImage pour une image provenant de la médiathèque */
     void slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int &success);
-
-    /** Passe à la page précédente */
-    void on_btnPrecedent_clicked();
-
-    /** Passe à la page suivante
-      * Dans le cas de la dernière page, le bouton a pris l'icône d'enregistrement, la fonction createAbe() est appelée et l'éditeur fermé */
-    void on_btnSuivant_clicked();
-
-    /** Ferme l'application au clic sur le bouton Quitter*/
-    void on_btnQuitter_clicked();
 
     /** Création du module à partir du contenu du répertoire temporaire de l'application */
     void on_btnCreationAbe_clicked();
 
-    /** Charge un fichier reçu de l'AbulEduFileManagerV1 et le passe à la MainWindow */
-    void slotOpenFile(QSharedPointer<AbulEduFileV1>);
+//    /** Charge un fichier reçu de l'AbulEduFileManagerV1 et le passe à la MainWindow */
+//    void slotOpenFile(QSharedPointer<AbulEduFileV1>);
 
     /** Charge les paramètres de l'AbulEduFileV1 instancié dans l'application */
     void slotLoadUnit();
@@ -134,32 +140,49 @@ private slots:
 
     void on_btnPublier_clicked();
 
-    void on_stackedWidgetEditeur_currentChanged(int arg1);
-
     void slotSortieVisionneuse();
 
     /** Affiche si la publication a réussi et ramène à la dernière page de l'éditeur */
     void slotAfficheEtatPublication(const int& code);
 
+    //! MODIF ICHAM 29.07.13
+    void slotEditorChangePageRequested(int);
+    void slotCloseEditor();
+
+    bool slotCheckBoxParametres_clicked(int);
+
+    /** Sert au controle de l'intégrité des parcours */
+    bool slotParcoursSave();
+
+    void slotSetNombreMasquesParcours(int);
+
+    /** Réinitialise l'editeur de parcours */
+    void on_btnResetParcours_clicked();
+
+    /** Sauvegarde le parcours conçu avec l'éditeur de parcours */
+    void on_btnSaveParcours_clicked();
+
+    void on_sbParcoursMasque_valueChanged(int arg1);
+
 private:
     Ui::Editeur *ui;
+    QMenu *m_menuListWidget;
+
     bool m_localDebug;
     bool m_modeModificationAbe;
 
     QString m_lastOpenDir;
 
-    QStringList m_listeDossiers;
-
-    int m_opt_nbMasquesChoisisParcours;
+    int _OPT_nbMasquesChoisisParcours;
     int m_opt_nbMasquesLargeur;
     int m_opt_nbMasquesHauteur;
     int m_numeroParcours;
 
-    QMap<QString, QVariant> m_parametresParcours1;
-    QMap<QString, QVariant> m_parametresParcours2;
-    QMap<QString, QVariant> m_parametresParcours3;
-    QMap<QString, QVariant> m_parametresParcours4;
-    QMap<QString, QVariant> m_parametresParcours5;
+//    QMap<QString, QVariant> m_parametresParcours1;
+//    QMap<QString, QVariant> m_parametresParcours2;
+//    QMap<QString, QVariant> m_parametresParcours3;
+//    QMap<QString, QVariant> m_parametresParcours4;
+//    QMap<QString, QVariant> m_parametresParcours5;
 
     QMap<QString, int> positionMasquesParcours;
 
@@ -171,18 +194,24 @@ private:
     QDir *m_dir;
     QDir *m_dirAbe;
 
-    QList<QString> m_listeFichiersImages;
-    QMenu *m_menuListWidget;
+    QList<QString> _listeFichiersImages;
 
     MasqueDeplaceSouris             *m_masque;
     QList<MasqueDeplaceSouris *>    m_listeMasques;
     QList<MasqueDeplaceSouris *>    m_listeMasquesParcours;
-    EditeurParcoursWidget           *m_editeurParcoursWidget;
 
-    QSharedPointer<AbulEduFileV1> m_abuleduFile;
+    QSharedPointer<AbulEduFileV1> _abuleduFile;
 
-    /** Pointeur vers le parent. C'est un QWidget* qu'il faudra caster en MainWindow*, mais qu'on ne peut pas déclarer tel pour cause d'inclusion circulaire */
-    QWidget* m_parent;
+    QString _messageAidePageAccueil;
+    QString _messageAidePageGestionImages;
+    QString _messageAidePageParametres;
+    QString _messageAidePageParcours;
+    QString _messageAidePageFin;
+    QString _messageAidePageVisio;
+
+    AbulEduWidgetAssistantEtapesV1 *_assistantEtapes;
+
+    int _nombreParcoursSave;
 
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
@@ -222,10 +251,23 @@ private:
       */
     void mapSignalBtnParcours();
 
+    /** Permet de mapper les signaux des checkBox de parametres. (pour factorisation)
+      * @see QSignalMapper.
+      */
+    void mapSignalCheckBoxParametres();
+
+    void initMessagesAide();
+
+    void controlNumberOfImages();
 signals:
+    /** Sert à réinitialiser le titre dans la barre de la Mainwindow si jamais on créé un nouveau module, en ayant déjà un d'ouvert (et son nom dans la barre des titres) */
+    void editorNewAbe(const int& newAbe);
     void editorExited();
     void editorTest();
     void editorChooseOrSave(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave);
+
+    /** Ce signal sert à la gestion de l'intégrité des parcours */
+    void signalParcoursSave();
 };
 
 #endif // EDITEUR_H
