@@ -1306,7 +1306,7 @@ bool Editeur::preparerSauvegarde()
 
     /* Creation fichier Conf [@note les timers sont convertis en millisecondes] */
     QSettings parametres(_abuleduFile->abeFileGetDirectoryTemp().absolutePath() + "/conf/parametres.conf", QSettings::IniFormat);
-    parametres.setValue("version",abeApp->applicationVersion());
+    parametres.setValue("version",abeApp->getAbeApplicationUnitVersion());
     parametres.setValue("niveauDifficulte",ui->cbNiveauDifficulte->currentIndex());
 
     /* Parametres Survol */
