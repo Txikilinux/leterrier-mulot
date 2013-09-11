@@ -5,7 +5,7 @@ include /usr/share/cdbs/1/class/qmake.mk
 
 #faire un choix ici de la version de qt a utiliser
 #tant qu'on peut faire le choix ...
-QTVERSION=5
+QTVERSION=4
 
 ifeq ($(QTVERSION),5)
   #qt5
