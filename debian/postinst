@@ -1,5 +1,8 @@
 #!/bin/bash
-ICON=/usr/share/applications/leterrier-mulot.desktop
+
+APPNAME=leterrier-mulot
+
+ICON=/usr/share/applications/${APPNAME}.desktop
 ALACARTEDIR=/usr/share/abuledu-alacarte/data/profile1.applications/
 
 xdg-desktop-menu install  --novendor --mode system ${ICON}
@@ -7,6 +10,12 @@ xdg-desktop-menu install  --novendor --mode system ${ICON}
 #alacarte
 if [ -d "${ALACARTEDIR}" ]; then
     cp ${ICON} ${ALACARTEDIR}
+fi
+
+#le fichier qt.conf pour utiliser les libs qt 5 fournies par le paquet
+#abuledu partage
+if [ -f /opt/leterrier-qt5-libs/qt.conf ]; then
+    cp /opt/leterrier-qt5-libs/qt.conf /usr/lib/${APPNAME}/qt.conf
 fi
 
 #DEBHELPER#
