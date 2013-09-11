@@ -33,17 +33,13 @@ install/$(EXECNAME)::
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/conf
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/lang
 	install -d -m 755  $(BUILDTEMP)/usr/share/applications
-	install -m 755 $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/${EXECNAME}
+	install -m 755 $(CURDIR)/debian/*.wrapper $(BUILDTEMP)/usr/bin/${EXECNAME}
 	install -m 644 $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
 	install -m 644 $(CURDIR)/data/*.abe $(BUILDTEMP)/$(DEST)/data || true
 	install -m 644 $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data || true
 	install -s -m 755 $(CURDIR)/$(EXECNAME) $(BUILDTEMP)/$(EXECDEST)/
 	install -m 644 $(CURDIR)/data/icones/*$(EXECNAME)*-256.png $(BUILDTEMP)/$(DEST)/
 	install -m 644 $(CURDIR)/lang/*.qm $(BUILDTEMP)/$(DEST)/lang || true
-	#pour qt5 sur les distrib qui n'ont pas qt5 preserver les symlinks
-ifeq ($(QTVERSION),5)
-	install -m 644 $(CURDIR)/qt.conf $(BUILDTEMP)/$(EXECDEST)/ || true
-endif
 
 configure/$(EXECNAME)::
 ifeq ($(QTVERSION),5)
