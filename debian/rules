@@ -3,17 +3,27 @@
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/qmake.mk
 
-QMAKE=qmake-qt4 #pour jaunty
+#faire un choix ici de la version de qt a utiliser
+#tant qu'on peut faire le choix ...
+QTVERSION=4
+
+ifeq ($(QTVERSION),5)
+  #qt5
+  DEB_DH_SHLIBDEPS_ARGS := -- --ignore-missing-info
+  QMAKE=/opt/qt-5.0-officiel/5.1.1/gcc_64/bin/qmake
+else
+  #qt4
+  QMAKE=qmake-qt4
+  QTPLUGINS=/usr/lib/qt4/plugins
+endif
+
 QTDIR=/usr
-QTPLUGINS=/usr/lib/qt4/plugins
-#QMAKE=qmake-qt4 #apres jaunty
 CFLAGS=-O3
 CXXFLAGS=-O3
 EXECNAME=leterrier-mulot
 DEST=/usr/share/$(EXECNAME)
 EXECDEST=/usr/lib/$(EXECNAME)
 BUILDTEMP=$(CURDIR)/debian/$(EXECNAME)
-
 MANPAGES := $(CURDIR)/debian/$(EXECNAME).1
 
 install/$(EXECNAME)::
@@ -23,10 +33,15 @@ install/$(EXECNAME)::
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/conf
 	install -d -m 755 $(BUILDTEMP)/$(DEST)/lang
 	install -d -m 755  $(BUILDTEMP)/usr/share/applications
-	install -m 755 $(BUILDTEMP).wrapper $(BUILDTEMP)/usr/bin/${EXECNAME}
+	install -m 755 $(CURDIR)/debian/*.wrapper $(BUILDTEMP)/usr/bin/${EXECNAME}
 	install -m 644 $(CURDIR)/debian/*.desktop $(BUILDTEMP)/usr/share/applications/
 	install -m 644 $(CURDIR)/data/*.abe $(BUILDTEMP)/$(DEST)/data || true
 	install -m 644 $(CURDIR)/exemples/*.abe $(BUILDTEMP)/$(DEST)/data || true
 	install -s -m 755 $(CURDIR)/$(EXECNAME) $(BUILDTEMP)/$(EXECDEST)/
 	install -m 644 $(CURDIR)/data/icones/*$(EXECNAME)*-256.png $(BUILDTEMP)/$(DEST)/
 	install -m 644 $(CURDIR)/lang/*.qm $(BUILDTEMP)/$(DEST)/lang || true
+
+configure/$(EXECNAME)::
+ifeq ($(QTVERSION),5)
+	echo "leterrier:Depends=leterrier-qt5-libs" >> debian/$(EXECNAME).substvars
+endif
