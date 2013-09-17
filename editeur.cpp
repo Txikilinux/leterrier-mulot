@@ -217,7 +217,7 @@ void Editeur::initMessagesAide()
 {
     _messageAidePageAccueil = trUtf8("Je suis votre guide, je vous donnerai les consignes à chaque écran rencontré.\n")
             + trUtf8("Choississez ci-dessous un mode d'édition.\n")
-            + trUtf8("Les étapes sont bloquantes tant que les paramètres ne sont convenables.");
+            + trUtf8("Les étapes sont bloquantes tant que les paramètres ne sont pas convenables.");
 
     _messageAidePageGestionImages = trUtf8("Veuillez sélectionner 5 images. Il est possible de selectionner ces images sur votre ordinateur (onglet \"Disque Local\")\n")
             + trUtf8("ou sur la médiathèque d'AbulEdu (onglet \"AbulEdu Data\").\n")
@@ -470,7 +470,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
         ui->sbParcoursMasque->setValue(positionMasquesParcours.count());
 
         /* Parcours de la QMap positionMasqueParcours */
-        int positionDepart, positionArrivee = 0;
+        int positionDepart = 0, positionArrivee = 0;
         QList<int> positionParcours;
 
         QMap<QString, int>::const_iterator i = positionMasquesParcours.constBegin();
