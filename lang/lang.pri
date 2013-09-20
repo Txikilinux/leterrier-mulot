@@ -1,1 +1,2 @@
-TRANSLATIONS += $$PWD/*.ts
+TRANSLATIONS += \
+    $$PWD/*.ts
