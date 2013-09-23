@@ -11,7 +11,7 @@ QT       += core gui script xml network
 }
 android {
   DEFINES += QT_NO_PRINTER=1
-  system(ccache -V):QMAKE_CXX = ccache arm-linux-gnueabihf-g++-4.6
+  system(ccache -V):QMAKE_CXX = ccache arm-linux-gnueabi-g++-4.6
 }
 
 
