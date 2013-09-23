@@ -36,7 +36,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
     /* Création de l'aire de travail + propriétés */
-    _aireTravail = new AbulEduEtiquettesV1(QPointF(0,0));
+    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale);
     _aireTravail->setFocusPolicy( Qt::NoFocus );
 
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
@@ -103,7 +103,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     if (_localDebug)
     {
         qDebug() << "Chemin du fichier de configuration" << _cheminConf;
-        qDebug() << "Chemin des fichiers images" << _cheminImage;
+        qDebug() << "Chemin des fichiers images"         << _cheminImage;
     }
 
     /* les progressBar de la telecommande sont caches */
@@ -567,12 +567,6 @@ void AbstractExercice::redimensionnerImage()
 {
     const float ratio = abeApp->getAbeApplicationDecorRatio();
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    /** @attention new code */
-    _aireTravail->setSceneRect(_itemImage->boundingRect().toRect());
-    _aireTravail->centerOn(_itemImage);
-    _aireTravail->viewport()->setGeometry(_itemImage->boundingRect().toRect().x() * ratio, _itemImage->boundingRect().toRect().y() * ratio,
-                                          _itemImage->boundingRect().toRect().width() * ratio, _itemImage->boundingRect().toRect().height() * ratio);
-    /** @attention /new code */
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
     /* positionner l'aire de jeu au centre */
     _aireTravail->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()- _aireTravail->width())/2 + 40 * ratio,
@@ -663,7 +657,7 @@ void AbstractExercice::redimensionnerConsigne()
 {
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->move((getAbeExerciceAireDeTravailV1()->width() - getAbeExerciceMessageV1()->width())/2,
-                                    ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
+                                    ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2)  /*200**/ * abeApp->getAbeApplicationDecorRatio());
 }
 
 void AbstractExercice::slotAppuiAutoSuivant()
