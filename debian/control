@@ -8,6 +8,6 @@ Homepage: http://www.abuledu.org/leterrier/
 
 Package: leterrier-mulot
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-xml, exiv2, zlib1g
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${leterrier:Depends}, exiv2, zlib1g
 Description: Logiciel d'apprentissage de la souris et de langage
  Ce logiciel fait partie du Terrier d'AbulEdu

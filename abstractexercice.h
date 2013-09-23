@@ -129,6 +129,8 @@ private slots:
     /** Méthode héritée @see AbulEduCommonStatesV1 */
     void slotBilanExerciceEntered();
 
+    void slotBilanSequenceEntered();
+
     /** Méthode qui redimmensionne tous les éléments graphiques les uns par rapport aux autres */
     void setDimensionsWidgets();
 

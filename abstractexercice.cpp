@@ -30,7 +30,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << _parent <<" " << _theme << " " << exerciceType;
 
     /* Ici sera defini tout ce qui est commun au 5 exercices */
-    _localDebug         = true;
+    _localDebug         = false;
     _exerciceEnCours    = false;
 
     connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
@@ -86,10 +86,16 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
-    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
+    //    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
+    //    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
+    //    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
 
+    bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnRefaire , "enabled", false);
+    bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant , "enabled", false);
+
+    afficheCorrectionQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
+    afficheCorrectionQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
+    afficheCorrectionQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
     /* Pour les appuis automatiques sur les touches */
     connect(this, SIGNAL(appuiVerifier()), getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()), Qt::UniqueConnection);
     connect(this, SIGNAL(appuiSuivant()),  getAbeExerciceTelecommandeV1()->ui->btnSuivant,  SIGNAL(clicked()), Qt::UniqueConnection);
@@ -100,15 +106,18 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
         qDebug() << "Chemin des fichiers images" << _cheminImage;
     }
 
+    /* les progressBar de la telecommande sont caches */
+    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
+    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarExercice, "visible", false);
+    realisationExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarExercice, "visible", false);
+    realisationExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
 }
 
 AbstractExercice::~AbstractExercice()
 {
     //! @todo à tester dans toutes les conditions de fermeture.
     //! rien à signaler pour l'instant
-
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
-
 
     if(_localDebug) qDebug() << "delete label et texte image";
     _labelImagePause->deleteLater();
@@ -148,8 +157,8 @@ void AbstractExercice::slotSequenceEntered(){
         getAbeExerciceMessageV1()->setParent(_aireTravail);
         getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
 
-        setAbeNbExercices(1);      /* a instancier avant appel du slot SequenceEntered ! */
-        setAbeNbTotalQuestions(5); /* a instancier avant appel du slot SequenceEntered ! */
+        setAbeNbExercices(5);      /* a instancier avant appel du slot SequenceEntered ! */
+        setAbeNbTotalQuestions(1); /* a instancier avant appel du slot SequenceEntered ! */
 
         AbulEduCommonStatesV1::slotSequenceEntered();
         setAbeLevel("1"); /* a instancier après le slot sinon niveau 0 par def. */
@@ -160,12 +169,14 @@ void AbstractExercice::slotRealisationExerciceEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
+    _aireTravail->scene()->clear();
+    _aireTravail->show();
+
     if(!_exerciceEnCours)
     {
         /* Mettre tout ce qui est commun à chaque question */
         _nbImage = getAbeNbTotalQuestions(); // le nb image = le nb de question
         _nbMasquesInteractifs = 0;
-        boiteTetes->resetTetes(getAbeNbTotalQuestions());
 
         /* aller chercher le pack image */
         QDir dir(_cheminImage);
@@ -233,7 +244,7 @@ void AbstractExercice::slotInitQuestionEntered()
 
     _onPeutMettreEnPause = false;
 
-    /* PEtit nettoyage suite #3127 */
+    /* Petit nettoyage suite #3127 */
     _aireTravail->scene()->clear();
     _aireTravail->scene()->update();
 
@@ -340,11 +351,11 @@ void AbstractExercice::slotQuestionEntered()
     {
         _itemImage->setVisible(true);
         _nbMasquesInteractifs = 0;
-        int alea = 0;
+//        int alea = 0;
 
         while(_nbMasquesInteractifs < _OPT_nbMasquesChoisis)
         {
-            alea = (qrand() % (_listeMasquesFixes.count()));
+            int alea = (qrand() % (_listeMasquesFixes.count()));
             if(_localDebug) qDebug() << "alea = " << alea;
             _masqueInteractif = _listeMasquesFixes.takeAt(alea);
             connect(_masqueInteractif, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
@@ -375,11 +386,12 @@ void AbstractExercice::slotAfficheVerificationQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
+    qDebug()<< "******************************************** Fin Verif Question !";
     if(_exerciceEnCours)
     {
         if(_localDebug) qDebug()<< "Click bouton suivant automatique " << _OPT_timerSuivant;
 
-        _timer->start();
+        slotAppuiAutoSuivant();
     }
     abeStateMachineSetVerifieReponse(verifieReponse());
 
@@ -412,21 +424,28 @@ void AbstractExercice::slotFinVerificationQuestionEntered()
 
     _listeMasquesFixes.clear();
 
-    boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
+    boiteTetes->setEtatTete(m_numExercice, abe::evalA );
 
-    /* Vider itemImage */
-    _aireTravail->scene()->removeItem(_itemImage);
-    _aireTravail->scene()->clear();
-    _aireTravail->show();
     _exerciceEnCours = false;
 }
 
 void AbstractExercice::slotBilanExerciceEntered()
 {
+    /* Click automatique bouton suivant */
+    _timer->start();
+
+    AbulEduCommonStatesV1::slotBilanExerciceEntered();
+}
+
+void AbstractExercice::slotBilanSequenceEntered()
+{
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
+    _aireTravail->scene()->removeItem(_itemImage);
+    _exerciceEnCours = false;
+
     /* Variables locales */
-    int _minute, _seconde;
+    int _minute, _seconde = 0;
 
     /* Les heures ne sont pas gérées, Arrondi à l'entier supérieur */
     _tempsTotal = qCeil((_tempsQuestion1 + _tempsQuestion2 + _tempsQuestion3 + _tempsQuestion4 + _tempsQuestion5)/1000);
@@ -436,8 +455,6 @@ void AbstractExercice::slotBilanExerciceEntered()
         _seconde = _tempsTotal %60;
         _minute  = _tempsTotal /60;
     }
-
-    AbulEduCommonStatesV1::slotBilanExerciceEntered();
 
     /* Gestion affichage barre de titre */
     getAbeExerciceMessageV1()->abeWidgetMessageSetTexteExercice("Bilan");
@@ -476,7 +493,6 @@ void AbstractExercice::slotBilanExerciceEntered()
     }
     getAbeExerciceMessageV1()->abeWidgetMessageSetConsigne(debutTableau + imagetete + consigne + finTableau);
 
-    getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->abeWidgetMessageSetZoneTexteVisible(false);
     getAbeExerciceMessageV1()->setVisible(true);
 
@@ -487,31 +503,28 @@ void AbstractExercice::slotBilanExerciceEntered()
 /********************************************************************************************************************************************
                                                         METHODES DE CLASSE
 *********************************************************************************************************************************************/
-
-
-//! @test chargement ok : clic, parcours,...
 void AbstractExercice::chargerOption()
 {
     _parametres = new QSettings(_cheminConf, QSettings::IniFormat);
     QString exercice;
 
     switch(_exerciceType){
-    case 0x0:
+    case Survol:
         exercice = trUtf8("Survol");
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
         _parametres->beginGroup("survol");
         break;
-    case 0x2:
+    case Clic:
         exercice = trUtf8("Clic");
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
         _parametres->beginGroup("clic");
         break;
-    case 0x4:
+    case DoubleClic:
         exercice = trUtf8("Doucle Clic");
         if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " " << exercice;
         _parametres->beginGroup("doubleClic");
         break;
-    case 0x8:
+    case Parcours:
         exercice = trUtf8("Parcours");
         _parametres->beginGroup("parcours");
         _OPT_nbMasquesLargeur   = _parametres->value("nbMasquesLargeur", 10).toInt();
@@ -579,7 +592,6 @@ void AbstractExercice::slotCacheMasque()
         /* Appui sur le bouton vérifier */
         QTimer::singleShot(0, this, SLOT(slotAppuiAutoVerifier()));
 
-        boiteTetes->setEtatTete(getAbeNumQuestion()-1, abe::evalA );
         _listeMasquesFixes.clear();
 
         /* Affichage du temps passé */
@@ -590,7 +602,7 @@ void AbstractExercice::slotCacheMasque()
         }
 
         /* Enregistrement du temps passé pour chaque question */
-        switch(getAbeNumQuestion()){
+        switch(m_numExercice){
         case 1:
             _tempsQuestion1 = _chronometre->elapsed();
             break;
@@ -629,7 +641,6 @@ void AbstractExercice::setDimensionsWidgets()
     const int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     const int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
     _aireTravail->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
-//    _aireTravail->move(80 * ratio, 64 * ratio);
 
     _tailleAireTravail = _aireTravail->size();
 
@@ -638,7 +649,7 @@ void AbstractExercice::setDimensionsWidgets()
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
 
     /* Redimensionne le widget de consignes */
-    AbulEduCommonStatesV1::setDimensionsWidgets();
+//    AbulEduCommonStatesV1::setDimensionsWidgets();
 }
 
 void AbstractExercice::redimensionnerConsigne()
