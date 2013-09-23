@@ -565,12 +565,19 @@ void AbstractExercice::chargerOption()
 
 void AbstractExercice::redimensionnerImage()
 {
+    const float ratio = abeApp->getAbeApplicationDecorRatio();
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    /** @attention new code */
+    _aireTravail->setSceneRect(_itemImage->boundingRect().toRect());
+    _aireTravail->centerOn(_itemImage);
+    _aireTravail->viewport()->setGeometry(_itemImage->boundingRect().toRect().x() * ratio, _itemImage->boundingRect().toRect().y() * ratio,
+                                          _itemImage->boundingRect().toRect().width() * ratio, _itemImage->boundingRect().toRect().height() * ratio);
+    /** @attention /new code */
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
     /* positionner l'aire de jeu au centre */
-    const float ratio = abeApp->getAbeApplicationDecorRatio();
     _aireTravail->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()- _aireTravail->width())/2 + 40 * ratio,
                        (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()- 60 * ratio - _aireTravail->height())/2 + 32 * ratio);
+
 }
 
 void AbstractExercice::slotCacheMasque()
