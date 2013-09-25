@@ -33,11 +33,14 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _localDebug         = false;
     _exerciceEnCours    = false;
 
-    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
+//    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
     /* Création de l'aire de travail + propriétés */
-    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos(), getAbeExerciceAireDeTravailV1()->ui->gvPrincipale);
+    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
     _aireTravail->setFocusPolicy( Qt::NoFocus );
+
+    /* Pour que l'aire de jeu ne bouge pas avec le doigt (tab) */
+    _aireTravail->setDragMode(QGraphicsView::NoDrag);
 
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
     _proxyGraphique = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(_aireTravail);
