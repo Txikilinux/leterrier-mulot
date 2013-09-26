@@ -118,7 +118,6 @@ private:
     bool m_isDemoAvailable;
 
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
-    AbulEduBoxFileManagerV1 *m_abuleduFileManager;
     int m_numberExoCalled;
     void abeAiguillage();
 
