@@ -76,6 +76,8 @@ include(lib/abuledumessageboxv1/abuledumessageboxv1.pri)
 include(lib/abuledusplashscreenv1/abuledusplashscreenv1.pri)
 include(lib/abuleduidentitesv1/abuleduidentitesv1.pri)
 include(lib/abuleduwidgetassistantetapesv1/abuleduwidgetassistantetapesv1.pri)
+include(lib/abuledupluginloaderv1/abuledupluginloaderv1.pri)
+include(lib/abuledusingletonv1/abuledusingletonv1.pri)
 
 #AbulEduLangV1
 include(lib/abuledulangv1/abuledulangv1.pri)

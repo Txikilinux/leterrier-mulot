@@ -11,3 +11,6 @@ Makefile
 *.pro.user
 
 
+./lib/abuledupluginloaderv1
+./lib/abuledupluginloaderv1
+./lib/abuledusingletonv1

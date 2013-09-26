@@ -1,4 +1,4 @@
-http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduapplicationv1 lib/abuleduapplicationv1 revid:philippe.cadaugade@ryxeo.com-20130924124446-t9znzhmq6bzpb0cd
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduapplicationv1 lib/abuleduapplicationv1 revid:icham.sirat@ryxeo.com-20130926160823-miy18tdwq8e15ast
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduconstantesv1 lib/abuleduconstantesv1 revid:eric.seigne@ryxeo.com-20130809201808-2mjcyjh0g5r47h0z
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuleducommonstatesv1/ lib/abuleducommonstatesv1 revid:icham.sirat@ryxeo.com-20130917130841-0w7caj265k0u8ynp
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuledustatemachinev1/ lib/abuledustatemachinev1 revid:philippe.cadaugade@ryxeo.com-20130926065943-uuplk7lm7wv7zqis
@@ -19,3 +19,6 @@ http://redmine.ryxeo.com/code/leterrier-developpeu/abuledusplashscreenv1/ lib/ab
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduidentitesv1/ lib/abuleduidentitesv1 revid:philippe.cadaugade@ryxeo.com-20130924120506-kr32nxw5dmsrocuo
 http://redmine.ryxeo.com/code/leterrier-mulot/version-1.1-exemples/ exemples revid:philippe.cadaugade@ryxeo.com-20121123100829-dq06xbekx0duws8d
 http://redmine.ryxeo.com/code/leterrier-developpeu/abuleduwidgetassistantetapesv1 lib/abuleduwidgetassistantetapesv1 revid:icham.sirat@ryxeo.com-20130918154144-2mbj2en8det32csy
+http://redmine.ryxeo.com/code/leterrier/abuledupluginloaderv1 lib/abuledupluginloaderv1 revid:icham.sirat@ryxeo.com-20130926160519-igrhi822pw1afdbh
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuledupluginloaderv1/ lib/abuledupluginloaderv1 revid:icham.sirat@ryxeo.com-20130926160519-igrhi822pw1afdbh
+http://redmine.ryxeo.com/code/leterrier-developpeu/abuledusingletonv1/ lib/abuledusingletonv1 revid:icham.sirat@ryxeo.com-20130926160428-r1znzz0h643fj48h
