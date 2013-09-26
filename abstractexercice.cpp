@@ -448,7 +448,8 @@ void AbstractExercice::slotBilanSequenceEntered()
     _exerciceEnCours = false;
 
     /* Variables locales */
-    int _minute, _seconde = 0;
+    int _minute ,_seconde;
+    _minute = _seconde = 0;
 
     /* Les heures ne sont pas gérées, Arrondi à l'entier supérieur */
     _tempsTotal = qCeil((_tempsQuestion1 + _tempsQuestion2 + _tempsQuestion3 + _tempsQuestion4 + _tempsQuestion5)/1000);
@@ -571,6 +572,7 @@ void AbstractExercice::redimensionnerImage()
     const float ratio = abeApp->getAbeApplicationDecorRatio();
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
+
     /* positionner l'aire de jeu au centre */
     _aireTravail->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()- _aireTravail->width())/2 + 40 * ratio,
                        (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()- 60 * ratio - _aireTravail->height())/2 + 32 * ratio);
