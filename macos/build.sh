@@ -47,17 +47,17 @@ macdeployqt ${APPNAME}.app
 ln -s /Applications /tmp/build-dmg-${APPNAME}/Applications
 
 #copie des donnees
-if [ -d data ]; then
-    cp -a data ${APPNAME}.app/Contents/Resources/
-    cp -a exemples/*.abe ${APPNAME}.app/Contents/Resources/
+if [ -d src/data ]; then
+    cp -a src/data ${APPNAME}.app/Contents/Resources/
+    cp -a src/exemples/*.abe ${APPNAME}.app/Contents/Resources/
 fi
-if [ -d conf ]; then
-    cp -a conf ${APPNAME}.app/Contents/Resources/
+if [ -d src/conf ]; then
+    cp -a src/conf ${APPNAME}.app/Contents/Resources/
 fi
-if [ -d lang ]; then
+if [ -d src/lang ]; then
     mkdir ${APPNAME}.app/Contents/Resources/lang
     lrelease *.pro
-    cp -a lang/*.qm ${APPNAME}.app/Contents/Resources/lang/ || true
+    cp -a src/lang/*.qm ${APPNAME}.app/Contents/Resources/lang/ || true
 fi
 
 #creation du fichier dmg

@@ -12,7 +12,7 @@ AppPublisher=RyXéo SARL
 AppPublisherURL=http://www.abuledu.org/leterrier/
 AppSupportURL=http://www.abuledu.org/leterrier/
 AppUpdatesURL=http://www.abuledu.org/leterrier/
-DefaultDirName={pf}\AbulEdu\Mulot
+DefaultDirName={pf}/AbulEdu/Mulot
 DefaultGroupName=Le Terrier d'AbulEdu
 LicenseFile=../gpl-3.0.txt
 OutputDir=.
@@ -27,18 +27,18 @@ SignedUninstallerDir=.
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
-Name: "french"; MessagesFile: "compiler:Languages\French.isl"
+Name: "french"; MessagesFile: "compiler:Languages/French.isl"
 
 [Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+; Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "..\release\leterrier-mulot.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\debian\*.desktop"; DestDir: "{app}"; Flags: ignoreversion
-;Source: "..\data\*"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\exemples\*.abe"; DestDir: "{app}\data"; Flags: ignoreversion recursesubdirs createallsubdirs
-;Source: "..\conf\*"; DestDir: "{app}\conf"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "../lang/*.qm"; DestDir: "{app}\lang"; Flags: ignoreversion
+Source: "../src/release/leterrier-mulot.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "../debian/*.desktop"; DestDir: "{app}"; Flags: ignoreversion
+;Source: "../src/data/*"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../src/exemples/*.abe"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs createallsubdirs
+;Source: "../src/conf/*"; DestDir: "{app}/conf"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../src/lang/*.qm"; DestDir: "{app}/lang"; Flags: ignoreversion
 Source: "C:/code/quazip.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:/code/exiv2/bin/libexiv2-12.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:/QtSDK/mingw/bin/libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -55,26 +55,26 @@ Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtSVG4.dll"; DestDir: "{app}"; Flag
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins\imageformats/qgif4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins\imageformats/qico4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins\imageformats/qjpeg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins\imageformats/qmng4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins\imageformats/qsvg4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins\imageformats/qtiff4.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qgif4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qico4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qjpeg4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qmng4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qsvg4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qtiff4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtMultimedia4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/phonon_backend\phonon_ds94.dll"; DestDir: "{app}\phonon_backend"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/phonon_backend/phonon_ds94.dll"; DestDir: "{app}/phonon_backend"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; pour alacarte > 1.0.8
-Source: "..\debian\*.desktop"; DestDir: "{win}\abuledu-alacarte\data\profile1.applications"; AfterInstall: UpdateDesktopPath; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\data\icones\leterrier-mulot-128.png"; DestDir: "{app}"; Flags: ignoreversion
+Source: "../debian/*.desktop"; DestDir: "{win}/abuledu-alacarte/data/profile1.applications"; AfterInstall: UpdateDesktopPath; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../src/data/icones/leterrier-mulot-128.png"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-; Name: "{group}\Mulot"; Filename: "{app}\leterrier-mulot.exe"; WorkingDir: "{app}"
-; Name: "{commondesktop}\Mulot"; Filename: "{app}\leterrier-mulot.exe"; Tasks: desktopicon; WorkingDir: "{app}"
+; Name: "{group}/Mulot"; Filename: "{app}/leterrier-mulot.exe"; WorkingDir: "{app}"
+; Name: "{commondesktop}/Mulot"; Filename: "{app}/leterrier-mulot.exe"; Tasks: desktopicon; WorkingDir: "{app}"
 
 [Run]
-; Filename: "{app}\leterrier-mulot.exe"; Description: "{cm:LaunchProgram,Mulot}"; Flags: nowait postinstall skipifsilent
+; Filename: "{app}/leterrier-mulot.exe"; Description: "{cm:LaunchProgram,Mulot}"; Flags: nowait postinstall skipifsilent
 
 [Code]
 procedure UpdateDesktopPath();
@@ -83,5 +83,5 @@ begin
   SetArrayLength(Strings, 1);
   Strings[0] := 'X-Horizon-WindowsExecPath=' + ExpandConstant('{app}');
 
-  SaveStringsToFile(ExpandConstant('{win}') + '\abuledu-alacarte\data\profile1.applications\leterrier-mulot.desktop', Strings, True);
+  SaveStringsToFile(ExpandConstant('{win}') + '/abuledu-alacarte/data/profile1.applications/leterrier-mulot.desktop', Strings, True);
 end;
