@@ -1,6 +1,6 @@
-./exemples/*
-./lib/*
-./build/*
+./src/exemples/*
+./src/lib/*
+./src/.build/*
 
 moc*
 qrc*
@@ -9,6 +9,3 @@ debug
 release
 Makefile
 *.pro.user
-
-
-./lib/abuleduwidgetassistantetapesv1

@@ -59,15 +59,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1(this), &QObject::deleteLater);
 
-    m_abuleduFileManager = ui->AbulEduBoxFileManager;
-    m_abuleduFileManager->abeSetFile(m_abuleduFile);
-    m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
-    m_abuleduFileManager->abeMediathequeGetHideCloseBouton(true);
+    ui->AbulEduBoxFileManager->abeSetFile(m_abuleduFile);
+    ui->AbulEduBoxFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplaySimple);
+    ui->AbulEduBoxFileManager->abeMediathequeGetHideCloseBouton(true);
 
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
+    connect(ui->AbulEduBoxFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), this, SLOT(slotOpenFile(QSharedPointer<AbulEduFileV1>)), Qt::UniqueConnection);
 //    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSelected(QSharedPointer<AbulEduFileV1>)), ui->editeur, SLOT(on_btnModificationCourant_clicked()/*(QSharedPointer<AbulEduFileV1>)*/), Qt::UniqueConnection);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
-    connect(m_abuleduFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
+    connect(ui->AbulEduBoxFileManager, SIGNAL(signalAbeFileSaved(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)),this,SLOT(slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerSavingLocation,QString,bool)), Qt::UniqueConnection);
+    connect(ui->AbulEduBoxFileManager, SIGNAL(signalAbeFileCloseOrHide()), this, SLOT(btnQuitBoxFileManagerClicked()), Qt::UniqueConnection);
 
     m_numberExoCalled = -1;
 
@@ -115,7 +114,7 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
     m_abuleduFile = qsp_AbulEduFileV1;
 
-    if (m_localDebug) qDebug() << "Nom du fichier abe :" << m_abuleduFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+    if (m_localDebug) qDebug() << "Nom du fichier abe :" << ui->AbulEduBoxFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
 
 
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
@@ -513,10 +512,10 @@ void MainWindow::afficheFrPrincipale()
 
 void MainWindow::afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFileManagerOpenOrSave openOrSave)
 {
-    m_abuleduFileManager->abeSetOpenOrSaveEnum(openOrSave);
-    m_abuleduFileManager->abeSetFile(m_abuleduFile);
-    m_abuleduFileManager->abeRefresh(AbulEduBoxFileManagerV1::abePC);
-    m_abuleduFileManager->abeSetSender(sender());
-    m_abuleduFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
+    ui->AbulEduBoxFileManager->abeSetOpenOrSaveEnum(openOrSave);
+    ui->AbulEduBoxFileManager->abeSetFile(m_abuleduFile);
+    ui->AbulEduBoxFileManager->abeRefresh(AbulEduBoxFileManagerV1::abePC);
+    ui->AbulEduBoxFileManager->abeSetSender(sender());
+    ui->AbulEduBoxFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }

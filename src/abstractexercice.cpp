@@ -33,11 +33,14 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _localDebug         = false;
     _exerciceEnCours    = false;
 
-    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
+//    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
     /* Création de l'aire de travail + propriétés */
-    _aireTravail = new AbulEduEtiquettesV1(QPointF(0,0));
+    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
     _aireTravail->setFocusPolicy( Qt::NoFocus );
+
+    /* Pour que l'aire de jeu ne bouge pas avec le doigt (tab) */
+    _aireTravail->setDragMode(QGraphicsView::NoDrag);
 
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
     _proxyGraphique = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(_aireTravail);
@@ -103,7 +106,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     if (_localDebug)
     {
         qDebug() << "Chemin du fichier de configuration" << _cheminConf;
-        qDebug() << "Chemin des fichiers images" << _cheminImage;
+        qDebug() << "Chemin des fichiers images"         << _cheminImage;
     }
 
     /* les progressBar de la telecommande sont caches */
@@ -445,7 +448,8 @@ void AbstractExercice::slotBilanSequenceEntered()
     _exerciceEnCours = false;
 
     /* Variables locales */
-    int _minute, _seconde = 0;
+    int _minute ,_seconde;
+    _minute = _seconde = 0;
 
     /* Les heures ne sont pas gérées, Arrondi à l'entier supérieur */
     _tempsTotal = qCeil((_tempsQuestion1 + _tempsQuestion2 + _tempsQuestion3 + _tempsQuestion4 + _tempsQuestion5)/1000);
@@ -565,12 +569,14 @@ void AbstractExercice::chargerOption()
 
 void AbstractExercice::redimensionnerImage()
 {
+    const float ratio = abeApp->getAbeApplicationDecorRatio();
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
+
     /* positionner l'aire de jeu au centre */
-    const float ratio = abeApp->getAbeApplicationDecorRatio();
     _aireTravail->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()- _aireTravail->width())/2 + 40 * ratio,
                        (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()- 60 * ratio - _aireTravail->height())/2 + 32 * ratio);
+
 }
 
 void AbstractExercice::slotCacheMasque()
@@ -656,7 +662,7 @@ void AbstractExercice::redimensionnerConsigne()
 {
     getAbeExerciceMessageV1()->abeWidgetMessageResize();
     getAbeExerciceMessageV1()->move((getAbeExerciceAireDeTravailV1()->width() - getAbeExerciceMessageV1()->width())/2,
-                                    ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2) - 200*abeApp->getAbeApplicationDecorRatio());
+                                    ((getAbeExerciceAireDeTravailV1()->height() - getAbeExerciceMessageV1()->height())/2)  /*200**/ * abeApp->getAbeApplicationDecorRatio());
 }
 
 void AbstractExercice::slotAppuiAutoSuivant()
