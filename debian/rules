@@ -24,7 +24,6 @@ EXECNAME=leterrier-mulot
 DEST=/usr/share/$(EXECNAME)
 EXECDEST=/usr/lib/$(EXECNAME)
 BUILDTEMP=$(CURDIR)/debian/$(EXECNAME)
-MANPAGES := $(CURDIR)/debian/$(EXECNAME).1
 
 install/$(EXECNAME)::
 	install -d -m 755 $(BUILDTEMP)/usr/bin/

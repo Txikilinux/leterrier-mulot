@@ -2,10 +2,7 @@
 Version=1.0
 Type=Application
 Terminal=false
-Icon[fr]=/usr/share/leterrier-mulot/leterrier-mulot-256.png
-Name[fr]=AbulEdu Mulot
 Exec=leterrier-mulot
-Comment[fr]=Apprentissage de la souris et du langage
 Name=AbulEdu Mulot
 Comment=Apprentissage de la souris et du langage
 Icon=/usr/share/leterrier-mulot/leterrier-mulot-256.png
