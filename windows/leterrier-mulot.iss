@@ -2,8 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define EXECNAME "leterrier-mulot"
+#define ICONNAME "leterrier-mulot"
+#define DIRNAME "mulot"
 #define APPNAME "Le Terrier d'AbulEdu - Mulot"
-#define DIRNAME "Mulot"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -16,7 +17,7 @@ AppPublisher=RyXéo SARL
 AppPublisherURL=http://www.abuledu.org/leterrier/
 AppSupportURL=http://www.abuledu.org/leterrier/
 AppUpdatesURL=http://www.abuledu.org/leterrier/
-DefaultDirName={pf}/AbulEdu/{#EXECNAME}
+DefaultDirName={pf}/AbulEdu/{#DIRNAME}
 DefaultGroupName=Le Terrier d'AbulEdu
 LicenseFile=../gpl-3.0.txt
 OutputDir=.
@@ -74,11 +75,11 @@ Source: "../src/data/icones/{#EXECNAME}-128.png"; DestDir: "{app}"; Flags: ignor
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-; Name: "{group}/Mulot"; Filename: "{app}/leterrier-mulot.exe"; WorkingDir: "{app}"
-; Name: "{commondesktop}/Mulot"; Filename: "{app}/leterrier-mulot.exe"; Tasks: desktopicon; WorkingDir: "{app}"
+; Name: "{group}/{#APPNAME}"; Filename: "{app}/{#EXECNAME}.exe"; WorkingDir: "{app}"
+; Name: "{commondesktop}/{#APPNAME}"; Filename: "{app}/{#EXECNAME}.exe"; Tasks: desktopicon; WorkingDir: "{app}"
 
 [Run]
-; Filename: "{app}/{#EXECNAME}.exe"; Description: "{cm:LaunchProgram,{#EXECNAME}}"; Flags: nowait postinstall skipifsilent
+; Filename: "{app}/{#EXECNAME}.exe"; Description: "{cm:LaunchProgram,{#APPNAME}}"; Flags: nowait postinstall skipifsilent
 
 [Code]
 procedure UpdateDesktopPath();
@@ -86,6 +87,5 @@ var Strings : TArrayOfString;
 begin
   SetArrayLength(Strings, 1);
   Strings[0] := 'X-Horizon-WindowsExecPath=' + ExpandConstant('{app}');
-
   SaveStringsToFile(ExpandConstant('{win}') + '/abuledu-alacarte/data/profile1.applications/{#EXECNAME}.desktop', Strings, True);
 end;
