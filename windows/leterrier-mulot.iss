@@ -44,33 +44,9 @@ Source: "../debian/*.desktop"; DestDir: "{app}"; Flags: ignoreversion
 Source: "../src/exemples/*.abe"; DestDir: "{app}/data"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; Source: "../src/conf/*"; DestDir: "{app}/conf"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../src/lang/*.qm"; DestDir: "{app}/lang"; Flags: ignoreversion
-Source: "C:/code/quazip.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:/code/exiv2/bin/libexiv2-12.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:/QtSDK/mingw/bin/libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/mingw/bin/mingwm10.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/mingw/bin/libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/libssl32.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtScript4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtNetwork4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtGUI4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtSQL4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtSVG4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtCore4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtXml4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtWebKit4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qgif4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qico4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qjpeg4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qmng4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qsvg4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/imageformats/qtiff4.dll"; DestDir: "{app}/imageformats"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/QtMultimedia4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/plugins/phonon_backend/phonon_ds94.dll"; DestDir: "{app}/phonon_backend"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "C:/QtSDK/Desktop/Qt/4.8.1/mingw/bin/phonon4.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "C:/code/qt-bin-package/*"; Excludes: "*.txt"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; pour alacarte > 1.0.8
-Source: "../debian/*.desktop"; DestDir: "{win}/abuledu-alacarte/data/profile1.applications"; AfterInstall: UpdateDesktopPath; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "../debian/*.desktop"; DestDir: "{win}/abuledu-alacarte/data/profile1.applications"; AfterInstall: UpdateDesktopPath; Flags: ignoreversion
 Source: "../src/data/icones/{#EXECNAME}-128.png"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
