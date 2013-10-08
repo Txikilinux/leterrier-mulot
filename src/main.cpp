@@ -37,10 +37,10 @@ int main(int argc, char *argv[])
     a.installTranslator(&translator);
 
     MainWindow *w;
-    w = new MainWindow(0);
     /* Splashscreen */
     AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0,true);
     splash->show();
+    w = new MainWindow(0);
     splash->setMainWindow(w);
     //pour les developpeurs presses, remplacer le 10000 par 1000
     splash->launch(1000);
