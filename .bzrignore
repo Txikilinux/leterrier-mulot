@@ -1,7 +1,6 @@
 ./src/exemples/*
 ./src/lib/*
 ./src/.build/*
-
 moc*
 qrc*
 ui_*
