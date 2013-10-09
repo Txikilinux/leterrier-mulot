@@ -4,6 +4,4 @@
 # logiciels du terrier
 # mettez ici la liste des fichiers de traduction que vous voulez
 
-TRANSLATIONS += \
-    $$PWD/leterrier-mulot_en.ts \
-    $$PWD/leterrier-mulot_fr.ts
+TRANSLATIONS += $$PWD/*.ts
