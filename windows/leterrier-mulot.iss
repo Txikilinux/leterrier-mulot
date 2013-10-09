@@ -48,6 +48,8 @@ Source: "C:/code/qt-bin-package/*"; Excludes: "*.txt"; DestDir: "{app}"; Flags: 
 ; pour alacarte > 1.0.8
 Source: "../debian/*.desktop"; DestDir: "{win}/abuledu-alacarte/data/profile1.applications"; AfterInstall: UpdateDesktopPath; Flags: ignoreversion
 Source: "../src/data/icones/{#EXECNAME}-128.png"; DestDir: "{app}"; Flags: ignoreversion
+; pour picotts
+; Source: "../src/lib/abuledupicottsv1/lang/*.*"; DestDir: "{app}/data/picotts"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
