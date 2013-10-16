@@ -45,6 +45,8 @@ Source: "../src/exemples/*.abe"; DestDir: "{app}/data"; Flags: ignoreversion rec
 ; Source: "../src/conf/*"; DestDir: "{app}/conf"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "../src/lang/*.qm"; DestDir: "{app}/lang"; Flags: ignoreversion
 Source: "C:/code/qt-bin-package/*"; Excludes: "*.txt"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+; opencv
+; Source: "C:/code/opencv/build/x86/mingw/bin/*.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; pour alacarte > 1.0.8
 Source: "../debian/*.desktop"; DestDir: "{win}/abuledu-alacarte/data/profile1.applications"; AfterInstall: UpdateDesktopPath; Flags: ignoreversion
 Source: "../src/data/icones/{#EXECNAME}-128.png"; DestDir: "{app}"; Flags: ignoreversion
