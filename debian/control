@@ -2,7 +2,7 @@ Source: leterrier-mulot
 Section: misc
 Priority: extra
 Maintainer: Icham Sirat <icham.sirat@ryxeo.com>
-Build-Depends: cdbs, libqtwebkit-dev | libqt4-webkit(<<4:4.8.1), qt4-qmake, libqt4-dev, libqt4-phonon-dev | libphonon-dev, phonon, zlib1g-dev, libpulse-dev, libexiv2-dev, libqt4-webkit
+Build-Depends: cdbs, libqt5webkit5-dev, qt5-qmake, qtbase5-dev, libqt5core5, zlib1g-dev, libexiv2-dev
 Standards-Version: 3.8.3
 Homepage: http://www.abuledu.org/leterrier/
 
