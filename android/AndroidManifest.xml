@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest package="com.ryxeo.abuledu.abuledu_mulot2" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2" android:versionName="0.2beta~ryxeo1" android:sharedUserId="com.ryxeo.abuledu.leterrier">
-    <application android:label="@string/app_name" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon">
-        <activity android:label="@string/app_name" android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden|navigation" android:name="org.qtproject.qt5.android.bindings.QtActivity">
+<manifest package="com.ryxeo.abuledu.abuledu_mulot2" android:versionName="0.2beta~ryxeo1" android:versionCode="2" xmlns:android="http://schemas.android.com/apk/res/android" android:sharedUserId="com.ryxeo.abuledu.leterrier">
+    <application android:name="org.qtproject.qt5.android.bindings.QtApplication" android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name="org.qtproject.qt5.android.bindings.QtActivity" android:label="@string/app_name" android:configChanges="orientation|locale|fontScale|keyboard|keyboardHidden|navigation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -31,7 +31,7 @@
             <!-- Splash screen -->
         </activity>
     </application>
-    <supports-screens android:smallScreens="true" android:largeScreens="true" android:normalScreens="true" android:anyDensity="true"/>
+    <supports-screens android:anyDensity="true" android:smallScreens="true" android:largeScreens="true" android:normalScreens="true"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
