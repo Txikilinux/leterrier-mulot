@@ -12,10 +12,4 @@ if [ -d "${ALACARTEDIR}" ]; then
     cp ${ICON} ${ALACARTEDIR}
 fi
 
-#le fichier qt.conf pour utiliser les libs qt 5 fournies par le paquet
-#abuledu partage
-if [ -f /opt/leterrier-qt5-libs/qt.conf ]; then
-    cp /opt/leterrier-qt5-libs/qt.conf /usr/lib/${APPNAME}/qt.conf
-fi
-
 #DEBHELPER#
