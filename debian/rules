@@ -10,7 +10,7 @@ QTVERSION=5
 ifeq ($(QTVERSION),5)
   #qt5
   DEB_DH_SHLIBDEPS_ARGS := -- --ignore-missing-info
-  QMAKE=/opt/qt-5.0-officiel/5.1.1/gcc_64/bin/qmake
+  QMAKE=$(shell find /opt/ -name qmake | head -n1)
 else
   #qt4
   QMAKE=qmake-qt4
