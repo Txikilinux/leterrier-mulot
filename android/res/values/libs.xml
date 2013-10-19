@@ -4,7 +4,10 @@
         <item>https://download.qt-project.org/ministro/android/qt5/latest</item>
     </array>
     <string name="repository">default</string>
-    <array name="bundled_libs"/>
+    <array name="bundled_libs">
+        <item>crypto</item>
+        <item>ssl</item>
+    </array>
     <array name="bundled_in_lib">
         <item>lib--Managed_by_Qt_Creator--plugins_platforms_android_libqtforandroid.so:plugins/platforms/android/libqtforandroid.so</item>
         <item>lib--Managed_by_Qt_Creator--plugins_platforms_android_libqtforandroidGL.so:plugins/platforms/android/libqtforandroidGL.so</item>
