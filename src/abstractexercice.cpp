@@ -165,18 +165,7 @@ void AbstractExercice::slotSequenceEntered(){
 
         AbulEduCommonStatesV1::slotSequenceEntered();
         setAbeLevel("1"); /* a instancier après le slot sinon niveau 0 par def. */
-    }
-}
 
-void AbstractExercice::slotRealisationExerciceEntered()
-{
-    if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
-
-    _aireTravail->scene()->clear();
-    _aireTravail->show();
-
-    if(!_exerciceEnCours)
-    {
         /* Mettre tout ce qui est commun à chaque question */
         _nbImage = getAbeNbTotalQuestions(); // le nb image = le nb de question
         _nbMasquesInteractifs = 0;
@@ -200,6 +189,19 @@ void AbstractExercice::slotRealisationExerciceEntered()
                 _listeFichiers << list.at(i).absoluteFilePath();
             }
         }
+    }
+}
+
+void AbstractExercice::slotRealisationExerciceEntered()
+{
+    if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
+
+    _aireTravail->scene()->clear();
+    _aireTravail->show();
+
+    if(!_exerciceEnCours)
+    {
+
         /* Si la liste de fichier est vide */
         if (_listeFichiers.size() <= 0 )
         {
