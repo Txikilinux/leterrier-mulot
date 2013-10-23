@@ -111,9 +111,8 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 
     /* les progressBar de la telecommande sont caches */
     presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
-    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarExercice, "visible", false);
-    realisationExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarExercice, "visible", false);
     realisationExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
+    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
 }
 
 AbstractExercice::~AbstractExercice()
