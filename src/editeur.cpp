@@ -106,6 +106,7 @@ Editeur::Editeur(QWidget *parent) :
     connect(this, SIGNAL(signalParcoursSave()), SLOT(slotParcoursSave()), Qt::UniqueConnection);
 
     ui->gv_editeurParcours->setScene(new QGraphicsScene(this));
+
 }
 
 Editeur::~Editeur()
@@ -1044,6 +1045,9 @@ void Editeur::on_btnCreationAbe_clicked()
     /* Passer à la fenetre suivante */
     ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeGestionImages);
     _assistantEtapes->abeWidgetAssistantSetEtapeCourante(PageEtapeGestionImages);
+
+    if(ui->cbLangueRessource->count() == 0)
+        ui->cbLangueRessource->addItems(_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
 }
 
 void Editeur::modificationAbe()
@@ -1180,8 +1184,13 @@ void Editeur::slotLoadUnit()
     {
         ui->leAuteur->setText(abeApp->getAbeIdentite()->abeGetPreNom()+" "+abeApp->getAbeIdentite()->abeGetNom());
     }
+
+    if(ui->cbLangueRessource->count() == 0)
+        ui->cbLangueRessource->addItems(_abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().values());
+
     ui->teDescription->setPlainText(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()).first());
     QString langueRessource = _abuleduFile->abeFileGetLOM()->abeLOMgetAvailableLanguages().value(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
+
     ui->cbLangueRessource->setCurrentIndex(ui->cbLangueRessource->findText(langueRessource));
 //    QString licence = _abuleduFile->abeFileGetLOM()->abeLOMgetRightsDescription(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first());
 //    ui->cbLicence->setCurrentIndex(ui->cbLicence->findText(licence));

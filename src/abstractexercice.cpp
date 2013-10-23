@@ -33,7 +33,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _localDebug         = false;
     _exerciceEnCours    = false;
 
-//    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
+    //    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
 
     /* Création de l'aire de travail + propriétés */
     _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
@@ -356,7 +356,7 @@ void AbstractExercice::slotQuestionEntered()
     {
         _itemImage->setVisible(true);
         _nbMasquesInteractifs = 0;
-//        int alea = 0;
+        //        int alea = 0;
 
         while(_nbMasquesInteractifs < _OPT_nbMasquesChoisis)
         {
@@ -657,7 +657,7 @@ void AbstractExercice::setDimensionsWidgets()
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
 
     /* Redimensionne le widget de consignes */
-//    AbulEduCommonStatesV1::setDimensionsWidgets();
+    //    AbulEduCommonStatesV1::setDimensionsWidgets();
 }
 
 void AbstractExercice::redimensionnerConsigne()
@@ -724,6 +724,7 @@ void AbstractExercice::pause()
     const float ratio = abeApp->getAbeApplicationDecorRatio();
     _labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
     _labelTextePause->setText(trUtf8("En Pause ..."));
+
     _labelImagePause->setStyleSheet("background-color: transparent");
     _labelTextePause->setStyleSheet("background-color: transparent");
 
@@ -744,6 +745,7 @@ void AbstractExercice::pause()
 
         _labelImagePause->move(x1, _aireTravail->height() + _labelImagePause->height() - 60 *ratio);
         _labelTextePause->move(x2, _aireTravail->height() + _labelImagePause->height());
+
     }
     else if(!_timer->isActive()  && _onPeutMettreEnPause)
     {
