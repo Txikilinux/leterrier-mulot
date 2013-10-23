@@ -47,8 +47,9 @@ void ExerciceParcours::slotQuestionEntered()
     {
         itemImage()->setVisible(true);
         setNbMasquesInteractifs(0);
-        if(debugAvailable()) qDebug() << getAbeNumQuestion();
-        chargerPositionMasque(getAbeNumQuestion());
+        if(debugAvailable()) qDebug() <<  abeStateMachineGetNumExercice();
+        /* @notes : m_exercice 0 pour exercice 1 */
+        chargerPositionMasque(abeStateMachineGetNumExercice()+1);
 
         // Chargement et Controle de la liste
         if(_listePositionMasquesParcours.isEmpty() && (_listePositionMasquesParcours.count() != OPT_nbMasquesChoisis()))
@@ -208,12 +209,12 @@ void ExerciceParcours::slotAide()
     _messageBox->show();
 }
 
-void ExerciceParcours::chargerPositionMasque(const int& numeroQuestion)
+void ExerciceParcours::chargerPositionMasque(const int& numeroExercice)
 {
     _listePositionMasquesParcours.clear();
     QList<int> listePosition;
     parametres()->beginGroup("parcours");
-    parametres()->beginGroup("parcours"+QString::number(numeroQuestion));
+    parametres()->beginGroup("parcours"+QString::number(numeroExercice));
 
     /* Recuperation des masques de départ et d'arrivée.. */
     int i = 0;

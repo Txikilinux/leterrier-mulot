@@ -43,7 +43,7 @@ private slots:
     /** Charge la position des masques contenues dans le fichier de configuration (parametres.ini)
       * @param int numeroQuestion, le numero de la question afin de charger le bon parcours
       */
-    void chargerPositionMasque(const int &numeroQuestion);
+    void chargerPositionMasque(const int &numeroExercice);
 
 private:
     QList<int> _listePositionMasquesParcours;
