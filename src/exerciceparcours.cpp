@@ -165,7 +165,7 @@ void ExerciceParcours::slotCacheMasque()
         }
 
         /* Enregistrement du temps passé pour chaque question */
-        switch (getAbeNumQuestion()){
+        switch (abeStateMachineGetNumExercice()+1){
         case 1:
             setTempsQuestion1(chronometre()->elapsed());
             break;

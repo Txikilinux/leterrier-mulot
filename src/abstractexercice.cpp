@@ -610,7 +610,7 @@ void AbstractExercice::slotCacheMasque()
         }
 
         /* Enregistrement du temps passé pour chaque question */
-        switch(m_numExercice){
+        switch(abeStateMachineGetNumExercice()+1){
         case 1:
             _tempsQuestion1 = _chronometre->elapsed();
             break;
