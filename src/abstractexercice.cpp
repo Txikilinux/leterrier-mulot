@@ -33,8 +33,6 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _localDebug         = false;
     _exerciceEnCours    = false;
 
-    //    connect(_parent, SIGNAL(dimensionsChangees()), this, SLOT(setDimensionsWidgets()), Qt::UniqueConnection);
-
     /* Création de l'aire de travail + propriétés */
     _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
     _aireTravail->setFocusPolicy( Qt::NoFocus );
@@ -189,6 +187,21 @@ void AbstractExercice::slotSequenceEntered(){
             }
         }
     }
+
+    if(_exerciceType != Parcours){
+        if(_localDebug) qDebug() << "Tous les exercices sauf Parcours";
+        const QPair<int, int> divisionEcran = AbulEduTools::plusPetiteDivision(_OPT_nbMasquesChoisis);
+        if (divisionEcran.first > divisionEcran.second)
+        {
+            _OPT_nbMasquesLargeur = divisionEcran.first;
+            _OPT_nbMasquesHauteur = divisionEcran.second;
+        }
+        else
+        {
+            _OPT_nbMasquesLargeur = divisionEcran.second;
+            _OPT_nbMasquesHauteur = divisionEcran.first;
+        }
+    }
 }
 
 void AbstractExercice::slotRealisationExerciceEntered()
@@ -200,7 +213,6 @@ void AbstractExercice::slotRealisationExerciceEntered()
 
     if(!_exerciceEnCours)
     {
-
         /* Si la liste de fichier est vide */
         if (_listeFichiers.size() <= 0 )
         {
@@ -222,22 +234,6 @@ void AbstractExercice::slotRealisationExerciceEntered()
                 _listeImage << _image;
             }
             AbulEduCommonStatesV1::slotRealisationExerciceEntered();
-
-            /* Spécificité Parcours à prendre en compte */
-            if(_exerciceType != Parcours){
-                if(_localDebug) qDebug() << "Tous les exercices sauf Parcours";
-                const QPair<int, int> divisionEcran = AbulEduTools::plusPetiteDivision(_OPT_nbMasquesChoisis);
-                if (divisionEcran.first > divisionEcran.second)
-                {
-                    _OPT_nbMasquesLargeur = divisionEcran.first;
-                    _OPT_nbMasquesHauteur = divisionEcran.second;
-                }
-                else
-                {
-                    _OPT_nbMasquesLargeur = divisionEcran.second;
-                    _OPT_nbMasquesHauteur = divisionEcran.first;
-                }
-            }
         }
     }
 }
@@ -266,7 +262,6 @@ void AbstractExercice::slotInitQuestionEntered()
     redimensionnerImage();
 
     _aireTravail->show();
-    getAbeExerciceTelecommandeV1()->ui->pbarQuestion->setValue(getAbeNumQuestion());
 
     /* Calcul de la taille des masques */
     float largeurMasque, hauteurMasque = 0.00;
@@ -287,58 +282,58 @@ void AbstractExercice::slotInitQuestionEntered()
 
     /* Petite difference de pose entre les exercices */
     switch(_exerciceType){
-    case Parcours:
-    {
-        if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Parcours";
-        int nbMasques = _OPT_nbMasquesLargeur * _OPT_nbMasquesHauteur;
-
-        if (_localDebug) qDebug() << "Début boucle d'affichage : " << nbMasques;
-
-        int numeroMasque = 0;
-        for (float i = 0; i < _OPT_nbMasquesHauteur ; i++)
+        case Parcours:
         {
-            for (int j = 0; j < _OPT_nbMasquesLargeur ; j++)
+            if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Parcours";
+            int nbMasques = _OPT_nbMasquesLargeur * _OPT_nbMasquesHauteur;
+
+            if (_localDebug) qDebug() << "Début boucle d'affichage : " << nbMasques;
+
+            int numeroMasque = 0;
+            for (float i = 0; i < _OPT_nbMasquesHauteur ; i++)
             {
-                _masque = new MasqueDeplaceSouris(0, numeroMasque);
-                _masque->setSize(largeurMasque, hauteurMasque);
+                for (int j = 0; j < _OPT_nbMasquesLargeur ; j++)
+                {
+                    _masque = new MasqueDeplaceSouris(0, numeroMasque);
+                    _masque->setSize(largeurMasque, hauteurMasque);
 
-                _masque->setPos(xMasque, yMasque);
-                _masque->setColor(QColor::fromRgb(255,255,255));
+                    _masque->setPos(xMasque, yMasque);
+                    _masque->setColor(QColor::fromRgb(255,255,255));
 
-                xMasque += largeurMasque;
-                _aireTravail->scene()->addItem(_masque);
-                _listeMasquesFixes << _masque;
-                numeroMasque ++;
+                    xMasque += largeurMasque;
+                    _aireTravail->scene()->addItem(_masque);
+                    _listeMasquesFixes << _masque;
+                    numeroMasque ++;
+                }
+                xMasque = 0;
+                yMasque += hauteurMasque;
             }
-            xMasque = 0;
-            yMasque += hauteurMasque;
+            break;
         }
-        break;
-    }
-    default: /* Tous les exercices sauf Parcours */
-    {
-        if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Tous les exercices sauf Parcours";
-        for (float i = 0 ; i < _OPT_nbMasquesHauteur ; i++)
+        default: /* Tous les exercices sauf Parcours */
         {
-            for (int j = 0 ; j < _OPT_nbMasquesLargeur ; j++)
+            if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << " :: Tous les exercices sauf Parcours";
+            for (float i = 0 ; i < _OPT_nbMasquesHauteur ; i++)
             {
-                _masque = new MasqueDeplaceSouris();
-                _masque->setSize(largeurMasque, hauteurMasque);
-                _masque->setPos(xMasque, yMasque);
-                _masque->setColor(QColor::fromRgb(255,255,255));
+                for (int j = 0 ; j < _OPT_nbMasquesLargeur ; j++)
+                {
+                    _masque = new MasqueDeplaceSouris();
+                    _masque->setSize(largeurMasque, hauteurMasque);
+                    _masque->setPos(xMasque, yMasque);
+                    _masque->setColor(QColor::fromRgb(255,255,255));
 
-                xMasque += largeurMasque;
-                _aireTravail->scene()->addItem(_masque);
-                _listeMasquesFixes << _masque;
+                    xMasque += largeurMasque;
+                    _aireTravail->scene()->addItem(_masque);
+                    _listeMasquesFixes << _masque;
+                }
+                xMasque = 0;
+                yMasque += hauteurMasque;
             }
-            xMasque = 0;
-            yMasque += hauteurMasque;
-        }
 
-        _OPT_nbMasquesLargeur += 2;
-        _OPT_nbMasquesHauteur += 1;
-        break;
-    }
+            _OPT_nbMasquesLargeur += 2;
+            _OPT_nbMasquesHauteur += 1;
+            break;
+        }
     }
 }
 
@@ -355,7 +350,6 @@ void AbstractExercice::slotQuestionEntered()
     {
         _itemImage->setVisible(true);
         _nbMasquesInteractifs = 0;
-        //        int alea = 0;
 
         while(_nbMasquesInteractifs < _OPT_nbMasquesChoisis)
         {
@@ -390,7 +384,6 @@ void AbstractExercice::slotAfficheVerificationQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
 
-    qDebug()<< "******************************************** Fin Verif Question !";
     if(_exerciceEnCours)
     {
         if(_localDebug) qDebug()<< "Click bouton suivant automatique " << _OPT_timerSuivant;
@@ -431,6 +424,8 @@ void AbstractExercice::slotFinVerificationQuestionEntered()
     boiteTetes->setEtatTete(m_numExercice, abe::evalA );
 
     _exerciceEnCours = false;
+
+    qDebug() << _OPT_nbMasquesHauteur << _OPT_nbMasquesLargeur;
 }
 
 void AbstractExercice::slotBilanExerciceEntered()
