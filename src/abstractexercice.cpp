@@ -34,8 +34,17 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _exerciceEnCours    = false;
 
     /* Création de l'aire de travail + propriétés */
-    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
-    _aireTravail->setFocusPolicy( Qt::NoFocus );
+//    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
+    _aireTravail = new QGraphicsView();
+    _aireTravail->setAttribute(Qt::WA_AcceptTouchEvents);
+//    _aireTravail->setDragMode(QGraphicsView::ScrollHandDrag);
+    _aireTravail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    _aireTravail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
+    QGraphicsScene *scene = new QGraphicsScene(this);
+    _aireTravail->setScene(scene);
+    _aireTravail->setFocusPolicy(Qt::NoFocus);
 
     /* Pour que l'aire de jeu ne bouge pas avec le doigt (tab) */
     _aireTravail->setDragMode(QGraphicsView::NoDrag);
@@ -565,6 +574,8 @@ void AbstractExercice::chargerOption()
 
 void AbstractExercice::redimensionnerImage()
 {
+
+    qDebug() << "REDIMM IMAGE";
     const float ratio = abeApp->getAbeApplicationDecorRatio();
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
@@ -636,13 +647,16 @@ void AbstractExercice::setDimensionsWidgets()
     getAbeExerciceAireDeTravailV1()->move(0,0);
 
     /* Placement de WidgetTelecommandeV1 */
-    getAbeExerciceTelecommandeV1()->abeTelecommandeResize();
-    getAbeExerciceTelecommandeV1()->move(1550*ratio, 0);
+//    getAbeExerciceTelecommandeV1()->abeTelecommandeResize();
+//    getAbeExerciceTelecommandeV1()->move(1550*ratio, 0);
 
     /* Placement de l'AireDeJeu */
     const int large = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
     const int haut  = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 * ratio;
-    _aireTravail->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
+
+//    _aireTravail->abeEtiquettesSetDimensionsWidget(QSize(large-125 * ratio, haut - 50 * ratio));
+    _aireTravail->setFixedSize(QSize(large-125 * ratio, haut - 50 * ratio));
+    _aireTravail->setSceneRect(0,0,(large-125 * ratio), (haut - 50 * ratio));
 
     _tailleAireTravail = _aireTravail->size();
 
@@ -704,7 +718,6 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
     return false;
 }
 
-//! @todo probleme affichage Aide + Pause --> Ticket à faire
 void AbstractExercice::slotFermetureAide()
 {
     eventFilter(this, _keySpace);

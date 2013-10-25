@@ -25,7 +25,6 @@
 #include <QDebug>
 
 #include "abuleducommonstatesv1.h"
-#include "abuleduetiquettesv1.h"
 #include "masquedeplacesouris.h"
 #include "abuledutools.h"
 
@@ -166,7 +165,7 @@ private:
     QWidget         *_parent;
     ExerciceType    _exerciceType;
 
-    AbulEduEtiquettesV1     *_aireTravail;
+    QGraphicsView           *_aireTravail;
     QGraphicsProxyWidget    *_proxyGraphique;
     QSize                   _tailleAireTravail;
 

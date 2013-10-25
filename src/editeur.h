@@ -42,7 +42,6 @@
 
 #include "abuledufilev1.h"
 #include "masquedeplacesouris.h"
-#include "abuleduetiquettesv1.h"
 #include "abuleduboxfilemanagerv1.h"
 #include "ui_editeur.h"
 #include "abuledumediathequepushv1.h"
