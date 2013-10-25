@@ -86,7 +86,6 @@ void ExerciceParcours::slotQuestionEntered()
                 _masqueParcours->setColor(QColor(Qt::black));
                 connect(_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
                 _listeMasquesParcours << _masqueParcours;
-
             }
             else{
                 /* Ce masque n'est pas bon */
@@ -106,8 +105,8 @@ void ExerciceParcours::slotQuestionEntered()
                     + trUtf8("Le programme va quitter l'exercice.") +" <br />"
                     +" </td>" ;
             _messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
+            connect(_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()),this, SLOT(slotQuitterAccueil()));
             _messageBox->show();
-            slotQuitterAccueil();
         }
     }
 }
