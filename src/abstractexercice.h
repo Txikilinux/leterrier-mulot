@@ -52,9 +52,7 @@ public:
                             GETTERS & SETTERS
       ****************************************************************************************************/
 
-    /** Retourne un pointeur sur l'AbulEduMessageBoxV1 commune à tous les exercices */
-    AbulEduMessageBoxV1* messageBox(){return _messageBox;}
-    AbulEduMessageBoxV1* _messageBox; //! @todo A ameliorer pas satisfaisant point de vue implementation
+    AbulEduMessageBoxV1* _messageBox;
 
     /** Retourne un pointeur sur le timer */
     QTimer* timer() {return _timer;}
