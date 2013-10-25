@@ -110,8 +110,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     connect(this, SIGNAL(appuiVerifier()), getAbeExerciceTelecommandeV1()->ui->btnVerifier, SIGNAL(clicked()), Qt::UniqueConnection);
     connect(this, SIGNAL(appuiSuivant()),  getAbeExerciceTelecommandeV1()->ui->btnSuivant,  SIGNAL(clicked()), Qt::UniqueConnection);
 
-    if (_localDebug)
-    {
+    if (_localDebug){
         qDebug() << "Chemin du fichier de configuration" << _cheminConf;
         qDebug() << "Chemin des fichiers images"         << _cheminImage;
     }
@@ -275,8 +274,7 @@ void AbstractExercice::slotInitQuestionEntered()
     /* Calcul de la taille des masques */
     float largeurMasque, hauteurMasque = 0.00;
 
-    if (_localDebug)
-    {
+    if (_localDebug){
         qDebug() << "nb masques largeur :" << _OPT_nbMasquesLargeur ;
         qDebug() << "nb masques hauteur :" << _OPT_nbMasquesHauteur ;
     }
@@ -433,8 +431,6 @@ void AbstractExercice::slotFinVerificationQuestionEntered()
     boiteTetes->setEtatTete(m_numExercice, abe::evalA );
 
     _exerciceEnCours = false;
-
-    qDebug() << _OPT_nbMasquesHauteur << _OPT_nbMasquesLargeur;
 }
 
 void AbstractExercice::slotBilanExerciceEntered()
@@ -558,8 +554,7 @@ void AbstractExercice::chargerOption()
     _OPT_timerSuivant     = _parametres->value("timerSuivant", 7).toInt();
     _OPT_nbMasquesChoisis = _parametres->value("nbMasquesChoisis", 7).toInt();
 
-    if (_localDebug)
-    {
+    if (_localDebug){
         qDebug() << "Timer suivant : "   << _OPT_timerSuivant;
         qDebug() << "Nb masques choisis : "   << _OPT_nbMasquesChoisis;
     }
@@ -574,8 +569,6 @@ void AbstractExercice::chargerOption()
 
 void AbstractExercice::redimensionnerImage()
 {
-
-    qDebug() << "REDIMM IMAGE";
     const float ratio = abeApp->getAbeApplicationDecorRatio();
     _itemImage->setPixmap(_itemImage->pixmap().scaled(_tailleAireTravail, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     _aireTravail->setFixedSize(_itemImage->boundingRect().size().toSize());
@@ -608,8 +601,7 @@ void AbstractExercice::slotCacheMasque()
         _listeMasquesFixes.clear();
 
         /* Affichage du temps passé */
-        if(_localDebug)
-        {
+        if(_localDebug){
             qDebug("Temps écoulé: %d ms", _chronometre->elapsed());
             qDebug("Temps écoulé: %d sec", (_chronometre->elapsed())/1000);
         }

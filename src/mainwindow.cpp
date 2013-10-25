@@ -116,10 +116,7 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
 
     if (m_localDebug) qDebug() << "Nom du fichier abe :" << ui->AbulEduBoxFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
 
-
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
-
-    qDebug() << "TEST :: " << box->abeGetSender()->objectName();
     if (box->abeGetSender() > 0)
     {
         if (box->abeGetSender()->objectName() == "editeur")
@@ -181,8 +178,6 @@ void MainWindow::abeLanceExo(int numero)
     if(m_exerciceEnCours){return;}
 
     m_numberExoCalled = numero;
-
-    qDebug() << "Nom du fichier abe en cours : " << m_abuleduFile->abeFileGetFileName().fileName();
 
     if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty() && m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur()->isHidden())
     {
@@ -251,7 +246,6 @@ void MainWindow::abeAiguillage()
         break;
     }
     default:
-        qDebug() << "CASE DEFAUT qui arrive quand on appel la box puis aiguillage sans exercice...";
         break;
     } //! Fin Switch
 }
