@@ -24,53 +24,22 @@
 #include "masquedeplacesouris.h"
 
 MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
-    QGraphicsObject(parent)
+    QGraphicsObject(parent), m_taille(QRectF()), m_numero(numero)
 {
-    m_taille = QRectF(0,0,50,50); //Une taille par défaut de 50x50
     m_couleur = QColor(Qt::black);
     m_hideOnMouseOver = false;
     m_hideOnClick = false;
     m_hideOnDoubleClick = false;
     m_isEditable = false;
-    m_numero = numero;
     setAcceptHoverEvents(true);
 
     cptClic = 0;
     QApplication::setDoubleClickInterval(1000);
 }
 
-MasqueDeplaceSouris::~MasqueDeplaceSouris()
-{
-}
-
 void MasqueDeplaceSouris::setSize(float width, float height)
 {
     m_taille = QRectF(0,0,width,height);
-}
-
-void MasqueDeplaceSouris::setColor(QColor couleur)
-{
-    m_couleur = couleur;
-}
-
-void MasqueDeplaceSouris::setHideOnMouseOver(bool hide)
-{
-    m_hideOnMouseOver = hide;
-}
-
-void MasqueDeplaceSouris::setHideOnClick(bool hide)
-{
-    m_hideOnClick = hide;
-}
-
-void MasqueDeplaceSouris::setHideOnDoubleClick(bool hide)
-{
-    m_hideOnDoubleClick = hide;
-}
-
-void MasqueDeplaceSouris::setIsEditable(bool isEditable)
-{
-    m_isEditable = isEditable;
 }
 
 void MasqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -82,15 +51,9 @@ void MasqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsIte
     painter->drawRect(m_taille);
 }
 
-QRectF MasqueDeplaceSouris::boundingRect() const
-{
-    return m_taille;
-}
-
 void MasqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 {
-    if(m_hideOnMouseOver)
-    {
+    if(m_hideOnMouseOver){
         setVisible(false);
         emit signalCacheMasque();
     }
@@ -98,9 +61,8 @@ void MasqueDeplaceSouris::hoverEnterEvent(QGraphicsSceneHoverEvent *)
 
 void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (event->buttons()== Qt::LeftButton)
-    {
-        //qDebug() << "clic gauche";
+    if (event->buttons()== Qt::LeftButton){
+        /* clic gauche */
         if(m_hideOnClick)
         {
             event->accept();
@@ -110,7 +72,6 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
         else if(m_isEditable)
         {
             event->accept();
-            //qDebug() << "Click gauche masque";
             emit signalPoseSurParcours(this);
         }
         else if (m_hideOnDoubleClick)
@@ -124,7 +85,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
             {
                 if (timerDoubleClic.elapsed() < QApplication::doubleClickInterval() )
                 {
-                    //qDebug() << "Double Clic evenement";
+                    /* Double Clic */
                     event->accept();
                     setVisible(false);
                     emit signalCacheMasque();
@@ -148,11 +109,7 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void MasqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
 {
-    qDebug()<< __FUNCTION__;
-
-    if(m_hideOnDoubleClick)
-    {
-        //qDebug() << "DOUBLE CLIC";
+    if(m_hideOnDoubleClick){
         event->accept();
         setVisible(false);
         emit signalCacheMasque();

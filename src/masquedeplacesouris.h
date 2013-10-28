@@ -45,7 +45,7 @@ public:
     explicit MasqueDeplaceSouris(QGraphicsObject *parent = 0, int numero = 0);
 
     /** Destructeur de la classe MasqueDeplaceSouris */
-    ~MasqueDeplaceSouris();
+    ~MasqueDeplaceSouris(){}
 
     /** Méthode qui permet de changer la taille du masque
       * @param float width , la nouvelle largeur
@@ -56,32 +56,32 @@ public:
     /** Méthode qui permet de changer la couleur du masque
       * @param QColor colour, la nouvelle couleur
       */
-    void setColor(QColor couleur);
+    void setColor(const QColor &couleur){m_couleur = couleur;}
 
     /** Méthode qui permet de définir si le masque disparait au survol de la souris
       * @param bool hide, true si oui, false sinon
       */
-    void setHideOnMouseOver(bool hide);
+    void setHideOnMouseOver(bool hide){ m_hideOnMouseOver = hide;}
 
     /** Méthode qui permet de définir si le masque disparait au clic de la souris
       * @param bool hide, true si oui, false sinon
       */
-    void setHideOnClick(bool hide);
+    void setHideOnClick(bool hide){ m_hideOnClick = hide;}
 
     /** Méthode qui permet de définir si le masque disparait au double-clic de la souris
       * @param bool hide, true si oui, false sinon
       */
-    void setHideOnDoubleClick(bool hide);
+    void setHideOnDoubleClick(bool hide){ m_hideOnDoubleClick = hide;}
 
     /** Méthode qui permet de définir si le masque est éditable
       * @param bool hide, true si oui, false sinon
       */
-    void setIsEditable(bool isEditable);
+    void setIsEditable(bool isEditable){ m_isEditable = isEditable;}
 
     /** Méthode qui retourne la couleur actuelle du masque
       * @return QColor, la couleur actuelle du masque
       */
-    QColor getColor() const{return m_couleur;}
+    const QColor& getColor() const{return m_couleur;}
 
     /** Méthode qui retourne le numero actuel du masque
       * @return QColor, le numero actuel du masque
@@ -99,7 +99,8 @@ private:
     /** Méthode qui retourne la taille du masque
       * @return QRectF, la taille du masque
       */
-    QRectF boundingRect() const;
+    QRectF boundingRect() const{ return m_taille;}
+
     QRectF m_taille;
     QColor m_couleur;
     bool   m_hideOnMouseOver;
