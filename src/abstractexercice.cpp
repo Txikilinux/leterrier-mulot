@@ -34,10 +34,8 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _exerciceEnCours    = false;
 
     /* Création de l'aire de travail + propriétés */
-//    _aireTravail = new AbulEduEtiquettesV1(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->pos());
     _aireTravail = new QGraphicsView();
     _aireTravail->setAttribute(Qt::WA_AcceptTouchEvents);
-//    _aireTravail->setDragMode(QGraphicsView::ScrollHandDrag);
     _aireTravail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     _aireTravail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -96,10 +94,6 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
-    //    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
-    //    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
-    //    afficheVerificationQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant, "enabled", false);
-
     bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnRefaire , "enabled", false);
     bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant , "enabled", false);
 
