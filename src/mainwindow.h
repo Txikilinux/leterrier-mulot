@@ -73,12 +73,14 @@ public:
     /** Méthode qui retourne l'abe courant
       * @return AbulEduFileV1 *, un pointeur sur l'objet abuledufile
       */
-//    const QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile(){return m_abuleduFile;}
+    const QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile(){return m_abuleduFile;}
 
     /** Permet d'accéder à la page d'accueil */
 //    const AbulEduPageAccueilV1* abeGetMyAbulEduAccueil(){return m_abuleduaccueil;}
 
 //    const AbulEduBoxFileManagerV1* abeGetMyAbulEduFileManager() { return m_abuleduFileManager;}
+
+
 
 
 public slots:

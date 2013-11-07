@@ -22,6 +22,7 @@
   */
 
 #include "editeur.h"
+#include "mainwindow.h"
 
 /** @todo
     à mediter :Enregistrement du 0 si < 10 (pour le QSetting) ;
@@ -193,6 +194,7 @@ void Editeur::slotEditorChangePageRequested(int page)
 void Editeur::slotCloseEditor()
 {
     if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
+
     /* Remettre le titre par defaut du boutonModifier courant */
     ui->btnModificationCourant->setText(trUtf8("Editer le module en cours"));
     /* Remettre la page d'Accueil par defaut */
@@ -207,6 +209,14 @@ void Editeur::slotCloseEditor()
     /* On dit que le fichier abe n'a pas de nom maintenant (important pr la MW) */
     _abuleduFile->abeFileSetFilename("");
     _abuleduFile->abeFileSetTitle("");
+
+    m_listeMasquesFixes.clear();
+    m_listeMasquesParcours.clear();
+    m_listeMasques.clear();
+    /* Nettoyage scene */
+    ui->gv_editeurParcours->scene()->clear();
+    ui->sbParcoursMasque->setEnabled(true);
+    ui->gv_editeurParcours->scene()->clear();
 
     emit editorExited();
 }
@@ -534,14 +544,17 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                 if(AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), m_opt_nbMasquesLargeur, m_opt_nbMasquesHauteur).contains(positionParcours.first()))
                 {
                     if(m_localDebug) qDebug() << "Voisin ok ";
+                    m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
+                    m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
+                    m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
+                    positionParcours.removeFirst();
                 }
                 else{
                     if(m_localDebug) qDebug() << "PROBLEME VOISINAGE";
+                    ui->btnResetParcours->click();
+
+                    return false;
                 }
-                m_listeMasques.at(positionParcours.first())->setColor(QColor(Qt::black));
-                m_listeMasques.at(positionParcours.first())->setProperty("Role", trUtf8("Parcours"));
-                m_listeMasquesParcours << m_listeMasques.at(positionParcours.first());
-                positionParcours.removeFirst();
             }
             /* arrivee */
             m_listeMasques.at(positionArrivee)->setColor(QColor(Qt::red));
@@ -1078,6 +1091,22 @@ void Editeur::slotLoadUnit()
     if (m_localDebug) qDebug()<< __FILE__ <<  __LINE__ << __FUNCTION__<<" :: "<<_abuleduFile->abeFileGetFileName().fileName();
     _listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
+
+    /* Remettre tout par défaut */
+    foreach (QObject* var, ui->pageParametres->children()) {
+        if(var->inherits("QGroupBox"))
+            ((QGroupBox*)var)->setChecked(false);
+    }
+    ui->btnParcours1->setStyleSheet("color : gray;");
+    ui->btnParcours2->setStyleSheet("color : gray;");
+    ui->btnParcours3->setStyleSheet("color : gray;");
+    ui->btnParcours4->setStyleSheet("color : gray;");
+    ui->btnParcours5->setStyleSheet("color : gray;");
+
+    m_listeMasques.clear();
+    m_listeMasquesFixes.clear();
+    m_listeMasquesParcours.clear();
+
     QDir folder(QString(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/data/images"));
     folder.setFilter(QDir::NoDotAndDotDot | QDir::Files);
     foreach(const QFileInfo fileInfo, folder.entryInfoList())
@@ -1109,9 +1138,9 @@ void Editeur::slotLoadUnit()
     parametres.endGroup();
     /* Exercice Parcours */
     parametres.beginGroup("parcours");
+    ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",false).toBool());
     if(parametres.value("exerciceActive",true).toBool())
     {
-        ui->groupBoxParcours->setChecked(parametres.value("exerciceActive",true).toBool());
         ui->spinBoxParcoursSuivant->setValue(parametres.value("timerSuivant",7).toInt());
         ui->spinBoxParcoursMasquesLargeur->setValue(parametres.value("nbMasquesLargeur",7).toInt());
         ui->spinBoxParcoursMasqueHauteur->setValue(parametres.value("nbMasquesHauteur",7).toInt());
@@ -1177,6 +1206,28 @@ void Editeur::slotLoadUnit()
             ui->btnParcours5->setStyleSheet("color : red;");
         }
         parametres.endGroup();
+    }
+    else
+    {
+        qDebug() << endl << "PAS DE PARCOURS MAIS ON SUPPRIME AU CAS OU ";
+
+        qDebug() << parametres.allKeys();
+        parametres.remove("");
+        qDebug() << parametres.allKeys();
+        parametres.sync();
+        /* On a supprimé toutes les entrees parcours
+         * On Sauvegarde sans impunité, correction à la volée =)
+         * Petite combine pour avoir le nom
+         */
+        QString nameModule = ((MainWindow *) parentWidget()->topLevelWidget())->abeGetMyAbulEduFile()->abeFileGetFileName().absoluteFilePath();
+        qDebug() << nameModule;
+
+        qDebug() << _abuleduFile->abeFileExportPrepare(AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), _abuleduFile->abeFileGetDirectoryTemp().absolutePath(), "abe");
+        qDebug() << _abuleduFile->abeFileExportFile(nameModule.remove(".abe"));
+//        qDebug() << _abuleduFile->abeFileSave(nameModule, AbulEduTools::parcoursRecursif(_abuleduFile->abeFileGetDirectoryTemp().absolutePath()), "abe");
+
+        //        ui->AbulEduBoxFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath();
+//        ui->leAuteur->setText(_abuleduFile->abeFileGetCreator());
     }
 
     ui->leTitre->setText(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralTitle(_abuleduFile->abeFileGetLOM()->abeLOMgetGeneralLanguage().first()));

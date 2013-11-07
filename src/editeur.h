@@ -212,6 +212,8 @@ private:
 
     int _nombreParcoursSave;
 
+    QSettings *m_parametres;
+
     /** Créer le menu "supprimer" sur un item contenu dans listWidgetImagesSelection */
     void creationMenu();
 
