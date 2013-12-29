@@ -10,3 +10,4 @@ Makefile
 *.pro.user
 ./src/lib/abuleduandroidsupportv1
 ./src/lib/abuleduandroidsupportv1
+./src/lib/abuleduloggerv1

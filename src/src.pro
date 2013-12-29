@@ -74,3 +74,4 @@ include(lib/abuledusingletonv1/abuledusingletonv1.pri)
 include(lib/abuledulangv1/abuledulangv1.pri)
 
 include(lib/abuleduandroidsupportv1/abuleduandroidsupportv1.pri)
+include(lib/abuleduloggerv1/abuleduloggerv1.pri)
