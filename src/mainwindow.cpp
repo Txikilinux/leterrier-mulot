@@ -297,22 +297,26 @@ void MainWindow::slotChangeLangue()
 
 void MainWindow::on_action_Survol_triggered()
 {
-    abeLanceExo(AbstractExercice::Survol);
+    /* 0 = Survol */
+    abeLanceExo(0);
 }
 
 void MainWindow::on_actionClic_triggered()
 {
-    abeLanceExo(AbstractExercice::Clic);
+    /* 1 = Clic */
+    abeLanceExo(1);
 }
 
 void MainWindow::on_action_Parcours_triggered()
 {
-    abeLanceExo(AbstractExercice::Parcours);
+    /* 3 = Parcours */
+    abeLanceExo(3);
 }
 
 void MainWindow::on_action_Double_Clic_triggered()
 {
-    abeLanceExo(AbstractExercice::DoubleClic);
+    /* 4 = Double-Clic */
+    abeLanceExo(4);
 }
 
 void MainWindow::on_actionEditeur_triggered()
