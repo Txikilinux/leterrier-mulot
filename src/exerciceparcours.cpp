@@ -202,7 +202,7 @@ void ExerciceParcours::slotAide()
             +trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.")
             +" </td>" ;
 
-    _messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,false, 0);
+    _messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,true, parent());
     connect(_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
     _messageBox->setWink();
     _messageBox->show();

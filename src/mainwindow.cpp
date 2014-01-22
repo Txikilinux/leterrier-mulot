@@ -322,8 +322,7 @@ void MainWindow::on_action_Double_Clic_triggered()
 void MainWindow::on_actionEditeur_triggered()
 {
     /* Petite protection, si l'editeur est la fenetre en cours, on zappe */
-    if(ui->editeur->isVisible())
-        return;
+    if(ui->editeur->isVisible()) return;
 
     if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
@@ -459,7 +458,7 @@ void MainWindow::slotAfficheEtatEnregistrement(AbulEduBoxFileManagerV1::enumAbul
     {
         message = trUtf8("Votre fichier n'a pas pu être enregistré...");
     }
-    AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), message);
+    AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"), message, true, this);
     msgEnregistrement->setWindowModality(Qt::ApplicationModal);
     if (reussite == true)
     {

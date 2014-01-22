@@ -39,7 +39,6 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _aireTravail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     _aireTravail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-
     QGraphicsScene *scene = new QGraphicsScene(this);
     _aireTravail->setScene(scene);
     _aireTravail->setFocusPolicy(Qt::NoFocus);
@@ -156,7 +155,7 @@ void AbstractExercice::slotSequenceEntered(){
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
     if(!_exerciceEnCours)
     {
-        getAbeExerciceMessageV1()->setParent(_aireTravail);
+//        getAbeExerciceMessageV1()->setParent(_aireTravail);
         getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
 
         setAbeNbExercices(5);      /* a instancier avant appel du slot SequenceEntered ! */
@@ -540,7 +539,7 @@ void AbstractExercice::chargerOption()
     if (_parametres->value("exerciceActive",false) == false)
     {
         AbulEduMessageBoxV1* messageBox = new AbulEduMessageBoxV1(trUtf8("Exercice absent du module"),
-                                                                  trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>%1</b>").arg(exercice));
+                                                                  trUtf8("Ce module ne contient pas de paramètres pour l'exercice <b>%1</b>").arg(exercice), true, _parent);
         messageBox->show();
         slotQuitterAccueil();
     }

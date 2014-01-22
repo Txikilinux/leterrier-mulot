@@ -965,7 +965,7 @@ void Editeur::on_btnSaveParcours_clicked()
     ui->gv_editeurParcours->scene()->clear();
 
     /* Petit message */
-    AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"));
+    AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Editeur de Parcours"),trUtf8("Le parcours a bien été sauvegardé"), true, this);
     alertBox->setWindowModality(Qt::ApplicationModal);
     alertBox->setWink();
     alertBox->show();
@@ -1300,7 +1300,7 @@ bool Editeur::preparerSauvegarde()
     if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
         if(ui->leTitre->text().trimmed().isEmpty()){
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"));
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas de titre !"),trUtf8("Vous n'avez pas renseigné le champ titre !"), true, this);
             alertBox->setWindowModality(Qt::ApplicationModal);
             alertBox->show();
             ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeFin);
@@ -1315,7 +1315,7 @@ bool Editeur::preparerSauvegarde()
         }
         if(ui->leAuteur->text().trimmed().isEmpty())
         {
-            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"));
+            AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Pas d'auteur !"),trUtf8("Vous n'avez pas renseigné le champ auteur !"), true, this);
             alertBox->setWindowModality(Qt::ApplicationModal);
             alertBox->show();
             ui->stackedWidgetEditeur->setCurrentIndex(PageEtapeFin);
@@ -1442,7 +1442,7 @@ void Editeur::on_btnEssayer_clicked()
 
     if(preparerSauvegarde()){
         AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),
-                                                              trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."));
+                                                              trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."), true, this);
         alertBox->setWindowModality(Qt::ApplicationModal);
         alertBox->show();
         emit editorTest();
@@ -1475,7 +1475,7 @@ void Editeur::slotAfficheEtatPublication(const int &code)
     if(code > 0)
     {
         AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"),
-                                                                         trUtf8("Votre module a bien été publié sur AbulÉdu-Médiathèque..."));
+                                                                         trUtf8("Votre module a bien été publié sur AbulÉdu-Médiathèque..."), true, this);
         msgEnregistrement->setWindowModality(Qt::ApplicationModal);
         msgEnregistrement->setWink();
         msgEnregistrement->show();
@@ -1483,7 +1483,7 @@ void Editeur::slotAfficheEtatPublication(const int &code)
     else
     {
         AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Problème"),
-                                                                         trUtf8("Un problème a empêché la publication de votre module sur AbulÉdu-Médiathèque..."));
+                                                                         trUtf8("Un problème a empêché la publication de votre module sur AbulÉdu-Médiathèque..."), true, this);
         msgEnregistrement->setWindowModality(Qt::ApplicationModal);
         msgEnregistrement->show();
     }
