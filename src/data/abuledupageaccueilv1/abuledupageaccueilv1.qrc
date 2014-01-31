@@ -1,22 +1,16 @@
 <RCC>
-    <qresource prefix="/abuledupageaccueilv1">
-        <file>settings.conf</file>
-        <file>images/fond.jpg</file>
-        <file>images/moyenne-haut-droit.png</file>
-        <file>images/moyenne-bas-gauche.png</file>
-        <file>images/moyenne-bas-droit.png</file>
-        <file>images/grande-haut-gauche.png</file>
-        <file>images/grande-haut-droit.png</file>
-        <file>images/grande-bas-gauche.png</file>
-        <file>images/moyenne-haut-gauche.png</file>
-        <file>images/petite-bas-droit.png</file>
-        <file>images/petite-bas-gauche.png</file>
-        <file>images/tresgrande-haut-gauche.png</file>
-        <file>images/tresgrande-haut-droit.png</file>
-        <file>images/tresgrande-bas-gauche.png</file>
-        <file>images/tresgrande-bas-droit.png</file>
-        <file>images/petite-haut-gauche.png</file>
-        <file>images/petite-haut-droit.png</file>
-        <file>images/grande-bas-droit.png</file>
+   <qresource prefix="/abuledupageaccueilv1">
+      <file>settings.conf</file>
+      <file>images/fond.jpg</file>
+      <file>images/bulle.png</file>
+      <file>images/Gfleche.png</file>
+      <file>images/GflecheHover.png</file>
+      <file>images/Bfleche.png</file>
+      <file>images/BflecheHover.png</file>
+      <file>images/Dfleche.png</file>
+      <file>images/DflecheHover.png</file>
+      <file>images/Hfleche.png</file>
+      <file>images/HflecheHover.png</file>
+      <file>images/bulleTablette.png</file>
     </qresource>
 </RCC>
