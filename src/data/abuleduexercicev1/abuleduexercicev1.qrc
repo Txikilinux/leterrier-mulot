@@ -4,6 +4,8 @@
         <file alias="telecommande">picto/telecommande.png</file>
         <file alias="fondmessagegrand">picto/fond-consignes-grand.png</file>
         <file alias="fondmessagepetit">picto/fond-consignes-petit.png</file>
+        <file alias="imageLblCustom1">picto/lblCustom1.png</file>
+        <file alias="imageLblCustom2">picto/lblCustom2.png</file>
     </qresource>
     <qresource prefix="/abuleduexercicev1/boutons">
         <file alias="btnQuitter">picto/quitter.png</file>
@@ -14,8 +16,6 @@
         <file alias="btnSuivantOver">picto/suivant-over.png</file>
         <file alias="btnCorriger">picto/corriger.png</file>
         <file alias="btnCorrigerOver">picto/corriger-over.png</file>
-        <file alias="btnNiveau">picto/niveaux.png</file>
-        <file alias="btnNiveauOver">picto/niveaux-over.png</file>
         <file alias="btnVerifier">picto/verifier.png</file>
         <file alias="btnVerifierOver">picto/verifier-over.png</file>
         <file alias="bottom">picto/bottom.png</file>
@@ -27,25 +27,14 @@
         <file alias="btnRefaireDisabled">picto/refaire-gris.png</file>
         <file alias="btnQuitterDisabled">picto/quitter-gris.png</file>
         <file alias="btnCorrigerDisabled">picto/corriger-gris.png</file>
-        <file alias="btnNiveauDisabled">picto/niveaux-gris.png</file>
         <file alias="btnAideDisabled">picto/aide-gris.png</file>
     </qresource>
-    <qresource prefix="/abuleduexercicev1/tetes">
-        <file alias="attente">picto/attente.png</file>
-        <file alias="bien">picto/bien.png</file>
-        <file alias="mal">picto/mal.png</file>
-        <file alias="moyen">picto/moyen.png</file>
-        <file alias="rien">picto/rien.png</file>
-        <file alias="tresbien">picto/tresbien.png</file>
-    </qresource>
     <qresource prefix="/abuleduexercicev1/niveaux">
-        <file alias="+1">picto/difficulte+1.png</file>
         <file alias="5">picto/difficulte5.png</file>
         <file alias="4">picto/difficulte4.png</file>
         <file alias="3">picto/difficulte3.png</file>
         <file alias="2">picto/difficulte2.png</file>
         <file alias="1">picto/difficulte1.png</file>
-        <file alias="0">picto/difficulte0.png</file>
     </qresource>
     <qresource prefix="/abuleduexercicev1/conf">
         <file>abuleduexercicev1.conf</file>
