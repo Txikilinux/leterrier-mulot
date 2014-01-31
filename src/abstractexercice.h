@@ -146,7 +146,7 @@ private slots:
     void pause();
 
 protected:
-    inline int verifieReponse(){return 0;}
+    int verifieReponse();
     inline int donneReponse() {return -1;}
 
 signals:

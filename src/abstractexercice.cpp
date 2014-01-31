@@ -27,10 +27,10 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _theme          = theme;
     _exerciceType   = exerciceType;
 
+    _localDebug         = false;
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << _parent <<" " << _theme << " " << exerciceType;
 
     /* Ici sera defini tout ce qui est commun au 5 exercices */
-    _localDebug         = false;
     _exerciceEnCours    = false;
 
     /* Création de l'aire de travail + propriétés */
@@ -107,11 +107,6 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
         qDebug() << "Chemin du fichier de configuration" << _cheminConf;
         qDebug() << "Chemin des fichiers images"         << _cheminImage;
     }
-
-    /* les progressBar de la telecommande sont caches */
-    presentationExercices->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
-    realisationExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
-    question->assignProperty(getAbeExerciceTelecommandeV1()->ui->pbarQuestion, "visible", false);
 }
 
 AbstractExercice::~AbstractExercice()
@@ -335,6 +330,7 @@ void AbstractExercice::slotInitQuestionEntered()
             break;
         }
     }
+    boiteTetes->setEtatTete(m_numExercice, getAbeExerciceEvaluation(),false);
 }
 
 void AbstractExercice::slotQuestionEntered()
@@ -374,7 +370,7 @@ void AbstractExercice::slotQuestionEntered()
             _masqueInteractif->setColor(QColor::fromRgb(0,0,0));
 
             _nbMasquesInteractifs++;
-            if(_localDebug) qDebug()<< "Nombre de masques Clicables : " << _nbMasquesInteractifs;
+            if(_localDebug) qDebug()<< "Nombre de masques Cliquables : " << _nbMasquesInteractifs;
         }
     }
     _exerciceEnCours = true;
@@ -399,6 +395,7 @@ void AbstractExercice::slotAfficheVerificationQuestionEntered()
         if(_localDebug) qDebug() << "desactivation delai sequence machine ok";
 }
 
+
 void AbstractExercice::slotFinQuestionEntered()
 {
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
@@ -421,17 +418,16 @@ void AbstractExercice::slotFinVerificationQuestionEntered()
 
     _listeMasquesFixes.clear();
 
-    boiteTetes->setEtatTete(m_numExercice, abe::evalA );
-
     _exerciceEnCours = false;
 }
 
 void AbstractExercice::slotBilanExerciceEntered()
 {
+    if(_localDebug) qDebug() << __PRETTY_FUNCTION__;
+
     /* Click automatique bouton suivant */
     _timer->start();
-
-    AbulEduCommonStatesV1::slotBilanExerciceEntered();
+    boiteTetes->setEtatTete(abeStateMachineGetNumExercice(), abe::evalA,false);
 }
 
 void AbstractExercice::slotBilanSequenceEntered()
@@ -646,11 +642,9 @@ void AbstractExercice::setDimensionsWidgets()
     _tailleAireTravail = _aireTravail->size();
 
     /* Placement des têtes */
+    boiteTetes->resizeTetes(115*ratio);
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
-
-    /* Redimensionne le widget de consignes */
-    //    AbulEduCommonStatesV1::setDimensionsWidgets();
 }
 
 void AbstractExercice::redimensionnerConsigne()
@@ -747,4 +741,10 @@ void AbstractExercice::pause()
         _labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
     }
+}
+
+int AbstractExercice::verifieReponse()
+{
+    boiteTetes->setEtatTete(m_numExercice, getAbeExerciceEvaluation());
+    return 0;
 }

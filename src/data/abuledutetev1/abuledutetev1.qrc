@@ -20,4 +20,13 @@
         <file alias="tresbien">picto/bilan/tresbien.png</file>
         <file alias="rien">picto/bilan/rien.png</file>
     </qresource>
+    <qresource prefix="/current">
+        <file alias="attente">picto/current/attente.png</file>
+        <file alias="tresbien">picto/current/tresbien.png</file>
+        <file alias="rien">picto/current/rien.png</file>
+        <file alias="neutre">picto/current/neutre.png</file>
+        <file alias="moyen">picto/current/moyen.png</file>
+        <file alias="mal">picto/current/mal.png</file>
+        <file alias="bien">picto/current/bien.png</file>
+    </qresource>
 </RCC>
