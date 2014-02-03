@@ -90,6 +90,8 @@ MainWindow::MainWindow(QWidget *parent) :
 #ifdef __ABULEDUTABLETTEV1__MODE__
     ui->menuBar->hide();
 #endif
+    m_abuleduaccueil->abePageAccueilDesactiveZones(true);
+
 }
 
 void MainWindow::resizeEvent(QResizeEvent *)
@@ -130,6 +132,34 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         }
     }
     abeAiguillage();
+    if(m_abuleduFile->abeFileGetFileList().count() > 0)
+        {
+            QList<QAction *> listMenuEntries = ui->menuExercice->actions();
+            QList<AbulEduZoneV1 *> listZonesPageAccueil = m_abuleduaccueil->abePageAccueilGetZones();
+            qDebug()<<"menu";
+            qDebug()<<listMenuEntries;
+            qDebug()<<"zones";
+
+            // Récupération d'un fichier de settings dans le répertoire temporaire
+            QSettings *settings = new QSettings(m_abuleduFile->abeFileGetDirectoryTemp().path()+"/conf/parametres.conf", QSettings::IniFormat );
+
+            /* Reste maintenant deux choses : remettre au bon endroit les activités et désactiver les zones (pour les entrées du menu ça marche) */
+
+            listMenuEntries[0]      ->setEnabled(settings       ->value("survol/exerciceActive",  true).toBool());
+            listZonesPageAccueil[0] ->abeZoneSetActif(settings  ->value("survol/exerciceActive",  true).toBool());
+            listMenuEntries[1]      ->setEnabled(settings       ->value("clic/exerciceActive",   true).toBool());
+            listZonesPageAccueil[1] ->abeZoneSetActif(settings  ->value("clic/exerciceActive",   true).toBool());
+            listMenuEntries[2]      ->setEnabled(settings       ->value("doubleClic/exerciceActive",     true).toBool());
+            listZonesPageAccueil[2] ->abeZoneSetActif(settings  ->value("doubleClic/exerciceActive",     true).toBool());
+            listMenuEntries[3]      ->setEnabled(settings       ->value("parcours/exerciceActive",     true).toBool());
+            listZonesPageAccueil[3] ->abeZoneSetActif(settings  ->value("parcours/exerciceActive",     true).toBool());
+            foreach (AbulEduZoneV1* z, listZonesPageAccueil) {
+
+                qDebug()<<z->abeZoneGetBulle()->abeBulleGetText();
+                qDebug()<<z->abeZoneIsActif();
+            }
+            delete settings;
+        }
 }
 
 void MainWindow::slotDemo()
