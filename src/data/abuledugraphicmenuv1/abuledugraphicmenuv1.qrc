@@ -23,7 +23,6 @@
         <file alias="fond-03">images/fond-03.png</file>
         <file alias="fond-02">images/fond-02.png</file>
         <file alias="fond-01">images/fond-01.png</file>
-        <file alias="fond-00-over">images/fond-00-over.png</file>
         <file alias="fond-00">images/fond-00.png</file>
         <file>abuledugraphicmenuv1.conf</file>
     </qresource>

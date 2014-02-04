@@ -6,6 +6,7 @@
         <file alias="fondmessagepetit">picto/fond-consignes-petit.png</file>
         <file alias="imageLblCustom1">picto/lblCustom1.png</file>
         <file alias="imageLblCustom2">picto/lblCustom2.png</file>
+        <file alias="lblCustom">picto/custom.png</file>
     </qresource>
     <qresource prefix="/abuleduexercicev1/boutons">
         <file alias="btnQuitter">picto/quitter.png</file>
