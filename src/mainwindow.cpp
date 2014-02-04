@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_isDemoAvailable = true;
 
     ui->setupUi(this);
+    ui->menuExercice->setEnabled(false);
     setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
     setMinimumSize(1024, 600);
 
@@ -153,12 +154,19 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
             listZonesPageAccueil[2] ->abeZoneSetActif(settings  ->value("doubleClic/exerciceActive",     true).toBool());
             listMenuEntries[3]      ->setEnabled(settings       ->value("parcours/exerciceActive",     true).toBool());
             listZonesPageAccueil[3] ->abeZoneSetActif(settings  ->value("parcours/exerciceActive",     true).toBool());
-            foreach (AbulEduZoneV1* z, listZonesPageAccueil) {
-
-                qDebug()<<z->abeZoneGetBulle()->abeBulleGetText();
-                qDebug()<<z->abeZoneIsActif();
+            QListIterator<QAction*> it(listMenuEntries);
+            bool someEnabled = false;
+            while(it.hasNext() && !someEnabled){
+                if(it.next()->isEnabled()){
+                    someEnabled = true;
+                }
             }
+            ui->menuExercice->setEnabled(someEnabled);
             delete settings;
+        }
+        else
+        {
+            ui->menuExercice->setEnabled(false);
         }
 }
 
