@@ -171,7 +171,7 @@
     <string>&amp;Parcours</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+2</string>
+    <string>Ctrl+4</string>
    </property>
   </action>
   <action name="actionClic">
@@ -179,7 +179,7 @@
     <string>&amp;Clic</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+3</string>
+    <string>Ctrl+2</string>
    </property>
   </action>
   <action name="action_Double_Clic">
@@ -187,7 +187,7 @@
     <string>&amp;Double Clic</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+4</string>
+    <string>Ctrl+3</string>
    </property>
   </action>
   <action name="actionMode_D_mo">
