@@ -60,7 +60,8 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _onPeutMettreEnPause = false;
     _messageBox =  0;
     _masque = _masqueInteractif = 0;
-    _labelImagePause = _labelTextePause  = new QLabel(_parent);
+    _labelImagePause  = new QLabel(_parent);
+    _labelTextePause  = new QLabel(_parent);
     _tailleAireTravail = QSize(0,0);
     _cheminConf  = _theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
     _cheminImage = _theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator();
@@ -703,7 +704,7 @@ void AbstractExercice::slotFermetureAide()
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 
-//! @todo problème affichage image pause --> Ticket à faire
+//! @todo problème affichage image pause --> #3533
 void AbstractExercice::pause()
 {
     QPixmap pixPause(":/bouton/pause");
