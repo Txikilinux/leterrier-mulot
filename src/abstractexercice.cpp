@@ -704,7 +704,6 @@ void AbstractExercice::slotFermetureAide()
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(true);
 }
 
-//! @todo problème affichage image pause --> #3533
 void AbstractExercice::pause()
 {
     QPixmap pixPause(":/bouton/pause");
