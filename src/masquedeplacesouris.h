@@ -110,8 +110,8 @@ private:
     int    m_numero;
     QMenu  *m_menuMasque;
 
-    int cptClic;
-    QTime timerDoubleClic;
+    int m_cptClic;
+    QTime m_timerDoubleClic;
 
 signals:
     void signalCacheMasque();

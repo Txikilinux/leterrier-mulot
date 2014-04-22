@@ -33,7 +33,7 @@ MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     m_isEditable = false;
     setAcceptHoverEvents(true);
 
-    cptClic = 0;
+    m_cptClic = 0;
     QApplication::setDoubleClickInterval(1000);
 }
 
@@ -76,24 +76,24 @@ void MasqueDeplaceSouris::mousePressEvent(QGraphicsSceneMouseEvent *event)
         }
         else if (m_hideOnDoubleClick)
         {
-            if (cptClic == 0)
+            if (m_cptClic == 0)
             {
-                timerDoubleClic.start();
-                cptClic ++;
+                m_timerDoubleClic.start();
+                m_cptClic ++;
             }
-            else if (cptClic == 1)
+            else if (m_cptClic == 1)
             {
-                if (timerDoubleClic.elapsed() < QApplication::doubleClickInterval() )
+                if (m_timerDoubleClic.elapsed() < QApplication::doubleClickInterval() )
                 {
                     /* Double Clic */
                     event->accept();
                     setVisible(false);
                     emit signalCacheMasque();
 
-                    cptClic = 0;
+                    m_cptClic = 0;
                 }
                 else
-                    cptClic =0;
+                    m_cptClic =0;
             }
         }
     }

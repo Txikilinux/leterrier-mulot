@@ -23,20 +23,20 @@
 ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme)
     : AbstractExercice(parent, theme, AbstractExercice::Parcours)
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__<< " " << parent <<" " << theme;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << parent << theme;
 
     NB_MASQUESATTENDUS = NB_MASQUESREELS = 0;
-    _listeMasquesParcours.clear();
+    m_listeMasquesParcours.clear();
 }
 
 ExerciceParcours::~ExerciceParcours()
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG()<< __PRETTY_FUNCTION__;
 }
 
 void ExerciceParcours::slotQuestionEntered()
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
     /* Demarrage du chronometre */
     chronometre()->start();
@@ -47,56 +47,56 @@ void ExerciceParcours::slotQuestionEntered()
     {
         itemImage()->setVisible(true);
         setNbMasquesInteractifs(0);
-        if(debugAvailable()) qDebug() <<  abeStateMachineGetNumExercice();
+        ABULEDU_LOG_DEBUG() <<  abeStateMachineGetNumExercice();
         /* @notes : m_exercice 0 pour exercice 1 */
         chargerPositionMasque(abeStateMachineGetNumExercice()+1);
 
         // Chargement et Controle de la liste
-        if(_listePositionMasquesParcours.isEmpty() && (_listePositionMasquesParcours.count() != OPT_nbMasquesChoisis()))
+        if(m_listePositionMasquesParcours.isEmpty() && (m_listePositionMasquesParcours.count() != OPT_nbMasquesChoisis()))
         {
-            if(debugAvailable()) qDebug() << "PROBLEME Liste parcours " + QString::number(getAbeNumQuestion());
+            ABULEDU_LOG_DEBUG() << "PROBLEME Liste parcours " + QString::number(getAbeNumQuestion());
             return;
         }
 
         /* Masque arrivee (1 de la liste positionMasque) */
-        _masqueArrivee = listeMasquesFixes().at(_listePositionMasquesParcours.takeFirst());
-        _masqueArrivee->setColor(QColor(Qt::red));
-        connect(_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
+        m_masqueArrivee = listeMasquesFixes().at(m_listePositionMasquesParcours.takeFirst());
+        m_masqueArrivee->setColor(QColor(Qt::red));
+        connect(m_masqueArrivee, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
 
         /* Masque depart (2 de la liste mais takeFirst car j'ai deja pris l'arrivee) */
-        _masqueDepart = listeMasquesFixes().at(_listePositionMasquesParcours.takeFirst());
-        _masqueDepart->setColor(QColor(Qt::green));
-        connect(_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
-        _masqueDepart->setHideOnMouseOver(false);
-        _masqueDepart->setHideOnClick(true);
+        m_masqueDepart = listeMasquesFixes().at(m_listePositionMasquesParcours.takeFirst());
+        m_masqueDepart->setColor(QColor(Qt::green));
+        connect(m_masqueDepart, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
+        m_masqueDepart->setHideOnMouseOver(false);
+        m_masqueDepart->setHideOnClick(true);
 
         /* Le premier de la liste est le départ */
-        _listeMasquesParcours << _masqueDepart; // en premier
+        m_listeMasquesParcours << m_masqueDepart; // en premier
 
         /* Masque parcours (le reste de la liste) */
         /*  Il faut cependant effectuer quelques petits contrôles afin de ne pas se retrouver avec des labyrinthes bizarres. */
         QList<int> voisinsPossibles;
-        while (!_listePositionMasquesParcours.isEmpty())
+        while (!m_listePositionMasquesParcours.isEmpty())
         {
-            voisinsPossibles = AbulEduTools::masquesVoisins(_listeMasquesParcours.last()->getNumero(), OPT_nbMasquesLargeur(), OPT_nbMasquesHauteur());
-            if(voisinsPossibles.contains(listeMasquesFixes().at(_listePositionMasquesParcours.first())->getNumero()))
+            voisinsPossibles = AbulEduTools::masquesVoisins(m_listeMasquesParcours.last()->getNumero(), OPT_nbMasquesLargeur(), OPT_nbMasquesHauteur());
+            if(voisinsPossibles.contains(listeMasquesFixes().at(m_listePositionMasquesParcours.first())->getNumero()))
             {
                 /* Ce masque est ok, on y va */
-                _masqueParcours = listeMasquesFixes().at(_listePositionMasquesParcours.takeFirst());
-                _masqueParcours->setColor(QColor(Qt::black));
-                connect(_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
-                _listeMasquesParcours << _masqueParcours;
+                m_masqueParcours = listeMasquesFixes().at(m_listePositionMasquesParcours.takeFirst());
+                m_masqueParcours->setColor(QColor(Qt::black));
+                connect(m_masqueParcours, SIGNAL(signalCacheMasque()), this, SLOT(slotCacheMasque()), Qt::UniqueConnection);
+                m_listeMasquesParcours << m_masqueParcours;
             }
             else{
                 /* Ce masque n'est pas bon */
-                _listePositionMasquesParcours.removeFirst();
+                m_listePositionMasquesParcours.removeFirst();
             }
         }
 
-        _listeMasquesParcours << _masqueArrivee; // en dernier
+        m_listeMasquesParcours << m_masqueArrivee; // en dernier
         setExerciceRunning(true);
 
-        NB_MASQUESREELS = _listeMasquesParcours.count();
+        NB_MASQUESREELS = m_listeMasquesParcours.count();
         if(NB_MASQUESATTENDUS != NB_MASQUESREELS){
             // Message Box Alerte
             QString msg = "<td> " + trUtf8("Les paramètres du module ne sont pas valides.")+" <br />"
@@ -104,42 +104,42 @@ void ExerciceParcours::slotQuestionEntered()
                     + trUtf8("merci de nous le signaler.") +" <br />"
                     + trUtf8("Le programme va quitter l'exercice.") +" <br />"
                     +" </td>" ;
-            _messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
-            connect(_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()),this, SLOT(slotQuitterAccueil()));
-            _messageBox->show();
+            m_messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
+            connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()),this, SLOT(slotQuitterAccueil()));
+            m_messageBox->show();
         }
     }
 }
 
 void ExerciceParcours::slotCacheMasque()
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
     //j'enleve le premier masque de la ma liste de parcours
-    if(!_listeMasquesParcours.isEmpty())
+    if(!m_listeMasquesParcours.isEmpty())
     {
-        if(debugAvailable()) qDebug() << "La liste avant : " << _listeMasquesParcours.count();
+        ABULEDU_LOG_DEBUG() << "La liste avant : " << m_listeMasquesParcours.count();
 
-        _listeMasquesParcours.removeFirst();
+        m_listeMasquesParcours.removeFirst();
 
         /* On colorie le suivant en bleu Attention, je fais un removeFirst, donc ma liste doit être
          * strictement supérieure à 1 (sinon segfault)
          */
-        if(_listeMasquesParcours.count() > 1){
-            _listeMasquesParcours.first()->setColor(Qt::blue);
-            _listeMasquesParcours.first()->update();
+        if(m_listeMasquesParcours.count() > 1){
+            m_listeMasquesParcours.first()->setColor(Qt::blue);
+            m_listeMasquesParcours.first()->update();
         }
-        if (_listeMasquesParcours.count() != 0)
+        if (m_listeMasquesParcours.count() != 0)
         {
-            if (_listeMasquesParcours.count() == 1)
-                _listeMasquesParcours.first()->setHideOnClick(true);
+            if (m_listeMasquesParcours.count() == 1)
+                m_listeMasquesParcours.first()->setHideOnClick(true);
             else
-                _listeMasquesParcours.first()->setHideOnMouseOver(true);
+                m_listeMasquesParcours.first()->setHideOnMouseOver(true);
         }
-        if(debugAvailable()) qDebug() << "La liste apres : " << _listeMasquesParcours.count();
+        ABULEDU_LOG_DEBUG() << "La liste apres : " << m_listeMasquesParcours.count();
     }
 
-    if (_listeMasquesParcours.isEmpty())
+    if (m_listeMasquesParcours.isEmpty())
     {
         foreach (MasqueDeplaceSouris* var, listeMasquesFixes())
         {
@@ -157,11 +157,8 @@ void ExerciceParcours::slotCacheMasque()
         listeMasquesFixes().clear();
 
         /* Affichage du temps passé */
-        if (debugAvailable())
-        {
-            qDebug("Temps écoulé: %d ms",chronometre()->elapsed());
-            qDebug("Temps écoulé: %d sec",(chronometre()->elapsed())/1000);
-        }
+        ABULEDU_LOG_DEBUG() << "Temps écoulé: %d ms",chronometre()->elapsed();
+        ABULEDU_LOG_DEBUG() << "Temps écoulé: %d sec",(chronometre()->elapsed())/1000;
 
         /* Enregistrement du temps passé pour chaque question */
         switch (abeStateMachineGetNumExercice()+1){
@@ -181,7 +178,7 @@ void ExerciceParcours::slotCacheMasque()
             setTempsQuestion5(chronometre()->elapsed());
             break;
         default :
-            if (debugAvailable()) qDebug("Case Default - Temps écoulé: %d ms", chronometre()->elapsed());
+            ABULEDU_LOG_DEBUG() << "Case Default - Temps écoulé: %d ms", chronometre()->elapsed();
             break;
         }
     }
@@ -190,7 +187,7 @@ void ExerciceParcours::slotCacheMasque()
 
 void ExerciceParcours::slotAide()
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
     eventFilter(this, new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1));
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
@@ -202,28 +199,27 @@ void ExerciceParcours::slotAide()
             +trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.")
             +" </td>" ;
 
-    _messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,true, parent());
-    connect(_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
-    _messageBox->setWink();
-    _messageBox->show();
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,true, parent());
+    connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
+    m_messageBox->setWink();
+    m_messageBox->show();
 }
 
 void ExerciceParcours::chargerPositionMasque(const int& numeroExercice)
 {
-    _listePositionMasquesParcours.clear();
+    m_listePositionMasquesParcours.clear();
     QList<int> listePosition;
     parametres()->beginGroup("parcours");
     parametres()->beginGroup("parcours"+QString::number(numeroExercice));
 
     /* Recuperation des masques de départ et d'arrivée.. */
     int i = 0;
-    if(debugAvailable()) {
-        qDebug() << "Nombre de masques pour le parcours = " << parametres()->childKeys().count();
-        qDebug() << "Recherche du départ et de l'arrivee";
-    }
+    ABULEDU_LOG_DEBUG() << "Nombre de masques pour le parcours = " << parametres()->childKeys().count();
+    ABULEDU_LOG_DEBUG() << "Recherche du départ et de l'arrivee";
+
     while(i < parametres()->childKeys().count()){
         if(parametres()->childKeys().at(i).contains("MasqueD") || parametres()->childKeys().at(i).contains("MasqueA")){
-            _listePositionMasquesParcours << parametres()->value(parametres()->childKeys().at(i)).toInt();
+            m_listePositionMasquesParcours << parametres()->value(parametres()->childKeys().at(i)).toInt();
             ++i;
         }
         else
@@ -233,15 +229,15 @@ void ExerciceParcours::chargerPositionMasque(const int& numeroExercice)
     }
 
     /* Si pas de Départ et pas d'Arrivée, on quitte */
-    if(_listePositionMasquesParcours.count() != 2){
+    if(m_listePositionMasquesParcours.count() != 2){
         // Message Box Alerte
         QString msg = "<td> " + trUtf8("Les paramètres du module ne sont pas valides.")+" <br />"
                 + trUtf8("Si ce module provient de la <b>Médiatheque</b>,") +" <br />"
                 + trUtf8("merci de nous le signaler.") +" <br />"
                 + trUtf8("Le programme va quitter l'exercice.") +" <br />"
                 +" </td>" ;
-        _messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
-        _messageBox->show();
+        m_messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),msg, true, parent());
+        m_messageBox->show();
         slotQuitterAccueil();
     }
 
@@ -269,7 +265,7 @@ void ExerciceParcours::chargerPositionMasque(const int& numeroExercice)
         foreach (const QString var, parametres()->childKeys()) {
             if(var.contains("MasqueParcours")){
                 if(pos == var.split("MasqueParcours").at(1).toInt()){
-                    _listePositionMasquesParcours << parametres()->value(var).toInt();
+                    m_listePositionMasquesParcours << parametres()->value(var).toInt();
                 }
             }
         }
@@ -278,5 +274,5 @@ void ExerciceParcours::chargerPositionMasque(const int& numeroExercice)
     parametres()->endGroup();
 
     /* On enregistre le nombre de masques attendus */
-    NB_MASQUESATTENDUS = _listePositionMasquesParcours.count();
+    NB_MASQUESATTENDUS = m_listePositionMasquesParcours.count();
 }

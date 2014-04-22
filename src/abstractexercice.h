@@ -43,50 +43,47 @@ public:
     AbstractExercice(QWidget *parent, const QString& theme, const ExerciceType& exerciceType);
     ~AbstractExercice() = 0;
 
-    /** Permet de définir le localDebug qu'une fois */
-    bool debugAvailable() const{return _localDebug;}
-
-    QWidget* parent() const {return _parent;}
+    QWidget* parent() const {return m_parent;}
 
     /* ***************************************************************************************************
                             GETTERS & SETTERS
       ****************************************************************************************************/
 
-    AbulEduMessageBoxV1* _messageBox;
+    AbulEduMessageBoxV1* m_messageBox;
 
     /** Retourne un pointeur sur le timer */
-    QTimer* timer() {return _timer;}
+    QTimer* timer() {return m_timer;}
 
-    bool isExerciceRunning() const{return _exerciceEnCours ;}
-    void setExerciceRunning(const bool& yesNo){ _exerciceEnCours = yesNo;}
+    bool isExerciceRunning() const{return m_exerciceEnCours ;}
+    void setExerciceRunning(const bool& yesNo){ m_exerciceEnCours = yesNo;}
 
-    bool pauseAvailable() const{ return _onPeutMettreEnPause ;}
-    void setPauseAvailable(const bool& yesNo){ _onPeutMettreEnPause = yesNo ;}
+    bool pauseAvailable() const{ return m_onPeutMettreEnPause ;}
+    void setPauseAvailable(const bool& yesNo){ m_onPeutMettreEnPause = yesNo ;}
 
-    QGraphicsPixmapItem* itemImage() const{return _itemImage;}
+    QGraphicsPixmapItem* itemImage() const{return m_itemImage;}
 
-    int nbMasquesInteractifs() {return _nbMasquesInteractifs;}
-    void setNbMasquesInteractifs(const int& nb){ _nbMasquesInteractifs = nb;}
+    int nbMasquesInteractifs() {return m_nbMasquesInteractifs;}
+    void setNbMasquesInteractifs(const int& nb){ m_nbMasquesInteractifs = nb;}
 
-    QSettings* parametres() const{return _parametres;}
+    QSettings* parametres() const{return m_parametres;}
 
-    int OPT_nbMasquesChoisis() const{ return _OPT_nbMasquesChoisis;}
-    int OPT_nbMasquesLargeur() const{ return _OPT_nbMasquesLargeur;}
-    int OPT_nbMasquesHauteur() const{ return _OPT_nbMasquesHauteur;}
+    int OPT_nbMasquesChoisis() const{ return m_OPT_nbMasquesChoisis;}
+    int OPT_nbMasquesLargeur() const{ return m_OPT_nbMasquesLargeur;}
+    int OPT_nbMasquesHauteur() const{ return m_OPT_nbMasquesHauteur;}
 
-    QList<MasqueDeplaceSouris*> listeMasquesFixes() const{return _listeMasquesFixes ;}
+    QList<MasqueDeplaceSouris*> listeMasquesFixes() const{return m_listeMasquesFixes ;}
 
-    QTime* chronometre() const{return _chronometre;}
-    void setTempsQuestion1(const float& tps){ _tempsQuestion1 = tps ;}
-    float tempsQuestion1() {return _tempsQuestion1;}
-    void setTempsQuestion2(const float& tps){ _tempsQuestion2 = tps ;}
-    float tempsQuestion2() {return _tempsQuestion2;}
-    void setTempsQuestion3(const float& tps){ _tempsQuestion3 = tps ;}
-    float tempsQuestion3() {return _tempsQuestion3;}
-    void setTempsQuestion4(const float& tps){ _tempsQuestion4 = tps ;}
-    float tempsQuestion4() {return _tempsQuestion4;}
-    void setTempsQuestion5(const float& tps){ _tempsQuestion5 = tps ;}
-    float tempsQuestion5() {return _tempsQuestion5;}
+    QTime* chronometre() const{return m_chronometre;}
+    void setTempsQuestion1(const float& tps){ m_tempsQuestion1 = tps ;}
+    float tempsQuestion1() {return m_tempsQuestion1;}
+    void setTempsQuestion2(const float& tps){ m_tempsQuestion2 = tps ;}
+    float tempsQuestion2() {return m_tempsQuestion2;}
+    void setTempsQuestion3(const float& tps){ m_tempsQuestion3 = tps ;}
+    float tempsQuestion3() {return m_tempsQuestion3;}
+    void setTempsQuestion4(const float& tps){ m_tempsQuestion4 = tps ;}
+    float tempsQuestion4() {return m_tempsQuestion4;}
+    void setTempsQuestion5(const float& tps){ m_tempsQuestion5 = tps ;}
+    float tempsQuestion5() {return m_tempsQuestion5;}
 
     /// @todo le reste du temps et meilleure gestion Parcours
 
@@ -156,68 +153,66 @@ signals:
 
 private:
 
-    bool _localDebug;
-    bool _exerciceEnCours;
+    bool m_exerciceEnCours;
 
-    QString         _theme;
-    QWidget         *_parent;
-    ExerciceType    _exerciceType;
+    QString         m_theme;
+    QWidget         *m_parent;
+    ExerciceType    m_exerciceType;
 
-    QGraphicsView           *_aireTravail;
-    QGraphicsProxyWidget    *_proxyGraphique;
-    QSize                   _tailleAireTravail;
+    QGraphicsView           *m_aireTravail;
+    QGraphicsProxyWidget    *m_proxyGraphique;
+    QSize                   m_tailleAireTravail;
 
     /* Paramètres Editeur */
-    QSettings   *_parametres;
-    int         _OPT_timerSuivant;
-    int         _OPT_nbMasquesChoisis;
-    float       _OPT_nbMasquesLargeur;
-    float       _OPT_nbMasquesHauteur;
-    QString     _cheminConf;
-    QString     _cheminImage;
+    QSettings   *m_parametres;
+    int         m_OPT_timerSuivant;
+    int         m_OPT_nbMasquesChoisis;
+    float       m_OPT_nbMasquesLargeur;
+    float       m_OPT_nbMasquesHauteur;
+    QString     m_cheminConf;
+    QString     m_cheminImage;
 
-    QPixmap                 _image;
-    QGraphicsPixmapItem     *_itemImage;
+    QPixmap                 m_image;
+    QGraphicsPixmapItem     *m_itemImage;
     /* ma liste d'images (choisies aleatoirement) */
-    QList<QPixmap>          _listeImage;
+    QList<QPixmap>          m_listeImage;
     /* le nombre d'image = le nombre d'exercice */
-    int                     _nbImage;
+    int                     m_nbImage;
     /* Le nombre de masques à interaction */
-    int                     _nbMasquesInteractifs;
+    int                     m_nbMasquesInteractifs;
     /* la liste des fichiers présents dans le dossier pack image */
-    QStringList             _listeFichiers;
+    QStringList             m_listeFichiers;
 
-
-    QList<MasqueDeplaceSouris *>     _listeMasquesFixes;
-    MasqueDeplaceSouris             *_masque;
-    MasqueDeplaceSouris             *_masqueInteractif;
-    QSize                           _taille;
+    QList<MasqueDeplaceSouris *>     m_listeMasquesFixes;
+    MasqueDeplaceSouris             *m_masque;
+    MasqueDeplaceSouris             *m_masqueInteractif;
+    QSize                           m_taille;
 
     /* Chronometre */
-    QTime *_chronometre;
-    float _tempsQuestion1;
-    float _tempsQuestion2;
-    float _tempsQuestion3;
-    float _tempsQuestion4;
-    float _tempsQuestion5;
-    int   _tempsTotal;
+    QTime *m_chronometre;
+    float m_tempsQuestion1;
+    float m_tempsQuestion2;
+    float m_tempsQuestion3;
+    float m_tempsQuestion4;
+    float m_tempsQuestion5;
+    int   m_tempsTotal;
 
-    QTimer  *_timer;
-    bool    _onPeutMettreEnPause;
-    QLabel  *_labelImagePause;
-    QLabel  *_labelTextePause;
+    QTimer  *m_timer;
+    bool    m_onPeutMettreEnPause;
+    QLabel  *m_labelImagePause;
+    QLabel  *m_labelTextePause;
 
     /** True si on est en pause, false sinon */
     bool m_isPaused;
+
+    /** Touche clavier (espace) */
+    QKeyEvent *m_keySpace;
 
     /** Redimensionne l'image */
     void redimensionnerImage();
 
     /** Charge les options contenues dans le fichier de configuration (parametres.ini) */
     void chargerOption();
-
-    /** Touche clavier (espace) */
-    QKeyEvent *_keySpace;
 };
 
 #endif // ABSTRACTEXERCICE_H

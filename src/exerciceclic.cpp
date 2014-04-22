@@ -23,26 +23,26 @@
 ExerciceClic::ExerciceClic(QWidget *parent, QString theme)
     : AbstractExercice(parent, theme, AbstractExercice::Clic)
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__ << " " <<  parent << " " << theme;
+    ABULEDU_LOG_DEBUG()<< __PRETTY_FUNCTION__ << parent << theme;
 }
 
 ExerciceClic::~ExerciceClic()
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 }
 
 void ExerciceClic::slotAide()
 {
-    if(debugAvailable()) qDebug() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
     eventFilter(this, new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1));
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
 
     QString consigne = "<td> " + trUtf8("Clique sur les rectangles noirs pour faire apparaitre l'image.")+"<br />"
             + trUtf8("Quand une image est trouvée, la suivante arrive toute seule au bout de quelques instants.") +" </td>" ;
 
-    _messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,false, parent());
-    connect(_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
-    _messageBox->setWink();
-    _messageBox->show();
+    m_messageBox = new AbulEduMessageBoxV1(trUtf8("Un petit coup de pouce ?"), consigne,false, parent());
+    connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), this, SLOT(slotFermetureAide()), Qt::UniqueConnection);
+    m_messageBox->setWink();
+    m_messageBox->show();
 }
 

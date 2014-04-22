@@ -46,18 +46,17 @@ private slots:
     void chargerPositionMasque(const int &numeroExercice);
 
 private:
-    QList<int> _listePositionMasquesParcours;
-    QList<MasqueDeplaceSouris *> _listeMasquesParcours;
+    QList<int> m_listePositionMasquesParcours;
+    QList<MasqueDeplaceSouris *> m_listeMasquesParcours;
 
     int NB_MASQUESATTENDUS;
     int NB_MASQUESREELS;
 
-    MasqueDeplaceSouris *_masqueDepart;
-    MasqueDeplaceSouris *_masqueArrivee;
-    MasqueDeplaceSouris *_masqueParcours;
-    MasqueDeplaceSouris *_masque;
-    QSize _taille;
-
+    MasqueDeplaceSouris *m_masqueDepart;
+    MasqueDeplaceSouris *m_masqueArrivee;
+    MasqueDeplaceSouris *m_masqueParcours;
+    MasqueDeplaceSouris *m_masque;
+    QSize m_taille;
 };
 
 #endif // ExerciceParcours_H

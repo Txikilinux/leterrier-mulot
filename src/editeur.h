@@ -77,8 +77,8 @@ public:
     ~Editeur();
 
 //    void abeEditeurSetMainWindow(QWidget* mw);
-    void setAbeFile(const QSharedPointer<AbulEduFileV1>& abuleduFile){ _abuleduFile = abuleduFile ;}
-    const QSharedPointer<AbulEduFileV1> abeFile(){ return _abuleduFile ; }
+    void setAbeFile(const QSharedPointer<AbulEduFileV1>& abuleduFile){ m_abuleduFile = abuleduFile ;}
+    const QSharedPointer<AbulEduFileV1> abeFile(){ return m_abuleduFile ; }
 
     QStackedWidget* stackedWidget(){ return ui->stackedWidgetEditeur ;}
     QPushButton* btnModificationCourant(){ return ui->btnModificationCourant ;}
@@ -167,23 +167,16 @@ private:
     Ui::Editeur *ui;
     QMenu *m_menuListWidget;
 
-    bool m_localDebug;
     bool m_modeModificationAbe;
 
     QString m_lastOpenDir;
 
-    int _OPT_nbMasquesChoisisParcours;
+    int m_OPT_nbMasquesChoisisParcours;
     int m_opt_nbMasquesLargeur;
     int m_opt_nbMasquesHauteur;
     int m_numeroParcours;
 
-//    QMap<QString, QVariant> m_parametresParcours1;
-//    QMap<QString, QVariant> m_parametresParcours2;
-//    QMap<QString, QVariant> m_parametresParcours3;
-//    QMap<QString, QVariant> m_parametresParcours4;
-//    QMap<QString, QVariant> m_parametresParcours5;
-
-    QMap<QString, int> positionMasquesParcours;
+    QMap<QString, int> m_positionMasquesParcours;
 
     QList<MasqueDeplaceSouris *> m_listeMasquesFixes;
     MasqueDeplaceSouris         *m_masqueDepart;
@@ -193,24 +186,24 @@ private:
     QDir *m_dir;
     QDir *m_dirAbe;
 
-    QList<QString> _listeFichiersImages;
+    QList<QString> m_listeFichiersImages;
 
     MasqueDeplaceSouris             *m_masque;
     QList<MasqueDeplaceSouris *>    m_listeMasques;
     QList<MasqueDeplaceSouris *>    m_listeMasquesParcours;
 
-    QSharedPointer<AbulEduFileV1> _abuleduFile;
+    QSharedPointer<AbulEduFileV1> m_abuleduFile;
 
-    QString _messageAidePageAccueil;
-    QString _messageAidePageGestionImages;
-    QString _messageAidePageParametres;
-    QString _messageAidePageParcours;
-    QString _messageAidePageFin;
-    QString _messageAidePageVisio;
+    QString m_messageAidePageAccueil;
+    QString m_messageAidePageGestionImages;
+    QString m_messageAidePageParametres;
+    QString m_messageAidePageParcours;
+    QString m_messageAidePageFin;
+    QString m_messageAidePageVisio;
 
-    AbulEduWidgetAssistantEtapesV1 *_assistantEtapes;
+    AbulEduWidgetAssistantEtapesV1 *m_assistantEtapes;
 
-    int _nombreParcoursSave;
+    int m_nombreParcoursSave;
 
     QSettings *m_parametres;
 
