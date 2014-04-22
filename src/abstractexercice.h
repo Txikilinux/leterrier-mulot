@@ -207,6 +207,9 @@ private:
     QLabel  *_labelImagePause;
     QLabel  *_labelTextePause;
 
+    /** True si on est en pause, false sinon */
+    bool m_isPaused;
+
     /** Redimensionne l'image */
     void redimensionnerImage();
 

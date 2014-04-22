@@ -27,7 +27,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _theme          = theme;
     _exerciceType   = exerciceType;
 
-    _localDebug         = false;
+    _localDebug     = true;
     if(_localDebug) qDebug() << __PRETTY_FUNCTION__ << _parent <<" " << _theme << " " << exerciceType;
 
     /* Ici sera defini tout ce qui est commun au 5 exercices */
@@ -66,6 +66,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     _cheminConf  = _theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
     _cheminImage = _theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator();
     _chronometre = new QTime();
+    m_isPaused = false;
 
     /* Gestion Consignes & Aide */
     onPeutPresenterExercice = false;
@@ -207,6 +208,12 @@ void AbstractExercice::slotRealisationExerciceEntered()
 
     _aireTravail->scene()->clear();
     _aireTravail->show();
+
+    /* Gestion graphique de la pause si on appuie sur suivant alors que la pause est active @see https://redmine.ryxeo.com/issues/3537 */
+    if(m_isPaused){
+        qDebug() << "On est en pause ! ERREUR";
+        pause();
+    }
 
     if(!_exerciceEnCours)
     {
@@ -719,6 +726,7 @@ void AbstractExercice::pause()
         _timer->stop();
         if(_localDebug) qDebug() << "Pause !";
 
+        m_isPaused = true;
         boiteTetes->setVisible(false);
         _labelImagePause->show();
         _labelTextePause->show();
@@ -737,6 +745,7 @@ void AbstractExercice::pause()
     {
         _timer->start();
         if(_localDebug) qDebug() << "Le timer repart";
+        m_isPaused = false;
         _labelImagePause->setVisible(false);
         _labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
