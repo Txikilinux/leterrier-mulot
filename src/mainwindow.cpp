@@ -433,8 +433,10 @@ void MainWindow::changeEvent(QEvent *e)
     switch (e->type()) {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
+        e->accept();
         break;
     default:
+        e->ignore();
         break;
     }
 }

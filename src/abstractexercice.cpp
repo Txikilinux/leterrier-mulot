@@ -645,31 +645,38 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
     obj = this;
 
-    /* Afin de bloquer les wheelEvents qui bouge l'aire de jeu */
-    if(ev->type() == QEvent::Wheel )
-        return true;
+    switch (ev->type()) {
 
-    if(ev->type() == QEvent::KeyRelease)
-    {
+    /* Si on clic sur la boiteTete ou l'image pause  */
+    case QEvent::MouseButtonPress:{
+        QMouseEvent *castMouseEvent;
+        castMouseEvent = dynamic_cast<QMouseEvent *>(ev);
+        if(castMouseEvent && (boiteTetes->geometry().contains(castMouseEvent->pos()) || m_labelImagePause->geometry().contains(castMouseEvent->pos())))
+        {
+            pause();
+            return true;
+        }
+        return false;
+    }
+
+    /* Si appui sur touche "Espace" */
+    case QEvent::KeyRelease: {
         QKeyEvent *c = dynamic_cast<QKeyEvent *>(ev);
         if(c && c->key() == Qt::Key_Space )
         {
             pause();
+            return true;
         }
+        return false;
     }
-    else if(ev->type() == QEvent::MouseButtonPress)
-    {
-        QMouseEvent *castMouseEvent;
-        castMouseEvent = dynamic_cast<QMouseEvent *>(ev);
-        if(boiteTetes->geometry().contains(castMouseEvent->pos()) || m_labelImagePause->geometry().contains(castMouseEvent->pos()))
-        {
-            pause();
-        }
+
+    /* Afin de bloquer les wheelEvents qui bouge l'aire de jeu */
+    case QEvent::Wheel:
+        return true;
+
+    default:
+        return false;
     }
-    else {
-        ev->ignore();
-    }
-    return false;
 }
 
 void AbstractExercice::slotFermetureAide()

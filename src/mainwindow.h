@@ -136,7 +136,7 @@ protected:
       * @param QEvent *e, un pointeur sur l'évènement
       * @brief ne sert pour l'instant qu'à la translation languistique du programme
       */
-    virtual void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e);
 
 private slots:
     /** Méthode qui gère le changement des langues */
