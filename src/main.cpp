@@ -2,6 +2,8 @@
   *
   * @see https://redmine.ryxeo.com/projects/
   * @author 2010 Eric Seigne <eric.seigne@ryxeo.com>
+  * @author 2012-2014 Icham Sirat <icham.sirat@ryxeo.com>
+  *
   * @see The GNU Public License (GNU/GPL) v3
   *
   *

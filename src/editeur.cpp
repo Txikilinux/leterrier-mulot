@@ -1,7 +1,7 @@
 /** Classe Editeur
   * @file editeur.cpp
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2012/2013 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2012-2014 Icham Sirat <icham.sirat@ryxeo.com>
   * @author 2012 Philippe Cadaugade <philippe.cadaugade@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *

@@ -1,7 +1,7 @@
 /** Classe AbstractExercice
   * @file abstractexercice.cpp
   * @see https://redmine.ryxeo.com/projects/
-  * @author 2013 Icham Sirat <icham.sirat@ryxeo.com>
+  * @author 2013-2014 Icham Sirat <icham.sirat@ryxeo.com>
   * @see The GNU Public License (GNU/GPL) v3
   *
   * This program is free software; you can redistribute it and/or modify
