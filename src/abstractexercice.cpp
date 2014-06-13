@@ -643,40 +643,35 @@ void AbstractExercice::slotAppuiAutoVerifier()
 
 bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
-    obj = this;
-
     switch (ev->type()) {
-
     /* Si on clic sur la boiteTete ou l'image pause  */
     case QEvent::MouseButtonPress:{
         QMouseEvent *castMouseEvent;
-        castMouseEvent = dynamic_cast<QMouseEvent *>(ev);
+        castMouseEvent = static_cast<QMouseEvent *>(ev);
         if(castMouseEvent && (boiteTetes->geometry().contains(castMouseEvent->pos()) || m_labelImagePause->geometry().contains(castMouseEvent->pos())))
         {
             pause();
-            return true;
         }
-        return false;
     }
-
+        break;
     /* Si appui sur touche "Espace" */
     case QEvent::KeyRelease: {
-        QKeyEvent *c = dynamic_cast<QKeyEvent *>(ev);
+        QKeyEvent *c = static_cast<QKeyEvent *>(ev);
         if(c && c->key() == Qt::Key_Space )
         {
             pause();
-            return true;
         }
-        return false;
     }
 
+        break;
     /* Afin de bloquer les wheelEvents qui bouge l'aire de jeu */
     case QEvent::Wheel:
         return true;
-
     default:
-        return false;
+        break;
     }
+
+    return abeApp->eventFilter(obj, ev);
 }
 
 void AbstractExercice::slotFermetureAide()
