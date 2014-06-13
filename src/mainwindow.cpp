@@ -428,8 +428,6 @@ void MainWindow::creeMenuLangue()
 
 void MainWindow::changeEvent(QEvent *e)
 {
-    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
-
     switch (e->type()) {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
