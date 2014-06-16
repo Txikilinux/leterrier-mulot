@@ -341,20 +341,40 @@ void Editeur::slotListWidgetImagesSelectionEditEnd(QWidget *w, QAbstractItemDele
 
     QFileInfo fi(item->data(4).toString());
     QFile xml(fi.absoluteFilePath().replace(fi.suffix(), "xml").remove("/images"));
+
+    /* Petite protect° -> #3735 si fichier déjà portant ce nom, on sort avec une petite pop-up */
+    if(QFile::exists(fi.absoluteFilePath().replace(fi.baseName(), newFileName))){
+
+        /* On remet l'ancien nom sur l'item */
+        item->setText(fi.baseName());
+
+        /* Petit message */
+        AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Modification du nom de l'image"),
+                                                              trUtf8("Une image se nomme déjà %1.\n Veuillez choisir un autre nom pour cette image").arg(newFileName), true, this);
+        alertBox->setWindowModality(Qt::ApplicationModal);
+        alertBox->setWink(false);
+        alertBox->show();
+        return;
+    }
+
     if(xml.exists()){
         qDebug() <<"Le fichier XML existe" << xml.fileName();
         QFileInfo fi_xml(xml);
         if(QFile::rename(fi_xml.absoluteFilePath(),fi_xml.absoluteFilePath().replace(fi_xml.baseName(), newFileName))){
             ABULEDU_LOG_DEBUG() << "Renommage du fichier XML accompagnant la ressource... [OK]";
         }
+        else
+            ABULEDU_LOG_DEBUG() << "Renommage du fichier XML accompagnant la ressource... [KO]";
     }
 
     if(QFile::rename(fi.absoluteFilePath(), fi.absoluteFilePath().replace(fi.baseName(), newFileName))){
         ABULEDU_LOG_DEBUG() << "Renommage fichier... [OK]";
+        /* Pour changement ou exercice */
+        item->setData(4, fi.absoluteFilePath().replace(fi.baseName(), newFileName));
     }
+    else
+        ABULEDU_LOG_DEBUG() << "Renommage fichier... [KO]";
 
-    /* Pour changement ou exercice */
-    item->setData(4, fi.absoluteFilePath().replace(fi.baseName(), newFileName));
 }
 
 void Editeur::ajouterImage(QFileInfo monFichier)

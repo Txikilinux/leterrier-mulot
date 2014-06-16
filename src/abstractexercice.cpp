@@ -407,15 +407,11 @@ void AbstractExercice::slotFinQuestionEntered()
     /* On ne veut pas un chronometre précis au millième près =) */
     ABULEDU_LOG_DEBUG() << "Temps écoulé en secondes      : " << (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000;
 
-    /* On affiche le titre de l'image #3101 */
+    /* On affiche le titre de l'image #3101 et on centre le texte #460 */
     if(!m_labelTitreImage->text().isEmpty()){
         m_labelTitreImage->show();
         m_labelTitreImage->updateGeometry();
-        qDebug() << "WH : " << m_labelTitreImage->width() <<  m_labelTitreImage->height();
-
         m_labelTitreImage->move((m_labelTitreImage->parentWidget()->width() - m_labelTitreImage->width())/2, m_labelTitreImage->y());
-//        m_labelTitreImage->setGeometry((m_labelTitreImage->parentWidget()->width() - m_labelTitreImage->width())/2, m_labelTitreImage->y(),
-//                                       m_labelTitreImage->width(), m_labelTitreImage->height());
     }
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
