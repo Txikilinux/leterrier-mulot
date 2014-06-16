@@ -107,6 +107,8 @@ Editeur::Editeur(QWidget *parent) :
 
     ui->gv_editeurParcours->setScene(new QGraphicsScene(this));
 
+    connect(ui->listWidgetImagesSelection->itemDelegate(), SIGNAL(closeEditor(QWidget*, QAbstractItemDelegate::EndEditHint)),
+            this, SLOT(slotListWidgetImagesSelectionEditEnd(QWidget*, QAbstractItemDelegate::EndEditHint)));
 }
 
 Editeur::~Editeur()
@@ -271,12 +273,22 @@ void Editeur::creationMenu()
 
     /* MENU LISTWIDGET (Supprimer) */
     m_menuListWidget = new QMenu(ui->listWidgetImagesSelection);
+
+    /* menu contextuel pour la suppression */
     QIcon iconSupprimer = QApplication::style()->standardIcon(QStyle::SP_DialogResetButton); /* On récupère l'icône désiré */
     QAction *a_supprimer = new QAction(trUtf8("&Supprimer de la selection"),m_menuListWidget);
     a_supprimer->setIcon(iconSupprimer);
     a_supprimer->setIconVisibleInMenu(true);
     a_supprimer->connect(a_supprimer, SIGNAL(triggered()), this, SLOT(slotSupprimerImage()), Qt::UniqueConnection);
     m_menuListWidget->addAction(a_supprimer);
+
+    /* menu contextuel pour le renommage des images */
+    QIcon iconRenommage = QApplication::style()->standardIcon(QStyle::SP_FileIcon); /* On récupère l'icône désiré */
+    QAction *a_renommer = new QAction(trUtf8("&Renommer l'image"),m_menuListWidget);
+    a_renommer->setIcon(iconRenommage);
+    a_renommer->setIconVisibleInMenu(true);
+    a_renommer->connect(a_renommer, SIGNAL(triggered()), this, SLOT(slotRenommerImage()), Qt::UniqueConnection);
+    m_menuListWidget->addAction(a_renommer);
 }
 
 void Editeur::slotSupprimerImage()
@@ -285,7 +297,6 @@ void Editeur::slotSupprimerImage()
     /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
     if (m_listeFichiersImages.isEmpty()){return;}
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
-
 
     /* Suppression des items selectionnés */
     foreach(QListWidgetItem *i, ui->listWidgetImagesSelection->selectedItems())
@@ -304,6 +315,46 @@ void Editeur::slotSupprimerImage()
 
     /* Contrôle 5 images = bouton suivant ok */
     controlNumberOfImages();
+}
+
+void Editeur::slotRenommerImage()
+{
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
+    if (m_listeFichiersImages.isEmpty()){return;}
+    if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
+
+    QListWidgetItem *item = ui->listWidgetImagesSelection->currentItem();
+    item->setFlags( item->flags() | Qt::ItemIsEditable );
+
+    ui->listWidgetImagesSelection->editItem( item );
+
+    /* Contrôle 5 images = bouton suivant ok */
+    controlNumberOfImages();
+}
+
+void Editeur::slotListWidgetImagesSelectionEditEnd(QWidget *w, QAbstractItemDelegate::EndEditHint)
+{
+    QListWidgetItem *item = ui->listWidgetImagesSelection->currentItem();
+    const QString newFileName = static_cast<QLineEdit*>(w)->text();
+    ABULEDU_LOG_DEBUG() << "FIN EDITION ITEM [" << item->data(4).toString()<<"] -> [" << newFileName << "]";
+
+    QFileInfo fi(item->data(4).toString());
+    QFile xml(fi.absoluteFilePath().replace(fi.suffix(), "xml").remove("/images"));
+    if(xml.exists()){
+        qDebug() <<"Le fichier XML existe" << xml.fileName();
+        QFileInfo fi_xml(xml);
+        if(QFile::rename(fi_xml.absoluteFilePath(),fi_xml.absoluteFilePath().replace(fi_xml.baseName(), newFileName))){
+            ABULEDU_LOG_DEBUG() << "Renommage du fichier XML accompagnant la ressource... [OK]";
+        }
+    }
+
+    if(QFile::rename(fi.absoluteFilePath(), fi.absoluteFilePath().replace(fi.baseName(), newFileName))){
+        ABULEDU_LOG_DEBUG() << "Renommage fichier... [OK]";
+    }
+
+    /* Pour changement ou exercice */
+    item->setData(4, fi.absoluteFilePath().replace(fi.baseName(), newFileName));
 }
 
 void Editeur::ajouterImage(QFileInfo monFichier)
@@ -325,6 +376,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
         QListWidgetItem *item = new QListWidgetItem(QIcon(monFichier.absoluteFilePath()), monFichier.baseName());
         item->setData(4, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() + ".jpg");
         ui->listWidgetImagesSelection->insertItem(0, item);
+        item->setFlags( item->flags() | Qt::ItemIsEditable ); /* pour modifier le titre */
     }
 
     /* Contrôle 5 images = bouton suivant ok */

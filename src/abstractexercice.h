@@ -208,6 +208,8 @@ private:
     /** Touche clavier (espace) */
     QKeyEvent *m_keySpace;
 
+    QLabel *m_labelTitreImage;
+
     /** Redimensionne l'image */
     void redimensionnerImage();
 

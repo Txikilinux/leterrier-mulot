@@ -106,6 +106,11 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 
     ABULEDU_LOG_DEBUG() << "Chemin du fichier de configuration [" << m_cheminConf  << "]";
     ABULEDU_LOG_DEBUG() << "Chemin des fichiers images ["         << m_cheminImage << "]";
+
+    /* Pour l'affichage du titre des images #3101 */
+    m_labelTitreImage = new QLabel(m_aireTravail);
+    m_labelTitreImage->setStyleSheet("background-color: black; color: white;");
+    m_labelTitreImage->hide();
 }
 
 AbstractExercice::~AbstractExercice()
@@ -196,6 +201,10 @@ void AbstractExercice::slotRealisationExerciceEntered()
     m_aireTravail->scene()->clear();
     m_aireTravail->show();
 
+    /* On cache le titre de l'image #3101 */
+    m_labelTitreImage->hide();
+    m_labelTitreImage->clear();
+
     /* Gestion graphique de la pause si on appuie sur suivant alors que la pause est active @see https://redmine.ryxeo.com/issues/3537 */
     if(m_isPaused){
         pause();
@@ -220,6 +229,8 @@ void AbstractExercice::slotRealisationExerciceEntered()
                 qsrand(QDateTime::currentDateTime().toTime_t());
                 int n = (qrand() % (m_listeFichiers.size()));
                 QFileInfo fileInfo = m_listeFichiers.takeAt(n);
+                /* #3101 gestion du titre de l'image pour affichage */
+                m_labelTitreImage->setText(fileInfo.fileName());
                 m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
                 m_listeImage << m_image;
             }
@@ -395,6 +406,11 @@ void AbstractExercice::slotFinQuestionEntered()
     ABULEDU_LOG_DEBUG()  << "Temps écoulé en millisecondes : " << m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5;
     /* On ne veut pas un chronometre précis au millième près =) */
     ABULEDU_LOG_DEBUG() << "Temps écoulé en secondes      : " << (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000;
+
+    /* On affiche le titre de l'image #3101 */
+//    m_labelTitreImage->setText();
+    if(!m_labelTitreImage->text().isEmpty())
+        m_labelTitreImage->show();
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }

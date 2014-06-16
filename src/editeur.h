@@ -91,6 +91,11 @@ private slots:
       * connecté à un menu contextuel appelé au clic droit sur le listWidgetImagesSelection */
     void slotSupprimerImage();
 
+    /** Permet de renommer une image du listWidgetImagesSelection
+      * connecté à un menu contextuel appelé au clic droit sur le listWidgetImagesSelection
+      * Le nom défini sera celui affiché */
+    void slotRenommerImage();
+
     /** Ajoute une image dans le listWidgetImagesSelection, avec icône et nom (sans extension, les images sont toutes enregistrées en .jpg) */
     void ajouterImage(QFileInfo monFichier);
 
@@ -162,6 +167,8 @@ private slots:
     void on_btnSaveParcours_clicked();
 
     void on_sbParcoursMasque_valueChanged(int arg1);
+
+    void slotListWidgetImagesSelectionEditEnd(QWidget*, QAbstractItemDelegate::EndEditHint);
 
 private:
     Ui::Editeur *ui;
