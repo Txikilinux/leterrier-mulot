@@ -109,7 +109,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 
     /* Pour l'affichage du titre des images #3101 */
     m_labelTitreImage = new QLabel(m_aireTravail);
-    m_labelTitreImage->setStyleSheet("background-color: black; color: white;");
+    m_labelTitreImage->setStyleSheet("background-color: rgba(14, 160, 234, 1.0); color: white;");
     m_labelTitreImage->hide();
 }
 
@@ -403,14 +403,20 @@ void AbstractExercice::slotFinQuestionEntered()
     ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
     /* Affichage du temps passé Total */
-    ABULEDU_LOG_DEBUG()  << "Temps écoulé en millisecondes : " << m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5;
+    // ABULEDU_LOG_DEBUG()  << "Temps écoulé en millisecondes : " << m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5;
     /* On ne veut pas un chronometre précis au millième près =) */
     ABULEDU_LOG_DEBUG() << "Temps écoulé en secondes      : " << (m_tempsQuestion1 + m_tempsQuestion2 + m_tempsQuestion3 + m_tempsQuestion4 + m_tempsQuestion5)/1000;
 
     /* On affiche le titre de l'image #3101 */
-//    m_labelTitreImage->setText();
-    if(!m_labelTitreImage->text().isEmpty())
+    if(!m_labelTitreImage->text().isEmpty()){
         m_labelTitreImage->show();
+        m_labelTitreImage->updateGeometry();
+        qDebug() << "WH : " << m_labelTitreImage->width() <<  m_labelTitreImage->height();
+
+        m_labelTitreImage->move((m_labelTitreImage->parentWidget()->width() - m_labelTitreImage->width())/2, m_labelTitreImage->y());
+//        m_labelTitreImage->setGeometry((m_labelTitreImage->parentWidget()->width() - m_labelTitreImage->width())/2, m_labelTitreImage->y(),
+//                                       m_labelTitreImage->width(), m_labelTitreImage->height());
+    }
 
     AbulEduCommonStatesV1::slotFinQuestionEntered();
 }
@@ -664,7 +670,10 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
     case QEvent::MouseButtonPress:{
         QMouseEvent *castMouseEvent;
         castMouseEvent = static_cast<QMouseEvent *>(ev);
-        if(castMouseEvent && (boiteTetes->geometry().contains(castMouseEvent->pos()) || m_labelImagePause->geometry().contains(castMouseEvent->pos())))
+        if(castMouseEvent &&
+                (boiteTetes->geometry().contains(castMouseEvent->pos())
+                 || m_labelImagePause->geometry().contains(castMouseEvent->pos())
+                 || m_labelTextePause->geometry().contains(castMouseEvent->pos() )))
         {
             pause();
         }
