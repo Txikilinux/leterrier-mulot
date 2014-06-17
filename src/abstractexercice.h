@@ -215,6 +215,8 @@ private:
 
     /** Charge les options contenues dans le fichier de configuration (parametres.ini) */
     void chargerOption();
+
+    QPixmap *m_pixmapPause;
 };
 
 #endif // ABSTRACTEXERCICE_H

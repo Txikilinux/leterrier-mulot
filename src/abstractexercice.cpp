@@ -61,6 +61,10 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     m_masque = m_masqueInteractif = 0;
     m_labelImagePause  = new QLabel(m_parent);
     m_labelTextePause  = new QLabel(m_parent);
+    m_pixmapPause = new QPixmap(":/bouton/pause");
+    m_labelTextePause->setText(trUtf8("En Pause ..."));
+    m_labelImagePause->setStyleSheet("background-color: transparent");
+    m_labelTextePause->setStyleSheet("background-color: transparent");
     m_tailleAireTravail = QSize(0,0);
     m_cheminConf  = m_theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
     m_cheminImage = m_theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator();
@@ -703,13 +707,8 @@ void AbstractExercice::slotFermetureAide()
 
 void AbstractExercice::pause()
 {
-    QPixmap pixPause(":/bouton/pause");
     const float ratio = abeApp->getAbeApplicationDecorRatio();
-    m_labelImagePause->setPixmap(pixPause.scaled((pixPause.width() * ratio),(pixPause.height() * ratio),Qt::KeepAspectRatio));
-    m_labelTextePause->setText(trUtf8("En Pause ..."));
-
-    m_labelImagePause->setStyleSheet("background-color: transparent");
-    m_labelTextePause->setStyleSheet("background-color: transparent");
+    m_labelImagePause->setPixmap(m_pixmapPause->scaled((m_pixmapPause->width() * ratio),(m_pixmapPause->height() * ratio),Qt::KeepAspectRatio));
 
     if(m_timer->isActive() && m_onPeutMettreEnPause)
     {
