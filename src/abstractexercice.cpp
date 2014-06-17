@@ -676,6 +676,8 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
                  || m_labelTextePause->geometry().contains(castMouseEvent->pos() )))
         {
             pause();
+            ev->accept();
+            return true;
         }
     }
         break;
@@ -685,6 +687,8 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
         if(c && c->key() == Qt::Key_Space )
         {
             pause();
+            ev->accept();
+            return true;
         }
     }
 
