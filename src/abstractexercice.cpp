@@ -230,7 +230,7 @@ void AbstractExercice::slotRealisationExerciceEntered()
                 int n = (qrand() % (m_listeFichiers.size()));
                 QFileInfo fileInfo = m_listeFichiers.takeAt(n);
                 /* #3101 gestion du titre de l'image pour affichage */
-                m_labelTitreImage->setText(fileInfo.fileName());
+                m_labelTitreImage->setText(fileInfo.baseName());
                 m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
                 m_listeImage << m_image;
             }
