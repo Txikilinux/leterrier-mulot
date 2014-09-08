@@ -68,7 +68,7 @@ public:
     /** Méthode qui définit l'abe courant
       * @param AbulEduFileV1* abeFile, l'objet abulEduFile
       */
-//    void abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile);
+    //    void abeSetMyAbulEduFile(QSharedPointer<AbulEduFileV1> abeFile);
 
     /** Méthode qui retourne l'abe courant
       * @return AbulEduFileV1 *, un pointeur sur l'objet abuledufile
@@ -76,12 +76,9 @@ public:
     const QSharedPointer<AbulEduFileV1> abeGetMyAbulEduFile(){return m_abuleduFile;}
 
     /** Permet d'accéder à la page d'accueil */
-//    const AbulEduPageAccueilV1* abeGetMyAbulEduAccueil(){return m_abuleduaccueil;}
+    //    const AbulEduPageAccueilV1* abeGetMyAbulEduAccueil(){return m_abuleduaccueil;}
 
-//    const AbulEduBoxFileManagerV1* abeGetMyAbulEduFileManager() { return m_abuleduFileManager;}
-
-
-
+    //    const AbulEduBoxFileManagerV1* abeGetMyAbulEduFileManager() { return m_abuleduFileManager;}
 
 public slots:
     /** Permet d'afficher les zones et les bulles lorsque l'utilisateur est inactif */
@@ -118,6 +115,8 @@ private:
     bool m_exerciceEnCours;
     bool m_localDebug;
     bool m_isDemoAvailable;
+    AbulEduMessageBoxV1* m_abuleduMessageBox;
+    QString m_messageAide;
 
     QSharedPointer<AbulEduFileV1> m_abuleduFile;
     int m_numberExoCalled;
@@ -125,6 +124,13 @@ private:
 
     QTranslator qtTranslator;
     QTranslator myappTranslator;
+
+    /** QTimeLine destinée à gérer le temps d'affichage du slot démo
+          * Signal finished()) connecté au slotFinDemo() */
+    QTimeLine* m_demoTimeLine;
+
+    /** Détecteur d'activité */
+    ActivityFilter *m_activityFilter;
 
     /** Méthode qui créée le menu des langues
       * @brief Francais et Anglais pour l'instant

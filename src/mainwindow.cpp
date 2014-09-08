@@ -57,6 +57,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()), Qt::UniqueConnection);
+    m_messageAide = trUtf8("Choisis un module en cliquant sur le bouton <b>Ouverture</b> du parchemin, les zones de lancement des exercices disponibles deviendront alors actives.");
+    m_abuleduMessageBox = new AbulEduMessageBoxV1(trUtf8("On y va ?"),m_messageAide,false,m_abuleduaccueil);
+    m_abuleduMessageBox->setWink();
+    m_abuleduMessageBox->abeSetModeEnum(AbulEduMessageBoxV1::abeNoButton);
+    m_abuleduMessageBox->setVisible(false);
+    m_demoTimeLine = new QTimeLine(6000,this);
+    connect(m_demoTimeLine, SIGNAL(finished()),this, SLOT(slotFinDemo()),Qt::UniqueConnection);
 
     m_abuleduFile = QSharedPointer<AbulEduFileV1>(new AbulEduFileV1(this), &QObject::deleteLater);
 
@@ -73,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     /* Utilisation de la boite aPropos */
     AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
-    monAide->hide();
+    monAide->setVisible(false);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
 
     connect(ui->editeur, SIGNAL(editorExited()), SLOT(exerciceExited()), Qt::UniqueConnection);
@@ -89,7 +96,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setTitle(abeApp->getAbeNetworkAccessManager()->abeSSOAuthenticationStatus());
 
 #ifdef __ABULEDUTABLETTEV1__MODE__
-    ui->menuBar->hide();
+    ui->menuBar->setVisible(false);
 #endif
     m_abuleduaccueil->abePageAccueilDesactiveZones(true);
 
@@ -122,22 +129,18 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
     ABULEDU_LOG_DEBUG() << "Nom Fichier abe [" << ui->AbulEduBoxFileManager->abeGetFile()->abeFileGetFileName().absoluteFilePath() << "]";
 
     AbulEduBoxFileManagerV1* box = (AbulEduBoxFileManagerV1*) sender();
-    if (box->abeGetSender() > 0)
-    {
-        if (box->abeGetSender()->objectName() == "editeur")
-        {
+    if (box->abeGetSender() > 0){
+        if (box->abeGetSender()->objectName() == "editeur"){
             ui->stCentral->setCurrentWidget(ui->pageEditeur);
             ui->editeur->modificationAbe();
         }
-        else
-        {
+        else{
             ui->stCentral->setCurrentWidget(ui->fr_principale);
         }
     }
 
     abeAiguillage();
-    if(m_abuleduFile->abeFileGetFileList().count() > 0)
-    {
+    if(m_abuleduFile->abeFileGetFileList().count() > 0){
         QList<QAction *> listMenuEntries = ui->menuExercice->actions();
         QList<AbulEduZoneV1 *> listZonesPageAccueil = m_abuleduaccueil->abePageAccueilGetZones();
         /** @todo a voir pourquoi c'est là */
@@ -158,6 +161,9 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         listZonesPageAccueil[2] ->abeZoneSetActif(settings  ->value("doubleClic/exerciceActive",     true).toBool());
         listMenuEntries[3]      ->setEnabled(settings       ->value("parcours/exerciceActive",     true).toBool());
         listZonesPageAccueil[3] ->abeZoneSetActif(settings  ->value("parcours/exerciceActive",     true).toBool());
+        m_messageAide = trUtf8("Clique sur la flèche d'une des zones actives pour lancer un exercice.<br/>Tu peux voir les zones actives en appuyant sur la barre d'espace.");
+        m_abuleduMessageBox->abeMessageBoxUpdate(m_abuleduMessageBox->abeMessageBoxGetTitle(),m_messageAide,m_abuleduMessageBox->abeMessageBoxGetWink());
+        m_activityFilter->setInterval(12000);
         QListIterator<QAction*> it(listMenuEntries);
         bool someEnabled = false;
         while(it.hasNext() && !someEnabled){
@@ -168,29 +174,56 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         ui->menuExercice->setEnabled(someEnabled);
         delete settings;
     }
-    else
-    {
+    else{
         ui->menuExercice->setEnabled(false);
     }
 }
 
 void MainWindow::slotDemo()
 {
-    if (!m_isDemoAvailable){
+    if (!m_isDemoAvailable || ui->stCentral->currentWidget() != ui->fr_principale){
         return;
     }
-
     ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
-
-    if (!m_exerciceEnCours && m_isDemoAvailable)
+    float ratio = abeApp->getAbeApplicationDecorRatio();
+    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__;
+    QKeyEvent* pressSpace = new QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier);
+    QApplication::sendEvent(m_abuleduaccueil,pressSpace);
+    delete pressSpace;
+    m_abuleduMessageBox->setGeometry(50*ratio,540*ratio,500*ratio,250*ratio);
+    m_abuleduMessageBox->show();
+    m_abuleduaccueil->abePageAccueilMontreBulles(true,m_abuleduFile->abeFileGetFileName().fileName().isEmpty());
+    foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
     {
-        m_abuleduaccueil->abePageAccueilMontreBulles(true);
-        foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
-        {
+        if(m_abuleduFile->abeFileGetFileName().fileName().isEmpty()){
             zone->abeZoneDrawRect(true,QColor("#000028"),4);
         }
-        QTimer::singleShot(8000,this,SLOT(slotFinDemo()));
+        else {
+            if(zone->abeZoneIsActif()){
+                zone->abeZoneDrawRect(true,QColor("#000028"),4);
+            }
+        }
     }
+    m_demoTimeLine->start();
+}
+
+void MainWindow::slotFinDemo()
+{
+    if(sender()->objectName() != "demoActivityFilter"){
+            ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
+        }
+    m_demoTimeLine->stop();
+    if(m_abuleduMessageBox){
+        m_abuleduMessageBox->setVisible(false);
+    }
+    m_abuleduaccueil->abePageAccueilMontreBulles(false,true);
+    foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
+    {
+        zone->abeZoneDrawRect(false);
+    }
+    QKeyEvent* releaseSpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier);
+    QApplication::sendEvent(m_abuleduaccueil,releaseSpace);
+    delete releaseSpace;
 }
 
 void MainWindow::on_actionMode_D_mo_triggered(bool checked)
@@ -202,17 +235,6 @@ void MainWindow::on_actionMode_D_mo_triggered(bool checked)
         slotFinDemo();
     else
         slotDemo();
-}
-
-void MainWindow::slotFinDemo()
-{
-    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
-
-    m_abuleduaccueil->abePageAccueilMontreBulles(false);
-    foreach(AbulEduZoneV1* zone, m_abuleduaccueil->abePageAccueilGetZones())
-    {
-        zone->abeZoneDrawRect(false);
-    }
 }
 
 void MainWindow::btnBoxClicked()
@@ -258,7 +280,7 @@ void MainWindow::abeAiguillage()
         ExerciceSurvol *s = new ExerciceSurvol(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(s, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide(); /* cache la barre de menu en mode exercice */
+        m_abuleduaccueil->abePageAccueilGetMenu()->setVisible(false); /* cache la barre de menu en mode exercice */
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height()); /* redimensionnement interdit */
         installEventFilter(s);
@@ -270,7 +292,7 @@ void MainWindow::abeAiguillage()
         ExerciceClic *c = new ExerciceClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(c, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide();
+        m_abuleduaccueil->abePageAccueilGetMenu()->setVisible(false);
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height());
         installEventFilter(c);
@@ -282,7 +304,7 @@ void MainWindow::abeAiguillage()
         ExerciceDoubleClic *d = new ExerciceDoubleClic(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(d, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide();
+        m_abuleduaccueil->abePageAccueilGetMenu()->setVisible(false);
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height());
         installEventFilter(d);
@@ -294,7 +316,7 @@ void MainWindow::abeAiguillage()
         ExerciceParcours *p = new ExerciceParcours(m_abuleduaccueil, m_abuleduFile->abeFileGetDirectoryTemp().absolutePath());
         connect(p, SIGNAL(exerciceExited()), this, SLOT(exerciceExited()), Qt::UniqueConnection);
         m_abuleduaccueil->abePageAccueilDesactiveZones(true);
-        m_abuleduaccueil->abePageAccueilGetMenu()->hide();
+        m_abuleduaccueil->abePageAccueilGetMenu()->setVisible(false);
         m_exerciceEnCours = true;
         setFixedSize(this->width(), this->height());
         installEventFilter(p);
@@ -448,11 +470,12 @@ void MainWindow::slotSessionAuthenticated(bool enable)
     }
     ui->stCentral->setCurrentWidget(ui->fr_principale);
 
-    ActivityFilter *ef;
-    ef = new ActivityFilter(abeApp);
-    ef->setInterval(7000);
-    abeApp->installEventFilter(ef);
-    QObject::connect(ef, SIGNAL(userInactive()), this, SLOT(slotDemo()), Qt::UniqueConnection);
+    m_activityFilter = new ActivityFilter(abeApp);
+    m_activityFilter->setObjectName("demoActivityFilter");
+    m_activityFilter->setInterval(3000);
+    abeApp->installEventFilter(m_activityFilter);
+    QObject::connect(m_activityFilter, SIGNAL( userInactive() ),this,  SLOT( slotDemo()),Qt::UniqueConnection);
+    QObject::connect(m_activityFilter, SIGNAL(userActive()), this, SLOT(slotFinDemo()), Qt::UniqueConnection);
     connect(abeApp->getAbeNetworkAccessManager(), SIGNAL(ssoAuthStatus(int)), this,SLOT(setTitle(int)), Qt::UniqueConnection);
 }
 
