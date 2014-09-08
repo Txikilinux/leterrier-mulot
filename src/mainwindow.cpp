@@ -163,6 +163,7 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
         listZonesPageAccueil[3] ->abeZoneSetActif(settings  ->value("parcours/exerciceActive",     true).toBool());
         m_messageAide = trUtf8("Clique sur la flèche d'une des zones actives pour lancer un exercice.<br/>Tu peux voir les zones actives en appuyant sur la barre d'espace.");
         m_abuleduMessageBox->abeMessageBoxUpdate(m_abuleduMessageBox->abeMessageBoxGetTitle(),m_messageAide,m_abuleduMessageBox->abeMessageBoxGetWink());
+        m_abuleduMessageBox->setVisible(false);
         m_activityFilter->setInterval(12000);
         QListIterator<QAction*> it(listMenuEntries);
         bool someEnabled = false;
@@ -209,6 +210,9 @@ void MainWindow::slotDemo()
 
 void MainWindow::slotFinDemo()
 {
+    if(m_demoTimeLine->state() != QTimeLine::Running){
+            return;
+        }
     if(sender()->objectName() != "demoActivityFilter"){
             ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
         }
