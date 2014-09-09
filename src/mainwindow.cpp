@@ -182,12 +182,13 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
 
 void MainWindow::slotDemo()
 {
-    if (!m_isDemoAvailable || ui->stCentral->currentWidget() != ui->fr_principale){
+    if (!m_isDemoAvailable || ui->stCentral->currentWidget() != ui->fr_principale || m_demoTimeLine->state() == QTimeLine::Running){
         return;
     }
-    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
+    if (m_localDebug){
+        ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
+    }
     float ratio = abeApp->getAbeApplicationDecorRatio();
-    if (m_localDebug) qDebug()<<" ++++++++ "<< __FILE__ <<  __LINE__ << __FUNCTION__;
     QKeyEvent* pressSpace = new QKeyEvent(QEvent::KeyPress,Qt::Key_Space,Qt::NoModifier);
     QApplication::sendEvent(m_abuleduaccueil,pressSpace);
     delete pressSpace;
@@ -210,12 +211,9 @@ void MainWindow::slotDemo()
 
 void MainWindow::slotFinDemo()
 {
-    if(m_demoTimeLine->state() != QTimeLine::Running){
-            return;
-        }
     if(sender()->objectName() != "demoActivityFilter"){
-            ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
-        }
+        ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
+    }
     m_demoTimeLine->stop();
     if(m_abuleduMessageBox){
         m_abuleduMessageBox->setVisible(false);

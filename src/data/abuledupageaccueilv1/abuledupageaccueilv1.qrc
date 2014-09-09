@@ -12,5 +12,6 @@
       <file>images/Hfleche.png</file>
       <file>images/HflecheHover.png</file>
       <file>images/bulleTablette.png</file>
+      <file alias="handCursor">images/handCursor.png</file>
     </qresource>
 </RCC>
