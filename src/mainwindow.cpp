@@ -211,6 +211,12 @@ void MainWindow::slotDemo()
 
 void MainWindow::slotFinDemo()
 {
+    /* Le if sur le m_demoTimeLine->state() permet que le slotFinDemo soit bien exécuté au bon moment, mais sans le test de module chargé ce code empêche l'affichage des bulles */
+    if(!m_abuleduFile->abeFileGetFileName().fileName().isEmpty() && sender()->objectName() == "demoActivityFilter"){
+        if(m_demoTimeLine->state() != QTimeLine::Running){
+            return;
+        }
+    }
     if(sender()->objectName() != "demoActivityFilter"){
         ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     }
