@@ -501,12 +501,14 @@ void MainWindow::setTitle(int authStatus)
     {
         title.append(" -- "+m_abuleduFile->abeFileGetFileName().fileName());
     }
-    else { /* On affiche que l'user n'a pas de module */
-        title.append(" -- " + trUtf8("Pas de module chargé"));
-    }
     if(authStatus == 1)
     {
-        title.append(" -- "+abeApp->getAbeNetworkAccessManager()->abeGetSSOLogin());
+        if(abeApp->getAbeIdentite()->abeGetPreNom().isEmpty() && abeApp->getAbeIdentite()->abeGetNom().isEmpty()){
+            title.append(" -- "+abeApp->getAbeNetworkAccessManager()->abeGetSSOLogin());
+        }
+        else{
+            title.append(" -- "+abeApp->getAbeIdentite()->abeGetPreNom()+" "+abeApp->getAbeIdentite()->abeGetNom());
+        }
     }
     setWindowTitle(title);
 }
