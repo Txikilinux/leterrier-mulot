@@ -670,22 +670,31 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
     case QEvent::MouseButtonPress:{
         QMouseEvent *castMouseEvent;
         castMouseEvent = static_cast<QMouseEvent *>(ev);
-        if(castMouseEvent &&
-                (boiteTetes->geometry().contains(castMouseEvent->pos())
-                 || m_labelImagePause->geometry().contains(castMouseEvent->pos())
-                 || m_labelTextePause->geometry().contains(castMouseEvent->pos() )))
+
+        if(!castMouseEvent)
+            return false; /* petite protection */
+
+
+        if((boiteTetes->geometry().contains(castMouseEvent->pos()) ||
+            m_labelImagePause->geometry().contains(castMouseEvent->pos()) ||
+            m_labelTextePause->geometry().contains(castMouseEvent->pos() )))
         {
+            qDebug() << "ON ACCEPTE LE CLIC";
+            m_labelTextePause->setStyleSheet("background-color: green;");
+            m_labelImagePause->setStyleSheet("background-color: green;");
             pause();
             ev->accept();
             return true;
         }
     }
         break;
+
     /* Si appui sur touche "Espace" */
     case QEvent::KeyRelease: {
         QKeyEvent *c = static_cast<QKeyEvent *>(ev);
         if(c && c->key() == Qt::Key_Space )
         {
+            qDebug() << "ON ACCEPTE LA BARRE";
             pause();
             ev->accept();
             return true;
@@ -697,10 +706,10 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
     case QEvent::Wheel:
         return true;
     default:
+        return abeApp->eventFilter(obj, ev);
         break;
     }
 
-    return abeApp->eventFilter(obj, ev);
 }
 
 void AbstractExercice::slotFermetureAide()
