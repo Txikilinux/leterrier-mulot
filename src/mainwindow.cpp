@@ -140,6 +140,11 @@ void MainWindow::slotOpenFile(const QSharedPointer<AbulEduFileV1> qsp_AbulEduFil
     }
 
     abeAiguillage();
+    setExercicesEnabled();
+}
+
+void MainWindow::setExercicesEnabled()
+{
     if(m_abuleduFile->abeFileGetFileList().count() > 0){
         QList<QAction *> listMenuEntries = ui->menuExercice->actions();
         QList<AbulEduZoneV1 *> listZonesPageAccueil = m_abuleduaccueil->abePageAccueilGetZones();
@@ -602,7 +607,7 @@ void MainWindow::debutTestParametres()
     connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()), SLOT(afficheEditeur()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(), SIGNAL(clicked()),m_abuleduaccueil->abePageAccueilGetBtnRevenirEditeur(),SLOT(hide()), Qt::UniqueConnection);
     ui->stCentral->setCurrentWidget(ui->fr_principale);
-
+    setExercicesEnabled();
     setWindowTitle(abeApp->getAbeApplicationLongName() +" -- " + m_abuleduFile->abeFileGetFileName().fileName() + " -- MODE TEST");
 }
 

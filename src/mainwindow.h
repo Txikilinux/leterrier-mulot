@@ -137,6 +137,11 @@ private:
       */
     void creeMenuLangue();
 
+    ///
+    /// \brief Active les zones de lancement et les entrées du menu Exercice pour les exercices prévus dans le module
+    ///
+    void setExercicesEnabled();
+
 protected:
     /** Méthode qui gère les changement d'évènement
       * @param QEvent *e, un pointeur sur l'évènement
