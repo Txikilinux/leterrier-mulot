@@ -665,6 +665,11 @@ void AbstractExercice::slotAppuiAutoVerifier()
 
 bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
+    /* #3960 -> filtre barre espace et clic utilisé poour passer automatiquement à la question suivante */
+    if(obj->objectName() == "AbulEduExerciceWidgetTelecommandeV1"){
+        return abeApp->eventFilter(obj, ev);
+    }
+
     switch (ev->type()) {
     /* Si on clic sur la boiteTete ou l'image pause  */
     case QEvent::MouseButtonPress:{
@@ -674,14 +679,11 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
         if(!castMouseEvent)
             return false; /* petite protection */
 
-
         if((boiteTetes->geometry().contains(castMouseEvent->pos()) ||
             m_labelImagePause->geometry().contains(castMouseEvent->pos()) ||
             m_labelTextePause->geometry().contains(castMouseEvent->pos() )))
         {
-            qDebug() << "ON ACCEPTE LE CLIC";
-            m_labelTextePause->setStyleSheet("background-color: green;");
-            m_labelImagePause->setStyleSheet("background-color: green;");
+            ABULEDU_LOG_DEBUG() << "CLIC Pause OK";
             pause();
             ev->accept();
             return true;
@@ -694,7 +696,7 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
         QKeyEvent *c = static_cast<QKeyEvent *>(ev);
         if(c && c->key() == Qt::Key_Space )
         {
-            qDebug() << "ON ACCEPTE LA BARRE";
+            ABULEDU_LOG_DEBUG() << "BARRE_ESPACE Pause OK";
             pause();
             ev->accept();
             return true;
