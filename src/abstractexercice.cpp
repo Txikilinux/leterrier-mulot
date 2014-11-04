@@ -670,6 +670,9 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
         return abeApp->eventFilter(obj, ev);
     }
 
+    if(!m_onPeutMettreEnPause) /* #3960 Evite de chopper l'event si Exercice Clic... */
+        return abeApp->eventFilter(obj, ev);
+
     switch (ev->type()) {
     /* Si on clic sur la boiteTete ou l'image pause  */
     case QEvent::MouseButtonPress:{
@@ -708,10 +711,9 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
     case QEvent::Wheel:
         return true;
     default:
-        return abeApp->eventFilter(obj, ev);
         break;
     }
-
+    return abeApp->eventFilter(obj, ev);
 }
 
 void AbstractExercice::slotFermetureAide()
