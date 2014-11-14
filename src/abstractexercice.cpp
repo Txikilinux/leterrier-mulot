@@ -120,15 +120,13 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
 AbstractExercice::~AbstractExercice()
 {
     //! @todo à tester dans toutes les conditions de fermeture.
-    //! rien à signaler pour l'instant
+    //! @attention ne pas delete m_messageBox car appel avec en parametre la volonté de la fermer
+    //! quand on clique sur [fermer]  @see https://redmine.ryxeo.com/issues/3968
+
     ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
     m_labelImagePause->deleteLater();
     m_labelTextePause->deleteLater();
-
-    /* Petit test car parfois j'ai un warning (p-ê dû au fait que j'utilise cet objet dans les classes dérivées)*/
-    if(m_messageBox != 0)
-        m_messageBox->deleteLater();
 
     m_timer->deleteLater();
     m_aireTravail->deleteLater();
