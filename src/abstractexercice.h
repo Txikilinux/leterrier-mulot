@@ -200,7 +200,6 @@ private:
     QTimer  *m_timer;
     bool    m_onPeutMettreEnPause;
     QLabel  *m_labelImagePause;
-    QLabel  *m_labelTextePause;
 
     /** True si on est en pause, false sinon */
     bool m_isPaused;

@@ -60,11 +60,8 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     m_messageBox =  0;
     m_masque = m_masqueInteractif = 0;
     m_labelImagePause  = new QLabel(m_parent);
-    m_labelTextePause  = new QLabel(m_parent);
     m_pixmapPause = new QPixmap(":/bouton/pause");
-    m_labelTextePause->setText(trUtf8("En Pause ..."));
     m_labelImagePause->setStyleSheet("background-color: transparent");
-    m_labelTextePause->setStyleSheet("background-color: transparent");
     m_tailleAireTravail = QSize(0,0);
     m_cheminConf  = m_theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
     m_cheminImage = m_theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator();
@@ -99,7 +96,7 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
     initQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnVerifier, "enabled", false);
     bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnRefaire , "enabled", false);
-//    bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant , "enabled", false);
+    //    bilanExercice->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnSuivant , "enabled", false);
 
     afficheCorrectionQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnAide    , "enabled", true);
     afficheCorrectionQuestion->assignProperty(getAbeExerciceTelecommandeV1()->ui->btnCorriger, "enabled", false);
@@ -126,7 +123,6 @@ AbstractExercice::~AbstractExercice()
     ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
     m_labelImagePause->deleteLater();
-    m_labelTextePause->deleteLater();
 
     m_timer->deleteLater();
     m_aireTravail->deleteLater();
@@ -281,55 +277,55 @@ void AbstractExercice::slotInitQuestionEntered()
 
     /* Petite difference de pose entre les exercices */
     switch(m_exerciceType){
-        case Parcours:
+    case Parcours:
+    {
+        ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " :: Parcours";
+
+        int numeroMasque = 0;
+        for (float i = 0; i < m_OPT_nbMasquesHauteur ; i++)
         {
-            ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " :: Parcours";
-
-            int numeroMasque = 0;
-            for (float i = 0; i < m_OPT_nbMasquesHauteur ; i++)
+            for (int j = 0; j < m_OPT_nbMasquesLargeur ; j++)
             {
-                for (int j = 0; j < m_OPT_nbMasquesLargeur ; j++)
-                {
-                    m_masque = new MasqueDeplaceSouris(0, numeroMasque);
-                    m_masque->setSize(largeurMasque, hauteurMasque);
+                m_masque = new MasqueDeplaceSouris(0, numeroMasque);
+                m_masque->setSize(largeurMasque, hauteurMasque);
 
-                    m_masque->setPos(xMasque, yMasque);
-                    m_masque->setColor(QColor::fromRgb(255,255,255));
+                m_masque->setPos(xMasque, yMasque);
+                m_masque->setColor(QColor::fromRgb(255,255,255));
 
-                    xMasque += largeurMasque;
-                    m_aireTravail->scene()->addItem(m_masque);
-                    m_listeMasquesFixes << m_masque;
-                    numeroMasque ++;
-                }
-                xMasque = 0;
-                yMasque += hauteurMasque;
+                xMasque += largeurMasque;
+                m_aireTravail->scene()->addItem(m_masque);
+                m_listeMasquesFixes << m_masque;
+                numeroMasque ++;
             }
-            break;
+            xMasque = 0;
+            yMasque += hauteurMasque;
         }
-        default: /* Tous les exercices sauf Parcours */
+        break;
+    }
+    default: /* Tous les exercices sauf Parcours */
+    {
+        ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " :: Tous les exercices sauf Parcours";
+        for (float i = 0 ; i < m_OPT_nbMasquesHauteur ; i++)
         {
-            ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " :: Tous les exercices sauf Parcours";
-            for (float i = 0 ; i < m_OPT_nbMasquesHauteur ; i++)
+            for (int j = 0 ; j < m_OPT_nbMasquesLargeur ; j++)
             {
-                for (int j = 0 ; j < m_OPT_nbMasquesLargeur ; j++)
-                {
-                    m_masque = new MasqueDeplaceSouris();
-                    m_masque->setSize(largeurMasque, hauteurMasque);
-                    m_masque->setPos(xMasque, yMasque);
-                    m_masque->setColor(QColor::fromRgb(255,255,255));
+                m_masque = new MasqueDeplaceSouris();
+                m_masque->setSize(largeurMasque, hauteurMasque);
+                m_masque->setPos(xMasque, yMasque);
+                m_masque->setColor(QColor::fromRgb(255,255,255));
 
-                    xMasque += largeurMasque;
-                    m_aireTravail->scene()->addItem(m_masque);
-                    m_listeMasquesFixes << m_masque;
-                }
-                xMasque = 0;
-                yMasque += hauteurMasque;
+                xMasque += largeurMasque;
+                m_aireTravail->scene()->addItem(m_masque);
+                m_listeMasquesFixes << m_masque;
             }
-
-            m_OPT_nbMasquesLargeur += 2;
-            m_OPT_nbMasquesHauteur += 1;
-            break;
+            xMasque = 0;
+            yMasque += hauteurMasque;
         }
+
+        m_OPT_nbMasquesLargeur += 2;
+        m_OPT_nbMasquesHauteur += 1;
+        break;
+    }
     }
     boiteTetes->setEtatTete(m_numExercice, getAbeExerciceEvaluation(),false);
 }
@@ -566,8 +562,8 @@ void AbstractExercice::redimensionnerImage()
     m_aireTravail->setFixedSize(m_itemImage->boundingRect().size().toSize());
 
     /* positionner l'aire de jeu au centre */
-   m_aireTravail->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()- m_aireTravail->width())/2 + 40 * ratio,
-                       (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()- 60 * ratio - m_aireTravail->height())/2 + 32 * ratio);
+    m_aireTravail->move((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()- m_aireTravail->width())/2 + 40 * ratio,
+                        (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height()- 60 * ratio - m_aireTravail->height())/2 + 32 * ratio);
 
 }
 
@@ -663,26 +659,20 @@ void AbstractExercice::slotAppuiAutoVerifier()
 
 bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
-    /* #3960 -> filtre barre espace et clic utilisé poour passer automatiquement à la question suivante */
-    if(obj->objectName() == "AbulEduExerciceWidgetTelecommandeV1"){
-        return abeApp->eventFilter(obj, ev);
-    }
-
-    if(!m_onPeutMettreEnPause) /* #3960 Evite de chopper l'event si Exercice Clic... */
-        return abeApp->eventFilter(obj, ev);
-
     switch (ev->type()) {
     /* Si on clic sur la boiteTete ou l'image pause  */
     case QEvent::MouseButtonPress:{
-        QMouseEvent *castMouseEvent;
-        castMouseEvent = static_cast<QMouseEvent *>(ev);
+        QMouseEvent *castMouseEvent = static_cast<QMouseEvent *>(ev);
 
-        if(!castMouseEvent)
-            return false; /* petite protection */
+        /* petites protections */
+        if(!castMouseEvent) return false;
+        if(!boiteTetes) return false;
+        if(!m_labelImagePause) return false;
 
-        if((boiteTetes->geometry().contains(castMouseEvent->pos()) ||
-            m_labelImagePause->geometry().contains(castMouseEvent->pos()) ||
-            m_labelTextePause->geometry().contains(castMouseEvent->pos() )))
+        const QPoint posMouse = castMouseEvent->pos();
+
+        if((boiteTetes->geometry().contains(posMouse) ||
+            m_labelImagePause->geometry().contains(posMouse)))
         {
             ABULEDU_LOG_DEBUG() << "CLIC Pause OK";
             pause();
@@ -692,26 +682,24 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
     }
         break;
 
-    /* Si appui sur touche "Espace" */
-    case QEvent::KeyRelease: {
-        QKeyEvent *c = static_cast<QKeyEvent *>(ev);
-        if(c && c->key() == Qt::Key_Space )
-        {
-            ABULEDU_LOG_DEBUG() << "BARRE_ESPACE Pause OK";
-            pause();
-            ev->accept();
-            return true;
-        }
-    }
+        //    /* Si appui sur touche "Espace" */
+        //    case QEvent::KeyRelease: {
+        //        QKeyEvent *c = static_cast<QKeyEvent *>(ev);
+        //        if(c && c->key() == Qt::Key_Space )
+        //        {
+        //            qDebug() << obj;
+        //            ABULEDU_LOG_DEBUG() << "BARRE_ESPACE Pause OK";
+        //            pause();
+        //            ev->accept();
+        //            return true;
+        //        }
+        //    }
 
-        break;
-    /* Afin de bloquer les wheelEvents qui bouge l'aire de jeu */
-    case QEvent::Wheel:
-        return true;
+        //        break;
     default:
+        return abeApp->eventFilter(obj, ev);
         break;
     }
-    return abeApp->eventFilter(obj, ev);
 }
 
 void AbstractExercice::slotFermetureAide()
@@ -727,31 +715,23 @@ void AbstractExercice::pause()
 
     if(m_timer->isActive() && m_onPeutMettreEnPause)
     {
-        m_timer->stop();
         ABULEDU_LOG_DEBUG() << "Pause !";
-
+        m_timer->stop();
         m_isPaused = true;
+
         boiteTetes->setVisible(false);
         m_labelImagePause->show();
-        m_labelTextePause->show();
 
-        int W     = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width();
-        int w1    = m_labelImagePause->width();
-        int w2    = m_labelTextePause->width();
-        int x1    = (W-(w1+w2))/2;
-        int x2    = (W-(w2-w1))/2;
-
-        m_labelImagePause->move(x1, m_aireTravail->height() + m_labelImagePause->height() - 60 *ratio);
-        m_labelTextePause->move(x2, m_aireTravail->height() + m_labelImagePause->height());
+        int W = (getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width()/2)-(m_labelImagePause->width()/2);
+        m_labelImagePause->move(W, m_aireTravail->height() + m_labelImagePause->height() - 60 *ratio);
 
     }
     else if(!m_timer->isActive()  && m_onPeutMettreEnPause)
     {
-        m_timer->start();
         ABULEDU_LOG_DEBUG()<< "Le timer repart";
+        m_timer->start();
         m_isPaused = false;
         m_labelImagePause->setVisible(false);
-        m_labelTextePause->setVisible(false);
         boiteTetes->setVisible(true);
     }
 }
