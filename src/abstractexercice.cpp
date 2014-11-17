@@ -21,66 +21,72 @@
 #include "abstractexercice.h"
 
 AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const ExerciceType &exerciceType):
-    AbulEduCommonStatesV1(parent)
+    AbulEduCommonStatesV1(parent),
+    m_exerciceEnCours(false),
+    m_theme(theme),
+    m_parent(parent),
+    m_exerciceType(exerciceType),
+    m_aireTravail(new QGraphicsView()),
+    m_proxyGraphique(getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(m_aireTravail)),
+    m_tailleAireTravail(QSize(0,0)),
+    m_parametres(),
+    m_OPT_timerSuivant(0),
+    m_OPT_nbMasquesChoisis(0),
+    m_OPT_nbMasquesLargeur(0),
+    m_OPT_nbMasquesHauteur(0),
+    m_cheminConf(m_theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf")),
+    m_cheminImage(m_theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator()),
+    m_image(),
+    m_itemImage(),
+    m_listeImage(),
+    m_nbImage(0),
+    m_nbMasquesInteractifs(0),
+    m_listeFichiers(),
+    m_listeMasquesFixes(),
+    m_masque(0),
+    m_masqueInteractif(0),
+    m_taille(),
+    m_chronometre(new QTime()),
+    m_tempsQuestion1(),
+    m_tempsQuestion2(),
+    m_tempsQuestion3(),
+    m_tempsQuestion4(),
+    m_tempsQuestion5(),
+    m_tempsTotal(),
+    m_timer(new QTimer(this)),
+    m_onPeutMettreEnPause(false),
+    m_labelImagePause(new QLabel(m_parent)),
+    m_isPaused(false),
+    m_keySpace(new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1)),
+    m_labelTitreImage(new QLabel(m_aireTravail)),
+    m_pixmapPause(new QPixmap(":/bouton/pause"))
 {
-    m_parent         = parent;
-    m_theme          = theme;
-    m_exerciceType   = exerciceType;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << m_parent  << m_theme << m_exerciceType;
 
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << m_parent  << m_theme << exerciceType;
-
-    /* Ici sera defini tout ce qui est commun au 5 exercices */
-    m_exerciceEnCours    = false;
-
-    /* Création de l'aire de travail + propriétés */
-    m_aireTravail = new QGraphicsView();
+    /* Propriétés de l'aire de travail */
     m_aireTravail->setAttribute(Qt::WA_AcceptTouchEvents);
     m_aireTravail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_aireTravail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_aireTravail->setDragMode(QGraphicsView::NoDrag); /* Pour que l'aire de jeu ne bouge pas avec le doigt (tab) */
+    m_aireTravail->setStyleSheet("background-color: rgba(0,0,0,0)");
+    m_aireTravail->setFrameShape(QFrame::NoFrame);
 
     QGraphicsScene *scene = new QGraphicsScene(this);
     m_aireTravail->setScene(scene);
     m_aireTravail->setFocusPolicy(Qt::NoFocus);
 
-    /* Pour que l'aire de jeu ne bouge pas avec le doigt (tab) */
-    m_aireTravail->setDragMode(QGraphicsView::NoDrag);
-
     /* On la place sur l'AireDeTravail par l'intermédiaire d'un QGraphicsProxyWidget */
-    m_proxyGraphique = getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(m_aireTravail);
-    m_proxyGraphique->setGeometry(m_aireTravail->rect());
-    m_proxyGraphique->setZValue(-1) ;
-    m_proxyGraphique->setFocusPolicy(Qt::NoFocus);
+//    m_proxyGraphique->setGeometry(m_aireTravail->rect());
+//    m_proxyGraphique->setZValue(-1) ;
+//    m_proxyGraphique->setFocusPolicy(Qt::NoFocus);
 
     /* Instanciation des variables membres */
-    m_listeImage.clear();
-    m_listeFichiers.clear();
-    m_listeMasquesFixes.clear();
-    m_nbImage = m_nbMasquesInteractifs = m_OPT_nbMasquesLargeur = m_OPT_nbMasquesHauteur = m_OPT_timerSuivant = m_OPT_nbMasquesChoisis = 0;
-    m_onPeutMettreEnPause = false;
     m_messageBox =  0;
-    m_masque = m_masqueInteractif = 0;
-    m_labelImagePause  = new QLabel(m_parent);
-    m_pixmapPause = new QPixmap(":/bouton/pause");
     m_labelImagePause->setStyleSheet("background-color: transparent");
-    m_tailleAireTravail = QSize(0,0);
-    m_cheminConf  = m_theme + QDir::separator() + QString("conf") + QDir::separator() + QString("parametres.conf");
-    m_cheminImage = m_theme + QDir::separator() + QString("data") + QDir::separator() + QString("images") + QDir::separator();
-    m_chronometre = new QTime();
-    m_isPaused = false;
 
     /* Gestion Consignes & Aide */
     onPeutPresenterExercice = false;
     onPeutPresenterSequence = false;
-
-    m_timer = new QTimer(this);
-
-    m_keySpace = new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1);
-
-    /* Gestion graphiques de l'aire de travail */
-    m_aireTravail->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_aireTravail->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    m_aireTravail->setStyleSheet("background-color: rgba(0,0,0,0)");
-    m_aireTravail->setFrameShape(QFrame::NoFrame);
 
     getAbeExerciceMessageV1()->setParent(m_aireTravail);
 
@@ -109,7 +115,6 @@ AbstractExercice::AbstractExercice(QWidget *parent, const QString &theme, const 
     ABULEDU_LOG_DEBUG() << "Chemin des fichiers images ["         << m_cheminImage << "]";
 
     /* Pour l'affichage du titre des images #3101 */
-    m_labelTitreImage = new QLabel(m_aireTravail);
     m_labelTitreImage->setStyleSheet("background-color: rgba(14, 160, 234, 1.0); color: white;");
     m_labelTitreImage->hide();
 }
@@ -134,15 +139,14 @@ AbstractExercice::~AbstractExercice()
 
     m_parametres->deleteLater();
 
-    /* Permet à la MainWindow de savoir que l'exercice est terminé */
-    emit exerciceExited();
+    emit exerciceExited(); /* Permet à la MainWindow de savoir que l'exercice est terminé */
 }
 
-void AbstractExercice::slotSequenceEntered(){
+void AbstractExercice::slotSequenceEntered()
+{
     ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
 
-    if(!m_exerciceEnCours)
-    {
+    if(!m_exerciceEnCours) {
         getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->scene()->addWidget(getAbeExerciceMessageV1());
 
         setAbeNbExercices(5);      /* a instancier avant appel du slot SequenceEntered ! */
@@ -273,7 +277,8 @@ void AbstractExercice::slotInitQuestionEntered()
     largeurMasque = largeurAireJeu / m_OPT_nbMasquesLargeur;
     hauteurMasque = hauteurAireJeu / m_OPT_nbMasquesHauteur;
 
-    qreal xMasque, yMasque = 0.00;
+    qreal xMasque = 0.00;
+    qreal yMasque = 0.00;
 
     /* Petite difference de pose entre les exercices */
     switch(m_exerciceType){
