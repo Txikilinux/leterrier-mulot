@@ -659,6 +659,10 @@ void AbstractExercice::slotAppuiAutoVerifier()
 
 bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 {
+    if(!m_onPeutMettreEnPause)  return abeApp->eventFilter(obj, ev);
+    if(!boiteTetes)             return abeApp->eventFilter(obj, ev);
+    if(!m_labelImagePause)      return abeApp->eventFilter(obj, ev);
+
     switch (ev->type()) {
     /* Si on clic sur la boiteTete ou l'image pause  */
     case QEvent::MouseButtonPress:{
@@ -666,9 +670,6 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 
         /* petites protections */
         if(!castMouseEvent) return false;
-        if(!boiteTetes) return false;
-        if(!m_labelImagePause) return false;
-
         const QPoint posMouse = castMouseEvent->pos();
 
         if((boiteTetes->geometry().contains(posMouse) ||
@@ -697,9 +698,10 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
 
         //        break;
     default:
-        return abeApp->eventFilter(obj, ev);
         break;
     }
+    return abeApp->eventFilter(obj, ev);
+
 }
 
 void AbstractExercice::slotFermetureAide()
