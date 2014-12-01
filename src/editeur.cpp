@@ -527,6 +527,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
     //                                             (hauteurMasque * m_opt_nbMasquesHauteur) + m_editeurParcoursWidget->getGraphicsView()->horizontalScrollBar()->height() + (m_editeurParcoursWidget->getBoutonHeight()) *2);
 
     if(chargerPositionMasque(numeroParcours)){
+        m_numeroParcours = numeroParcours;
 
         ui->sbParcoursMasque->setValue(m_positionMasquesParcours.count());
 
@@ -600,7 +601,17 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
                 }
                 else{
                     ABULEDU_LOG_DEBUG() << "PROBLEME VOISINAGE";
-                    ui->btnResetParcours->click();
+
+                    /* Utilisation d'une QEventLoop avec le message sinon le btnReset n'était plus corrélé au numéro du parcours.*/
+                    AbulEduMessageBoxV1 *m_messageBox = new AbulEduMessageBoxV1(trUtf8("Corruption données du module"),
+                                                                                trUtf8("Le chargement du parcours numéro %1 a detecté une anomalie dans les paramètres. \r" \
+                                                                                       "Le parcours va être réinitialisé.").arg(numeroParcours), true, this);
+                    connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()),ui->btnResetParcours, SLOT(click()), Qt::UniqueConnection);
+                    QEventLoop *eL = new QEventLoop(this);
+                    connect(m_messageBox, SIGNAL(signalAbeMessageBoxCloseOrHide()), eL, SLOT(quit()), Qt::UniqueConnection);
+
+                    m_messageBox->show();
+                    eL->exec();
 
                     return false;
                 }
@@ -886,7 +897,7 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
 /* Gestion reinitialisation parcours */
 void Editeur::on_btnResetParcours_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << m_numeroParcours;
     /* Remettre tout mes masques d'origine ! */
     foreach (MasqueDeplaceSouris* var, m_listeMasques) {
         var->setColor(QColor(Qt::white));
@@ -1192,10 +1203,10 @@ void Editeur::slotLoadUnit()
         /* Recupération nb masque pour remplissage ComboBox */
         /* Parcours 1 */
         parametres.beginGroup("parcours1");
-        if(chargerPositionMasque(1)){
-            ABULEDU_LOG_DEBUG() << "Le parcours 1...[OK]";
-            ui->btnParcours1->setStyleSheet("color : green;");
-            emit signalParcoursSave();
+        if(chargerPositionMasque(1) && remplirGvParcours(1)){
+                ABULEDU_LOG_DEBUG() << "Le parcours 1...[OK]";
+                ui->btnParcours1->setStyleSheet("color : green;");
+                emit signalParcoursSave();
         }
         else{
             ABULEDU_LOG_DEBUG() << "Le parcours 1...[KO]";
@@ -1204,7 +1215,7 @@ void Editeur::slotLoadUnit()
         parametres.endGroup();
         /* Parcours 2 */
         parametres.beginGroup("parcours2");
-        if(chargerPositionMasque(2)){
+        if(chargerPositionMasque(2) && remplirGvParcours(2)){
             ABULEDU_LOG_DEBUG() << "Le parcours 2...[OK]";
             ui->btnParcours2->setStyleSheet("color : green;");
             emit signalParcoursSave();
@@ -1216,7 +1227,7 @@ void Editeur::slotLoadUnit()
         parametres.endGroup();
         /* Parcours 3 */
         parametres.beginGroup("parcours3");
-        if(chargerPositionMasque(3)){
+        if(chargerPositionMasque(3) && remplirGvParcours(3)){
             ABULEDU_LOG_DEBUG() << "Le parcours 3...[OK]";
             ui->btnParcours3->setStyleSheet("color : green;");
             emit signalParcoursSave();
@@ -1228,7 +1239,7 @@ void Editeur::slotLoadUnit()
         parametres.endGroup();
         /* Parcours 4 */
         parametres.beginGroup("parcours4");
-        if(chargerPositionMasque(4)){
+        if(chargerPositionMasque(4) && remplirGvParcours(4)){
             ABULEDU_LOG_DEBUG() << "Le parcours 4...[OK]";
             ui->btnParcours4->setStyleSheet("color : green;");
             emit signalParcoursSave();
@@ -1240,7 +1251,7 @@ void Editeur::slotLoadUnit()
         parametres.endGroup();
         /* Parcours 5 */
         parametres.beginGroup("parcours5");
-        if(chargerPositionMasque(5)){
+        if(chargerPositionMasque(5) && remplirGvParcours(5)){
             ABULEDU_LOG_DEBUG() << "Le parcours 5...[OK]";
             ui->btnParcours5->setStyleSheet("color : green;");
             emit signalParcoursSave();
