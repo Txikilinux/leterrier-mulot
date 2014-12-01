@@ -702,6 +702,10 @@ bool AbstractExercice::eventFilter(QObject *obj, QEvent *ev)
         //    }
 
         //        break;
+
+    case QEvent::Wheel:
+        return abeApp->eventFilter(obj, ev);
+        break;
     default:
         break;
     }
