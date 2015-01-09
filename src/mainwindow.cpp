@@ -79,9 +79,10 @@ MainWindow::MainWindow(QWidget *parent) :
     m_numberExoCalled = -1;
 
     /* Utilisation de la boite aPropos */
-    AbulEduAproposV1 *monAide = new AbulEduAproposV1(this);
-    monAide->setVisible(false);
-    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()), monAide, SLOT(montreAide()), Qt::UniqueConnection);
+    connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnAideTriggered()),
+            SLOT(slotMontreApropos()), Qt::UniqueConnection);
+    connect(ui->pageAbout, SIGNAL(signalAbeAproposBtnCloseClicked()),
+            SLOT(slotRetourAccueil()),Qt::UniqueConnection);
 
     connect(ui->editeur, SIGNAL(editorExited()), SLOT(exerciceExited()), Qt::UniqueConnection);
     connect(ui->editeur, SIGNAL(editorNewAbe(int)), SLOT(setTitle(int)), Qt::UniqueConnection);
@@ -597,6 +598,16 @@ void MainWindow::btnQuitBoxFileManagerClicked()
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
     else
         ui->stCentral->setCurrentWidget(ui->fr_principale);
+}
+
+void MainWindow::slotMontreApropos()
+{
+    ui->stCentral->setCurrentWidget(ui->pageAbout);
+}
+
+void MainWindow::slotRetourAccueil()
+{
+    ui->stCentral->setCurrentWidget(ui->fr_principale);
 }
 
 void MainWindow::debutTestParametres()

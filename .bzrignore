@@ -9,9 +9,9 @@ release
 Makefile
 *.pro.user
 ./src/lib/abuleduandroidsupportv1
-./src/lib/abuleduandroidsupportv1
 ./src/lib/abuleduloggerv1
 ./src/lib/abuleduloadinganimationv1
 ./src/lib/abuledumultimediav1
 ./src/lib/abuledupicottsv1
 ./src/lib/abuleduaudiov1
+./src/lib/abuleduaproposv1

@@ -16,7 +16,6 @@ SOURCES +=  main.cpp\
             exercicesurvol.cpp \
             editeur.cpp \
             exercicedoubleclic.cpp \
-            lib/abuleduaproposv1/abuleduaproposv1.cpp \
             abuledutools.cpp \
             exerciceclic.cpp \
             exerciceparcours.cpp \
@@ -28,7 +27,6 @@ HEADERS  += mainwindow.h \
             exercicesurvol.h \
             editeur.h \
             exercicedoubleclic.h \
-            lib/abuleduaproposv1/abuleduaproposv1.h \
             abuledutools.h \
             exerciceclic.h \
             exerciceparcours.h \
@@ -37,7 +35,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
             widgetdeplacesouris.ui \
             editeur.ui \
-            lib/abuleduaproposv1/abuleduaproposv1.ui
 
 RESOURCES += ressources.qrc
 
@@ -79,3 +76,4 @@ include(lib/abuleduloadinganimationv1/abuleduloadinganimationv1.pri)
 include(lib/abuledumultimediav1/abuledumultimediav1.pri)
 include(lib/abuledupicottsv1/abuledupicottsv1.pri)
 include(lib/abuleduaudiov1/abuleduaudiov1.pri)
+include(lib/abuleduaproposv1/abuleduaproposv1.pri)

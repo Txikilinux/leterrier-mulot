@@ -198,6 +198,12 @@ private slots:
 
     /** Gère le comportement après la fermeture de l'AbulEduBoxFileManager*/
     void btnQuitBoxFileManagerClicked();
+
+    /** Permet d'afficher la page Apropos */
+    void slotMontreApropos();
+
+    /** Permet de revenir sur la page principale */
+    void slotRetourAccueil();
 };
 
 #endif // MAINWINDOW_H

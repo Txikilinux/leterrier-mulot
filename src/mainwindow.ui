@@ -86,6 +86,7 @@
         </item>
        </layout>
       </widget>
+      <widget class="AbulEduAproposV1" name="pageAbout"/>
      </widget>
     </item>
    </layout>
@@ -235,6 +236,12 @@
    <class>Editeur</class>
    <extends>QWidget</extends>
    <header>editeur.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AbulEduAproposV1</class>
+   <extends>QWidget</extends>
+   <header>abuleduaproposv1.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
