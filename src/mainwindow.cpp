@@ -55,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_abuleduaccueil = new AbulEduPageAccueilV1(&m_texteBulles, ui->fr_principale);
     m_abuleduaccueil->setDimensionsWidgets();
     connect(m_abuleduaccueil, SIGNAL(boutonPressed(int)), this, SLOT(abeLanceExo(int)), Qt::UniqueConnection);
+    connect(m_abuleduaccueil, SIGNAL(signalAbePageAccueilMousePressed()),this, SLOT(slotDemo()),Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnQuitterTriggered()), this, SLOT(close()), Qt::UniqueConnection);
     connect(m_abuleduaccueil->abePageAccueilGetMenu(), SIGNAL(btnBoxTriggered()), this, SLOT(on_actionOuvrir_un_exercice_triggered()), Qt::UniqueConnection);
     m_messageAide = trUtf8("Choisis un module en cliquant sur le bouton <b>Ouverture</b> du parchemin, les zones de lancement des exercices disponibles deviendront alors actives.");
