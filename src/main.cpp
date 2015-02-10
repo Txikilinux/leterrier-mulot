@@ -28,24 +28,18 @@ int main(int argc, char *argv[])
     AbulEduApplicationV1 a(argc, argv,VER_INTERNALNAME_STR, VER_PRODUCTVERSION_STR, VER_COMPANYDOMAIN_STR, VER_COMPANYNAME_STR, VER_UNITVERSION_STR);
     a.setAbeApplicationLongName(QObject::trUtf8(VER_FILEDESCRIPTION_STR));
 
-    if(a.isRunning())
-        return 0;
+    if(a.isRunning()) return 0;
+
+    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0, true);
+    splash->show();
+    splash->launch(1000);
+    splash->setMainWindow(new MainWindow());
 
     QString locale = QLocale::system().name().section('_', 0, 0);
     QTranslator translator;
-
     //Verifier si le chemin de stockage des langues est bien celui la
     translator.load("leterrier-mulot_"+locale, "./conf/lang");
     a.installTranslator(&translator);
-
-    MainWindow *w;
-    /* Splashscreen */
-    AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0,true);
-    splash->show();
-    w = new MainWindow(0);
-    splash->setMainWindow(w);
-    //pour les developpeurs presses, remplacer le 10000 par 1000
-    splash->launch(1000);
 
     return a.exec();
 }
