@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     AbulEduSplashScreenV1 *splash = new AbulEduSplashScreenV1(0, true);
     splash->show();
     abeApp->processEvents();
-    splash->launch(1000);
+    splash->launch(4000);
     splash->setMainWindow(new MainWindow());
 
     QString locale = QLocale::system().name().section('_', 0, 0);
