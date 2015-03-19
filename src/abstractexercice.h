@@ -27,6 +27,7 @@
 #include "abuleducommonstatesv1.h"
 #include "masquedeplacesouris.h"
 #include "abuledutools.h"
+#include "abuledumessageboxv1.h"
 
 class AbstractExercice : public AbulEduCommonStatesV1
 {

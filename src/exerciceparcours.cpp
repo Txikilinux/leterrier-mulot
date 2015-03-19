@@ -182,7 +182,6 @@ void ExerciceParcours::slotCacheMasque()
             break;
         }
     }
-
 }
 
 void ExerciceParcours::slotAide()
