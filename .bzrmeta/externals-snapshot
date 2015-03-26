@@ -1,16 +1,16 @@
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduapplicationv1 src/lib/abuleduapplicationv1 revid:icham.sirat@ryxeo.com-20150319152335-0dp5d4oe6gqy4k3b
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduapplicationv1 src/lib/abuleduapplicationv1 revid:philippe.cadaugade@ryxeo.com-20150324160304-h3iwvy5gfz6dcmpb
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduconstantesv1 src/lib/abuleduconstantesv1 revid:icham.sirat@ryxeo.com-20140523133356-ckwptipjfomavv47
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleducommonstatesv1/ src/lib/abuleducommonstatesv1 revid:icham.sirat@ryxeo.com-20150319134034-hle01uo1tbz7bwzq
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledustatemachinev1/ src/lib/abuledustatemachinev1 revid:icham.sirat@ryxeo.com-20150319134214-rj0wgvz3z7cgjcg9
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduexercicev1/ src/lib/abuleduexercicev1 revid:icham.sirat@ryxeo.com-20150319134342-v44z61o2lyeojx94
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduexercicev1/ src/lib/abuleduexercicev1 revid:icham.sirat@ryxeo.com-20150326144043-p1h2jv7rl6ghsr6c
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledutetev1/ src/lib/abuledutetev1 revid:icham.sirat@ryxeo.com-20150319134806-g3f3n0dz5ss0mwej
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduflatboutonv1/ src/lib/abuleduflatboutonv1 revid:icham.sirat@ryxeo.com-20150319101336-nuhca4k6ju7gkaut
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledunetworkaccessmanagerv1/ src/lib/abuledunetworkaccessmanagerv1 revid:icham.sirat@ryxeo.com-20150319101818-o29ic4tk6hj3s7q2
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/maia/ src/lib/maia revid:icham.sirat@ryxeo.com-20150319135437-sfyyk6to30dv5qeo
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledupageaccueilv1/ src/lib/abuledupageaccueilv1 revid:icham.sirat@ryxeo.com-20150319135251-prdq7xg89med4vhb
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledugraphicmenuv1/ src/lib/abuledugraphicmenuv1 revid:icham.sirat@ryxeo.com-20150319101418-dupz9gk89kgmav41
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledugraphicmenuv1/ src/lib/abuledugraphicmenuv1 revid:icham.sirat@ryxeo.com-20150320091136-yiq83wflu7rdg91e
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledulabelv1 src/lib/abuledulabelv1 revid:icham.sirat@ryxeo.com-20150319101547-pbib5konq7qo1x5n
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledufilev1/ src/lib/abuledufilev1 revid:icham.sirat@ryxeo.com-20150319101301-h05sqefizgrtvy1o
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledufilev1/ src/lib/abuledufilev1 revid:icham.sirat@ryxeo.com-20150323101938-l9wp8b3tr829vh1r
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledumessageboxv1/ src/lib/abuledumessageboxv1 revid:icham.sirat@ryxeo.com-20150319101741-zfp2h2d1a0iah0lt
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledulangv1/ src/lib/abuledulangv1 revid:eric.seigne@ryxeo.com-20131030180044-nvpgvjev3917r1hb
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledusplashscreenv1/ src/lib/abuledusplashscreenv1 revid:icham.sirat@ryxeo.com-20150319135830-uchko9x1ibjit5q0
@@ -24,5 +24,5 @@ bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduloggerv1/ src/lib/abule
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduloadinganimationv1 src/lib/abuleduloadinganimationv1 revid:icham.sirat@ryxeo.com-20150319101640-31ndsxnefmavf90h
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledumultimediav1 src/lib/abuledumultimediav1 revid:icham.sirat@ryxeo.com-20150319145313-lo8m54ncumbi0jfm
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledupicottsv1/ src/lib/abuledupicottsv1 revid:icham.sirat@ryxeo.com-20150319152019-xtz2x74bumsrc522
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduaudiov1/ src/lib/abuleduaudiov1 revid:eric.seigne@ryxeo.com-20150308221839-2zml4f8c27u5owaw
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduaudiov1/ src/lib/abuleduaudiov1 revid:icham.sirat@ryxeo.com-20150319153428-9wvmr71aanr25xkt
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduaproposv1/ src/lib/abuleduaproposv1 revid:icham.sirat@ryxeo.com-20150319105927-pl1jfb64g8bct744
