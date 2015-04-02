@@ -49,11 +49,10 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideCloseBouton(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
 
-
-    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>, int)), this,
+    connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>, int)),
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
 
-    connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),this,
+    connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushFileUploaded(int)),
             SLOT(slotAfficheEtatPublication(int)), Qt::UniqueConnection);
 
     QShortcut *shortcutSupprimeChoix = new QShortcut(QKeySequence(Qt::Key_Delete), ui->listWidgetImagesSelection, 0, 0, Qt::WidgetShortcut);
@@ -96,8 +95,8 @@ Editeur::Editeur(QWidget *parent) :
     m_assistantEtapes->abeWidgetAssistantEnableClick(false);
     ui->hlFilAriane->addWidget(m_assistantEtapes);
 
-    connect(m_assistantEtapes, SIGNAL(signalEtapeHasChanged(int)), this, SLOT(slotEditorChangePageRequested(int)), Qt::UniqueConnection);
-    connect(m_assistantEtapes, SIGNAL(signalQuitterRequested()), this, SLOT(slotCloseEditor()), Qt::UniqueConnection);
+    connect(m_assistantEtapes, SIGNAL(signalEtapeHasChanged(int)), SLOT(slotEditorChangePageRequested(int)), Qt::UniqueConnection);
+    connect(m_assistantEtapes, SIGNAL(signalQuitterRequested()),   SLOT(slotCloseEditor()), Qt::UniqueConnection);
 
     /* Ceci sert à mettre la page d'accueil par dféfaut au démarrage, donc initialisation du 1er message d'aide */
     slotEditorChangePageRequested(PageEtapeAccueil);
@@ -374,12 +373,19 @@ void Editeur::slotListWidgetImagesSelectionEditEnd(QWidget *w, QAbstractItemDele
     }
     else
         ABULEDU_LOG_DEBUG() << "Renommage fichier... [KO]";
+}
 
+void Editeur::slotQuitPublicationWidget()
+{
+    ABULEDU_LOG_TRACE() <<  __PRETTY_FUNCTION__;
+    /* On quitte le widget de publication des ABE, on retourne sur la dernière page de l'éditeur et on réaffiche l'assistant etapes */
+    slotEditorChangePageRequested(PageEtapeFin);
+    m_assistantEtapes->setVisible(true);
 }
 
 void Editeur::ajouterImage(QFileInfo monFichier)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " Chemin :" << monFichier.absoluteFilePath() << "Nom : " << monFichier.fileName();
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << " Chemin :" << monFichier.absoluteFilePath() << "Nom : " << monFichier.fileName();
 
     /* Controle des insertions (éviter les doublons) */
     if (m_listeFichiersImages.contains(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+ "/data/images/" + monFichier.baseName() +".jpg"))
@@ -1420,7 +1426,6 @@ bool Editeur::preparerSauvegarde()
 
     /* Parametres Survol */
     parametres.beginGroup("survol");
-    ABULEDU_LOG_DEBUG()<< "(survol) : "  << ui->groupBoxSurvol->isChecked();
     if (ui->groupBoxSurvol->isChecked())
     {
         parametres.setValue("exerciceActive",true);
@@ -1507,6 +1512,9 @@ void Editeur::on_btnEnregistrer_clicked()
 void Editeur::on_btnPublier_clicked()
 {
     ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    /** @todo cacher la barre de navigation car mediathequePush apporte la sienne */
+    m_assistantEtapes->setVisible(false);
+    connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushCloseOrHide()), SLOT(slotQuitPublicationWidget()), Qt::UniqueConnection);
     releaseAbe();
 }
 

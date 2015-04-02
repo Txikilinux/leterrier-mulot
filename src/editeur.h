@@ -170,6 +170,8 @@ private slots:
 
     void slotListWidgetImagesSelectionEditEnd(QWidget*, QAbstractItemDelegate::EndEditHint);
 
+    void slotQuitPublicationWidget();
+
 private:
     Ui::Editeur *ui;
     QMenu *m_menuListWidget;
