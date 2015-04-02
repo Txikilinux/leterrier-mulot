@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    m_localDebug = false;
     m_isDemoAvailable = true;
 
     ui->setupUi(this);
@@ -150,10 +149,6 @@ void MainWindow::setExercicesEnabled()
     if(m_abuleduFile->abeFileGetFileList().count() > 0){
         QList<QAction *> listMenuEntries = ui->menuExercice->actions();
         QList<AbulEduZoneV1 *> listZonesPageAccueil = m_abuleduaccueil->abePageAccueilGetZones();
-        /** @todo a voir pourquoi c'est là */
-        qDebug()<<"menu";
-        qDebug()<<listMenuEntries;
-        qDebug()<<"zones";
 
         /* Récupération d'un fichier de settings dans le répertoire temporaire */
         QSettings *settings = new QSettings(m_abuleduFile->abeFileGetDirectoryTemp().path()+"/conf/parametres.conf", QSettings::IniFormat );
@@ -428,16 +423,15 @@ void MainWindow::on_actionEditeur_triggered()
 
     if (!m_exerciceEnCours) /* si on est en exercice pas d'éditeur */
     {
-        if(m_localDebug) qDebug() << __PRETTY_FUNCTION__;
         ui->stCentral->setCurrentWidget(ui->pageEditeur);
         /* Si le titre de l'abe n'est pas vide, on active le bouton de modification du module courant */
         if(!m_abuleduFile->abeFileGetTitle().isEmpty()){
-            if(m_localDebug) qDebug() << "Le titre ABE n'est pas vide, edition possible";
+            ABULEDU_LOG_DEBUG() << "Le titre ABE n'est pas vide, edition possible";
             ui->editeur->btnModificationCourant()->setEnabled(true);
             ui->editeur->btnModificationCourant()->setText(ui->editeur->btnModificationCourant()->text().remove("en cours") + "\"" + m_abuleduFile->abeFileGetTitle()+"\"");
         }
         else {
-            if(m_localDebug) qDebug() << "Le titre ABE est vide, pas d'edition";
+            ABULEDU_LOG_DEBUG() << "Le titre ABE est vide, pas d'edition";
             ui->editeur->btnModificationCourant()->setText(trUtf8("Editer le module en cours"));
             ui->editeur->btnModificationCourant()->setEnabled(false);
         }

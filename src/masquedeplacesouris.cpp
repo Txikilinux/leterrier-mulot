@@ -44,6 +44,8 @@ void MasqueDeplaceSouris::setSize(float width, float height)
 
 void MasqueDeplaceSouris::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
     QPainterPath zoneDessin;
     zoneDessin.addRect(boundingRect());
     painter->setBrush(QBrush(m_couleur));

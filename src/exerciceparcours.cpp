@@ -158,8 +158,6 @@ void ExerciceParcours::slotCacheMasque()
 
         /* Affichage du temps passé */
         ABULEDU_LOG_DEBUG() << "Temps écoulé: %d ms",chronometre()->elapsed();
-        ABULEDU_LOG_DEBUG() << "Temps écoulé: %d sec",(chronometre()->elapsed())/1000;
-
         /* Enregistrement du temps passé pour chaque question */
         switch (abeStateMachineGetNumExercice()+1){
         case 1:

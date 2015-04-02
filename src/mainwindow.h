@@ -113,7 +113,6 @@ private:
     QMap<int, QString> m_texteBulles;
 
     bool m_exerciceEnCours;
-    bool m_localDebug;
     bool m_isDemoAvailable;
     AbulEduMessageBoxV1* m_abuleduMessageBox;
     QString m_messageAide;
