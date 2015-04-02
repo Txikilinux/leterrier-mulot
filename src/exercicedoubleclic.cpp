@@ -26,17 +26,17 @@
 ExerciceDoubleClic::ExerciceDoubleClic(QWidget *parent, QString theme)
     : AbstractExercice(parent, theme, AbstractExercice::DoubleClic)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ <<  parent << theme;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__  <<  parent << theme;
 }
 
 ExerciceDoubleClic::~ExerciceDoubleClic()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
 }
 
 void ExerciceDoubleClic::slotAide()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     eventFilter(this, new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1));
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
 

@@ -32,6 +32,7 @@
 #include <QGraphicsSceneContextMenuEvent>
 #include <QApplication>
 #include <QTime>
+#include "abuleduloggerv1.h"
 
 class MasqueDeplaceSouris : public QGraphicsObject
 {

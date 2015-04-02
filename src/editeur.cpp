@@ -36,6 +36,7 @@ Editeur::Editeur(QWidget *parent) :
     ui(new Ui::Editeur)
 {
     ui->setupUi(this);
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     setAttribute(Qt::WA_DeleteOnClose);
 
     m_lastOpenDir = QDir::homePath();
@@ -112,7 +113,7 @@ Editeur::Editeur(QWidget *parent) :
 
 Editeur::~Editeur()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << m_abuleduFile->abeFileGetFileName().baseName();
     delete ui;
     emit editorExited();
 }
@@ -122,7 +123,7 @@ Editeur::~Editeur()
   ****************************************************************************************************************/
 void Editeur::slotEditorChangePageRequested(int page)
 {
-    ABULEDU_LOG_DEBUG() <<__PRETTY_FUNCTION__ << page ;
+    ABULEDU_LOG_TRACE() <<__PRETTY_FUNCTION__ << page ;
 
     switch(page)
     {
@@ -192,7 +193,7 @@ void Editeur::slotEditorChangePageRequested(int page)
 
 void Editeur::slotCloseEditor()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ ;
 
     /* Remettre le titre par defaut du boutonModifier courant */
     ui->btnModificationCourant->setText(trUtf8("Editer le module en cours"));
@@ -225,6 +226,7 @@ void Editeur::slotCloseEditor()
   ********************************************************************************************************/
 void Editeur::initMessagesAide()
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     m_messageAidePageAccueil = trUtf8("Je suis votre guide, je vous donnerai les consignes à chaque écran rencontré.\n")
             + trUtf8("Choississez ci-dessous un mode d'édition.\n")
             + trUtf8("Les étapes sont bloquantes tant que les paramètres ne sont pas convenables.");
@@ -250,6 +252,7 @@ void Editeur::initMessagesAide()
 
 void Editeur::controlNumberOfImages()
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     if(m_listeFichiersImages.count() >= 5)
     {
         /* Il faut activer seulement le bouton suivant */
@@ -268,8 +271,7 @@ void Editeur::controlNumberOfImages()
 
 void Editeur::creationMenu()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* MENU LISTWIDGET (Supprimer) */
     m_menuListWidget = new QMenu(ui->listWidgetImagesSelection);
 
@@ -292,7 +294,7 @@ void Editeur::creationMenu()
 
 void Editeur::slotSupprimerImage()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
     if (m_listeFichiersImages.isEmpty()){return;}
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
@@ -318,7 +320,7 @@ void Editeur::slotSupprimerImage()
 
 void Editeur::slotRenommerImage()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* condition garde meme si j'appelle ce slot que si j'ai un item ds ma listView, donc une liste avec au moins 1 éléments =) */
     if (m_listeFichiersImages.isEmpty()){return;}
     if (ui->listWidgetImagesSelection->selectedItems().isEmpty()){ return;}
@@ -334,6 +336,7 @@ void Editeur::slotRenommerImage()
 
 void Editeur::slotListWidgetImagesSelectionEditEnd(QWidget *w, QAbstractItemDelegate::EndEditHint)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     QListWidgetItem *item = ui->listWidgetImagesSelection->currentItem();
     const QString newFileName = static_cast<QLineEdit*>(w)->text();
     ABULEDU_LOG_DEBUG() << "FIN EDITION ITEM [" << item->data(4).toString()<<"] -> [" << newFileName << "]";
@@ -357,7 +360,7 @@ void Editeur::slotListWidgetImagesSelectionEditEnd(QWidget *w, QAbstractItemDele
     }
 
     if(xml.exists()){
-        qDebug() <<"Le fichier XML existe" << xml.fileName();
+        ABULEDU_LOG_DEBUG() <<"Le fichier XML existe" << xml.fileName();
         QFileInfo fi_xml(xml);
         if(QFile::rename(fi_xml.absoluteFilePath(),fi_xml.absoluteFilePath().replace(fi_xml.baseName(), newFileName))){
             ABULEDU_LOG_DEBUG() << "Renommage du fichier XML accompagnant la ressource... [OK]";
@@ -411,7 +414,7 @@ void Editeur::ajouterImage(QFileInfo monFichier)
 
 void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierABB, const int& success)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     if(success > -1)
     {
         ajouterImage(fichierABB->abeFileGetContent(0));
@@ -425,7 +428,7 @@ void Editeur::slotImportImageMediatheque(QSharedPointer<AbulEduFileV1> fichierAB
 
 void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoint &pos)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* Si j'ai un item à cet endroit, j'appelle mon menu */
     if (ui->listWidgetImagesSelection->itemAt(pos) != NULL)
     {
@@ -435,8 +438,7 @@ void Editeur::on_listWidgetImagesSelection_customContextMenuRequested(const QPoi
 
 void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *item)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     AbulEduVisionneuseImageV1 *visio = new AbulEduVisionneuseImageV1(ui->tabWidgetImages);
     connect(visio, SIGNAL(destroyed()),this,SLOT(slotSortieVisionneuse()), Qt::UniqueConnection);
     visio->setAttribute(Qt::WA_DeleteOnClose);
@@ -451,8 +453,7 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
 
 void Editeur::createAbe()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     if (preparerSauvegarde())
     {
         emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeSave);
@@ -464,7 +465,7 @@ void Editeur::createAbe()
 **********************************************************************************************************************************************************/
 void Editeur::slotBtnParcours_clicked(const int &numBtn)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ <<" "<< numBtn;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << numBtn;
 
     m_numeroParcours = numBtn;
     slotEditorChangePageRequested(PageParcours);
@@ -482,7 +483,7 @@ void Editeur::slotBtnParcours_clicked(const int &numBtn)
 
 bool Editeur::remplirGvParcours(const int &numeroParcours)
 {
-    ABULEDU_LOG_DEBUG() <<__PRETTY_FUNCTION__ << " "<< numeroParcours;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << numeroParcours;
 
     m_OPT_nbMasquesChoisisParcours = ui->sbParcoursMasque->value();
 
@@ -546,7 +547,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
         {
             while (i != m_positionMasquesParcours.constEnd())
             {
-                ABULEDU_LOG_DEBUG() << i.key() << " " << i.value();
+                ABULEDU_LOG_DEBUG() << i.key() << i.value();
                 if (i.key() == "MasqueDepart")
                     positionDepart = i.value();
                 else if (i.key() == "MasqueArrivee")
@@ -642,7 +643,7 @@ bool Editeur::remplirGvParcours(const int &numeroParcours)
 
 void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
 
     ui->sbParcoursMasque->setEnabled(false);
 
@@ -783,6 +784,7 @@ void Editeur::masquePoseParcours(MasqueDeplaceSouris* masque)
 
 void Editeur::mapSignalCheckBoxParametres()
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     QSignalMapper *signalMapper = new QSignalMapper(this);
     connect(signalMapper, SIGNAL(mapped(int)), SLOT(slotCheckBoxParametres_clicked(int)), Qt::UniqueConnection);
 
@@ -799,8 +801,7 @@ void Editeur::mapSignalCheckBoxParametres()
 
 bool Editeur::slotCheckBoxParametres_clicked(int)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ ;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* Si n'importe lequel des exercices est checké sauf parcours == on dit oui */
     if((ui->groupBoxSurvol->isChecked() || ui->groupBoxClic->isChecked() || ui->groupBoxDoubleClic->isChecked())
             && !ui->groupBoxParcours->isChecked())
@@ -836,9 +837,9 @@ bool Editeur::slotCheckBoxParametres_clicked(int)
 
 bool Editeur::slotParcoursSave()
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /*  Il faut que _nombreParcoursSave soit égale à 5 pour que les données soient viables.
       * Permet également d'activé l'écran de sauvegarde. */
-    ABULEDU_LOG_DEBUG()<< __PRETTY_FUNCTION__;
     m_nombreParcoursSave ++;
     if(m_nombreParcoursSave == 5)
     {
@@ -853,11 +854,13 @@ bool Editeur::slotParcoursSave()
 
 void Editeur::slotSetNombreMasquesParcours(int value)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<< value;
     m_OPT_nbMasquesChoisisParcours = value;
 }
 
 void Editeur::mapSignalBtnParcours()
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     QSignalMapper *signalMapper = new QSignalMapper(this);
     connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(slotBtnParcours_clicked(int)), Qt::UniqueConnection);
 
@@ -876,8 +879,7 @@ void Editeur::mapSignalBtnParcours()
 
 bool Editeur::chargerPositionMasque(const int &numeroParcours)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " " << numeroParcours;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<< " " << numeroParcours;
     m_positionMasquesParcours.clear();
 
     ABULEDU_LOG_DEBUG() << "Parametres charges depuis : " << m_abuleduFile->abeFileGetDirectoryTemp().absolutePath();
@@ -903,7 +905,7 @@ bool Editeur::chargerPositionMasque(const int &numeroParcours)
 /* Gestion reinitialisation parcours */
 void Editeur::on_btnResetParcours_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << m_numeroParcours;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<< m_numeroParcours;
     /* Remettre tout mes masques d'origine ! */
     foreach (MasqueDeplaceSouris* var, m_listeMasques) {
         var->setColor(QColor(Qt::white));
@@ -952,8 +954,7 @@ void Editeur::on_btnResetParcours_clicked()
 /* Gestion sauvegarde parcours */
 void Editeur::on_btnSaveParcours_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << " parcours :" << m_numeroParcours;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << " parcours :" << m_numeroParcours;
     QSettings parametres(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath()+"/conf/parametres.conf", QSettings::IniFormat);
     switch (m_numeroParcours)
     {
@@ -1040,6 +1041,7 @@ void Editeur::on_btnSaveParcours_clicked()
 
 void Editeur::on_sbParcoursMasque_valueChanged(int val)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<< val;
     /** Gestion changement de valeur du nombre de masques */
     m_OPT_nbMasquesChoisisParcours = val;
 }
@@ -1050,8 +1052,7 @@ void Editeur::on_sbParcoursMasque_valueChanged(int val)
 
 void Editeur::setModeModificationAbe(const bool &yesNo)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << yesNo;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<< yesNo;
     m_modeModificationAbe = yesNo;
 }
 
@@ -1061,12 +1062,9 @@ void Editeur::setModeModificationAbe(const bool &yesNo)
 */
 void Editeur::on_btnCreationAbe_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* Etape 1 : Le dossier temporaire doit être vide sinon problème d'enregistrement */
     if(!m_abuleduFile->abeFileGetFileList().isEmpty()){
-        ABULEDU_LOG_DEBUG() << "Dossier Temporaire vide... [KO]";
-
         /* Vidange du dossier */
         if(AbulEduTools::supprimerDir(m_abuleduFile->abeFileGetDirectoryTemp().absolutePath())){
             /* La vidange du dossier s'est bien passée */
@@ -1135,21 +1133,21 @@ void Editeur::modificationAbe()
 /** Bouton modification courant ABE */
 void Editeur::on_btnModificationCourant_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     modificationAbe();
 }
 
 /** Bouton modification autre (ouverture box) */
 void Editeur::on_btnModificationAutre_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeOpen);
     setModeModificationAbe(true);
 }
 
 void Editeur::slotLoadUnit()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ <<m_abuleduFile->abeFileGetFileName().fileName();
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<<m_abuleduFile->abeFileGetFileName().fileName();
     m_listeFichiersImages.clear();
     ui->listWidgetImagesSelection->clear();
 
@@ -1313,8 +1311,8 @@ void Editeur::slotLoadUnit()
 
 void Editeur::dropEvent(QDropEvent *event)
 {
-    ABULEDU_LOG_DEBUG() <<  __PRETTY_FUNCTION__;
-    ABULEDU_LOG_DEBUG() <<  event->source() << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<<  event->source()
+                        << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
 
     if(event->source()->objectName() == "treeViewArborescence" && ui->listWidgetImagesSelection->geometry().contains(event->pos())){
         ABULEDU_LOG_DEBUG() << "SOURCE == treeViewArbo";
@@ -1334,15 +1332,16 @@ void Editeur::dropEvent(QDropEvent *event)
 
 void Editeur::dragEnterEvent(QDragEnterEvent *event)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << event->source() << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__<< event->source()
+                        << event->pos() << ui->listWidgetImagesSelection->geometry().contains(event->pos());
     event->accept();
 }
 
 void Editeur::on_btnAjouterImageQFileDialog_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
-    QString fileName = QFileDialog::getOpenFileName(this, trUtf8("Choisir une image"), m_lastOpenDir, trUtf8("Images (*.png *.jpg *.jpeg *.svg *.bmp *.ppm *.xpm *.xbm)"));
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
+    const QString fileName = QFileDialog::getOpenFileName(this, trUtf8("Choisir une image"), m_lastOpenDir,
+                                                          trUtf8("Images (*.png *.jpg *.jpeg *.svg *.bmp *.ppm *.xpm *.xbm)"));
     QFileInfo fi(fileName);
     if(fi.exists()) {
         ajouterImage(fi.absoluteFilePath());
@@ -1352,8 +1351,7 @@ void Editeur::on_btnAjouterImageQFileDialog_clicked()
 
 bool Editeur::preparerSauvegarde()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     if(ui->leTitre->text().trimmed().isEmpty() || ui->leAuteur->text().trimmed().isEmpty())
     {
         if(ui->leTitre->text().trimmed().isEmpty()){
@@ -1479,7 +1477,7 @@ bool Editeur::preparerSauvegarde()
 
 void Editeur::releaseAbe()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     ui->listWidgetImagesSelection->clear();
     if (preparerSauvegarde())
     {
@@ -1490,8 +1488,7 @@ void Editeur::releaseAbe()
 
 void Editeur::on_btnEssayer_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     if(preparerSauvegarde()){
         AbulEduMessageBoxV1 *alertBox=new AbulEduMessageBoxV1(trUtf8("Passage en mode essai..."),
                                                               trUtf8("Votre module n'est pas enregistré. Si les paramètres vous conviennent, revenez dans l'éditeur pour enregistrer ou publier."), true, this);
@@ -1505,13 +1502,13 @@ void Editeur::on_btnEssayer_clicked()
 
 void Editeur::on_btnEnregistrer_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     createAbe();
 }
 
 void Editeur::on_btnPublier_clicked()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /** @todo cacher la barre de navigation car mediathequePush apporte la sienne */
     m_assistantEtapes->setVisible(false);
     connect(ui->stPageMediathequePush, SIGNAL(signalMediathequePushCloseOrHide()), SLOT(slotQuitPublicationWidget()), Qt::UniqueConnection);
@@ -1520,6 +1517,7 @@ void Editeur::on_btnPublier_clicked()
 
 void Editeur::slotSortieVisionneuse()
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     slotEditorChangePageRequested(PageEtapeGestionImages);
     /* Activation de la naviguation en fonction */
     controlNumberOfImages();
@@ -1527,6 +1525,7 @@ void Editeur::slotSortieVisionneuse()
 
 void Editeur::slotAfficheEtatPublication(const int &code)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << code;
     if(code > 0)
     {
         AbulEduMessageBoxV1* msgEnregistrement = new AbulEduMessageBoxV1(trUtf8("Enregistrement"),

@@ -23,18 +23,17 @@
 ExerciceClic::ExerciceClic(QWidget *parent, QString theme)
     : AbstractExercice(parent, theme, AbstractExercice::Clic)
 {
-    ABULEDU_LOG_DEBUG()<< __PRETTY_FUNCTION__ << parent << theme;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__  << parent << theme;
 }
 
 ExerciceClic::~ExerciceClic()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
 }
 
 void ExerciceClic::slotAide()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-    eventFilter(this, new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1));
+ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;    eventFilter(this, new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1));
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
 
     QString consigne = "<td> " + trUtf8("Clique sur les rectangles noirs pour faire apparaitre l'image.")+"<br />"

@@ -23,7 +23,7 @@
 ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme)
     : AbstractExercice(parent, theme, AbstractExercice::Parcours)
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__ << parent << theme;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << parent << theme;
 
     NB_MASQUESATTENDUS = NB_MASQUESREELS = 0;
     m_listeMasquesParcours.clear();
@@ -31,13 +31,12 @@ ExerciceParcours::ExerciceParcours(QWidget *parent, QString theme)
 
 ExerciceParcours::~ExerciceParcours()
 {
-    ABULEDU_LOG_DEBUG()<< __PRETTY_FUNCTION__;
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
 }
 
 void ExerciceParcours::slotQuestionEntered()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     /* Demarrage du chronometre */
     chronometre()->start();
 
@@ -113,8 +112,7 @@ void ExerciceParcours::slotQuestionEntered()
 
 void ExerciceParcours::slotCacheMasque()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     //j'enleve le premier masque de la ma liste de parcours
     if(!m_listeMasquesParcours.isEmpty())
     {
@@ -184,8 +182,7 @@ void ExerciceParcours::slotCacheMasque()
 
 void ExerciceParcours::slotAide()
 {
-    ABULEDU_LOG_DEBUG() << __PRETTY_FUNCTION__;
-
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     eventFilter(this, new QKeyEvent(QEvent::KeyRelease,Qt::Key_Space,Qt::NoModifier,"space",0,1));
     getAbeExerciceTelecommandeV1()->ui->btnAide->setEnabled(false);
 
@@ -204,6 +201,7 @@ void ExerciceParcours::slotAide()
 
 void ExerciceParcours::chargerPositionMasque(const int& numeroExercice)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ << numeroExercice;
     m_listePositionMasquesParcours.clear();
     QList<int> listePosition;
     parametres()->beginGroup("parcours");

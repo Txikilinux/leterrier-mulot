@@ -26,6 +26,7 @@
 MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
     QGraphicsObject(parent), m_taille(QRectF()), m_numero(numero)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     m_couleur = QColor(Qt::black);
     m_hideOnMouseOver = false;
     m_hideOnClick = false;
@@ -39,6 +40,7 @@ MasqueDeplaceSouris::MasqueDeplaceSouris(QGraphicsObject *parent, int numero) :
 
 void MasqueDeplaceSouris::setSize(float width, float height)
 {
+    ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     m_taille = QRectF(0,0,width,height);
 }
 
@@ -117,4 +119,3 @@ void MasqueDeplaceSouris::mouseDoubleClickEvent(QGraphicsSceneEvent *event)
         emit signalCacheMasque();
     }
 }
-
