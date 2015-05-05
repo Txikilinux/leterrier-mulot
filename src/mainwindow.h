@@ -203,6 +203,7 @@ private slots:
 
     /** Permet de revenir sur la page principale */
     void slotRetourAccueil();
+    void on_stCentral_currentChanged(int arg1);
 };
 
 #endif // MAINWINDOW_H

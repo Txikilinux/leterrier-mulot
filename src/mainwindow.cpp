@@ -625,3 +625,13 @@ void MainWindow::afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFi
     ui->AbulEduBoxFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
     ui->stCentral->setCurrentWidget(ui->pageBoxFileManager);
 }
+
+void MainWindow::on_stCentral_currentChanged(int arg1)
+{
+    if(ui->stCentral->widget(arg1) == ui->fr_principale){
+        ui->menuBar->setEnabled(true);
+    }
+    else {
+        ui->menuBar->setEnabled(false);
+    }
+}
