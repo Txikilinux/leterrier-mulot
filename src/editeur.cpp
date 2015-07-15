@@ -442,7 +442,7 @@ void Editeur::on_listWidgetImagesSelection_itemDoubleClicked(QListWidgetItem *it
     AbulEduVisionneuseImageV1 *visio = new AbulEduVisionneuseImageV1(ui->tabWidgetImages);
     connect(visio, SIGNAL(destroyed()),this,SLOT(slotSortieVisionneuse()), Qt::UniqueConnection);
     visio->setAttribute(Qt::WA_DeleteOnClose);
-    visio->fixeTempsAffichageMax(0);
+    visio->abeVisionneuseImageSetTimeout(0);
     QGraphicsProxyWidget* prox = ui->gvPageVisio->scene()->addWidget(visio);
     prox->grabMouse();
     visio->ouvrirFicher(item->data(4).toString());
