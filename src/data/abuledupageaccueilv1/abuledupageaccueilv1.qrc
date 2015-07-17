@@ -1,17 +1,16 @@
 <RCC>
-   <qresource prefix="/abuledupageaccueilv1">
-      <file>settings.conf</file>
-      <file>images/fond.jpg</file>
-      <file>images/bulle.png</file>
-      <file>images/Gfleche.png</file>
-      <file>images/GflecheHover.png</file>
-      <file>images/Bfleche.png</file>
-      <file>images/BflecheHover.png</file>
-      <file>images/Dfleche.png</file>
-      <file>images/DflecheHover.png</file>
-      <file>images/Hfleche.png</file>
-      <file>images/HflecheHover.png</file>
-      <file>images/bulleTablette.png</file>
-      <file alias="handCursor">images/handCursor.png</file>
+    <qresource prefix="/abuledupageaccueilv1">
+        <file>settings.conf</file>
+        <file>images/fond.jpg</file>
+        <file>images/bulle.png</file>
+        <file>images/Gfleche.png</file>
+        <file>images/GflecheHover.png</file>
+        <file>images/Bfleche.png</file>
+        <file>images/BflecheHover.png</file>
+        <file>images/Dfleche.png</file>
+        <file>images/DflecheHover.png</file>
+        <file>images/Hfleche.png</file>
+        <file>images/HflecheHover.png</file>
+        <file>images/bulleTablette.png</file>
     </qresource>
 </RCC>
