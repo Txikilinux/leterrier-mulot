@@ -66,10 +66,7 @@ include(lib/abuleduidentitesv1/abuleduidentitesv1.pri)
 include(lib/abuleduwidgetassistantetapesv1/abuleduwidgetassistantetapesv1.pri)
 include(lib/abuledupluginloaderv1/abuledupluginloaderv1.pri)
 include(lib/abuledusingletonv1/abuledusingletonv1.pri)
-
-#AbulEduLangV1
 include(lib/abuledulangv1/abuledulangv1.pri)
-
 include(lib/abuleduandroidsupportv1/abuleduandroidsupportv1.pri)
 include(lib/abuleduloggerv1/abuleduloggerv1.pri)
 include(lib/abuleduloadinganimationv1/abuleduloadinganimationv1.pri)
@@ -77,3 +74,5 @@ include(lib/abuledumultimediav1/abuledumultimediav1.pri)
 include(lib/abuledupicottsv1/abuledupicottsv1.pri)
 include(lib/abuleduaudiov1/abuleduaudiov1.pri)
 include(lib/abuleduaproposv1/abuleduaproposv1.pri)
+
+DEFINES += ABULEDU_LOG_SEPARATE_THREAD
