@@ -456,7 +456,7 @@ void Editeur::createAbe()
     ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__;
     if (preparerSauvegarde())
     {
-        m_abuleduFile->abeFileSetTitle(AbulEduMediathequePushV1::sluggify(ui->leTitre->text().simplified()));
+        m_abuleduFile->abeFileSetTitle(abeApp->sluggify(ui->leTitre->text().simplified()));
         emit editorChooseOrSave(AbulEduBoxFileManagerV1::abeSave);
     }
 }
