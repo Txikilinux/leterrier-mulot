@@ -620,6 +620,7 @@ void MainWindow::afficheBoxFileManager(AbulEduBoxFileManagerV1::enumAbulEduBoxFi
     ABULEDU_LOG_TRACE() << __PRETTY_FUNCTION__ ;
     ui->AbulEduBoxFileManager->abeSetOpenOrSaveEnum(openOrSave);
     ui->AbulEduBoxFileManager->abeSetFile(m_abuleduFile);
+    ui->AbulEduBoxFileManager->abeSetProjectName(m_abuleduFile->abeFileGetTitle());
     ui->AbulEduBoxFileManager->abeRefresh(AbulEduBoxFileManagerV1::abePC);
     ui->AbulEduBoxFileManager->abeSetSender(sender());
     ui->AbulEduBoxFileManager->abeSetDisplaySimpleOrCompleteEnum(AbulEduBoxFileManagerV1::abeDisplayComplete);
