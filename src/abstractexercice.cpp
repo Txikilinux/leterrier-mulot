@@ -327,6 +327,10 @@ void AbstractExercice::slotInitQuestionEntered()
         break;
     }
     }
+    /* 20160105 Philippe : Je suis obligé d'appeler les deux lignes ci-dessous pour compenser le fait qu'on n'a pas d'affichage des têtes à taille non-grossie dans le bilan d'exercice */
+    boiteTetes->setEtatTete(m_numExercice,getAbeExerciceEvaluation());
+    boiteTetes->resizeTetes(boiteTetes->getSizeTetes());
+
     boiteTetes->setEtatTete(m_numExercice, getAbeExerciceEvaluation(),false);
 }
 
@@ -625,9 +629,9 @@ void AbstractExercice::setDimensionsWidgets()
     m_tailleAireTravail = m_aireTravail->size();
 
     /* Placement des têtes */
-    boiteTetes->resizeTetes(115*ratio);
     boiteTetes->setPos((getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->width() - boiteTetes->geometry().width())/2,
                        getAbeExerciceAireDeTravailV1()->ui->gvPrincipale->height() - boiteTetes->geometry().height() - 60 *ratio);
+    AbulEduCommonStatesV1::setDimensionsWidgets();
 }
 
 void AbstractExercice::redimensionnerConsigne()
