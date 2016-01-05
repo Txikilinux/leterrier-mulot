@@ -49,6 +49,7 @@ Editeur::Editeur(QWidget *parent) :
     ui->abuleduMediathequeGet->abeHideInfoPanel(false);
     ui->abuleduMediathequeGet->abeHideCloseBouton(true);
     ui->abuleduMediathequeGet->abeSetDefaultView(AbulEduMediathequeGetV1::abeMediathequeThumbnails);
+    ui->abuleduMediathequeGet->abeSetSearchFileMime(AbulEduMediathequeGetV1::abeMediathequeFileMimeImage);
 
     connect(ui->abuleduMediathequeGet, SIGNAL(signalMediathequeFileDownloaded(QSharedPointer<AbulEduFileV1>, int)),
             SLOT(slotImportImageMediatheque(QSharedPointer<AbulEduFileV1>,int)), Qt::UniqueConnection);
