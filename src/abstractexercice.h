@@ -217,6 +217,9 @@ private:
     void chargerOption();
 
     QPixmap *m_pixmapPause;
+
+    const QString getTitleFromDataPicture(const QString& pictureName);
+
 };
 
 #endif // ABSTRACTEXERCICE_H

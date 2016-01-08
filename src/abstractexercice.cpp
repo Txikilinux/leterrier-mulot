@@ -228,7 +228,7 @@ void AbstractExercice::slotRealisationExerciceEntered()
                 int n = (qrand() % (m_listeFichiers.size()));
                 QFileInfo fileInfo = m_listeFichiers.takeAt(n);
                 /* #3101 gestion du titre de l'image pour affichage */
-                m_labelTitreImage->setText(fileInfo.baseName());
+                m_labelTitreImage->setText(getTitleFromDataPicture(fileInfo.absoluteFilePath()));
                 m_image.load(fileInfo.absoluteFilePath(), 0, Qt::AutoColor);
                 m_listeImage << m_image;
             }
@@ -551,6 +551,43 @@ void AbstractExercice::chargerOption()
 
     /* Important sinon le changement de groupe pour la lecture des positions de masque de parcours ne fonctionne pas*/
     m_parametres->endGroup();
+}
+
+const QString AbstractExercice::getTitleFromDataPicture(const QString &pictureName)
+{
+    QFileInfo fi(pictureName);
+    QString title;
+    QXmlStreamReader reader;
+    /* Je sais que dans le cas d'images en provenance d'AbulEdu Data, le lom a été exporté en un fichier xml situé juste au dessus dans l'arborescence
+     * et qui porte le même nom, à ceci près que le suffixe de l'image a été remplacé par "xml" */
+    QFile file(fi.absoluteFilePath().remove("/images").replace(fi.suffix(),"xml"));
+    file.open(QFile::ReadOnly | QFile::Text); /* Ouverture du fichier XML en lecture seule et en mode texte */
+    reader.setDevice(&file); /* Initialise l'instance reader avec le flux XML venant de file */
+
+    /* Le but de cette boucle est de parcourir le fichier et de vérifier si l'on est au début d'un élément. */
+    reader.readNext();
+    while (!reader.atEnd())
+    {
+        if (reader.isStartElement())
+        {
+                if(reader.name() == "title")
+                {
+                    reader.readNext();
+                    while(reader.isStartElement()==false)
+                    reader.readNext();
+                    if(reader.name() == "string")
+                    {
+                        title = reader.readElementText();
+                        reader.readNext();
+                        while(reader.isStartElement()==false)
+                        reader.readNext();
+                    }
+                }
+        }
+        reader.readNext(); /* On va au prochain token */
+    }
+    file.close();
+    return title;
 }
 
 void AbstractExercice::redimensionnerImage()
