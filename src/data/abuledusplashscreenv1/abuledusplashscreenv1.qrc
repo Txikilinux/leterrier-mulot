@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/abuledusplashscreenv1">
         <file alias="splashscreen">images/splashscreen.png</file>
+        <file alias="conf">abuledusplashscreenv1.conf</file>
     </qresource>
     <qresource prefix="/button">
     <file alias="change-pressed">images/changer-pressed.png</file>
