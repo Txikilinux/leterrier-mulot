@@ -5,12 +5,12 @@ bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledustatemachinev1/ src/lib
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduexercicev1/ src/lib/abuleduexercicev1 revid:philippe.cadaugade@ryxeo.com-20150820103239-swf1hcx9bhnuld0l
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledutetev1/ src/lib/abuledutetev1 revid:philippe.cadaugade@ryxeo.com-20150720083100-v41ivzt7a7rq254t
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuleduflatboutonv1/ src/lib/abuleduflatboutonv1 revid:eric.seigne@ryxeo.com-20160216000238-jb54w012v9dwzu49
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledunetworkaccessmanagerv1/ src/lib/abuledunetworkaccessmanagerv1 revid:icham.sirat@ryxeo.com-20151118140658-rqcm8wml3v8klrea
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledunetworkaccessmanagerv1/ src/lib/abuledunetworkaccessmanagerv1 revid:icham.sirat@ryxeo.com-20160502101605-5gp5e3uwqjum099p
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/maia/ src/lib/maia revid:eric.seigne@ryxeo.com-20151027215243-oh7itp0pf463tin1
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledupageaccueilv1/ src/lib/abuledupageaccueilv1 revid:icham.sirat@ryxeo.com-20160106153132-bllobbjy5efwib5d
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledugraphicmenuv1/ src/lib/abuledugraphicmenuv1 revid:icham.sirat@ryxeo.com-20160106150010-dxpbvk43us97oy4a
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledulabelv1 src/lib/abuledulabelv1 revid:icham.sirat@ryxeo.com-20150717081247-rfj1e6cz427v1od6
-bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledufilev1/ src/lib/abuledufilev1 revid:icham.sirat@ryxeo.com-20160414144256-6joqtcduhof7752p
+bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledufilev1/ src/lib/abuledufilev1 revid:philippe.cadaugade@ryxeo.com-20160428154535-j5be1mzkbjtfhpq0
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledumessageboxv1/ src/lib/abuledumessageboxv1 revid:philippe.cadaugade@ryxeo.com-20160216091207-7y9ii5j9ynq7bqb6
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledulangv1/ src/lib/abuledulangv1 revid:eric.seigne@ryxeo.com-20131030180044-nvpgvjev3917r1hb
 bzr://redmine.ryxeo.com/code/leterrier-developpeu/abuledusplashscreenv1/ src/lib/abuledusplashscreenv1 revid:philippe.cadaugade@ryxeo.com-20160418141020-qoyaz0zqr32jf2wt
