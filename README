@@ -1,1 +1,8 @@
 Real code is not kept on the master branch, see one of the other versioned branches instead
+ please run git branch -r to show remote available branches
+ and then git checkout <branch_name> to get the right branch
+
+Le véritable code n'est pas dans la branche master mais dans des branches versionnées
+ je vous propose de lancer la commande git branch -r pour voir la liste des branches
+ et enfin la commande git checkout <branch_name> pour vous placer sur la branche que vous voulez
+
