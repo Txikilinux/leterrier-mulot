@@ -79,3 +79,7 @@
 [submodule "src/lib/abuleduaproposv1"]
 	path = src/lib/abuleduaproposv1
 	url = http://redmine.abuledu.org/ryxeo/leterrier-developpeurs/abuleduaproposv1.git
+[submodule "src/exemples"]
+	path = src/exemples
+	url = http://redmine.abuledu.org/leterrier/leterrier-mulot/leterrier-mulot-git.git
+	branch = version-1.1-exemples
